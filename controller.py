@@ -4,6 +4,7 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from playing import PlayingScreen
 from audioplayer import Sound
+from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
 from kivy.event import EventDispatcher
@@ -160,25 +161,68 @@ class Controller(EventDispatcher):
 
     def show_filebrowser(self):
         """ Switch to the file browser screen """
-        if "filebrowser" not in self.sm.screen_names:
-            self.sm.add_widget(ZenFileBrowser(self,
-                                              self.playlist,
-                                              self._store,
-                                              name="filebrowser"))
-        self.sm.current = "filebrowser"
+        #if "filebrowser" not in self.sm.screen_names:
+        #    self.sm.add_widget(ZenFileBrowser(self,
+        #                                      self.playlist,
+        #                                      self._store,
+        #                                      name="filebrowser"))
+        if "filebrowser" not in self.playing.ids.p_sm.screen_names:
+            self.playing.ids.p_sm.add_widget(ZenFileBrowser(self,
+                                                  self.playlist,
+                                                  self._store,
+                                                  name="filebrowser"))
+
+        player3d = self.playing.ids.player3d
+        Animation.cancel_all(player3d)
+
+        (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+         Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
+            .start(player3d)
+
+            #self.sm.current = "filebrowser"
 
     def show_playlist(self):
         """ Switch to the playlist screen """
-        if "playlist" not in self.sm.screen_names:
-            self.sm.add_widget(PlayListScreen(self.sm,
-                                              self,
-                                              self.playlist,
-                                              name="playlist"))
-        self.sm.current = "playlist"
+        #if "playlist" not in self.sm.screen_names:
+        #    self.sm.add_widget(PlayListScreen(self.sm,
+        #                                      self,
+        #                                      self.playlist,
+        #                                      name="playlist"))
+        if "playlist" not in self.playing.ids.c_sm.screen_names:
+            self.playing.ids.c_sm.add_widget(PlayListScreen(self.sm,
+                                                  self,
+                                                  self.playlist,
+                                                  name="playlist"))
+        player3d = self.playing.ids.player3d
+        Animation.cancel_all(player3d)
+
+        (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
+         Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
+            .start(player3d)
+        #Animation(scale=(0.0001, 0.0001, 0.0001), duration=0.1).start(file_browser)
+            #self.sm.current = "playlist"
 
     def show_main(self):
         """ Switch to the main playing screen"""
-        self.sm.current = "main"
+        #self.sm.current = "main"
+
+        player3d = self.playing.ids.player3d
+        Animation.cancel_all(player3d)
+
+        (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
+         Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
+            .start(player3d)
+
+    def show_main_from_filebrowser(self):
+        """ Switch to the main playing screen"""
+        #self.sm.current = "main"
+
+        player3d = self.playing.ids.player3d
+        Animation.cancel_all(player3d)
+
+        (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+         Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
+            .start(player3d)
 
     def stop(self):
         """ Stop any playing audio """

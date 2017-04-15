@@ -66,8 +66,8 @@ class PlayingScreen(Screen):
         #     Animation(rotate=(360.0, 0, 1, 0), duration=5, t=t) + \
         #     Animation(rotate=(0.0, 0, 1, 0), duration=5, t=t)
 
-        # anims.repeat = True
-        # anims.start(self.ids.node)
+        #anims.repeat = True
+        #anims.start(self.ids.node)
 
     def on_sound_state(self, state):
         """ React to the change of state of the sound """
