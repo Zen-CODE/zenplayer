@@ -47,6 +47,7 @@ class PlayingScreen(Screen):
         Clock.schedule_interval(self._update_progress, 1/25)
         self.volume_slider.value = self.ctrl.volume
         self.init_display()
+        self.ids.player3d.look_at = [0, 0, 1, 0, 0, 0, 0, 1, 0]
 
     def init_display(self):
         """ Initialize the display """
@@ -57,16 +58,62 @@ class PlayingScreen(Screen):
             self.info_label2.text = info["album"]
             self.info_label3.text = info["file"]
 
+
         from kivy.animation import Animation
         t = 'in_out_sine'
         anims = Animation(rotate=(360.0, 1, 0, 0), duration=7, t=t) + \
             Animation(rotate=(-360.0, 1, 0, 0), duration=7, t=t)
-        # anims = Animation(rotate=(360.0, 1, 0, 0), duration=5, t=t) + \
-        #     Animation(rotate=(0.0, 1, 0, 0), duration=5, t=t) + \
-        #     Animation(rotate=(360.0, 0, 1, 0), duration=5, t=t) + \
-        #     Animation(rotate=(0.0, 0, 1, 0), duration=5, t=t)
 
-        #anims.repeat = True
+        def repeat_anim(*args):
+            Animation.cancel_all(self.ids.wings)
+            self.ids.wings.rotate = (0, 0.0, 0.0, 1.0)
+            anim = Animation (rotate=(359, 0.0, 0.0, 1.0), duration=2.0)
+            anim.bind(on_complete=repeat_anim)
+            anim.start(self.ids.wings)
+        repeat_anim()
+
+        def plane_anim(*args):
+            Animation.cancel_all(self.ids.plane1)
+            self.ids.plane1.rotate = (0, 0.0, 1.0, 0.0)
+            anim = (Animation (rotate=(45, 0.1, 1.0, 0.0),
+                              translate=(1.5, 2, -64),
+                              duration=2.0, t=t) +
+                   Animation(rotate=(180, 0.4, 1.0, 0.0),
+                              translate=(19.5, -2, -74),
+                              duration=2.0, t=t) +
+                   Animation(rotate=(270, 0.2, 1.0, 0.0),
+                              translate=(1.5, 2, -89),
+                              duration=1.8, t=t) +
+                   Animation(rotate=(360, 0.0, 1.0, 0.0),
+                              translate=(-29.5, -2, -84),
+                              duration=2.0, t=t))
+            anim.bind(on_complete=plane_anim)
+            anim.start(self.ids.plane1)
+        plane_anim()
+
+        def buildozer_anim(*args):
+            Animation.cancel_all(self.ids.buildozer1)
+            #self.ids.buildozer1.rotate = (90+45, 0.0, 1.0, 0.0)
+            anim = (Animation (rotate=(90+45, 0.02, 1.0, 0.0),
+                              duration=0.5, t=t) +
+                    Animation (translate=(1.5, -18, -64),
+                              duration=2.0, t=t) +
+                    Animation(rotate=(180+45, 0.01, 1.0, 0.0),
+                              duration=0.5, t=t) +
+                    Animation(translate=(19.5, -18, -74),
+                              duration=2.0, t=t) +
+                    Animation(rotate=(270+45, 0.02, 1.0, 0.0),
+                              duration=0.5, t=t) +
+                    Animation(translate=(1.5, -18, -99),
+                              duration=1.8, t=t) +
+                    Animation(rotate=(360+45, 0.01, 1.0, 0.0),
+                              duration=0.5, t=t) +
+                    Animation(translate=(-29.5, -18, -84),
+                              duration=2.0, t=t))
+            anim.bind(on_complete=buildozer_anim)
+            anim.start(self.ids.buildozer1)
+        buildozer_anim()
+
         #anims.start(self.ids.node)
 
     def on_sound_state(self, state):

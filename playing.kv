@@ -22,13 +22,16 @@
     album_image: album_image
     Layout3D:
         id: player3d
-        shadow_threshold: 0.01
+        shadow_threshold: 0.5
         post_precessing: True
+        light_0: [24.5, 120, 35]
+        light_1: [-24.5, -120, 135]
+        look_at: [0, 0, 1, 0, 0, 0, 0, 1, 0]
         Node:
             id: node
             # rotate: (0.5, 0, 0)
-            rotate: (0.0, 1, 0.0, 0.0)
-            translate: (0, 0, -60)
+            rotate: (0.0, 0.0, 0.0, 1.0)
+            translate: (38, 13, -140)
             scale: (0.3, 0.3, 0.3)
             min_light_intensity: 0.9
             meshes: ('meshes/2dbox.obj',)
@@ -137,9 +140,9 @@
         Node:
             id: file_browser
             # rotate: (0.5, 0, 0)
-            rotate: (-270, 0.0, 1.0, 0.0)
-            translate: (24, 0, -83)
-            scale: (0.3, 0.3, 0.01)
+            rotate: (-90, 0.0, 1.0, 0.0)
+            translate: (110, 30, -83)
+            scale: (0.35, 0.3, 0.01)
             min_light_intensity: 0.9
             meshes: ('meshes/2dbox.obj',)
             size_hint: 1, 1
@@ -155,9 +158,9 @@
         Node:
             id: playlist
             # rotate: (0.5, 0, 0)
-            rotate: (-90, 0.0, 1.0, 0.0)
-            translate: (-23.5, 0, -84)
-            scale: (0.3, 0.3, 0.01)
+            rotate: (90, 0.0, 1.0, 0.0)
+            translate: (-94.5, 40, -34)
+            scale: (0.35, 0.3, 0.01)
             min_light_intensity: 0.9
             meshes: ('meshes/2dbox.obj',)
             size_hint: 1, 1
@@ -169,3 +172,203 @@
                     Rectangle:
                         size: self.size
                         pos: self.pos
+        Node:
+            id: buildozer1
+            rotate: (0, 0.0, 1.0, 0.0)
+            translate: (-39.5, -18, -94)
+            scale: (0.2, 0.2, 0.2)
+            specular_power: 64
+            specular_intensity: 0.27
+            min_light_intensity: 0.4
+            #normal_map: "images/normal.png"
+            meshes: ('meshes/buildozer.obj',)
+            size_hint: 1, 1
+            ScreenManager:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/buildozer.png"
+
+
+        Node:
+            id: plane1
+            rotate: (45, 0.0, 1.0, 0.0)
+            translate: (-29.5, -2, -84)
+            scale: (0.2, 0.2, 0.2)
+            receive_shadows: False
+            specular_power: 64
+            specular_intensity: 0.27
+            min_light_intensity: 0.4
+            meshes: ('meshes/plane.obj',)
+            size_hint: 1, 1
+            BoxLayout:
+                rows: 1
+                canvas:
+                    Color:
+                        rgb: 0.7, 1, 0.7, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Button:
+                    text: "Hello World"
+                    font_size: 120
+                Button:
+                    text: "Hello World 2"
+                    font_size: 120
+
+        Node:
+            id: windmllbase
+            translate: (4.5, -18, -84)
+            scale: (0.3, 0.3, 0.3)
+            specular_power: 64
+            specular_intensity: 0.27
+            min_light_intensity: 0.4
+            #normal_map: "images/normal.png"
+            meshes: ('meshes/windmillbase.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/wndmilbase.png"
+
+
+        Node:
+            id: wings
+            # rotate: (0.5, 0, 0)
+            rotate: (0, 0.0, 0.0, 1.0)
+            translate: (-3.3, 6.5, -76)
+            scale: (0.3, 0.3, 0.3)
+            specular_power: 64
+            specular_intensity: 0.27
+            min_light_intensity: 0.4
+            #normal_map: "images/normal.png"
+            meshes: ('meshes/wings.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 0.7, 0.7, 1, 1.0
+                    Rectangle:
+                        size: self.size
+
+
+        Node:
+            id: playlistz
+            # rotate: (0.5, 0, 0)
+            rotate: (45, 0.0, 1.0, 0.0)
+            translate: (39.5, -18, -94)
+            scale: (0.2, 0.2, 0.2)
+            specular_power: 64
+            specular_intensity: 0.27
+            min_light_intensity: 0.4
+            #normal_map: "images/normal.png"
+            meshes: ('meshes/buildozer.obj',)
+            size_hint: 1, 1
+            ScreenManager:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/buildozer.png"
+
+
+        Node:
+            id: bottom
+            # rotate: (0.5, 0, 0)
+            rotate: (-90, 1.0, 0.0, 0.0)
+            translate: (4.5, -18, -70)
+            scale: (1.8, 1.8, 0.08)
+            specular_power: 1
+            specular_intensity: 0.07
+            normal_map: "images/normal_tower.png"
+            meshes: ('meshes/2dbox.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/c_wood.jpg"
+                #Scatter:
+                #    Image:
+                #        size: 640, 480
+                #        source: "images/album.png"
+                #TextInput:
+                #    font_size: 120
+
+
+        Node:
+            # rotate: (0.5, 0, 0)
+            rotate: (0, 1.0, 0.0, 0.0)
+            translate: (0, 0, -148)
+            scale: (1.8, 1.8, 0.1)
+            #receive_shadows: False
+            #cast_shadows: False
+            specular_power: 1
+            specular_intensity: 0.07
+            normal_map: "images/normal_tower.png"
+            meshes: ('meshes/2dbox.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/c_wood.jpg"
+
+        Node:
+            # rotate: (0.5, 0, 0)
+            rotate: (-90, 0.0, 1.0, 0.0)
+            translate: (-120, 0, -88)
+            scale: (1.8, 1.8, 0.1)
+            #receive_shadows: False
+            #cast_shadows: False
+            specular_power: 4
+            specular_intensity: 0.07
+            min_light_intensity: 0.7
+            normal_map: "images/normal_tower.png"
+            meshes: ('meshes/2dbox.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/c_wood.jpg"
+
+        Node:
+            # rotate: (0.5, 0, 0)
+            rotate: (90, 0.0, 1.0, 0.0)
+            translate: (120, 0, -88)
+            scale: (1.8, 1.8, 0.1)
+            #receive_shadows: False
+            #cast_shadows: False
+            specular_power: 1
+            specular_intensity: 0.07
+            min_light_intensity: 0.7
+            normal_map: "images/normal_tower.png"
+            meshes: ('meshes/2dbox.obj',)
+            size_hint: 1, 1
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgb: 1, 1, 1, 1.0
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                        source: "images/c_wood.jpg"
