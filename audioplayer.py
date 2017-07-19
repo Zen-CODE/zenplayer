@@ -83,7 +83,7 @@ class Sound(object):
         """
         sound = Sound._sound
         if sound:
-            print ("value = {0}, length = {1} ".format(value, sound.length))
+            print "value = {0}, length = {1} ".format(value, sound.length)
 
             def unlock(dt):
                 Sound.state = "playing" if Sound._sound.state == "play"\

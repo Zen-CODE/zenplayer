@@ -174,9 +174,12 @@ class Controller(EventDispatcher):
 
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)
+
         (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-         Animation(look_at=[-26, 38, -33, -103, 38, -33, 0, 1, 0], duration=1.8)) \
+         Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
             .start(player3d)
+
+            #self.sm.current = "filebrowser"
 
     def show_playlist(self):
         """ Switch to the playlist screen """
@@ -192,9 +195,12 @@ class Controller(EventDispatcher):
                                                   name="playlist"))
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)
+
         (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-         Animation(look_at=[43, 28, -83, 103, 28, -83, 0, 1, 0], duration=1.8))\
+         Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
             .start(player3d)
+        #Animation(scale=(0.0001, 0.0001, 0.0001), duration=0.1).start(file_browser)
+            #self.sm.current = "playlist"
 
     def show_main(self):
         """ Switch to the main playing screen"""
