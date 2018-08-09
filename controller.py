@@ -13,6 +13,7 @@ from kivy.clock import Clock
 from os.path import join, expanduser, exists
 from os import mkdir
 
+
 class Controller(EventDispatcher):
     """
     Controls the playing of audio and coordinates the updating of the playlist
@@ -76,7 +77,7 @@ class Controller(EventDispatcher):
     def get_pos_length():
         return Sound.get_pos_length()
 
-    def on_key_down(self, keyboard, keycode, text, modifiers):
+    def on_key_down(self, _keyboard, keycode, text, _modifiers):
         """ React to the keypress event """
         key_name = keycode[1]
         if key_name == "up" or text == "+":
@@ -100,7 +101,7 @@ class Controller(EventDispatcher):
 
         return True
 
-    def on_volume(self, widget, value):
+    def on_volume(self, _widget, value):
         """ Set the volume of the currently playing sound """
         if 0.0 > value:
             self.volume = 0.0
@@ -129,7 +130,7 @@ class Controller(EventDispatcher):
             if audio_file:
                 Sound.play(audio_file, self.volume)
                 if self.pos > 0:
-                    def set_pos(dt):
+                    def set_pos(_dt):
                         Sound.seek(self.pos)
                         self.pos = 0
                     Clock.schedule_once(set_pos, 0.1)
@@ -161,16 +162,16 @@ class Controller(EventDispatcher):
 
     def show_filebrowser(self):
         """ Switch to the file browser screen """
-        #if "filebrowser" not in self.sm.screen_names:
+        # if "filebrowser" not in self.sm.screen_names:
         #    self.sm.add_widget(ZenFileBrowser(self,
         #                                      self.playlist,
         #                                      self._store,
         #                                      name="filebrowser"))
         if "filebrowser" not in self.playing.ids.p_sm.screen_names:
             self.playing.ids.p_sm.add_widget(ZenFileBrowser(self,
-                                                  self.playlist,
-                                                  self._store,
-                                                  name="filebrowser"))
+                                             self.playlist,
+                                             self._store,
+                                             name="filebrowser"))
 
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)
@@ -179,32 +180,33 @@ class Controller(EventDispatcher):
          Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
             .start(player3d)
 
-            #self.sm.current = "filebrowser"
+        # self.sm.current = "filebrowser"
 
     def show_playlist(self):
         """ Switch to the playlist screen """
-        #if "playlist" not in self.sm.screen_names:
+        # if "playlist" not in self.sm.screen_names:
         #    self.sm.add_widget(PlayListScreen(self.sm,
         #                                      self,
         #                                      self.playlist,
         #                                      name="playlist"))
         if "playlist" not in self.playing.ids.c_sm.screen_names:
             self.playing.ids.c_sm.add_widget(PlayListScreen(self.sm,
-                                                  self,
-                                                  self.playlist,
-                                                  name="playlist"))
+                                             self,
+                                             self.playlist,
+                                             name="playlist"))
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)
 
         (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
          Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
             .start(player3d)
-        #Animation(scale=(0.0001, 0.0001, 0.0001), duration=0.1).start(file_browser)
-            #self.sm.current = "playlist"
+        # Animation(scale=(0.0001, 0.0001, 0.0001),
+        #                  duration=0.1).start(file_browser)
+        # self.sm.current = "playlist"
 
     def show_main(self):
         """ Switch to the main playing screen"""
-        #self.sm.current = "main"
+        # self.sm.current = "main"
 
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)
@@ -215,7 +217,7 @@ class Controller(EventDispatcher):
 
     def show_main_from_filebrowser(self):
         """ Switch to the main playing screen"""
-        #self.sm.current = "main"
+        # self.sm.current = "main"
 
         player3d = self.playing.ids.player3d
         Animation.cancel_all(player3d)

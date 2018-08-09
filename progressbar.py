@@ -31,6 +31,7 @@ class ImageProgressBar(ProgressBar):
     """
     source = StringProperty('')
 
+
 if __name__ == "__main__":
     from kivy.app import App
     from kivy.clock import Clock
@@ -47,7 +48,7 @@ if __name__ == "__main__":
             self.add_widget(self.pb)
 
             # Animate the value changes
-            def set_progress(*args, **_kwargs):
+            def set_progress(*_args, **_kwargs):
                 self.pb.value = _kwargs['value']
 
             for k, val in enumerate(range(100, -1, -1)):

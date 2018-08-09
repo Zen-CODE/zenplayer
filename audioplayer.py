@@ -12,7 +12,7 @@ class Sound(object):
     _sound = None  # The underlying Sound instance
 
     @staticmethod
-    def _on_stop(*args):
+    def _on_stop(*_args):
         if Sound.state not in ["stopped", "seeking"]:
             Sound._set_state("finished")
 
@@ -83,9 +83,9 @@ class Sound(object):
         """
         sound = Sound._sound
         if sound:
-            print "value = {0}, length = {1} ".format(value, sound.length)
+            print("value = {0}, length = {1} ".format(value, sound.length))
 
-            def unlock(dt):
+            def unlock(_dt):
                 Sound.state = "playing" if Sound._sound.state == "play"\
                     else "stopped"
 
@@ -94,7 +94,6 @@ class Sound(object):
             Clock.schedule_once(lambda dt: sound.seek(value * sound.length))
             Clock.schedule_once(lambda dt: sound.play())
             Clock.schedule_once(unlock)
-
 
     @staticmethod
     def set_volume(value):

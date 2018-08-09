@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import Screen
 from audioplayer import Sound
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
-from kivy3dgui.layout3d import Layout3D
+# from kivy3dgui.layout3d import Layout3D
 
 
 class MediaButton(FloatLayout):
@@ -19,7 +19,7 @@ class MediaButton(FloatLayout):
         super(MediaButton, self).__init__(**kwargs)
         self.register_event_type("on_click")
 
-    def on_source(self, widget, value):
+    def on_source(self, _widget, value):
         """ The 'source' property for the image has changed. Change it. """
         self.image.source = value
 
@@ -57,17 +57,17 @@ class PlayingScreen(Screen):
             self.info_label2.text = info["album"]
             self.info_label3.text = info["file"]
 
-        from kivy.animation import Animation
-        t = 'in_out_sine'
-        anims = Animation(rotate=(360.0, 1, 0, 0), duration=7, t=t) + \
-            Animation(rotate=(-360.0, 1, 0, 0), duration=7, t=t)
+        # from kivy.animation import Animation
+        # t = 'in_out_sine'
+        # anims = Animation(rotate=(360.0, 1, 0, 0), duration=7, t=t) + \
+        #     Animation(rotate=(-360.0, 1, 0, 0), duration=7, t=t)
         # anims = Animation(rotate=(360.0, 1, 0, 0), duration=5, t=t) + \
         #     Animation(rotate=(0.0, 1, 0, 0), duration=5, t=t) + \
         #     Animation(rotate=(360.0, 0, 1, 0), duration=5, t=t) + \
         #     Animation(rotate=(0.0, 0, 1, 0), duration=5, t=t)
 
-        #anims.repeat = True
-        #anims.start(self.ids.node)
+        # anims.repeat = True
+        # anims.start(self.ids.node)
 
     def on_sound_state(self, state):
         """ React to the change of state of the sound """
@@ -77,7 +77,7 @@ class PlayingScreen(Screen):
         else:
             self.but_playpause.source = "images/play.png"
 
-    def _update_progress(self, dt):
+    def _update_progress(self, _dt):
         """ Update the progressbar  """
         if Sound.state == "playing":
             pos, length = Sound.get_pos_length()

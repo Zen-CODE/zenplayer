@@ -248,6 +248,6 @@ class PlaylistLabel(PlaylistItem, Label):
     """
     back_color = ListProperty([0, 0, 0, 0])
 
-    def on_selected(self, widget, value):
+    def on_selected(self, _widget, value):
         """ The label has been selected. Change the visuals accordingly. """
         self.back_color = [0.5, 0.5, 1, 0.5] if value else [0, 0, 0, 0]

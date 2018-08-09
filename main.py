@@ -10,8 +10,9 @@ __author__ = 'ZenCODE'
 
 from kivy.app import App
 from controller import Controller
-from kivy.config import Config
-Config.set('kivy', 'KIVY_AUDIO', 'ffpyplayer')
+# from kivy.config import Config
+# sdl2, gstplayer, ffpyplayer, pygame, avplayer
+# Config.set('kivy', 'KIVY_AUDIO', 'avplayer')
 
 
 class ZenPlayer(App):
@@ -36,5 +37,6 @@ class ZenPlayer(App):
     def on_stop(self):
         """The app is closing. Save the state."""
         self.ctrl.save()
+
 
 ZenPlayer().run()
