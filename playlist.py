@@ -154,6 +154,8 @@ class PlayListScreen(Screen):
 
     def on_enter(self):
         """ Repopulate the view area and setup the display. """
+        if not self.playlist.queue:
+            return
         self.num_pages = \
             (len(self.playlist.queue) - 1) // self.items_per_page + 1
         if self.current_page > self.num_pages:
