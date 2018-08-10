@@ -4,7 +4,6 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from playing import PlayingScreen
 from audioplayer import Sound
-from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
 from kivy.event import EventDispatcher
@@ -21,11 +20,17 @@ class Controller(EventDispatcher):
     """
     volume = NumericProperty(1.0)
     advance = True
-    # This flag indicates whether to advance to the next track
-    # once the currently playing one had ended
+    ''' Indicates whether to advance to the next track once the currently
+    playing one had ended or not .'''
 
-    sm = None  # THe ScreenManager
+    sm = None
+    ''' A Reference to the active ScreenManager class. '''
+
     pos = 0
+    ''' Stores the current position in the currently playing audio file. '''
+
+    kivy3dgui = True
+    ''' Set whether to use the kivy3dgui interface on not '''
 
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
@@ -162,67 +167,79 @@ class Controller(EventDispatcher):
 
     def show_filebrowser(self):
         """ Switch to the file browser screen """
-        if "filebrowser" not in self.sm.screen_names:
-            self.sm.add_widget(ZenFileBrowser(self,
-                                              self.playlist,
-                                              self._store,
-                                              name="filebrowser"))
-        # if "filebrowser" not in self.playing.ids.p_sm.screen_names:
-        #     self.playing.ids.p_sm.add_widget(ZenFileBrowser(self,
-        #                                      self.playlist,
-        #                                      self._store,
-        #                                      name="filebrowser"))
+        if not self.kivy3dgui:
+            if "filebrowser" not in self.sm.screen_names:
+                self.sm.add_widget(ZenFileBrowser(self,
+                                                  self.playlist,
+                                                  self._store,
+                                                  name="filebrowser"))
+            self.sm.current = "filebrowser"
 
-        # player3d = self.playing.ids.player3d
-        # Animation.cancel_all(player3d)
-        #
-        # (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-        #  Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
-        #     .start(player3d)
+        else:
+            if "filebrowser" not in self.playing.ids.p_sm.screen_names:
+                self.playing.ids.p_sm.add_widget(ZenFileBrowser(self,
+                                                 self.playlist,
+                                                 self._store,
+                                                 name="filebrowser"))
 
-        self.sm.current = "filebrowser"
+            from kivy.animation import Animation
+            player3d = self.playing.ids.player3d
+            Animation.cancel_all(player3d)
+
+            (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
+                .start(player3d)
+
 
     def show_playlist(self):
         """ Switch to the playlist screen """
-        if "playlist" not in self.sm.screen_names:
-            self.sm.add_widget(PlayListScreen(self.sm,
-                                              self,
-                                              self.playlist,
-                                              name="playlist"))
-        # if "playlist" not in self.playing.ids.c_sm.screen_names:
-        #     self.playing.ids.c_sm.add_widget(PlayListScreen(self.sm,
-        #                                      self,
-        #                                      self.playlist,
-        #                                      name="playlist"))
-        # player3d = self.playing.ids.player3d
-        # Animation.cancel_all(player3d)
-        #
-        # (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-        #  Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
-        #     .start(player3d)
-        self.sm.current = "playlist"
+        if not self.kivy3dgui:
+            if "playlist" not in self.sm.screen_names:
+                self.sm.add_widget(PlayListScreen(self.sm,
+                                                  self,
+                                                  self.playlist,
+                                                  name="playlist"))
+            self.sm.current = "playlist"
+        else:
+            if "playlist" not in self.playing.ids.c_sm.screen_names:
+                self.playing.ids.c_sm.add_widget(PlayListScreen(self.sm,
+                                                 self,
+                                                 self.playlist,
+                                                 name="playlist"))
+            player3d = self.playing.ids.player3d
+            from kivy.animation import Animation
+
+            Animation.cancel_all(player3d)
+
+            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
+                .start(player3d)
 
     def show_main(self):
         """ Switch to the main playing screen"""
-        self.sm.current = "main"
+        if not self.kivy3dgui:
+            self.sm.current = "main"
+        else:
+            from kivy.animation import Animation
+            player3d = self.playing.ids.player3d
+            Animation.cancel_all(player3d)
 
-        # player3d = self.playing.ids.player3d
-        # Animation.cancel_all(player3d)
-        #
-        # (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-        #  Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
-        #     .start(player3d)
+            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
+                .start(player3d)
 
     def show_main_from_filebrowser(self):
         """ Switch to the main playing screen"""
-        self.sm.current = "main"
+        if not self.kivy3dgui:
+            self.sm.current = "main"
+        else:
+            from kivy.animation import Animation
+            player3d = self.playing.ids.player3d
+            Animation.cancel_all(player3d)
 
-        # player3d = self.playing.ids.player3d
-        # Animation.cancel_all(player3d)
-        #
-        # (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-        #  Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
-        #     .start(player3d)
+            (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
+                .start(player3d)
 
     def stop(self):
         """ Stop any playing audio """
