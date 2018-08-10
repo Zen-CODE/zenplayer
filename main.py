@@ -12,7 +12,7 @@ from kivy.app import App
 from controller import Controller
 # from kivy.config import Config
 # sdl2, gstplayer, ffpyplayer, pygame, avplayer
-# Config.set('kivy', 'KIVY_AUDIO', 'avplayer')
+# Config.set('kivy', 'KIVY_AUDIO', 'pygame')
 
 
 class ZenPlayer(App):
