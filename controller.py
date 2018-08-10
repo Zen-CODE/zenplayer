@@ -186,10 +186,11 @@ class Controller(EventDispatcher):
             player3d = self.playing.ids.player3d
             Animation.cancel_all(player3d)
 
-            (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)) \
-                .start(player3d)
-
+            (Animation(
+                look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(
+                 look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)
+             ).start(player3d)
 
     def show_playlist(self):
         """ Switch to the playlist screen """
@@ -211,9 +212,11 @@ class Controller(EventDispatcher):
 
             Animation.cancel_all(player3d)
 
-            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8))\
-                .start(player3d)
+            (Animation(
+                look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(
+                 look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8)
+             ).start(player3d)
 
     def show_main(self):
         """ Switch to the main playing screen"""
@@ -225,8 +228,8 @@ class Controller(EventDispatcher):
             Animation.cancel_all(player3d)
 
             (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
-                .start(player3d)
+             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)
+             ).start(player3d)
 
     def show_main_from_filebrowser(self):
         """ Switch to the main playing screen"""
@@ -237,9 +240,11 @@ class Controller(EventDispatcher):
             player3d = self.playing.ids.player3d
             Animation.cancel_all(player3d)
 
-            (Animation(look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)) \
-                .start(player3d)
+            (Animation(
+                look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
+             Animation(
+                 look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)
+             ).start(player3d)
 
     def stop(self):
         """ Stop any playing audio """

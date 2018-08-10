@@ -10,16 +10,14 @@ __author__ = 'ZenCODE'
 
 from kivy.app import App
 from controller import Controller
-# from kivy.config import Config
-# sdl2, gstplayer, ffpyplayer, pygame, avplayer
-# Config.set('kivy', 'KIVY_AUDIO', 'pygame')
 
 
 class ZenPlayer(App):
     """
     The App initialisation class
     """
-    ctrl = None  # Reference to the controller (for saving)
+    ctrl = None
+    ''' Reference to the instantiated Controller class. '''
 
     def on_pause(self):
         """ Enable support for pause """
