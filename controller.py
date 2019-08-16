@@ -29,7 +29,7 @@ class Controller(EventDispatcher):
     pos = 0
     ''' Stores the current position in the currently playing audio file. '''
 
-    kivy3dgui = True
+    kivy3dgui = False
     ''' Set whether to use the kivy3dgui interface on not '''
 
     def __init__(self, **kwargs):
