@@ -41,10 +41,7 @@ class PlayingScreen(Screen):
     ctrl = None  # The Controller
 
     def __init__(self, ctrl, **kwargs):
-        if ctrl.kivy3dgui:
-            Builder.load_file("playing_kivy3dgui.kv")
-        else:
-            Builder.load_file("playing.kv")
+        Builder.load_file("playing.kv")
         self.ctrl = ctrl
         super(PlayingScreen, self).__init__(**kwargs)
         Clock.schedule_interval(self._update_progress, 1/25)
