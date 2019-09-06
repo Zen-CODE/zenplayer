@@ -7,9 +7,9 @@ Kivy framework.
 
 """
 __author__ = 'ZenCODE'
-
 from kivy.app import App
 from controller import Controller
+from environs import Env
 
 
 class ZenPlayer(App):
@@ -37,4 +37,5 @@ class ZenPlayer(App):
         self.ctrl.save()
 
 
+Env().read_env()
 ZenPlayer().run()
