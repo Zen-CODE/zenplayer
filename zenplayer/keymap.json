@@ -1,0 +1,14 @@
+{
+    "keymap": {
+        "w": "volume_up",
+        "s": "volume_down",
+        "d": "move_forward",
+        "a": "move_backward",
+        "x": "play_pause",
+        "z": "play_previous",
+        "v": "stop",
+        "b": "play_next",
+        "f": "show_filebrowser",
+        "p": "show_playlist",
+        "q": "quit"}
+}
