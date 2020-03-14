@@ -10,5 +10,6 @@
         "b": "play_next",
         "f": "show_filebrowser",
         "p": "show_playlist",
+        "m": "show_main",
         "q": "quit"}
 }
