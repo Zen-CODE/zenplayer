@@ -4,13 +4,13 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from playing import PlayingScreen
 from audioplayer import Sound
-from kivy.core.window import Window
 from kivy.properties import NumericProperty
 from kivy.event import EventDispatcher
-from kivy.utils import platform
+
 from kivy.clock import Clock
 from os.path import join, expanduser, exists
 from os import mkdir
+from keyboard_handler import KeyHandler
 
 
 class Controller(EventDispatcher):
@@ -43,9 +43,7 @@ class Controller(EventDispatcher):
         self.sm.add_widget(self.playing)
         self.sm.current = "main"
 
-        if platform not in ['ios', 'android']:
-            self.kb_listener = ZenKeyboardListener(self.on_key_down,
-                                                   self.playing)
+        self.kb_handler = KeyHandler(self)
         Sound.add_state_callback(self.playing.on_sound_state)
         Sound.add_state_callback(self._on_sound_state)
 
@@ -81,31 +79,6 @@ class Controller(EventDispatcher):
     @staticmethod
     def get_pos_length():
         return Sound.get_pos_length()
-
-    def on_key_down(self, _keyboard, keycode, text, _modifiers):
-        """ React to the keypress event """
-        key_name = keycode[1]
-        print(f"Got keypress {key_name}")
-        if key_name == "up" or text == "+":
-            self.volume_up()
-        elif key_name == "down" or text == "-":
-            self.volume_down()
-        elif key_name == "x":
-            self.play_pause()
-        elif key_name == "z":
-            self.play_previous()
-        elif key_name == "v":
-            self.stop()
-        elif key_name == "b":
-            self.play_next()
-        elif key_name == "a":
-            self.show_filebrowser()
-        elif key_name == "p":
-            self.show_playlist()
-        elif key_name == "s":
-            self.show_main()
-
-        return True
 
     def volume_up(self):
         """ Turn the volume up """
@@ -259,21 +232,3 @@ class Controller(EventDispatcher):
         """ Stop any playing audio """
         self.advance = False
         Sound.stop()
-
-
-class ZenKeyboardListener(EventDispatcher):
-    """
-    This class handles the management of keypress to control volume, play,
-    stop, next etc.
-    """
-    def __init__(self, callback, widget):
-        super(ZenKeyboardListener, self).__init__()
-        self._keyboard = Window.request_keyboard(
-            self._keyboard_closed, widget, 'text')
-        self._keyboard.bind(on_key_down=callback)
-        self._cb = callback
-
-    def _keyboard_closed(self):
-        self._keyboard.unbind(on_key_down=self._cb)
-        self._keyboard = None
-        self._cb = None
