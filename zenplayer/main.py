@@ -29,7 +29,7 @@ class ZenPlayer(App):
 
     def build(self):
         """ Build the app and return the screen manager """
-        self.ctrl = Controller()
+        self.ctrl = Controller(app=self)
         return self.ctrl.sm
 
     def on_stop(self):

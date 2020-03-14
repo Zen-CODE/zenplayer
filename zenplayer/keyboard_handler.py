@@ -42,6 +42,8 @@ class KeyHandler:
             self.ctrl.show_playlist()
         elif key_name == "s":
             self.ctrl.show_main()
+        elif key_name == "q":
+            self.ctrl.quit()
 
         return True
 

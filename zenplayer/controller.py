@@ -4,7 +4,7 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from playing import PlayingScreen
 from audioplayer import Sound
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from kivy.event import EventDispatcher
 
 from kivy.clock import Clock
@@ -19,6 +19,9 @@ class Controller(EventDispatcher):
     and screen displays
     """
     volume = NumericProperty(1.0)
+
+    app = ObjectProperty()
+
     advance = True
     ''' Indicates whether to advance to the next track once the currently
     playing one had ended or not .'''
@@ -232,3 +235,8 @@ class Controller(EventDispatcher):
         """ Stop any playing audio """
         self.advance = False
         Sound.stop()
+
+    def quit(self):
+        """ Close the appllication """
+        self.stop()
+        self.app.stop()
