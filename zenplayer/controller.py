@@ -85,10 +85,11 @@ class Controller(EventDispatcher):
     def on_key_down(self, _keyboard, keycode, text, _modifiers):
         """ React to the keypress event """
         key_name = keycode[1]
+        print(f"Got keypress {key_name}")
         if key_name == "up" or text == "+":
-            self.volume += 0.025
+            self.volume_up()
         elif key_name == "down" or text == "-":
-            self.volume -= 0.025
+            self.volume_down()
         elif key_name == "x":
             self.play_pause()
         elif key_name == "z":
@@ -105,6 +106,14 @@ class Controller(EventDispatcher):
             self.show_main()
 
         return True
+
+    def volume_up(self):
+        """ Turn the volume up """
+        self.volume += 0.025
+
+    def volume_down(self):
+        """ Turn the volume down """
+        self.volume -= 0.025
 
     def on_volume(self, _widget, value):
         """ Set the volume of the currently playing sound """
@@ -227,8 +236,8 @@ class Controller(EventDispatcher):
             player3d = self.playing.ids.player3d
             Animation.cancel_all(player3d)
 
-            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)
+            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8)
+             + Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)
              ).start(player3d)
 
     def show_main_from_filebrowser(self):
