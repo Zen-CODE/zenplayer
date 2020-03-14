@@ -101,6 +101,20 @@ class Controller(EventDispatcher):
             Sound.set_volume(value)
             self.playing.volume_slider.value = value
 
+    def move_forward(self):
+        """ Move the current playing time 5s forward """
+        pos, length = Sound.get_pos_length()
+        if length and pos < length - 5:
+            self.set_position((pos + 5.0) / length)
+
+    def move_backward(self):
+        """ Move the current playing time 5s backward """
+        pos, length = Sound.get_pos_length()
+        if length:
+            if pos < 5.0:
+                pos = 5.0
+            self.set_position((pos - 5.0) / length)
+
     def play_index(self, index):
         """
         Play the track with the specified playlist index
@@ -113,7 +127,7 @@ class Controller(EventDispatcher):
         """ Play or pause the currently playing track """
         self.advance = True
         if Sound.state == "playing":
-            self.pos, x = Sound.get_pos_length()
+            self.pos, _x = Sound.get_pos_length()
             Sound.stop()
         else:
             audio_file = self.get_current_file()

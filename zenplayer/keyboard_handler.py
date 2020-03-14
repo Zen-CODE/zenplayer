@@ -24,10 +24,14 @@ class KeyHandler:
         key_name = keycode[1]
         print(f"Got keypress {key_name}")
 
-        if key_name == "up" or text == "+":
+        if key_name == "w":
             self.ctrl.volume_up()
-        elif key_name == "down" or text == "-":
+        elif key_name == "s":
             self.ctrl.volume_down()
+        elif key_name == "d":
+            self.ctrl.move_forward()
+        elif key_name == "a":
+            self.ctrl.move_backward()
         elif key_name == "x":
             self.ctrl.play_pause()
         elif key_name == "z":
@@ -36,7 +40,7 @@ class KeyHandler:
             self.ctrl.stop()
         elif key_name == "b":
             self.ctrl.play_next()
-        elif key_name == "a":
+        elif key_name == "f":
             self.ctrl.show_filebrowser()
         elif key_name == "p":
             self.ctrl.show_playlist()
