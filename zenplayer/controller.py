@@ -67,8 +67,8 @@ class Controller(EventDispatcher):
     def _on_sound_state(self, state):
         """ The sound state has changed. If the track played to the end,
         move to the next track."""
-        if state == "finished" and self.advance:
-            self.play_next()
+        if state == "stopped" and self.advance:
+            Clock.schedule_once(lambda dt: self.play_next())
 
     def get_current_art(self):
         return self.playlist.get_current_art()
@@ -141,8 +141,8 @@ class Controller(EventDispatcher):
 
     def play_next(self):
         """ Play the next track in the playlist. """
-
-        Sound.stop()
+        if Sound.state != "stopped":
+            Sound.stop()
         self.playlist.move_next()
         self.play_pause()
 
@@ -155,6 +155,7 @@ class Controller(EventDispatcher):
     @staticmethod
     def set_position(value):
         """ Set the playing position to the specified value. """
+        print(f"set_position {value}")
         Sound.set_position(value)
 
     def save(self):
