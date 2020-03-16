@@ -141,8 +141,7 @@ class Controller(EventDispatcher):
 
     def play_next(self):
         """ Play the next track in the playlist. """
-        if Sound.state != "stopped":
-            Sound.stop()
+        Sound.stop()
         self.playlist.move_next()
         self.play_pause()
 
@@ -155,7 +154,6 @@ class Controller(EventDispatcher):
     @staticmethod
     def set_position(value):
         """ Set the playing position to the specified value. """
-        print(f"set_position {value}")
         Sound.set_position(value)
 
     def save(self):
