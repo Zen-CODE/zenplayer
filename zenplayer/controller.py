@@ -147,7 +147,7 @@ class Controller(EventDispatcher):
 
     def play_previous(self):
         """ Play the previous track in the playlist. """
-        Sound.stop()
+        self.stop()
         self.playlist.move_previous()
         self.play_pause()
 
