@@ -125,11 +125,11 @@ class Controller(EventDispatcher):
 
     def play_pause(self):
         """ Play or pause the currently playing track """
-        self.advance = True
         if Sound.state == "playing":
             self.pos, _x = Sound.get_pos_length()
-            Sound.stop()
+            self.stop()
         else:
+            self.advance = True
             audio_file = self.get_current_file()
             if audio_file:
                 Sound.play(audio_file, self.volume)
@@ -141,7 +141,7 @@ class Controller(EventDispatcher):
 
     def play_next(self):
         """ Play the next track in the playlist. """
-        Sound.stop()
+        self.stop()
         self.playlist.move_next()
         self.play_pause()
 

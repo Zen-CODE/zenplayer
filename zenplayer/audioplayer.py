@@ -10,8 +10,6 @@ class Sound(object):
     state = ""  # options= "", "stopped" or "playing", "seeking"
     _state_callbacks = []
     _sound = None  # The underlying Sound instance
-    _supress = False
-    """ Supress state change callbacks """
 
     @staticmethod
     def _on_stop(*_args):
@@ -20,12 +18,11 @@ class Sound(object):
     @staticmethod
     def _set_state(state):
         """ Set the state value and fire all attached callbacks """
-        print(f"_set_state fired: {state}.  supress = {Sound._supress}")
+        print(f"_set_state fired: {state}.")
         if state != Sound.state:
             Sound.state = state
-            if not Sound._supress:
-                for func in Sound._state_callbacks:
-                    func(state)
+            for func in Sound._state_callbacks:
+                func(state)
 
     @staticmethod
     def add_state_callback(callback):
@@ -56,9 +53,7 @@ class Sound(object):
     def stop():
         """ Stop any playing audio """
         if Sound._sound and Sound.state != "seeking":
-            Sound._supress = True
             Sound._sound.stop()
-            Sound._supress = False
 
     @staticmethod
     def play(filename="", volume=100):
