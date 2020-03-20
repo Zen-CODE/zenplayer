@@ -67,8 +67,8 @@ class Controller(EventDispatcher):
     def _on_sound_state(self, state):
         """ The sound state has changed. If the track played to the end,
         move to the next track."""
-        if state == "finished" and self.advance:
-            self.play_next()
+        if state == "stopped" and self.advance:
+            Clock.schedule_once(lambda dt: self.play_next())
 
     def get_current_art(self):
         return self.playlist.get_current_art()
@@ -125,11 +125,11 @@ class Controller(EventDispatcher):
 
     def play_pause(self):
         """ Play or pause the currently playing track """
-        self.advance = True
         if Sound.state == "playing":
             self.pos, _x = Sound.get_pos_length()
-            Sound.stop()
+            self.stop()
         else:
+            self.advance = True
             audio_file = self.get_current_file()
             if audio_file:
                 Sound.play(audio_file, self.volume)
@@ -141,14 +141,13 @@ class Controller(EventDispatcher):
 
     def play_next(self):
         """ Play the next track in the playlist. """
-
-        Sound.stop()
+        self.stop()
         self.playlist.move_next()
         self.play_pause()
 
     def play_previous(self):
         """ Play the previous track in the playlist. """
-        Sound.stop()
+        self.stop()
         self.playlist.move_previous()
         self.play_pause()
 
