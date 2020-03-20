@@ -59,7 +59,7 @@ class PlayingScreen(Screen):
 
         # if self.ctrl.kivy3dgui:
             # from kivy.animation import Animation
-            #t = 'in_out_sine'
+            # t = 'in_out_sine'
             # anims = Animation(rotate=(360.0, 1, 0, 0), duration=7, t=t) + \
             #    Animation(rotate=(-360.0, 1, 0, 0), duration=7, t=t)
             # anims = Animation(rotate=(360.0, 1, 0, 0), duration=5, t=t) + \
