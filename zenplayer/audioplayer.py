@@ -23,9 +23,9 @@ class Sound(object):
         print(f"_set_state fired: {state}.  supress = {Sound._supress}")
         if state != Sound.state:
             Sound.state = state
-        if not Sound._supress and state == "stopped":
-            for func in Sound._state_callbacks:
-                func(state)
+            if not Sound._supress:
+                for func in Sound._state_callbacks:
+                    func(state)
 
     @staticmethod
     def add_state_callback(callback):
