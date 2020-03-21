@@ -34,7 +34,7 @@ class ZenPlayer(App):
 
     def on_stop(self):
         """The app is closing. Save the state."""
-        self.ctrl.save()
+        pass
 
 
 Env().read_env()

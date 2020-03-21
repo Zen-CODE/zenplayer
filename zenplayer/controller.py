@@ -83,6 +83,7 @@ class Controller(EventDispatcher):
         print(f"Controller.On_sound_state fired. state={state}. "
               f"advance={self.advance}")
         if state == "stopped":
+            self.position = 0
             if self.advance:
                 Clock.schedule_once(lambda dt: self.play_next())
             if self.timer_event is not None:
@@ -273,5 +274,6 @@ class Controller(EventDispatcher):
 
     def quit(self):
         """ Close the appllication """
+        self.save()
         self.stop()
         self.app.stop()
