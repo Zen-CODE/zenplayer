@@ -35,6 +35,18 @@ class PlayingScreen(Screen):
         Builder.load_file("playing.kv")
         super(PlayingScreen, self).__init__(**kwargs)
 
+        # if self.ctrl.kivy3dgui:
+        #   from kivy.animation import Animation
+        #   t = 'in_out_sine'
+        #   anims = Animation(rotate=(360.0, 1, 0, 0), duration=7, t=t) + \
+        #        Animation(rotate=(-360.0, 1, 0, 0), duration=7, t=t)
+        #   anims = Animation(rotate=(360.0, 1, 0, 0), duration=5, t=t) + \
+        #         Animation(rotate=(0.0, 1, 0, 0), duration=5, t=t) + \
+        #       Animation(rotate=(360.0, 0, 1, 0), duration=5, t=t) + \
+        #       Animation(rotate=(0.0, 0, 1, 0), duration=5, t=t)
+        #   anims.repeat = True
+        #    anims.start(self.ids.node)
+
     def on_sound_state(self, state):
         """ React to the change of state of the sound """
         if state == "playing":
