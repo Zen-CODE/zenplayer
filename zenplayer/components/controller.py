@@ -63,20 +63,20 @@ class Controller(EventDispatcher):
             HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         Sound.add_state_callback(self._on_sound_state)
-        self.timer_event = None
+        Clock.schedule_interval(self._update_progress, 1/5)
 
         super(Controller, self).__init__(**kwargs)
         self._restore_state()
 
     def _restore_state(self):
         """ Load the state when previously exited if possible. """
-        state = self._store.get("state")
-        for key, value in state.items():
-            setattr(self, key, value)
+        if "state" is self._store.keys():
+            state = self._store.get("state")
+            for key, value in state.items():
+                setattr(self, key, value)
 
     def on_state(self, widget, value):
         """ React to the change of state event """
-        print(f"Controller.on_state. state={value}, prev={self.prev_state}")
         if value == "playing":
             if Sound.state == "playing":
                 Sound.stop()
@@ -105,15 +105,10 @@ class Controller(EventDispatcher):
     def _on_sound_state(self, state):
         """ The sound state has changed. If the track played to the end,
         move to the next track."""
-        print(f"Controller.On_sound_state fired. state={state}.")
         if state == "stopped":
             if self.prev_state == self.state == "playing":
                 Clock.schedule_once(lambda dt: self.play_next())
-            if self.timer_event is not None:
-                self.timer_event.cancel()
-        else:
-            self.timer_event = Clock.schedule_interval(
-                self._update_progress, 1/5)
+
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
