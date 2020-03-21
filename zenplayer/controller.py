@@ -67,6 +67,8 @@ class Controller(EventDispatcher):
     def _on_sound_state(self, state):
         """ The sound state has changed. If the track played to the end,
         move to the next track."""
+        print(f"Controller.On_sound_state fired. state={state}. "
+              f"advance={self.advance}")
         if state == "stopped" and self.advance:
             Clock.schedule_once(lambda dt: self.play_next())
 
@@ -134,10 +136,7 @@ class Controller(EventDispatcher):
             if audio_file:
                 Sound.play(audio_file, self.volume)
                 if self.pos > 0:
-                    def set_pos(_dt):
-                        Sound.seek(self.pos)
-                        self.pos = 0
-                    Clock.schedule_once(set_pos, 0.1)
+                    Clock.schedule_once(lambda dt: Sound.seek(self.pos))
 
     def play_next(self):
         """ Play the next track in the playlist. """
