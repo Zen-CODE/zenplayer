@@ -4,7 +4,7 @@ Displays the file browsing screen for ZenPlayer
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from os.path import exists
-from audioplayer import Sound
+from components.audioplayer import Sound
 from kivy.lang import Builder
 
 

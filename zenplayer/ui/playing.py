@@ -1,7 +1,7 @@
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
-from audioplayer import Sound
+from components.audioplayer import Sound
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 # from kivy3dgui.layout3d import Layout3D

@@ -8,7 +8,7 @@ Kivy framework.
 """
 __author__ = 'ZenCODE'
 from kivy.app import App
-from controller import Controller
+from components.controller import Controller
 from environs import Env
 
 
