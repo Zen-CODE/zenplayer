@@ -41,7 +41,7 @@ class Controller(EventDispatcher):
     sm = None
     ''' A Reference to the active ScreenManager class. '''
 
-    pos = NumericProperty(1.0)
+    position = NumericProperty(1.0)
     ''' Stores the current position in the currently playing audio file. '''
 
     kivy3dgui = False
@@ -89,7 +89,7 @@ class Controller(EventDispatcher):
                 self.timer_event.cancel()
         else:
             self.timer_event = Clock.schedule_interval(
-                self._update_progress, 1/25)
+                self._update_progress, 1/5)
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
@@ -101,6 +101,7 @@ class Controller(EventDispatcher):
                     int(pos % 60),
                     int(length / 60),
                     int(length % 60))
+                self.position = pos / length
         else:
             self.time_display = "-"
 
@@ -112,10 +113,6 @@ class Controller(EventDispatcher):
             self.album = parts[-2]
             self.artist = parts[-3]
             self.cover = self.playlist.get_albumart(value)
-
-    @staticmethod
-    def get_pos_length():
-        return Sound.get_pos_length()
 
     def volume_up(self):
         """ Turn the volume up """
@@ -148,20 +145,21 @@ class Controller(EventDispatcher):
         """
         Play the track with the specified playlist index
         """
-        Sound.stop()
+        self.stop()
         self.playlist.current = index
         self.play_pause()
 
     def play_pause(self):
         """ Play or pause the currently playing track """
         if Sound.state == "playing":
-            self.pos, _x = Sound.get_pos_length()
+            pos, length = Sound.get_pos_length()
+            self.position = pos / length if length > 0 else 0
             self.stop()
         else:
             self.advance = True
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
-                Sound.play(self.file_name, self.volume, self.pos)
+                Sound.play(self.file_name, self.volume, self.position)
 
     def play_next(self):
         """ Play the next track in the playlist. """
@@ -177,13 +175,13 @@ class Controller(EventDispatcher):
 
     def set_position(self, value):
         """ Set the playing position to the specified value. """
-        self.pos = value
+        self.position = value
         Sound.set_position(value)
 
     def save(self):
         """ Save the state of the the playlist and volume. """
         self.playlist.save(self._store)
-        self._store.put("state", volume=self.volume, pos=self.pos)
+        self._store.put("state", volume=self.volume, position=self.position)
         if "filebrowser" in self.sm.screen_names:
             self.sm.get_screen("filebrowser").save(self._store)
 
