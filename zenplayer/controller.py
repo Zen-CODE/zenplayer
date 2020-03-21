@@ -181,8 +181,7 @@ class Controller(EventDispatcher):
         self.playlist.move_previous()
         self.play_pause()
 
-    @staticmethod
-    def set_position(value):
+    def set_position(self, value):
         """ Set the playing position to the specified value. """
         self.pos = value
         Sound.set_position(value)
