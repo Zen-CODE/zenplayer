@@ -66,9 +66,8 @@ class Controller(EventDispatcher):
         super(Controller, self).__init__(**kwargs)
         if self._store.exists('state'):
             state = self._store.get("state")
-            if "volume" in state.keys():
-                # TODO: Check that this is actually stored
-                self.volume = state["volume"]
+            for key, value in state.items():
+                setattr(self, key, value)
 
     @staticmethod
     def _get_settings_folder():
@@ -167,7 +166,7 @@ class Controller(EventDispatcher):
             if self.file_name:
                 Sound.play(self.file_name, self.volume)
                 if self.pos > 0:
-                    Clock.schedule_once(lambda dt: Sound.seek(self.pos))
+                    Sound.seek(self.pos)
 
     def play_next(self):
         """ Play the next track in the playlist. """
@@ -189,7 +188,7 @@ class Controller(EventDispatcher):
     def save(self):
         """ Save the state of the the playlist and volume. """
         self.playlist.save(self._store)
-        self._store.put("state", volume=self.volume)
+        self._store.put("state", volume=self.volume, pos=self.pos)
         if "filebrowser" in self.sm.screen_names:
             self.sm.get_screen("filebrowser").save(self._store)
 
