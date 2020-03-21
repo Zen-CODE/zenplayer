@@ -70,7 +70,7 @@ class Controller(EventDispatcher):
 
     def _restore_state(self):
         """ Load the state when previously exited if possible. """
-        if "state" is self._store.keys():
+        if "state" in self._store.keys():
             state = self._store.get("state")
             for key, value in state.items():
                 setattr(self, key, value)
