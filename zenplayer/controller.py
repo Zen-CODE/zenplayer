@@ -113,9 +113,6 @@ class Controller(EventDispatcher):
             self.artist = parts[-3]
             self.cover = self.playlist.get_albumart(value)
 
-    def get_current_info(self):
-        return self.playlist.get_current_info()
-
     @staticmethod
     def get_pos_length():
         return Sound.get_pos_length()
