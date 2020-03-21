@@ -86,6 +86,7 @@ class Controller(EventDispatcher):
             self.track = parts[-1]
             self.album = parts[-2]
             self.artist = parts[-3]
+            self.cover = self.playlist.get_albumart(value)
 
     def get_current_info(self):
         return self.playlist.get_current_info()

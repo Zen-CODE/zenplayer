@@ -63,7 +63,7 @@ class PlayList(object):
             for f in sorted(listdir(filefolder)):
                 self.add_files(path.join(filefolder, f))
         elif filefolder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            self.queue.append((filefolder, self._get_albumart(filefolder)))
+            self.queue.append((filefolder, self.get_albumart(filefolder)))
 
     def clear_files(self):
         """ Clear the existing playlist"""
@@ -100,7 +100,7 @@ class PlayList(object):
             self.current = index
 
     @staticmethod
-    def _get_albumart(audiofile):
+    def get_albumart(audiofile):
         """
         Return the full image filename from the folder
         """
