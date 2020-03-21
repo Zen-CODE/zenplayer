@@ -28,7 +28,7 @@ class MusicLib(EventDispatcher):
     """
     This class houses metadata about our music collection.
     """
-    source = u'/media/ZenOne/Zen/Music/CD'  # PC. Linux
+    source = u'/home/fruitbat/Music'  # PC. Linux
     # source = u'/media/richard/ZenUno/Zen/Music/MP3'  Laptop, linux
     # source = r"d:\Zen\Music\MP3"  # PC, Windows
 
@@ -351,7 +351,7 @@ class OptionScreen(Screen):
 
 class FolderChecker(App):
     def build(self):
-        return Builder.load_file('lib_checker.kv')
+        return Builder.load_file('lib_player.kv')
 
 if __name__ == '__main__':
     FolderChecker().run()
