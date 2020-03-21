@@ -2,5 +2,6 @@
     "python.pythonPath": "venv/bin/python3",
     "python.linting.flake8Enabled": true,
     "editor.rulers": [80],
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "python.linting.enabled": true
 }

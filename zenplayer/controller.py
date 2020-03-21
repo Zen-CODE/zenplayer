@@ -164,9 +164,7 @@ class Controller(EventDispatcher):
             self.advance = True
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
-                Sound.play(self.file_name, self.volume)
-                if self.pos > 0:
-                    Sound.seek(self.pos)
+                Sound.play(self.file_name, self.volume, self.pos)
 
     def play_next(self):
         """ Play the next track in the playlist. """
