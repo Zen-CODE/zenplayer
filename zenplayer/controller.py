@@ -4,13 +4,15 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from playing import PlayingScreen
 from audioplayer import Sound
-from kivy.properties import NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from os.path import join, expanduser, exists
-from os import mkdir
+from os import mkdir, sep
 from keyboard_handler import KeyHandler
 
+
+DEFAULT_COVER = "images/zencode.jpg"
 
 class Controller(EventDispatcher):
     """
@@ -18,7 +20,11 @@ class Controller(EventDispatcher):
     and screen displays
     """
     volume = NumericProperty(1.0)
-    """ Get or set the volume """
+    artist = StringProperty("-")
+    album = StringProperty("-")
+    track = StringProperty("-")
+    cover = StringProperty(DEFAULT_COVER)
+    file_name = StringProperty("")
 
     app = ObjectProperty()
 
@@ -73,14 +79,16 @@ class Controller(EventDispatcher):
         if state == "stopped" and self.advance:
             Clock.schedule_once(lambda dt: self.play_next())
 
-    def get_current_art(self):
-        return self.playlist.get_current_art()
+    def on_file_name(self, widget, value):
+        """ Respond to the change of file name and set the info fields."""
+        parts = value.split(sep)
+        if len(parts) > 2:
+            self.track = parts[-1]
+            self.album = parts[-2]
+            self.artist = parts[-3]
 
     def get_current_info(self):
         return self.playlist.get_current_info()
-
-    def get_current_file(self):
-        return self.playlist.get_current_file()
 
     @staticmethod
     def get_pos_length():
@@ -128,9 +136,9 @@ class Controller(EventDispatcher):
             self.stop()
         else:
             self.advance = True
-            audio_file = self.get_current_file()
-            if audio_file:
-                Sound.play(audio_file, self.volume)
+            self.file_name = self.playlist.get_current_file()
+            if self.file_name:
+                Sound.play(self.file_name, self.volume)
                 if self.pos > 0:
                     Clock.schedule_once(lambda dt: Sound.seek(self.pos))
 

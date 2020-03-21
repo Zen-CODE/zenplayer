@@ -12,11 +12,7 @@
     # Define the buttons
     but_playpause: playpause
     progress_slider: progress
-    info_label1: info_label1
-    info_label2: info_label2
-    info_label3: info_label3
     time_label: time_label
-    album_image: album_image
 
     BoxLayout:
         orientation: 'horizontal'
@@ -62,20 +58,19 @@
                     source: 'images/playlist.png'
                     on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_playlist()
             Label:
-                id: info_label1
+                text: root.ctrl.artist
                 size_hint_y: 0.05
             Label:
-                id: info_label2
+                text: root.ctrl.album
                 size_hint_y: 0.05
             Label:
-                id: info_label3
+                text: root.ctrl.track
                 size_hint_y: 0.05
             BoxLayout:
                 size_hint_y: 0.65
                 padding: 10, 10, 10, 10
                 Image:
-                    id: album_image
-                    source: "images/zencode.jpg"
+                    source: root.ctrl.cover
                     allow_stretch: True
             Label:
                 id: time_label

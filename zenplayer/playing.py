@@ -44,16 +44,9 @@ class PlayingScreen(Screen):
         Builder.load_file("playing.kv")
         super(PlayingScreen, self).__init__(**kwargs)
         Clock.schedule_interval(self._update_progress, 1/25)
-        self.init_display()
 
-    def init_display(self):
-        """ Initialize the display """
-        self.album_image.source = self.ctrl.get_current_art()
-        info = self.ctrl.get_current_info()
-        if info:
-            self.info_label1.text = info["artist"]
-            self.info_label2.text = info["album"]
-            self.info_label3.text = info["file"]
+    # def init_display(self):
+    #     """ Initialize the display """
 
         # if self.ctrl.kivy3dgui:
             # from kivy.animation import Animation
@@ -71,7 +64,6 @@ class PlayingScreen(Screen):
         """ React to the change of state of the sound """
         if state == "playing":
             self.but_playpause.source = "images/pause.png"
-            self.init_display()
         else:
             self.but_playpause.source = "images/play.png"
 
