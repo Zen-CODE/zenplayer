@@ -42,10 +42,6 @@ class Controller(EventDispatcher):
 
     app = ObjectProperty()
 
-    advance = True
-    ''' Indicates whether to advance to the next track once the currently
-    playing one had ended or not .'''
-
     sm = None
     ''' A Reference to the active ScreenManager class. '''
 
@@ -84,7 +80,6 @@ class Controller(EventDispatcher):
         if value == "playing":
             if Sound.state == "playing":
                 Sound.stop()
-            self.advance = True
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
                 pos = 0 if self.prev_state != "paused" else self.position
@@ -96,7 +91,6 @@ class Controller(EventDispatcher):
             # If the prev_state is None, we have just restored state on start
             pos, length = Sound.get_pos_length()
             self.position = pos / length if length > 0 else 0
-            self.advance = False
             Sound.stop()
         self.prev_state = value
 
@@ -111,10 +105,9 @@ class Controller(EventDispatcher):
     def _on_sound_state(self, state):
         """ The sound state has changed. If the track played to the end,
         move to the next track."""
-        print(f"Controller.On_sound_state fired. state={state}. "
-              f"advance={self.advance}")
+        print(f"Controller.On_sound_state fired. state={state}.")
         if state == "stopped":
-            if self.advance:
+            if self.prev_state == self.state == "playing":
                 Clock.schedule_once(lambda dt: self.play_next())
             if self.timer_event is not None:
                 self.timer_event.cancel()
@@ -295,7 +288,6 @@ class Controller(EventDispatcher):
 
     def stop(self):
         """ Stop any playing audio """
-        self.advance = False
         self.state = "stopped"
 
     def quit(self):
