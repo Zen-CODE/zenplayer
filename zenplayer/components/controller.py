@@ -4,13 +4,15 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from ui.playing import PlayingScreen
 from components.audioplayer import Sound
-from kivy.properties import NumericProperty, ObjectProperty, StringProperty
+from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
+                             OptionProperty)
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from os.path import join, expanduser, exists
 from os import mkdir, sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
+from os import environ
 
 
 DEFAULT_COVER = "images/zencode.jpg"
@@ -29,6 +31,14 @@ class Controller(EventDispatcher):
     track = StringProperty("-")
     cover = StringProperty(DEFAULT_COVER)
     time_display = StringProperty("-")
+    state = OptionProperty("", options=["stopped", "paused", "playing", ""])
+    prev_state = None
+
+    position = NumericProperty(0.0)
+    """ Position is the track as a fraction between 0 and 1. """
+
+    # paused_position = NumericProperty(0.0)
+    # """ The position where the track was paused. """
 
     # The following is used to trigger the above
     file_name = StringProperty("")
@@ -41,9 +51,6 @@ class Controller(EventDispatcher):
 
     sm = None
     ''' A Reference to the active ScreenManager class. '''
-
-    position = NumericProperty(1.0)
-    ''' Stores the current position in the currently playing audio file. '''
 
     kivy3dgui = False
     ''' Set whether to use the kivy3dgui interface on not '''
@@ -59,17 +66,43 @@ class Controller(EventDispatcher):
         self.sm.add_widget(self.playing)
         self.sm.current = "main"
 
-        HotKeyHandler.add_bindings(self)
+        if not environ.get('ZENPLAYER_NO_HOTKEYS', None):
+            HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         Sound.add_state_callback(self.playing.on_sound_state)
         Sound.add_state_callback(self._on_sound_state)
         self.timer_event = None
 
         super(Controller, self).__init__(**kwargs)
-        if self._store.exists('state'):
-            state = self._store.get("state")
-            for key, value in state.items():
-                setattr(self, key, value)
+        self._restore_state()
+
+    def _restore_state(self):
+        """ Load the state when previously exited if possible. """
+        state = self._store.get("state")
+        for key, value in state.items():
+            setattr(self, key, value)
+
+    def on_state(self, widget, value):
+        """ React to the change of state event """
+        print(f"Controller.on_state. state={value}, prev={self.prev_state}")
+        if value == "playing":
+            if Sound.state == "playing":
+                Sound.stop()
+            self.advance = True
+            self.file_name = self.playlist.get_current_file()
+            if self.file_name:
+                pos = 0 if self.prev_state != "paused" else self.position
+                Sound.play(self.file_name, self.volume, pos)
+        elif value == "stopped":
+            self.position = 0
+            Sound.stop()
+        elif value == "paused" and self.prev_state is not None:
+            # If the prev_state is None, we have just restored state on start
+            pos, length = Sound.get_pos_length()
+            self.position = pos / length if length > 0 else 0
+            self.advance = False
+            Sound.stop()
+        self.prev_state = value
 
     @staticmethod
     def _get_settings_folder():
@@ -85,7 +118,6 @@ class Controller(EventDispatcher):
         print(f"Controller.On_sound_state fired. state={state}. "
               f"advance={self.advance}")
         if state == "stopped":
-            self.position = 0
             if self.advance:
                 Clock.schedule_once(lambda dt: self.play_next())
             if self.timer_event is not None:
@@ -154,15 +186,10 @@ class Controller(EventDispatcher):
 
     def play_pause(self):
         """ Play or pause the currently playing track """
-        if Sound.state == "playing":
-            pos, length = Sound.get_pos_length()
-            self.position = pos / length if length > 0 else 0
-            self.stop()
+        if self.state == "playing":
+            self.state = "paused"
         else:
-            self.advance = True
-            self.file_name = self.playlist.get_current_file()
-            if self.file_name:
-                Sound.play(self.file_name, self.volume, self.position)
+            self.state = "playing"
 
     def play_next(self):
         """ Play the next track in the playlist. """
@@ -184,7 +211,8 @@ class Controller(EventDispatcher):
     def save(self):
         """ Save the state of the the playlist and volume. """
         self.playlist.save(self._store)
-        self._store.put("state", volume=self.volume, position=self.position)
+        self._store.put("state", volume=self.volume, position=self.position,
+                        state=self.state)
         if "filebrowser" in self.sm.screen_names:
             self.sm.get_screen("filebrowser").save(self._store)
 
@@ -272,10 +300,12 @@ class Controller(EventDispatcher):
     def stop(self):
         """ Stop any playing audio """
         self.advance = False
-        Sound.stop()
+        self.state = "stopped"
 
     def quit(self):
         """ Close the appllication """
+        if self.state == "playing":
+            self.state = "paused"  # Enable saving of position
         self.save()
         self.stop()
         Clock.schedule_once(lambda dt: self.app.stop())
