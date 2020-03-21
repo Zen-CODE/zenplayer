@@ -32,7 +32,7 @@ class PlayingScreen(Screen):
 
     def __init__(self, ctrl, **kwargs):
         self.ctrl = ctrl
-        Builder.load_file("playing.kv")
+        Builder.load_file("ui/playing.kv")
         super(PlayingScreen, self).__init__(**kwargs)
 
         # if self.ctrl.kivy3dgui:

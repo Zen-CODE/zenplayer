@@ -15,7 +15,7 @@ class ZenFileBrowser(Screen):
     filechooser = ObjectProperty()
 
     def __init__(self, ctrl, playlist, store, **kwargs):
-        Builder.load_file('filebrowser.kv')
+        Builder.load_file('ui/filebrowser.kv')
         self.ctrl = ctrl
         self.playlist = playlist
         super(ZenFileBrowser, self).__init__(**kwargs)

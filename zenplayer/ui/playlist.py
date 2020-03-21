@@ -134,7 +134,7 @@ class PlayListScreen(Screen):
     listview = ObjectProperty()
 
     def __init__(self, sm, ctrl, playlist, **kwargs):
-        Builder.load_file("playlist.kv")
+        Builder.load_file("ui/playlist.kv")
         self.sm = sm
         self.playlist = playlist
         self.ctrl = ctrl
