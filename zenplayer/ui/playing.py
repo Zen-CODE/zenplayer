@@ -27,7 +27,6 @@ class PlayingScreen(Screen):
     """
     The main screen that shows whats currently playing
     """
-    but_playpause = ObjectProperty()
     ctrl = ObjectProperty(None)
 
     def __init__(self, ctrl, **kwargs):
@@ -46,11 +45,3 @@ class PlayingScreen(Screen):
         #       Animation(rotate=(0.0, 0, 1, 0), duration=5, t=t)
         #   anims.repeat = True
         #    anims.start(self.ids.node)
-
-    def on_sound_state(self, state):
-        """ React to the change of state of the sound """
-        if state == "playing":
-            self.but_playpause.source = "images/pause.png"
-        else:
-            self.but_playpause.source = "images/play.png"
-

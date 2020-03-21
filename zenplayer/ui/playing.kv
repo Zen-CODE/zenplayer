@@ -8,9 +8,6 @@
         on_touch_down: self.collide_point(*args[1].pos) and root.dispatch('on_click')
 
 <PlayingScreen>:
-    # Define the buttons
-    but_playpause: playpause
-
     BoxLayout:
         orientation: 'horizontal'
         canvas:
@@ -83,8 +80,7 @@
                     source: 'images/stop.png'
                     on_click: root.ctrl.stop()
                 MediaButton:
-                    id: playpause
-                    source: 'images/play.png'
+                    source: 'images/play.png' if root.ctrl.state != "paused" else "images/pause.png"
                     on_click: root.ctrl.play_pause()
                 MediaButton:
                     id: next

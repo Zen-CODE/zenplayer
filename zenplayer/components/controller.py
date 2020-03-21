@@ -37,9 +37,6 @@ class Controller(EventDispatcher):
     position = NumericProperty(0.0)
     """ Position is the track as a fraction between 0 and 1. """
 
-    # paused_position = NumericProperty(0.0)
-    # """ The position where the track was paused. """
-
     # The following is used to trigger the above
     file_name = StringProperty("")
 
@@ -69,7 +66,6 @@ class Controller(EventDispatcher):
         if not environ.get('ZENPLAYER_NO_HOTKEYS', None):
             HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
-        Sound.add_state_callback(self.playing.on_sound_state)
         Sound.add_state_callback(self._on_sound_state)
         self.timer_event = None
 
