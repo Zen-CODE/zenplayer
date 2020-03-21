@@ -10,6 +10,7 @@ from kivy.clock import Clock
 from os.path import join, expanduser, exists
 from os import mkdir, sep
 from components.keyboard_handler import KeyHandler
+from components.hotkey_handler import HotKeyHandler
 
 
 DEFAULT_COVER = "images/zencode.jpg"
@@ -58,6 +59,7 @@ class Controller(EventDispatcher):
         self.sm.add_widget(self.playing)
         self.sm.current = "main"
 
+        HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         Sound.add_state_callback(self.playing.on_sound_state)
         Sound.add_state_callback(self._on_sound_state)

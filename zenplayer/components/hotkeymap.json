@@ -1,0 +1,11 @@
+{
+    "hotkeymap": {
+        "alt+w": "volume_up",
+        "alt+s": "volume_down",
+        "alt+d": "move_forward",
+        "alt+a": "move_backward",
+        "alt+x": "play_pause",
+        "alt+z": "play_previous",
+        "alt+v": "stop",
+        "alt+b": "play_next"}
+}

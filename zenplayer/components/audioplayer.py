@@ -59,6 +59,7 @@ class Sound(object):
         """ Stop any playing audio """
         if Sound._sound:
             Sound._sound.stop()
+            Sound._sound.unload()
 
     @staticmethod
     def play(filename="", volume=100, pos=0.0):
