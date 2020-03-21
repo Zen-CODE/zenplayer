@@ -276,4 +276,4 @@ class Controller(EventDispatcher):
         """ Close the appllication """
         self.save()
         self.stop()
-        self.app.stop()
+        Clock.schedule_once(lambda dt: self.app.stop())

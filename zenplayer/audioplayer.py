@@ -51,7 +51,7 @@ class Sound(object):
         if Sound._sound:
             length = Sound._sound._get_length()
             if length > 0:
-                print("Setting pos to {position * length}")
+                print(f"Setting pos to {position * length}")
                 Sound._sound.seek(position * length)
 
     @staticmethod
