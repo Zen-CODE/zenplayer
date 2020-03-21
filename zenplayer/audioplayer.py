@@ -74,7 +74,7 @@ class Sound(object):
             Sound._sound.volume = volume
             if pos > 0.0:
                 print(f"Seeking {pos}")
-                Clock.schedule_once(lambda dt:Sound.seek(pos))
+                Clock.schedule_once(lambda dt: Sound.seek(pos))
 
             Sound._set_state("playing")
 
