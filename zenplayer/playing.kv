@@ -1,9 +1,8 @@
-#: import Animation kivy.animation.Animation
+#:kivy 1.10
 
 <MediaButton>:
-    image: image
     Image:
-        id: image
+        source: root.source
         pos_hint: {'x': 0, 'y': 0}
         size_hint: 1, 1
         on_touch_down: self.collide_point(*args[1].pos) and root.dispatch('on_click')
@@ -11,8 +10,6 @@
 <PlayingScreen>:
     # Define the buttons
     but_playpause: playpause
-    progress_slider: progress
-    time_label: time_label
 
     BoxLayout:
         orientation: 'horizontal'
@@ -33,10 +30,10 @@
                 padding: 10
                 spacing: 10
                 Slider:
-                    id: progress
                     size_hint_y: 0.9
                     orientation: "vertical"
                     max: 1
+                    value: root.ctrl.pos
                     on_touch_up: self.collide_point(*args[1].pos) and root.ctrl.set_position(self.value)
                 Image:
                     size_hint_y: 0.075
@@ -73,7 +70,7 @@
                     source: root.ctrl.cover
                     allow_stretch: True
             Label:
-                id: time_label
+                text: root.ctrl.time_display
                 size_hint_y: 0.05
             BoxLayout:
                 size_hint_y: 0.075

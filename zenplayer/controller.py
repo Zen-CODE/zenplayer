@@ -14,16 +14,22 @@ from keyboard_handler import KeyHandler
 
 DEFAULT_COVER = "images/zencode.jpg"
 
+
 class Controller(EventDispatcher):
     """
     Controls the playing of audio and coordinates the updating of the playlist
     and screen displays
     """
+
+    # The following fields control the display in the playlist
     volume = NumericProperty(1.0)
     artist = StringProperty("-")
     album = StringProperty("-")
     track = StringProperty("-")
     cover = StringProperty(DEFAULT_COVER)
+    time_display = StringProperty("-")
+
+    # The following is used to trigger the above
     file_name = StringProperty("")
 
     app = ObjectProperty()
@@ -35,7 +41,7 @@ class Controller(EventDispatcher):
     sm = None
     ''' A Reference to the active ScreenManager class. '''
 
-    pos = 0
+    pos = NumericProperty(1.0)
     ''' Stores the current position in the currently playing audio file. '''
 
     kivy3dgui = False
@@ -55,6 +61,7 @@ class Controller(EventDispatcher):
         self.kb_handler = KeyHandler(self)
         Sound.add_state_callback(self.playing.on_sound_state)
         Sound.add_state_callback(self._on_sound_state)
+        self.timer_event = None
 
         super(Controller, self).__init__(**kwargs)
         if self._store.exists('state'):
@@ -76,8 +83,27 @@ class Controller(EventDispatcher):
         move to the next track."""
         print(f"Controller.On_sound_state fired. state={state}. "
               f"advance={self.advance}")
-        if state == "stopped" and self.advance:
-            Clock.schedule_once(lambda dt: self.play_next())
+        if state == "stopped":
+            if self.advance:
+                Clock.schedule_once(lambda dt: self.play_next())
+            if self.timer_event is not None:
+                self.timer_event.cancel()
+        else:
+            self.timer_event = Clock.schedule_interval(
+                self._update_progress, 1/25)
+
+    def _update_progress(self, _dt):
+        """ Update the progressbar  """
+        if Sound.state == "playing":
+            pos, length = Sound.get_pos_length()
+            if length > 0:
+                self.time_display = "{0}m {1:02d}s / {2}m {3:02d}s".format(
+                    int(pos / 60),
+                    int(pos % 60),
+                    int(length / 60),
+                    int(length % 60))
+        else:
+            self.time_display = "-"
 
     def on_file_name(self, widget, value):
         """ Respond to the change of file name and set the info fields."""
@@ -158,6 +184,7 @@ class Controller(EventDispatcher):
     @staticmethod
     def set_position(value):
         """ Set the playing position to the specified value. """
+        self.pos = value
         Sound.set_position(value)
 
     def save(self):
