@@ -46,10 +46,13 @@ class Sound(object):
             return 0, 0
 
     @staticmethod
-    def seek(pos):
+    def seek(position):
         """ Set the sound to the specified position """
         if Sound._sound:
-            Sound._sound.seek(pos)
+            length = Sound._sound._get_length()
+            if length > 0:
+                print("Setting pos to {position * length}")
+                Sound._sound.seek(position * length)
 
     @staticmethod
     def stop():
