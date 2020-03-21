@@ -6,7 +6,6 @@ from playing import PlayingScreen
 from audioplayer import Sound
 from kivy.properties import NumericProperty, ObjectProperty
 from kivy.event import EventDispatcher
-
 from kivy.clock import Clock
 from os.path import join, expanduser, exists
 from os import mkdir
@@ -19,6 +18,7 @@ class Controller(EventDispatcher):
     and screen displays
     """
     volume = NumericProperty(1.0)
+    """ Get or set the volume """
 
     app = ObjectProperty()
 
@@ -54,6 +54,7 @@ class Controller(EventDispatcher):
         if self._store.exists('state'):
             state = self._store.get("state")
             if "volume" in state.keys():
+                # TODO: Check that this is actually stored
                 self.volume = state["volume"]
 
     @staticmethod
@@ -95,13 +96,8 @@ class Controller(EventDispatcher):
 
     def on_volume(self, _widget, value):
         """ Set the volume of the currently playing sound """
-        if 0.0 > value:
-            self.volume = 0.0
-        elif value > 1.0:
-            self.volume = 1.0
-        else:
-            Sound.set_volume(value)
-            self.playing.volume_slider.value = value
+        self.volume = abs(value) % 1.0 if value < 1 else 1
+        Sound.set_volume(value)
 
     def move_forward(self):
         """ Move the current playing time 5s forward """

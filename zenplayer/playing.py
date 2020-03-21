@@ -35,17 +35,15 @@ class PlayingScreen(Screen):
     album_image = ObjectProperty()
     but_playpause = ObjectProperty()
     info_label = ObjectProperty()
-    volume_slider = ObjectProperty()
     progress_slider = ObjectProperty()
     time_label = ObjectProperty()
-    ctrl = None  # The Controller
+    ctrl = ObjectProperty(None)
 
     def __init__(self, ctrl, **kwargs):
-        Builder.load_file("playing.kv")
         self.ctrl = ctrl
+        Builder.load_file("playing.kv")
         super(PlayingScreen, self).__init__(**kwargs)
         Clock.schedule_interval(self._update_progress, 1/25)
-        self.volume_slider.value = self.ctrl.volume
         self.init_display()
 
     def init_display(self):
