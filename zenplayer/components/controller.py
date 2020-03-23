@@ -109,7 +109,6 @@ class Controller(EventDispatcher):
             if self.prev_state == self.state == "playing":
                 Clock.schedule_once(lambda dt: self.play_next())
 
-
     def _update_progress(self, _dt):
         """ Update the progressbar  """
         if Sound.state == "playing":
