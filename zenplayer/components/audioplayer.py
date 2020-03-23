@@ -52,10 +52,9 @@ class Sound(object):
     @staticmethod
     def stop():
         """ Stop any playing audio """
-        # TODO
-        # if Sound._sound:
-        #     Sound._sound.stop()
-        #     Sound._sound.unload()
+        if Sound._player:
+            Sound._player.stop()
+            Sound._player = None
 
     @staticmethod
     def play(filename, volume=1, pos=0.0):
@@ -121,7 +120,10 @@ if __name__ == "__main__":
     Sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
                "05 - In Da Club.mp3", 0.9)
     sleep(1)
-    Sound.set_position(0.9)
+    Sound.stop()
+    sleep(1)
+    Sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
+               "05 - In Da Club.mp3", 0.9)
 
     sleep(1)
     # print("Setting volume")
