@@ -11,7 +11,6 @@ class Sound(object):
     _state_callbacks = []
     _player = None  # Reference to the underlying vlc instance
 
-
     @staticmethod
     def _set_state(state):
         """ Set the state value and fire all attached callbacks """
@@ -34,7 +33,7 @@ class Sound(object):
         #     try:
         #         return sound.get_pos(), sound._get_length()
         #     except Exception as e:
-        #         Logger.warn("audioplayer.py: Failed to load sound, {0}".format(
+        #         Logger.warn("audioplayer.py: Failed to load, {0}".format(
         #             e))
         #         return 0, 0
         # else:
@@ -72,10 +71,7 @@ class Sound(object):
         player.play()
         # TODO: Volume and pos settings
 
-
         # TODO
-        # Sound.stop()
-
         # if filename:
         #     Sound._sound = SoundLoader.load(filename)
         # if Sound._sound:
@@ -98,10 +94,9 @@ class Sound(object):
         The position of the currently playing sound as a fraction between 0
         and 1.
         """
-        # TODO
-        # sound = Sound._sound
-        # if sound:
-        #     sound.seek(value * sound.length)
+        player = Sound._player
+        if player is not None:
+            player.set_position(value)
 
     @staticmethod
     def set_volume(value):
@@ -113,6 +108,7 @@ class Sound(object):
             vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
             Sound._player.audio_set_volume(int(vol))
 
+
 if __name__ == "__main__":
     from time import sleep
 
@@ -121,21 +117,21 @@ if __name__ == "__main__":
         print(f"state changed: {state}")
 
     Sound.add_state_callback(test_cb)
+
     Sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
                "05 - In Da Club.mp3", 0.9)
-    sleep(5000)
-    Sound.set_volume(0.2)
-    sleep(1000)
-    Sound.set_volume(1.0)
+    sleep(1)
+    Sound.set_position(0.9)
 
+    sleep(1)
+    # print("Setting volume")
+    # Sound.set_volume(0.2)
 
-
-   # import vlc
-    # from time import sleep
-
-    # player = vlc.MediaPlayer("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/05 - In Da Club.mp3")
-    # player.play()
-    # sleep(20)
+    # print("Sleeping for 1")
+    # sleep(1)
+    # print("Setting volume to 1")
+    # Sound.set_volume(1.0)
+    # print("Exiting.")
 
 '''
 MediaPlayer methods
