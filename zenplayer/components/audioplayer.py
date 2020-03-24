@@ -110,24 +110,10 @@ if __name__ == "__main__":
         sleep(1.0)
         sound.stop()
 
-
-
-
-
-
     test_volume()
     test_position()
     test_get_pos_length()
     test_state_changes()
-
-    # print("Setting volume")
-    # Sound.set_volume(0.2)
-
-    # print("Sleeping for 1")
-    # sleep(1)
-    # print("Setting volume to 1")
-    # Sound.set_volume(1.0)
-    # print("Exiting.")
 
 '''
 https://www.olivieraubert.net/vlc/python-ctypes/doc/
