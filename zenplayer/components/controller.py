@@ -53,6 +53,7 @@ class Controller(EventDispatcher):
         self._store = JsonStore(join(self._get_settings_folder(),
                                      "zenplayer.json"))
         self.playlist = PlayList(self._store)
+        self.advance = True
 
         self.sm = ScreenManager()
         self.playing = PlayingScreen(self, name="main")
@@ -93,7 +94,7 @@ class Controller(EventDispatcher):
         elif value == "stopped":
             self.position = 0
             self.sound.stop()
-            if self.prev_state == "playing":
+            if self.prev_state == "playing" and self.advance:
                 Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
@@ -178,15 +179,19 @@ class Controller(EventDispatcher):
 
     def play_next(self):
         """ Play the next track in the playlist. """
+        self.advance = False
         self.stop()
         self.playlist.move_next()
         self.play_pause()
+        self.advance = True
 
     def play_previous(self):
         """ Play the previous track in the playlist. """
+        self.advance = False
         self.stop()
         self.playlist.move_previous()
         self.play_pause()
+        self.advance = True
 
     def set_position(self, value):
         """ Set the playing position to the specified value. """
@@ -284,7 +289,9 @@ class Controller(EventDispatcher):
 
     def stop(self):
         """ Stop any playing audio """
+        self.advance = False
         self.state = "stopped"
+        self.advance = True
 
     def quit(self):
         """ Close the appllication """
