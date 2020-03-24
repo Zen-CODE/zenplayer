@@ -1,4 +1,4 @@
-from vlc import MediaPlayer
+from vlc import MediaPlayer, Instance
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
 
@@ -11,19 +11,19 @@ class Sound(EventDispatcher):
     player = ObjectProperty(None)
     """ Reference to the underlying vlc instance. """
 
+    def __init__(self, **kwargs):
+        super(Sound, self).__init__(**kwargs)
+        self.player = MediaPlayer()
+
     def get_pos_length(self):
         """ Return a tuple of the length and position, or return 0, 0"""
-        if self.player:
-            return (self.player.get_position(),
-                    self.player.get_length() / 1000.0)
-        else:
-            return 0, 0
+        return (self.player.get_position(),
+                self.player.get_length() / 1000.0)
 
     def stop(self):
         """ Stop any playing audio """
-        if self.player:
-            self.player.stop()
-            self.state = "stopped"
+        self.player.stop()
+        self.state = "stopped"
 
     def pause(self):
         """ Pause and resume the currently playing audio track. """
@@ -36,14 +36,14 @@ class Sound(EventDispatcher):
         Play the file specified by the filename. If on_stop is passed in,
         this function is called when the sound stops
         """
-        if self.player and self.player.state in ["playing", "paused"]:
+        if self.state in ["playing", "paused"]:
             self.player.stop()
 
-        self.player = player = MediaPlayer(filename)
+        self.player.set_media(Instance().media_new(filename))
         self.set_volume(volume)
         if pos != 0.0:
-            player.set_position(pos)
-        player.play()
+            self.player.set_position(pos)
+        self.player.play()
         self.state = "playing"
 
     def set_position(self, value):
@@ -51,17 +51,15 @@ class Sound(EventDispatcher):
         The position of the currently playing sound as a fraction between 0
         and 1.
         """
-        if self.player:
-            self.player.set_position(value)
+        self.player.set_position(value)
 
     def set_volume(self, value):
         """
         The volume of the currently playing sound, where the value is between
         0 and 1.
         """
-        if self.player:
-            vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
-            self.player.audio_set_volume(int(vol))
+        vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
+        self.player.audio_set_volume(int(vol))
 
 
 if __name__ == "__main__":
@@ -72,7 +70,6 @@ if __name__ == "__main__":
         sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
                    "05 - In Da Club.mp3", 0, 0)
         return sound
-
 
     def test_volume():
         print("Testing volume...")
@@ -118,9 +115,9 @@ if __name__ == "__main__":
 
 
 
-    # test_volume()
-    # test_position()
-    # test_get_pos_length()
+    test_volume()
+    test_position()
+    test_get_pos_length()
     test_state_changes()
 
     # print("Setting volume")
