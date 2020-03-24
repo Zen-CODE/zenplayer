@@ -62,7 +62,8 @@ class Controller(EventDispatcher):
         if not environ.get('ZENPLAYER_NO_HOTKEYS', None):
             HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
-        Sound.add_state_callback(self._on_sound_state)
+        self.sound = Sound()
+        # self.sound.bind(state=self.on_state)
         Clock.schedule_interval(self._update_progress, 1/5)
 
         super(Controller, self).__init__(**kwargs)
@@ -75,23 +76,31 @@ class Controller(EventDispatcher):
             for key, value in state.items():
                 setattr(self, key, value)
 
+    def set_state(self, widet, value):
+        """ Set the state of the currently playing track """
+
+
     def on_state(self, widget, value):
         """ React to the change of state event """
         if value == "playing":
-            if Sound.state == "playing":
-                Sound.stop()
+            if self.sound.state == "playing":
+                self.sound.stop()
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
                 pos = 0 if self.prev_state != "paused" else self.position
-                Sound.play(self.file_name, self.volume, pos)
+                self.sound.play(self.file_name, self.volume, pos)
         elif value == "stopped":
             self.position = 0
-            Sound.stop()
+            self.sound.stop()
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
-            pos, length = Sound.get_pos_length()
+            pos, length = self.sound.get_pos_length()
             self.position = pos / length if length > 0 else 0
-            Sound.stop()
+            self.sound.stop()
+        elif self.state == "stopped":
+            if self.prev_state == "playing":
+                Clock.schedule_once(lambda dt: self.play_next())
+
         self.prev_state = value
 
     @staticmethod
@@ -102,17 +111,10 @@ class Controller(EventDispatcher):
             mkdir(path)
         return path
 
-    def _on_sound_state(self, state):
-        """ The sound state has changed. If the track played to the end,
-        move to the next track."""
-        if state == "stopped":
-            if self.prev_state == self.state == "playing":
-                Clock.schedule_once(lambda dt: self.play_next())
-
     def _update_progress(self, _dt):
         """ Update the progressbar  """
         if Sound.state == "playing":
-            pos, length = Sound.get_pos_length()
+            pos, length = self.sound.get_pos_length()
             if length > 0:
                 self.time_display = "{0}m {1:02d}s / {2}m {3:02d}s".format(
                     int(pos / 60),
@@ -143,17 +145,17 @@ class Controller(EventDispatcher):
     def on_volume(self, _widget, value):
         """ Set the volume of the currently playing sound """
         self.volume = abs(value) % 1.0 if value < 1 else 1
-        Sound.set_volume(value)
+        self.sound.set_volume(value)
 
     def move_forward(self):
         """ Move the current playing time 5s forward """
-        pos, length = Sound.get_pos_length()
+        pos, length = self.sound.get_pos_length()
         if length and pos < length - 5:
             self.set_position((pos + 5.0) / length)
 
     def move_backward(self):
         """ Move the current playing time 5s backward """
-        pos, length = Sound.get_pos_length()
+        pos, length = self.sound.get_pos_length()
         if length:
             if pos < 5.0:
                 pos = 5.0
@@ -189,7 +191,7 @@ class Controller(EventDispatcher):
     def set_position(self, value):
         """ Set the playing position to the specified value. """
         self.position = value
-        Sound.set_position(value)
+        self.sound.set_position(value)
 
     def save(self):
         """ Save the state of the the playlist and volume. """
