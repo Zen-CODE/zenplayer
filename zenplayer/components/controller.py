@@ -63,7 +63,7 @@ class Controller(EventDispatcher):
             HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         self.sound = Sound()
-        # self.sound.bind(state=self.on_state)
+        self.sound.bind(state=self.set_state)
         Clock.schedule_interval(self._update_progress, 1/5)
 
         super(Controller, self).__init__(**kwargs)
@@ -78,7 +78,8 @@ class Controller(EventDispatcher):
 
     def set_state(self, widet, value):
         """ Set the state of the currently playing track """
-
+        if value == "stopped" and self.state != "stopped":
+            self.state == value
 
     def on_state(self, widget, value):
         """ React to the change of state event """
@@ -92,14 +93,13 @@ class Controller(EventDispatcher):
         elif value == "stopped":
             self.position = 0
             self.sound.stop()
+            if self.prev_state == "playing":
+                Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
             pos, length = self.sound.get_pos_length()
             self.position = pos / length if length > 0 else 0
             self.sound.stop()
-        elif self.state == "stopped":
-            if self.prev_state == "playing":
-                Clock.schedule_once(lambda dt: self.play_next())
 
         self.prev_state = value
 
