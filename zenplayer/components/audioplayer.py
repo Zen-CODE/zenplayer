@@ -1,5 +1,3 @@
-from kivy.clock import Clock
-# from kivy.logger import Logger
 from vlc import MediaPlayer
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
@@ -17,7 +15,7 @@ class Sound(EventDispatcher):
         """ Return a tuple of the length and position, or return 0, 0"""
         if self.player:
             return (self.player.get_position(),
-                   self.player.get_length() / 1000.0)
+                    self.player.get_length() / 1000.0)
         else:
             return 0, 0
 
@@ -25,6 +23,7 @@ class Sound(EventDispatcher):
         """ Stop any playing audio """
         if self.player:
             self.player.stop()
+            self.state = "stopped"
 
     def pause(self):
         """ Pause and resume the currently playing audio track. """
