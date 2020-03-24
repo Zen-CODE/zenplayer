@@ -29,7 +29,7 @@ class Sound(EventDispatcher):
         """ Pause and resume the currently playing audio track. """
         if self.state in ["playing", "paused"]:
             self.player.pause()
-            self.state = "paused" if self.state == "playing" else "paused"
+            self.state = "paused" if self.state == "playing" else "playing"
 
     def play(self, filename, volume=1, pos=0.0):
         """
@@ -67,11 +67,16 @@ class Sound(EventDispatcher):
 if __name__ == "__main__":
     from time import sleep
 
-    def test_volume():
-        print("Testing volume...")
+    def get_sound():
         sound = Sound()
         sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
-                   "05 - In Da Club.mp3", 0.9, 0.2)
+                   "05 - In Da Club.mp3", 0, 0)
+        return sound
+
+
+    def test_volume():
+        print("Testing volume...")
+        sound = get_sound()
         sleep(2)
         sound.set_volume(0.5)
         sleep(1)
@@ -82,24 +87,41 @@ if __name__ == "__main__":
 
     def test_position():
         print("Testing positioning...")
-        sound = Sound()
-        sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
-                   "05 - In Da Club.mp3", 0.9, 0.2)
+        sound = get_sound()
         sound.set_position(0.5)
         sleep(2)
         sound.set_position(0)
 
     def test_get_pos_length():
         """ Testing position and length """
-        sound = Sound()
-        sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
-                   "05 - In Da Club.mp3", 0.9, 0.2)
+        sound = get_sound()
         pos, length = sound.get_pos_length()
         print(f"Position = {pos}, length={length}")
 
+    def test_state_changes():
+        print("Testing state changes...")
+
+        def state_change(widget, value):
+            print(f"Got state change {widget} to {value}")
+
+        sound = get_sound()
+        sound.set_volume(0.8)
+        sound.bind(state=state_change)
+        sound.pause()
+        sleep(1.0)
+        sound.pause()
+        sleep(1.0)
+        sound.stop()
+
+
+
+
+
+
     # test_volume()
     # test_position()
-    test_get_pos_length()
+    # test_get_pos_length()
+    test_state_changes()
 
     # print("Setting volume")
     # Sound.set_volume(0.2)
