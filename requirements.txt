@@ -8,7 +8,6 @@ Kivy-Garden==0.1.4
 Pygments==2.4.2
 requests==2.22.0
 urllib3==1.25.3
-ffpyplayer
 environs==5.2.1
 keyboard==0.13.4
--e git+git@github.com:matham/ffpyplayer@6256ab7f0d50269d2c0569d665b254803e0e0b2f#egg=ffpyplayer
+python-vlc==3.0.7110
