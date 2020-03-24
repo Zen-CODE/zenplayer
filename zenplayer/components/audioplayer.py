@@ -15,35 +15,22 @@ class Sound(EventDispatcher):
 
     def get_pos_length(self):
         """ Return a tuple of the length and position, or return 0, 0"""
-        # TODO
-        # sound = Sound._sound
-        # if sound:
-        #     try:
-        #         return sound.get_pos(), sound._get_length()
-        #     except Exception as e:
-        #         Logger.warn("audioplayer.py: Failed to load, {0}".format(
-        #             e))
-        #         return 0, 0
-        # else:
-        #     return 0, 0
-
-    def seek(self, position):
-        """ Set the sound to the specified position """
-        # TODO
-        # if Sound._sound:
-        #     length = Sound._sound._get_length()
-        #     if length > 0:
-        #         print(f"Setting pos to {position * length}")
-        #         Sound._sound.seek(position * length)
+        if self.player:
+            return (self.player.get_position(),
+                   self.player.get_length() / 1000.0)
+        else:
+            return 0, 0
 
     def stop(self):
         """ Stop any playing audio """
-        self.player.stop()
+        if self.player:
+            self.player.stop()
 
     def pause(self):
         """ Pause and resume the currently playing audio track. """
         if self.state in ["playing", "paused"]:
             self.player.pause()
+            self.state = "paused" if self.state == "playing" else "paused"
 
     def play(self, filename, volume=1, pos=0.0):
         """
@@ -54,10 +41,11 @@ class Sound(EventDispatcher):
             self.player.stop()
 
         self.player = player = MediaPlayer(filename)
-        player.audio_set_volume(int(100 * volume))
+        self.set_volume(volume)
         if pos != 0.0:
             player.set_position(pos)
         player.play()
+        self.state = "playing"
 
     def set_position(self, value):
         """
@@ -102,10 +90,17 @@ if __name__ == "__main__":
         sleep(2)
         sound.set_position(0)
 
+    def test_get_pos_length():
+        """ Testing position and length """
+        sound = Sound()
+        sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
+                   "05 - In Da Club.mp3", 0.9, 0.2)
+        pos, length = sound.get_pos_length()
+        print(f"Position = {pos}, length={length}")
 
     # test_volume()
-    test_position()
-
+    # test_position()
+    test_get_pos_length()
 
     # print("Setting volume")
     # Sound.set_volume(0.2)
