@@ -1,31 +1,19 @@
-# from kivy.clock import Clock
+from kivy.clock import Clock
 # from kivy.logger import Logger
 from vlc import MediaPlayer
+from kivy.properties import OptionProperty, ObjectProperty
+from kivy.event import EventDispatcher
 
 
-class Sound(object):
+class Sound(EventDispatcher):
     """
-    This class manages the playing audio as a Singleton
+    This class manages the playing of audio as a Singleton
     """
-    state = ""  # options= "", "stopped" or "playing"
-    _state_callbacks = []
-    _player = None  # Reference to the underlying vlc instance
+    state = OptionProperty("", options=["", "stopped", "playing", "paused"])
+    player = ObjectProperty(None)
+    """ Reference to the underlying vlc instance. """
 
-    @staticmethod
-    def _set_state(state):
-        """ Set the state value and fire all attached callbacks """
-        if state != Sound.state:
-            Sound.state = state
-            for func in Sound._state_callbacks:
-                func(state)
-
-    @staticmethod
-    def add_state_callback(callback):
-        """ Add a callback to be fired when the state changes """
-        Sound._state_callbacks.append(callback)
-
-    @staticmethod
-    def get_pos_length():
+    def get_pos_length(self):
         """ Return a tuple of the length and position, or return 0, 0"""
         # TODO
         # sound = Sound._sound
@@ -39,8 +27,7 @@ class Sound(object):
         # else:
         #     return 0, 0
 
-    @staticmethod
-    def seek(position):
+    def seek(self, position):
         """ Set the sound to the specified position """
         # TODO
         # if Sound._sound:
@@ -49,83 +36,77 @@ class Sound(object):
         #         print(f"Setting pos to {position * length}")
         #         Sound._sound.seek(position * length)
 
-    @staticmethod
-    def stop():
+    def stop(self):
         """ Stop any playing audio """
-        if Sound._player:
-            Sound._player.stop()
-            Sound._player = None
+        self.player.stop()
 
-    @staticmethod
-    def play(filename, volume=1, pos=0.0):
+    def pause(self):
+        """ Pause and resume the currently playing audio track. """
+        if self.state in ["playing", "paused"]:
+            self.player.pause()
+
+    def play(self, filename, volume=1, pos=0.0):
         """
         Play the file specified by the filename. If on_stop is passed in,
         this function is called when the sound stops
         """
-        if Sound._player is not None:
-            Sound._player.stop()
+        if self.player and self.player.state in ["playing", "paused"]:
+            self.player.stop()
 
-        Sound._player = player = MediaPlayer(filename)
-        Sound.set_volume(volume)
+        self.player = player = MediaPlayer(filename)
+        player.audio_set_volume(int(100 * volume))
+        if pos != 0.0:
+            player.set_position(pos)
         player.play()
-        # TODO: Volume and pos settings
 
-        # TODO
-        # if filename:
-        #     Sound._sound = SoundLoader.load(filename)
-        # if Sound._sound:
-        #     print(f"Playing sound {filename}")
-        #     Sound._sound.bind(on_stop=Sound._on_stop)
-        #     Sound._sound.play()
-        #     Sound._sound.volume = volume
-        #     if pos > 0.0:
-        #         print(f"Seeking {pos}")
-        #         Clock.schedule_once(lambda dt: Sound.seek(pos))
-
-        #     Sound._set_state("playing")
-
-        # else:
-        #     Sound._set_state("")
-
-    @staticmethod
-    def set_position(value):
+    def set_position(self, value):
         """
         The position of the currently playing sound as a fraction between 0
         and 1.
         """
-        player = Sound._player
-        if player is not None:
-            player.set_position(value)
+        if self.player:
+            self.player.set_position(value)
 
-    @staticmethod
-    def set_volume(value):
+    def set_volume(self, value):
         """
         The volume of the currently playing sound, where the value is between
         0 and 1.
         """
-        if Sound._player:
+        if self.player:
             vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
-            Sound._player.audio_set_volume(int(vol))
+            self.player.audio_set_volume(int(vol))
 
 
 if __name__ == "__main__":
     from time import sleep
 
-    def test_cb(state):
-        """ Test function for state callbacks """
-        print(f"state changed: {state}")
+    def test_volume():
+        print("Testing volume...")
+        sound = Sound()
+        sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
+                   "05 - In Da Club.mp3", 0.9, 0.2)
+        sleep(2)
+        sound.set_volume(0.5)
+        sleep(1)
+        sound.set_volume(0.25)
+        sleep(1)
+        sound.set_volume(1)
+        sleep(1)
 
-    Sound.add_state_callback(test_cb)
+    def test_position():
+        print("Testing positioning...")
+        sound = Sound()
+        sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
+                   "05 - In Da Club.mp3", 0.9, 0.2)
+        sound.set_position(0.5)
+        sleep(2)
+        sound.set_position(0)
 
-    Sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
-               "05 - In Da Club.mp3", 0.9)
-    sleep(1)
-    Sound.stop()
-    sleep(1)
-    Sound.play("/home/fruitbat/Music/50 Cent/Get Rich Or Die Tryin'/"
-               "05 - In Da Club.mp3", 0.9)
 
-    sleep(1)
+    # test_volume()
+    test_position()
+
+
     # print("Setting volume")
     # Sound.set_volume(0.2)
 
@@ -136,6 +117,8 @@ if __name__ == "__main__":
     # print("Exiting.")
 
 '''
+https://www.olivieraubert.net/vlc/python-ctypes/doc/
+
 MediaPlayer methods
 ===================
 028: 'add_slave'
