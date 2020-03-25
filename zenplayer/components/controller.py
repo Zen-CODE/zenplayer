@@ -123,8 +123,6 @@ class Controller(EventDispatcher):
                     int(length / 60),
                     int(length % 60))
                 self.position = pos
-        else:
-            self.time_display = "-"
 
     def on_file_name(self, widget, value):
         """ Respond to the change of file name and set the info fields."""
