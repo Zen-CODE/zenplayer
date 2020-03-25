@@ -54,10 +54,11 @@ class Sound(EventDispatcher):
 
         self.player.set_media(Instance().media_new(filename))
         self.set_volume(volume)
-        if pos != 0.0:
-            self.player.set_position(pos)
         self.player.play()
         self.state = "playing"
+        if pos != 0.0:
+            self.player.set_position(pos)
+
         self.player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
 

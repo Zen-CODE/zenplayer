@@ -98,8 +98,7 @@ class Controller(EventDispatcher):
                 Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
-            pos, length = self.sound.get_pos_length()
-            self.position = pos / length if length > 0 else 0
+            self.position, length = self.sound.get_pos_length()
             self.sound.stop()
 
         self.prev_state = value
