@@ -114,7 +114,7 @@ class Controller(EventDispatcher):
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
-        if Sound.state == "playing":
+        if self.sound.state == "playing":
             pos, length = self.sound.get_pos_length()
             if length > 0:
                 self.time_display = "{0}m {1:02d}s / {2}m {3:02d}s".format(
