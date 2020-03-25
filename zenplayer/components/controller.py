@@ -149,16 +149,18 @@ class Controller(EventDispatcher):
     def move_forward(self):
         """ Move the current playing time 5s forward """
         pos, length = self.sound.get_pos_length()
-        if length and pos < length - 5:
-            self.set_position((pos + 5.0) / length)
+        if length:
+            one_sec = 1 / length
+            if pos + 5 * one_sec < 1:
+                self.set_position(pos + 5 * one_sec)
 
     def move_backward(self):
         """ Move the current playing time 5s backward """
         pos, length = self.sound.get_pos_length()
         if length:
-            if pos < 5.0:
-                pos = 5.0
-            self.set_position((pos - 5.0) / length)
+            one_sec = 1 / length
+            if pos - 5 * one_sec > 0:
+                self.set_position(pos - 5 * one_sec)
 
     def play_index(self, index):
         """
