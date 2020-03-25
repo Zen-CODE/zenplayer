@@ -20,7 +20,16 @@ class Sound(EventDispatcher):
         self.state = "stopped"
 
     def get_pos_length(self):
-        """ Return a tuple of the length and position, or return 0, 0"""
+        """
+        Return a tuple of the length and position, or return 0, 0
+
+        Return:
+            pos, length
+
+            * pos: The current playing position, as a fraction between 0 and 1.
+            * length: The length of the song in seconds.
+
+        """
         return (self.player.get_position(),
                 self.player.get_length() / 1000.0)
 
