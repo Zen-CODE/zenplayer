@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import Screen
 from components.audioplayer import Sound
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.slider import Slider
 # from kivy3dgui.layout3d import Layout3D
 
 
@@ -21,6 +22,30 @@ class MediaButton(FloatLayout):
     def on_click(self):
         """ The button has been clicked. """
         pass
+
+
+class VolumeSlider(Slider):
+    """
+    A volume slider that allows smooth volume changes, rather that waiting for
+    the end of the slide.
+    """
+    ctrl = ObjectProperty()
+
+    dragging = False
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dragging = True
+        return super(VolumeSlider, self).on_touch_down(touch)
+
+    def on_touch_move(self, touch):
+        if self.dragging:
+            self.ctrl.on_volume(None, self.value)
+        return super(VolumeSlider, self).on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        self.dragging = False
+        return super(VolumeSlider, self).on_touch_up(touch)
 
 
 class PlayingScreen(Screen):
