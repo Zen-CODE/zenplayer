@@ -84,6 +84,7 @@ class Controller(EventDispatcher):
 
     def on_state(self, widget, value):
         """ React to the change of state event """
+        print(f"on_state fired: value={value}, previous={self.prev_state}")
         if value == "playing":
             if self.sound.state == "playing":
                 self.sound.stop()
@@ -98,9 +99,7 @@ class Controller(EventDispatcher):
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
             self.position, length = self.sound.get_pos_length()
-            self.advance = False
-            self.sound.stop()
-            self.advance = False
+            self.sound.pause()
 
         self.prev_state = value
 
