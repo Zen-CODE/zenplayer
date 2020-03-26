@@ -183,6 +183,7 @@ class Controller(EventDispatcher):
         self.advance = False
         self.stop()
         self.playlist.move_next()
+        self.position = 0
         self.play_pause()
         self.advance = True
 
@@ -190,6 +191,7 @@ class Controller(EventDispatcher):
         """ Play the previous track in the playlist. """
         self.advance = False
         self.stop()
+        self.position = 0
         self.playlist.move_previous()
         self.play_pause()
         self.advance = True
