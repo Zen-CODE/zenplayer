@@ -99,7 +99,9 @@ class Controller(EventDispatcher):
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
             self.position, length = self.sound.get_pos_length()
+            self.advance = False
             self.sound.stop()
+            self.advance = False
 
         self.prev_state = value
 
