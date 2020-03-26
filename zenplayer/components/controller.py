@@ -92,7 +92,6 @@ class Controller(EventDispatcher):
                 pos = 0 if self.prev_state != "paused" else self.position
                 self.sound.play(self.file_name, self.volume, pos)
         elif value == "stopped":
-            self.position = 0
             self.sound.stop()
             if self.prev_state == "playing" and self.advance:
                 Clock.schedule_once(lambda dt: self.play_next())
