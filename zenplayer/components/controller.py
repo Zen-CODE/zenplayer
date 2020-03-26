@@ -80,7 +80,7 @@ class Controller(EventDispatcher):
     def set_state(self, widet, value):
         """ Set the state of the currently playing track """
         if value == "stopped" and self.state != "stopped":
-            self.state == value
+            self.state = value
 
     def on_state(self, widget, value):
         """ React to the change of state event """

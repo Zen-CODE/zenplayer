@@ -1,6 +1,7 @@
 from vlc import MediaPlayer, Instance, EventType
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
+from kivy.clock import mainthread
 
 
 class Sound(EventDispatcher):
@@ -15,9 +16,11 @@ class Sound(EventDispatcher):
         super(Sound, self).__init__(**kwargs)
         self.player = MediaPlayer()
 
+    @mainthread
     def _track_finished(self, *args):
-        print(f"track finished: args={args}")
-        self.state = "stopped"
+        """ Event fired when the track is finished. """
+        if self.state != "stopped":
+            self.state = "stopped"
 
     def get_pos_length(self):
         """
