@@ -11,11 +11,11 @@ class ZenWebPlayer:
 
     def __init__(self, ctrl):
         super(ZenWebPlayer, self).__init__()
-        self.ctrl = ctrl
-        """ Reference to the controller object. """
 
         self.app = Flask(__name__)
         """ The instance of the Flask application. """
+
+        self.api = ZenPlayerAPI(ctrl)
 
         self.add_routes()
         ZenSwagger.init_swagger(self.app)
@@ -27,9 +27,26 @@ class ZenWebPlayer:
         route = self.base_url
         # for meth in ["state", "cover", "previous", "next", "play_pause",
         #              "stop", "volume_up", "volume_down"]:
-        for meth in ["play_pause", "index"]:
+        for meth in ["play_pause", "volume_up", "volume_down", "play_previous",
+                     "play_next", "stop"]:
             self.app.add_url_rule(route + meth, route + meth,
-                                  getattr(self, meth), methods=['GET'])
+                                  getattr(self.api, meth), methods=['GET'])
+
+    def run(self, *args, **kwargs):
+        """
+        Run the underlying flask app
+        """
+        self.app.run(*args, **kwargs)
+
+
+class ZenPlayerAPI():
+    """
+    This class houses the interface to teh active Zenplayer
+    """
+    def __init__(self, ctrl):
+        super(ZenPlayerAPI, self).__init__()
+        self.ctrl = ctrl
+        """ Reference to the controller object. """
 
     @staticmethod
     def get_response(data_dict=None, code=200):
@@ -38,14 +55,11 @@ class ZenWebPlayer:
         json version of the *data_dict" dictionary.
         """
         if data_dict is None:
-            data_dict = {"message": "Success"}
+            data_dict = {"message": "success"}
 
         resp = make_response(jsonify(data_dict), code)
         resp.headers.add('Access-Control-Allow-Origin', '*')
         return resp
-
-    def index(self):
-        return "Hello from ZenPlayer"
 
     def play_pause(self):
         """
@@ -55,14 +69,72 @@ class ZenWebPlayer:
             - ZenPlayer
         responses:
             200:
-                description: Success if we have played or paused the current
-                             player.
+                description: success
         """
         Clock.schedule_once(lambda dt: self.ctrl.play_pause())
-        return self.get_response({"action": "play"})
+        return self.get_response({"status": "success"})
 
-    def run(self, *args, **kwargs):
+    def volume_up(self):
         """
-        Run the underlying flask app
+        Turn up the volume of the player.
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: success
         """
-        self.app.run(*args, **kwargs)
+        Clock.schedule_once(lambda dt: self.ctrl.volume_up())
+        return {"status": "success"}
+
+    def volume_down(self):
+        """
+        Turn down the volume of the player.
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Success
+        """
+        Clock.schedule_once(lambda dt: self.ctrl.volume_down())
+        return {"status": "success"}
+
+    def play_previous(self):
+        """
+        Play the previous track in the playlist.
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Success
+        """
+        Clock.schedule_once(lambda dt: self.ctrl.play_previous())
+        return {"status": "success"}
+
+    def play_next(self):
+        """
+        Play the next track in the playlist.
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Success
+        """
+        Clock.schedule_once(lambda dt: self.ctrl.play_next())
+        return {"status": "success"}
+
+    def stop(self):
+        """
+        Stop the currently playing track.
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Success
+        """
+        Clock.schedule_once(lambda dt: self.ctrl.stop())
+        return {"status": "success"}
