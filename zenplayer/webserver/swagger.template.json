@@ -7,7 +7,7 @@
       "responsibleOrganization": "Zen-CODE",
       "responsibleDeveloper": "Zen-CODE",
       "email": "zenkey.zencode@gmail.com",
-      "url": "www.github.com/zen-code"
+      "url": "https://www.github.com/zen-code"
     },
     "termsOfService": "https://github.com/Zen-CODE/zenplayer/blob/master/LICENSE",
     "version": "0.0.1"
@@ -21,6 +21,5 @@
   "schemes": [
     "http",
     "https"
-  ],
-  "operationId": "getmyData"
+  ]
 }
