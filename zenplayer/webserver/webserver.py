@@ -22,15 +22,29 @@ class WebServer:
     _thread = None
 
     @staticmethod
+    def get_swagger_config():
+        return {
+            "headers": [],
+            "specs": [{
+                    "endpoint": 'apispec_1',
+                    "route": '/apispec_1.json',
+                    "rule_filter": lambda rule: True,
+                    "model_filter": lambda tag: True}],
+            "static_url_path": "/flasgger_static",
+            # "static_folder": "static",  # must be set by user
+            "swagger_ui": True,
+            "specs_route": "/swagger/"
+        }
+
+    @staticmethod
     def init_swagger(app):
         """
         Initialize the Swagger UI application and configuration exposing the
-        API documentation. Once running, go to:
-
-            http://localhost:5000/apidocs/
+        API documentation. Once running, go to http://localhost:5000/swagger/
         """
         with open(join(dirname(__file__), "swagger.template.json"), "rb") as f:
-            return Swagger(app, template=loads(f.read()))
+            return Swagger(app, template=loads(f.read()),
+                           config=WebServer.get_swagger_config())
 
 
     @staticmethod
