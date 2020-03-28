@@ -1,6 +1,5 @@
 from flask import Flask, make_response, jsonify
 from webserver.zenswagger import ZenSwagger
-from kivy.clock import Clock
 
 
 class ZenWebPlayer:
@@ -15,7 +14,7 @@ class ZenWebPlayer:
         self.app = Flask(__name__)
         """ The instance of the Flask application. """
 
-        self.api = ZenPlayerAPI(ctrl)
+        self.api = ZenPlayerAPI(ctrl, self.app)
 
         self.add_routes()
         ZenSwagger.init_swagger(self.app)
@@ -25,8 +24,6 @@ class ZenWebPlayer:
         Add the desired function to the flask routes
         """
         route = self.base_url
-        # for meth in ["state", "cover", "previous", "next", "play_pause",
-        #              "stop", "volume_up", "volume_down"]:
         for meth in ["play_pause", "volume_up", "volume_down", "play_previous",
                      "play_next", "stop"]:
             self.app.add_url_rule(route + meth, route + meth,
@@ -43,22 +40,38 @@ class ZenPlayerAPI():
     """
     This class houses the interface to teh active Zenplayer
     """
-    def __init__(self, ctrl):
+    def __init__(self, ctrl, app):
         super(ZenPlayerAPI, self).__init__()
         self.ctrl = ctrl
         """ Reference to the controller object. """
+        self.app = app
+        """ Reference to the flask app context. """
 
-    @staticmethod
-    def get_response(data_dict=None, code=200):
+    def get_state(self):
+        """
+        Return a dictionary containing the complete player state.
+        """
+        ctrl = self.ctrl
+        return {
+            "volume": ctrl.volume,
+            "artist": ctrl.artist,
+            "album": ctrl.album,
+            "track": ctrl.track,
+            "cover": ctrl.cover,
+            "time_display": ctrl.time_display,
+            "state": ctrl.state,
+            "position": ctrl.position
+        }
+
+    def get_response(self, data_dict, code=200):
         """
         Generate and return the appropriate HTTP response object containing the
         json version of the *data_dict" dictionary.
         """
-        if data_dict is None:
-            data_dict = {"message": "success"}
-
-        resp = make_response(jsonify(data_dict), code)
-        resp.headers.add('Access-Control-Allow-Origin', '*')
+        data_dict.update(self.get_state())
+        with self.app.app_context():
+            resp = make_response(jsonify(data_dict), code)
+            resp.headers.add('Access-Control-Allow-Origin', '*')
         return resp
 
     def play_pause(self):
@@ -71,8 +84,8 @@ class ZenPlayerAPI():
             200:
                 description: success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.play_pause())
-        return self.get_response({"status": "success"})
+        self.ctrl.play_pause()
+        return self.get_response({"action": "success"})
 
     def volume_up(self):
         """
@@ -84,8 +97,8 @@ class ZenPlayerAPI():
             200:
                 description: success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.volume_up())
-        return {"status": "success"}
+        self.ctrl.volume_up()
+        return self.get_response({"action": "success"})
 
     def volume_down(self):
         """
@@ -97,8 +110,8 @@ class ZenPlayerAPI():
             200:
                 description: Success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.volume_down())
-        return {"status": "success"}
+        self.ctrl.volume_down()
+        return self.get_response({"action": "success"})
 
     def play_previous(self):
         """
@@ -110,8 +123,8 @@ class ZenPlayerAPI():
             200:
                 description: Success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.play_previous())
-        return {"status": "success"}
+        self.ctrl.play_previous()
+        return self.get_response({"action": "success"})
 
     def play_next(self):
         """
@@ -123,8 +136,8 @@ class ZenPlayerAPI():
             200:
                 description: Success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.play_next())
-        return {"status": "success"}
+        self.ctrl.play_next()
+        return self.get_response({"action": "success"})
 
     def stop(self):
         """
@@ -136,5 +149,5 @@ class ZenPlayerAPI():
             200:
                 description: Success
         """
-        Clock.schedule_once(lambda dt: self.ctrl.stop())
-        return {"status": "success"}
+        self.ctrl.stop()
+        return self.get_response({"action": "success"})
