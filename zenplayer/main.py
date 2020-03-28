@@ -10,6 +10,7 @@ __author__ = 'ZenCODE'
 from kivy.app import App
 from components.controller import Controller
 from environs import Env
+from webserver.webserver import WebServer
 
 
 class ZenPlayer(App):
@@ -30,6 +31,7 @@ class ZenPlayer(App):
     def build(self):
         """ Build the app and return the screen manager """
         self.ctrl = Controller(app=self)
+        WebServer.start()
         return self.ctrl.sm
 
     def on_stop(self):
