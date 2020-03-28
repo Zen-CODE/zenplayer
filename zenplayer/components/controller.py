@@ -78,9 +78,15 @@ class Controller(EventDispatcher):
                 setattr(self, key, value)
 
     def set_state(self, widet, value):
-        """ Set the state of the currently playing track """
+        """
+        Set the state of the currently playing track. This is the callback
+        fired when the media player encounters teh end of track.
+        """
+        print(f"set state fired {value}")
         if value == "stopped" and self.state != "stopped":
-            self.state = value
+            print(f"set state fired {value}")
+            if self.advance:
+                self.play_next()
 
     def on_state(self, widget, value):
         """ React to the change of state event """
@@ -98,7 +104,7 @@ class Controller(EventDispatcher):
                 Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
-            self.position, length = self.sound.get_pos_length()
+            self.position, _length = self.sound.get_pos_length()
             self.sound.pause()
 
         self.prev_state = value

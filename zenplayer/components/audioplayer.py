@@ -15,7 +15,10 @@ class Sound(EventDispatcher):
     def __init__(self, **kwargs):
         super(Sound, self).__init__(**kwargs)
         self.player = MediaPlayer()
+        self.player.event_manager().event_attach(
+            EventType.MediaPlayerEndReached, self._track_finished)
 
+    @mainthread
     def _track_finished(self, *args):
         """ Event fired when the track is finished. """
         if self.state != "stopped":
@@ -60,9 +63,6 @@ class Sound(EventDispatcher):
         self.state = "playing"
         if pos != 0.0:
             self.player.set_position(pos)
-
-        self.player.event_manager().event_attach(
-            EventType.MediaPlayerEndReached, self._track_finished)
 
     def set_position(self, value):
         """
