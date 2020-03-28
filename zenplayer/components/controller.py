@@ -78,12 +78,17 @@ class Controller(EventDispatcher):
                 setattr(self, key, value)
 
     def set_state(self, widet, value):
-        """ Set the state of the currently playing track """
+        """
+        Set the state of the currently playing track. This is the callback
+        fired when the media player encounters teh end of track.
+        """
         if value == "stopped" and self.state != "stopped":
-            self.state == value
+            if self.advance:
+                self.play_next()
 
     def on_state(self, widget, value):
         """ React to the change of state event """
+        print(f"on_state fired: value={value}, previous={self.prev_state}")
         if value == "playing":
             if self.sound.state == "playing":
                 self.sound.stop()
@@ -92,15 +97,11 @@ class Controller(EventDispatcher):
                 pos = 0 if self.prev_state != "paused" else self.position
                 self.sound.play(self.file_name, self.volume, pos)
         elif value == "stopped":
-            self.position = 0
             self.sound.stop()
-            if self.prev_state == "playing" and self.advance:
-                Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
-            pos, length = self.sound.get_pos_length()
-            self.position = pos / length if length > 0 else 0
-            self.sound.stop()
+            self.position, _length = self.sound.get_pos_length()
+            self.sound.pause()
 
         self.prev_state = value
 
@@ -114,17 +115,16 @@ class Controller(EventDispatcher):
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
-        if Sound.state == "playing":
+        if self.sound.state == "playing":
             pos, length = self.sound.get_pos_length()
+            pos_secs = pos * length
             if length > 0:
                 self.time_display = "{0}m {1:02d}s / {2}m {3:02d}s".format(
-                    int(pos / 60),
-                    int(pos % 60),
+                    int(pos_secs / 60),
+                    int(pos_secs % 60),
                     int(length / 60),
                     int(length % 60))
-                self.position = pos / length
-        else:
-            self.time_display = "-"
+                self.position = pos
 
     def on_file_name(self, widget, value):
         """ Respond to the change of file name and set the info fields."""
@@ -151,16 +151,18 @@ class Controller(EventDispatcher):
     def move_forward(self):
         """ Move the current playing time 5s forward """
         pos, length = self.sound.get_pos_length()
-        if length and pos < length - 5:
-            self.set_position((pos + 5.0) / length)
+        if length:
+            one_sec = 1 / length
+            if pos + 5 * one_sec < 1:
+                self.set_position(pos + 5 * one_sec)
 
     def move_backward(self):
         """ Move the current playing time 5s backward """
         pos, length = self.sound.get_pos_length()
         if length:
-            if pos < 5.0:
-                pos = 5.0
-            self.set_position((pos - 5.0) / length)
+            one_sec = 1 / length
+            if pos - 5 * one_sec > 0:
+                self.set_position(pos - 5 * one_sec)
 
     def play_index(self, index):
         """
@@ -182,6 +184,7 @@ class Controller(EventDispatcher):
         self.advance = False
         self.stop()
         self.playlist.move_next()
+        self.position = 0
         self.play_pause()
         self.advance = True
 
@@ -189,6 +192,7 @@ class Controller(EventDispatcher):
         """ Play the previous track in the playlist. """
         self.advance = False
         self.stop()
+        self.position = 0
         self.playlist.move_previous()
         self.play_pause()
         self.advance = True

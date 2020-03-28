@@ -1,6 +1,7 @@
-from vlc import MediaPlayer, Instance
+from vlc import MediaPlayer, Instance, EventType
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
+from kivy.clock import mainthread
 
 
 class Sound(EventDispatcher):
@@ -14,9 +15,26 @@ class Sound(EventDispatcher):
     def __init__(self, **kwargs):
         super(Sound, self).__init__(**kwargs)
         self.player = MediaPlayer()
+        self.player.event_manager().event_attach(
+            EventType.MediaPlayerEndReached, self._track_finished)
+
+    @mainthread
+    def _track_finished(self, *args):
+        """ Event fired when the track is finished. """
+        if self.state != "stopped":
+            self.state = "stopped"
 
     def get_pos_length(self):
-        """ Return a tuple of the length and position, or return 0, 0"""
+        """
+        Return a tuple of the length and position, or return 0, 0
+
+        Return:
+            pos, length
+
+            * pos: The current playing position, as a fraction between 0 and 1.
+            * length: The length of the song in seconds.
+
+        """
         return (self.player.get_position(),
                 self.player.get_length() / 1000.0)
 
@@ -41,10 +59,10 @@ class Sound(EventDispatcher):
 
         self.player.set_media(Instance().media_new(filename))
         self.set_volume(volume)
-        if pos != 0.0:
-            self.player.set_position(pos)
         self.player.play()
         self.state = "playing"
+        if pos != 0.0:
+            self.player.set_position(pos)
 
     def set_position(self, value):
         """
