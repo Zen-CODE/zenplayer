@@ -1,5 +1,5 @@
 from threading import Thread
-from webserver.flask_app import app
+from webserver.flask_app import app, ZenWebController
 from flasgger import Swagger
 from json import loads
 from os.path import dirname, join
@@ -46,11 +46,11 @@ class WebServer:
             return Swagger(app, template=loads(f.read()),
                            config=WebServer.get_swagger_config())
 
-
     @staticmethod
-    def start():
+    def start(ctrl):
         """ Start the ZenPlayer web API backend. """
         WebServer.init_swagger(app)
+        ZenWebController.set_controller(ctrl)
         thread = FlaskThread()
         thread.daemon = True
         thread.start()

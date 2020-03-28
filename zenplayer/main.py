@@ -31,7 +31,7 @@ class ZenPlayer(App):
     def build(self):
         """ Build the app and return the screen manager """
         self.ctrl = Controller(app=self)
-        WebServer.start()
+        WebServer.start(self.ctrl)
         return self.ctrl.sm
 
     def on_stop(self):
