@@ -16,7 +16,6 @@ class Sound(EventDispatcher):
         super(Sound, self).__init__(**kwargs)
         self.player = MediaPlayer()
 
-    @mainthread
     def _track_finished(self, *args):
         """ Event fired when the track is finished. """
         if self.state != "stopped":
