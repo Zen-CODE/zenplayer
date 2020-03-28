@@ -82,9 +82,7 @@ class Controller(EventDispatcher):
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters teh end of track.
         """
-        print(f"set state fired {value}")
         if value == "stopped" and self.state != "stopped":
-            print(f"set state fired {value}")
             if self.advance:
                 self.play_next()
 
@@ -100,8 +98,6 @@ class Controller(EventDispatcher):
                 self.sound.play(self.file_name, self.volume, pos)
         elif value == "stopped":
             self.sound.stop()
-            if self.prev_state == "playing" and self.advance:
-                Clock.schedule_once(lambda dt: self.play_next())
         elif value == "paused" and self.prev_state is not None:
             # If the prev_state is None, we have just restored state on start
             self.position, _length = self.sound.get_pos_length()
