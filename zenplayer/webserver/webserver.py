@@ -1,6 +1,5 @@
 from threading import Thread
-
-from webserver.flask_app import ZenWebPlayer
+from webserver.zenwebplayer import ZenWebPlayer
 
 
 class FlaskThread(Thread):
@@ -21,6 +20,7 @@ class WebServer:
     This classes acts as a controller for the flask webserver, starting and
     stopping it on a background thread.
     """
+    _thread = None
 
     @staticmethod
     def start(ctrl):
