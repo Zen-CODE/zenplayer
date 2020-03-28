@@ -4,9 +4,6 @@ from flasgger import Swagger
 from json import loads
 
 
-app = Flask(__name__)
-
-
 class ZenSwagger():
     """
     Manager the swagger API documentation backend.
@@ -51,8 +48,8 @@ class ZenWebPlayer:
         self.app = Flask(__name__)
         """ The instance of the Flask application. """
 
-        ZenSwagger.init_swagger(self.app)
         self.add_routes()
+        ZenSwagger.init_swagger(self.app)
 
     def add_routes(self):
         """
@@ -62,8 +59,8 @@ class ZenWebPlayer:
         # for meth in ["state", "cover", "previous", "next", "play_pause",
         #              "stop", "volume_up", "volume_down"]:
         for meth in ["play_pause", "index"]:
-            app.add_url_rule(route + meth, "zenplayer/" + meth,
-                             getattr(self, meth), methods=['GET'])
+            self.app.add_url_rule(route + meth, route + meth,
+                                  getattr(self, meth), methods=['GET'])
 
     def index(self):
         return "Hello from ZenPlayer"
