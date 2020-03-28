@@ -1,5 +1,8 @@
 from threading import Thread
 from webserver.flask_app import app
+from flasgger import Swagger
+from json import loads
+from os.path import dirname, join
 
 
 class FlaskThread(Thread):
@@ -19,8 +22,21 @@ class WebServer:
     _thread = None
 
     @staticmethod
+    def init_swagger(app):
+        """
+        Initialize the Swagger UI application and configuration exposing the
+        API documentation. Once running, go to:
+
+            http://localhost:5000/apidocs/
+        """
+        with open(join(dirname(__file__), "swagger.template.json"), "rb") as f:
+            return Swagger(app, template=loads(f.read()))
+
+
+    @staticmethod
     def start():
         """ Start the ZenPlayer web API backend. """
+        WebServer.init_swagger(app)
         thread = FlaskThread()
         thread.daemon = True
         thread.start()

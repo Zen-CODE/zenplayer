@@ -1,0 +1,26 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "The ZenPlayer API",
+    "description": "This API exposes a local ZenPlayer as an API for controlling and obtaining currently playing audio information",
+    "contact": {
+      "responsibleOrganization": "Zen-CODE",
+      "responsibleDeveloper": "Zen-CODE",
+      "email": "zenkey.zencode@gmail.com",
+      "url": "www.github.com/zen-code"
+    },
+    "termsOfService": "https://github.com/Zen-CODE/zenplayer/blob/master/LICENSE",
+    "version": "0.0.1"
+  },
+  "tags": [{
+    "name": "ZenPlayer",
+    "description": "A Kivy front-end for a vlc backend audio player, based on the concept of playing folders as album containers."
+    }
+  ],
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "operationId": "getmyData"
+}

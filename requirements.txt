@@ -12,3 +12,4 @@ environs==5.2.1
 keyboard==0.13.4
 python-vlc==3.0.7110
 Flask==1.1.1
+flasgger==0.9.4
