@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from webserver.zenswagger import ZenSwagger
+from kivy.clock import Clock
 
 
 class ZenWebPlayer:
@@ -30,6 +31,19 @@ class ZenWebPlayer:
             self.app.add_url_rule(route + meth, route + meth,
                                   getattr(self, meth), methods=['GET'])
 
+    @staticmethod
+    def get_response(data_dict=None, code=200):
+        """
+        Generate and return the appropriate HTTP response object containing the
+        json version of the *data_dict" dictionary.
+        """
+        if data_dict is None:
+            data_dict = {"message": "Success"}
+
+        resp = make_response(jsonify(data_dict), code)
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        return resp
+
     def index(self):
         return "Hello from ZenPlayer"
 
@@ -44,10 +58,8 @@ class ZenWebPlayer:
                 description: Success if we have played or paused the current
                              player.
         """
-        from kivy.clock import Clock
         Clock.schedule_once(lambda dt: self.ctrl.play_pause())
-        # ZenWebController.ctrl.play_pause()
-        return "play_pause"
+        return self.get_response({"action": "play"})
 
     def run(self, *args, **kwargs):
         """
