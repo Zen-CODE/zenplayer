@@ -1,5 +1,6 @@
-from flask import Flask, make_response, jsonify
+from flask import Flask
 from webserver.zenswagger import ZenSwagger
+from webserver.response import Response
 
 
 class ZenWebPlayer:
@@ -63,17 +64,6 @@ class ZenPlayerAPI():
             "position": ctrl.position
         }
 
-    def get_response(self, data_dict, code=200):
-        """
-        Generate and return the appropriate HTTP response object containing the
-        json version of the *data_dict" dictionary.
-        """
-        data_dict.update(self.get_state())
-        with self.app.app_context():
-            resp = make_response(jsonify(data_dict), code)
-            resp.headers.add('Access-Control-Allow-Origin', '*')
-        return resp
-
     def play_pause(self):
         """
         Play or pause the currently active player.
@@ -87,7 +77,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_pause()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def volume_up(self):
         """
@@ -102,7 +92,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_up()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def volume_down(self):
         """
@@ -117,7 +107,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_down()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def play_previous(self):
         """
@@ -132,7 +122,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_previous()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def play_next(self):
         """
@@ -147,7 +137,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_next()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def stop(self):
         """
@@ -162,7 +152,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.stop()
-        return self.get_response({"action": "success"})
+        return Response.from_dict({"action": "success"})
 
     def get_track_info(self):
         """
@@ -209,4 +199,19 @@ class ZenPlayerAPI():
                                      as presented by a number between 0 and 1.
                         type: number
         """
-        return self.get_response({})
+        return Response.from_dict({})
+
+    def get_track_cover(self):
+        """
+        Return the image for the currently playing track.
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Return the cover image for the currently active
+                             track
+                schema:
+                    $ref: '#/definitions/TrackInfo'
+
+        """
+        pass
