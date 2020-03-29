@@ -82,7 +82,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_pause()
         return self.get_response({"action": "success"})
@@ -95,7 +97,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_up()
         return self.get_response({"action": "success"})
@@ -108,7 +112,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_down()
         return self.get_response({"action": "success"})
@@ -121,7 +127,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_previous()
         return self.get_response({"action": "success"})
@@ -134,7 +142,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_next()
         return self.get_response({"action": "success"})
@@ -147,7 +157,9 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Success
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.stop()
         return self.get_response({"action": "success"})
@@ -160,28 +172,41 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Success
+                description: Return the state of the current track.
                 schema:
                     $ref: '#/definitions/TrackInfo'
         definitions:
-          TrackInfo:
-            type: object
-            properties:
-                volume:
-                  type: number
-                artist:
-                  type: string
-                album:
-                  type: string
-                track:
-                  type: integer
-                cover:
-                  type: string
-                time_display:
-                  type: string
-                state:
-                  type: string
-                position:
-                  type: number
+            TrackInfo:
+                type: object
+                properties:
+                    volume:
+                        description: The current volume between 0 and 1.
+                        type: number
+                    artist:
+                        description: The artist of the currently active track.
+                        type: string
+                    album:
+                        description: The album the currently active track is
+                                     from.
+                        type: string
+                    track:
+                        description: The number of this track on the album.
+                        type: integer
+                    cover:
+                        description: The full local path to the cover for the
+                                     currently active track.
+                        type: string
+                    time_display:
+                        description: The current position in the track
+                                     followed by it's length.
+                        type: string
+                    state:
+                        description: The state of the currently playing track.
+                        type: string
+                        enum: ["stopped", "paused", "playing", ""]
+                    position:
+                        description: The position in the currently active track
+                                     as presented by a number between 0 and 1.
+                        type: number
         """
         return self.get_response({})
