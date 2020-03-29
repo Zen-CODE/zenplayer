@@ -25,7 +25,7 @@ class ZenWebPlayer:
         """
         route = self.base_url
         for meth in ["play_pause", "volume_up", "volume_down", "play_previous",
-                     "play_next", "stop"]:
+                     "play_next", "stop", "get_track_info"]:
             self.app.add_url_rule(route + meth, route + meth,
                                   getattr(self.api, meth), methods=['GET'])
 
@@ -151,3 +151,37 @@ class ZenPlayerAPI():
         """
         self.ctrl.stop()
         return self.get_response({"action": "success"})
+
+    def get_track_info(self):
+        """
+        Return the details of the currently playing track
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Success
+                schema:
+                    $ref: '#/definitions/TrackInfo'
+        definitions:
+          TrackInfo:
+            type: object
+            properties:
+                volume:
+                  type: number
+                artist:
+                  type: string
+                album:
+                  type: string
+                track:
+                  type: integer
+                cover:
+                  type: string
+                time_display:
+                  type: string
+                state:
+                  type: string
+                position:
+                  type: number
+        """
+        return self.get_response({})
