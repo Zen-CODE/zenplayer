@@ -26,7 +26,7 @@ class ZenWebPlayer:
         """
         route = self.base_url
         for meth in ["play_pause", "volume_up", "volume_down", "play_previous",
-                     "play_next", "stop", "get_track_info"]:
+                     "play_next", "stop", "get_track_info", "get_track_cover"]:
             self.app.add_url_rule(route + meth, route + meth,
                                   getattr(self.api, meth), methods=['GET'])
 
@@ -77,7 +77,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_pause()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def volume_up(self):
         """
@@ -92,7 +92,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_up()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def volume_down(self):
         """
@@ -107,7 +107,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.volume_down()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def play_previous(self):
         """
@@ -122,7 +122,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_previous()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def play_next(self):
         """
@@ -137,7 +137,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.play_next()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def stop(self):
         """
@@ -152,7 +152,7 @@ class ZenPlayerAPI():
                     $ref: '#/definitions/TrackInfo'
         """
         self.ctrl.stop()
-        return Response.from_dict({"action": "success"})
+        return Response.from_dict(self.app, self.get_state())
 
     def get_track_info(self):
         """
@@ -199,19 +199,18 @@ class ZenPlayerAPI():
                                      as presented by a number between 0 and 1.
                         type: number
         """
-        return Response.from_dict({})
+        return Response.from_dict(self.app, self.get_state())
 
     def get_track_cover(self):
         """
         Return the image for the currently playing track.
+        ---
         tags:
             - ZenPlayer
         responses:
             200:
                 description: Return the cover image for the currently active
                              track
-                schema:
-                    $ref: '#/definitions/TrackInfo'
-
         """
-        pass
+        state = self.get_state({})
+        return Response.from_image(state["cover"])
