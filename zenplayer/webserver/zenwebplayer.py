@@ -61,7 +61,8 @@ class ZenPlayerAPI():
             "cover": ctrl.cover,
             "time_display": ctrl.time_display,
             "state": ctrl.state,
-            "position": ctrl.position
+            "position": ctrl.position,
+            "file_name": ctrl.file_name
         }
 
     def play_pause(self):
@@ -180,7 +181,8 @@ class ZenPlayerAPI():
                                      from.
                         type: string
                     track:
-                        description: The number of this track on the album.
+                        description: The file name of the currently playing
+                                     track.
                         type: integer
                     cover:
                         description: The full local path to the cover for the
@@ -198,6 +200,10 @@ class ZenPlayerAPI():
                         description: The position in the currently active track
                                      as presented by a number between 0 and 1.
                         type: number
+                    file_name:
+                        description: The full path of the currently playing
+                                     file.
+                        type: string
         """
         return Response.from_dict(self.app, self.get_state())
 
