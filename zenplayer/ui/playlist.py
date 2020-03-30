@@ -84,6 +84,11 @@ class PlayList(object):
         if 0 < self.current:
             self.current += -1
 
+    def remove_current(self):
+        """ Remove the currently playing track from the playlist """
+        if self.current < len(self.queue):
+            self.queue.pop(self.current)
+
     def save(self, store):
         """ The playlist screen is being closed """
         all_items = {}

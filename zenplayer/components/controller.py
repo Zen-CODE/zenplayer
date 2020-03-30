@@ -80,11 +80,15 @@ class Controller(EventDispatcher):
     def set_state(self, widet, value):
         """
         Set the state of the currently playing track. This is the callback
-        fired when the media player encounters teh end of track.
+        fired when the media player encounters the end of track.
         """
         if value == "stopped" and self.state != "stopped":
             if self.advance:
-                self.play_next()
+                # The below "prunes" played tracks, otherwise self.play_next()
+                self.stop()
+                self.playlist.remove_current()
+                self.position = 0
+                self.play_pause()
 
     def on_state(self, widget, value):
         """ React to the change of state event """
