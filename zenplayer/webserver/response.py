@@ -20,7 +20,7 @@ class Response:
         return resp
 
     @staticmethod
-    def from_image(self, file_name):
+    def from_image(file_name):
         """
         Generate and return the appropriate HTTP response object containing the
         image data from the file.

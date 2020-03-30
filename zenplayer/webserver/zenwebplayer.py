@@ -212,5 +212,5 @@ class ZenPlayerAPI():
                 description: Return the cover image for the currently active
                              track
         """
-        state = self.get_state({})
+        state = self.get_state()
         return Response.from_image(state["cover"])
