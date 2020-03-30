@@ -30,7 +30,7 @@ class Metadata:
         info = File(file_name).info
         return{
             "length": info.length,
-            "bitrate": info.bitrate,
+            "bitrate": info.bitrate // 1000,
             "bitrate_mode": Metadata._get_bitrate(info),
             "channels": info.channels,
             "sample_rate": info.sample_rate

@@ -1,6 +1,7 @@
 from flask import Flask
 from webserver.zenswagger import ZenSwagger
 from webserver.response import Response
+from components.meta import Metadata
 
 
 class ZenWebPlayer:
@@ -26,7 +27,8 @@ class ZenWebPlayer:
         """
         route = self.base_url
         for meth in ["play_pause", "volume_up", "volume_down", "play_previous",
-                     "play_next", "stop", "get_track_info", "get_track_cover"]:
+                     "play_next", "stop", "get_track_info", "get_track_cover",
+                     "get_track_meta"]:
             self.app.add_url_rule(route + meth, route + meth,
                                   getattr(self.api, meth), methods=['GET'])
 
@@ -64,6 +66,39 @@ class ZenPlayerAPI():
             "position": ctrl.position,
             "file_name": ctrl.file_name
         }
+
+    def get_track_meta(self):
+        """
+        Return the technical metadata on the current track
+        ---
+        tags:
+            - ZenPlayer
+        responses:
+            200:
+                description: Return the state of the current track.
+                schema:
+                    $ref: '#/definitions/TrackMeta'
+        definitions:
+            TrackMeta:
+                type: object
+                properties:
+                    length:
+                        description: The length of the track in seconds.
+                        type: number
+                    bitrate:
+                        description: The bitrate in kbps
+                        type: integer
+                    channels:
+                        description: The number of audio channels
+                        type: integer
+                    sample_rate:
+                        description: The audio sample rate in Hz.
+                        type: integer
+
+        """
+        meta = Metadata.get(self.ctrl.file_name)
+        return Response.from_dict(self.app, meta)
+
 
     def play_pause(self):
         """
