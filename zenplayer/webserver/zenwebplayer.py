@@ -2,6 +2,7 @@ from flask import Flask
 from webserver.zenswagger import ZenSwagger
 from webserver.response import Response
 from components.meta import Metadata
+from kivy.clock import Clock
 
 
 class ZenWebPlayer:
@@ -67,6 +68,13 @@ class ZenPlayerAPI():
             "file_name": ctrl.file_name
         }
 
+    def safe_call(self, func):
+        """
+        Call the given function in a clock event and return a success reponse.
+        """
+        Clock.schedule_once(lambda dt: func())
+        return Response.from_dict(self.app, {"status": "success"})
+
     def get_track_meta(self):
         """
         Return the technical metadata on the current track
@@ -107,12 +115,20 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
+        definitions:
+            ActionResponse:
+                type: object
+                properties:
+                    status:
+                        description: The length of the track in seconds.
+                        type: string
+                        enum: ["success", "failed"]
+
         """
-        self.ctrl.play_pause()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.play_pause)
 
     def volume_up(self):
         """
@@ -122,12 +138,11 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
         """
-        self.ctrl.volume_up()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.volume_up)
 
     def volume_down(self):
         """
@@ -137,12 +152,11 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
         """
-        self.ctrl.volume_down()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.volume_down)
 
     def play_previous(self):
         """
@@ -152,12 +166,11 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
         """
-        self.ctrl.play_previous()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.play_previous)
 
     def play_next(self):
         """
@@ -167,12 +180,11 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
         """
-        self.ctrl.play_next()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.play_next)
 
     def stop(self):
         """
@@ -182,12 +194,11 @@ class ZenPlayerAPI():
             - ZenPlayer
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return the status of the requested action.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/ActionResponse'
         """
-        self.ctrl.stop()
-        return Response.from_dict(self.app, self.get_state())
+        return self.safe_call(self.ctrl.stop)
 
     def get_track_info(self):
         """
