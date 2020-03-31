@@ -33,5 +33,8 @@ class HotKeyHandler:
             mapping a dictionary with the key as the hotkey combination and the
             value as the controller action.
         """
-        for key, value in mapping.items():
-            add_hotkey(key, getattr(ctrl, value))
+        try:
+            for key, value in mapping.items():
+                add_hotkey(key, getattr(ctrl, value))
+        except ImportError:
+            print("Please run as root to enable hotkey support")
