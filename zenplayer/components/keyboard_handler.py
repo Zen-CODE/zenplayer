@@ -32,10 +32,11 @@ class KeyHandler:
             mappings = load(f)
         return mappings["keymap"]
 
-    def on_key_down(self, _keyboard, keycode, text, _modifiers):
+    def on_key_down(self, _keyboard, keycode, text, modifiers):
         """ React to the keypress event """
+        if modifiers:
+            return
         key_name = keycode[1]
-        print(f"Got keypress {key_name}")
 
         func = self.keymap.get(key_name, None)
         if func is not None:

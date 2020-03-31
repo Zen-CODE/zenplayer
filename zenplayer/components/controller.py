@@ -92,7 +92,6 @@ class Controller(EventDispatcher):
 
     def on_state(self, widget, value):
         """ React to the change of state event """
-        print(f"on_state fired: value={value}, previous={self.prev_state}")
         if value == "playing":
             if self.sound.state == "playing":
                 self.sound.stop()
