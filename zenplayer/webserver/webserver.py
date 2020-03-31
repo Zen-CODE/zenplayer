@@ -12,7 +12,7 @@ class FlaskThread(Thread):
 
     def run(self):
         ZenWebPlayer(self.ctrl).run(
-            debug=True, use_debugger=True, use_reloader=False)
+            debug=True, use_debugger=True, use_reloader=False, host="0.0.0.0")
 
 
 class WebServer:
