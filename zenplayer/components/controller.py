@@ -60,8 +60,7 @@ class Controller(EventDispatcher):
         self.sm.add_widget(self.playing)
         self.sm.current = "main"
 
-        if not environ.get('ZENPLAYER_NO_HOTKEYS', None):
-            HotKeyHandler.add_bindings(self)
+        HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         self.sound = Sound()
         self.sound.bind(state=self.set_state)

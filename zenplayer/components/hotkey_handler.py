@@ -4,6 +4,7 @@ This module adds global hotkey support from ZenPlayer
 from keyboard import add_hotkey
 from os.path import join, dirname
 from json import load
+from kivy.clock import Clock
 
 
 class HotKeyHandler:
@@ -25,6 +26,14 @@ class HotKeyHandler:
         return mappings["hotkeymap"]
 
     @staticmethod
+    def get_function(ctrl, method):
+        """ Return a function that calls the *method* of the *ctrl* but on the
+        next clock event. This (hopefully) prevents segmentation faults.
+        """
+        func = getattr(ctrl, method)
+        return Clock.schedule_once(lambda dt: func())
+
+    @staticmethod
     def _create_bindings(mapping, ctrl):
         """
         Create hotkey bindings from the mapping to the controller actions.
@@ -34,7 +43,7 @@ class HotKeyHandler:
             value as the controller action.
         """
         try:
-            for key, value in mapping.items():
-                add_hotkey(key, getattr(ctrl, value))
+            for key, method in mapping.items():
+                add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
         except ImportError:
             print("Please run as root to enable hotkey support")
