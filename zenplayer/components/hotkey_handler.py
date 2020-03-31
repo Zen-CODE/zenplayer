@@ -48,3 +48,5 @@ class HotKeyHandler:
                 if platform == "macosx":
                     key = key.replace("alt", "command")
                 add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
+        except ImportError:
+            print("Please run as root to enable hotkey support")
