@@ -9,7 +9,6 @@ Kivy framework.
 __author__ = 'ZenCODE'
 from kivy.app import App
 from components.controller import Controller
-from environs import Env
 from webserver.webserver import WebServer
 
 
@@ -39,5 +38,4 @@ class ZenPlayer(App):
         pass
 
 
-Env().read_env()
 ZenPlayer().run()

@@ -8,7 +8,6 @@ Kivy-Garden==0.1.4
 Pygments==2.4.2
 requests==2.22.0
 urllib3==1.25.3
-environs==5.2.1
 keyboard==0.13.4
 python-vlc==3.0.7110
 Flask==1.1.1
