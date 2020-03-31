@@ -99,7 +99,6 @@ class ZenPlayerAPI():
         meta = Metadata.get(self.ctrl.file_name)
         return Response.from_dict(self.app, meta)
 
-
     def play_pause(self):
         """
         Play or pause the currently active player.
