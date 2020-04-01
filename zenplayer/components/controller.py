@@ -48,6 +48,9 @@ class Controller(EventDispatcher):
     kivy3dgui = False
     ''' Set whether to use the kivy3dgui interface on not '''
 
+    prune = True
+    """ If set to true, remove files from the playlist once played. """
+
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
         self._store = JsonStore(join(self._get_settings_folder(),
@@ -84,11 +87,7 @@ class Controller(EventDispatcher):
         """
         if value == "stopped" and self.state != "stopped":
             if self.advance:
-                # The below "prunes" played tracks, otherwise self.play_next()
-                self.stop()
-                self.playlist.remove_current()
-                self.position = 0
-                self.play_pause()
+                self.play_next()
 
     def on_state(self, widget, value):
         """ React to the change of state event """
@@ -186,7 +185,10 @@ class Controller(EventDispatcher):
         """ Play the next track in the playlist. """
         self.advance = False
         self.stop()
-        self.playlist.move_next()
+        if self.prune:
+            self.playlist.remove_current()
+        else:
+            self.playlist.move_next()
         self.position = 0
         self.play_pause()
         self.advance = True
