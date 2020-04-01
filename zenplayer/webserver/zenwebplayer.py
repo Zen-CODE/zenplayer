@@ -123,7 +123,8 @@ class ZenPlayerAPI():
                 type: object
                 properties:
                     status:
-                        description: The length of the track in seconds.
+                        description: Indicates whether the action was
+                                     successful or not.
                         type: string
                         enum: ["success", "failed"]
 
