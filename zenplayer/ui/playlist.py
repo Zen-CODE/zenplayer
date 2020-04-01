@@ -231,7 +231,7 @@ class PlaylistItem(EventDispatcher):
     def on_touch_down(self, touch):
         """ Add support for clicking to play. """
         self.selected = self.collide_point(*touch.pos)
-        if self.selected:
+        if self.selected and touch.is_double_tap:
             self.ctrl.play_index(self.playlist_index)
 
 
