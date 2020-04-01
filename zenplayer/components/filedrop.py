@@ -17,4 +17,4 @@ class FileDrop:
         """
         Respond to the dropping of files or folders on the window.
         """
-        self.playlist.add_files(file_folder)
+        self.playlist.add_files(file_folder.decode())
