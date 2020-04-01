@@ -12,7 +12,7 @@ from os.path import join, expanduser, exists
 from os import mkdir, sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
-from os import environ
+from components.filedrop import FileDrop
 
 
 DEFAULT_COVER = "images/zencode.jpg"
@@ -53,6 +53,7 @@ class Controller(EventDispatcher):
         self._store = JsonStore(join(self._get_settings_folder(),
                                      "zenplayer.json"))
         self.playlist = PlayList(self._store)
+        self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
         self.sm = ScreenManager()
