@@ -1,10 +1,21 @@
-<PlaylistLabel>:
-    canvas:
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
         Color:
-            rgba: self.back_color
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
         Rectangle:
             pos: self.pos
             size: self.size
+<PlaylistRV>:
+    viewclass: 'SelectableLabel'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: True
+        touch_multiselect: True
 
 <PlayListScreen>:
     BoxLayout:
@@ -20,53 +31,13 @@
                     Rectangle:
                         pos: self.pos
                         size: self.size
-            BoxLayout:
-                canvas:
-                    Color:
-                        rgba: 0.25, 0.25, 0.75, 0.5
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-                orientation: 'horizontal'
-                Label:
-                    text: "Cover"
-                    size_hint_x: 0.3
-                Label:
-                    text: "Track"
-                    size_hint_x: 0.7
 
-        BoxLayout:
-            orientation: 'horizontal'
+        PlaylistRV:
+            id: rv
             size_hint_y: 0.8
-            BoxLayout:
-                id: album_col
-                orientation: 'vertical'
-                size_hint_x: 0.3
-            BoxLayout:
-                id: file_col
-                orientation: 'vertical'
-                size_hint_x: 0.7
-
         BoxLayout:
-            orientation: 'horizontal'
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             Button:
                 text: 'Back'
                 on_release: root.ctrl.show_main()
-            Button:
-                text: '<<'
-                on_release: root.show_next_page(False)
-            BoxLayout:
-                Label:
-                    text: "Page"
-                TextInput:
-                    id: page_count
-                    text: "1"
-
-                Label:
-                    id: page_count_suffix
-                    text: "of ??"
-            Button:
-                text: ">>"
-                on_release: root.show_next_page()

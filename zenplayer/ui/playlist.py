@@ -11,6 +11,7 @@ from kivy.lang import Builder
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.event import EventDispatcher
+from ui.playlistrv import PlaylistRV
 
 
 class PlayList(object):
@@ -134,7 +135,6 @@ class PlayListScreen(Screen):
     """
     Displays the playlist along with some simple editing options.
     """
-    listview = ObjectProperty()
 
     def __init__(self, sm, ctrl, playlist, **kwargs):
         Builder.load_file("ui/playlist.kv")
@@ -143,80 +143,9 @@ class PlayListScreen(Screen):
         self.ctrl = ctrl
         super(PlayListScreen, self).__init__(**kwargs)
 
-        self.items_per_page = 10
-        self.num_pages = 1
-        self.current_page = 1
-
-    def on_enter(self):
-        """ Repopulate the view area and setup the display. """
-        if not self.playlist.queue:
-            return
-        self.num_pages = \
-            (len(self.playlist.queue) - 1) // self.items_per_page + 1
-        if self.current_page > self.num_pages:
-            self.current_page = self.num_pages
-        self.ids.page_count.text = str(self.current_page)
-        self.ids.page_count_suffix.text = "of {0}".format(self.num_pages)
-        self.show_page(self.current_page)
-
-    def show_page(self, page_no):
-        """ Show the playlist items on the current page. """
-
-        def init_page(_page_no):
-            """ Initialise the display and controls. """
-
-            self.current_page = _page_no
-            self.ids.album_col.clear_widgets()
-            self.ids.file_col.clear_widgets()
-            self.ids.page_count.text = str(page_no)
-
-        def display_page(_start, _end, _queue):
-            """
-            Add the items from the _start to _end index to the display
-            """
-            info, cover = self.playlist.get_info, ""
-            album_template = "[b][color=0000DD]{0}[/color][/b]\n"\
-                             "[color=0000BB]{1}[/color]"
-
-            for i in range(_start, _end):
-                new_cover = _queue[i][1]
-                info_dict = info(_queue[i][0])
-                if new_cover != cover:
-                    # Add a new cover and text descriptor
-                    self.ids.album_col.add_widget(
-                        Label(text=album_template.format(info_dict['artist'],
-                                                         info_dict['album']),
-                              halign='center',
-                              markup=True,
-                              size_hint_y=0.25))
-
-                    cover = new_cover
-                    self.ids.album_col.add_widget(
-                        PlaylistImage(source=cover,
-                                      ctrl=self.ctrl,
-                                      playlist_index=i))
-
-                self.ids.file_col.add_widget(
-                    PlaylistLabel(
-                        text=info_dict['file'],
-                        ctrl=self.ctrl,
-                        playlist_index=i,
-                        selected=bool(i == self.playlist.current)))
-
-        queue = self.playlist.queue
-        start = (page_no - 1) * self.items_per_page
-        end = start + self.items_per_page
-        if end > len(queue):
-            end = len(queue)
-
-        init_page(page_no)
-        display_page(start, end, queue)
-
-    def show_next_page(self, next_page=True):
-        """ Show the next/previous page. """
-        page = self.current_page + 1 if next_page else self.current_page - 1
-        if 0 < page <= self.num_pages:
-            self.show_page(page)
+        # [{'text': str(x)} for x in range(100)]
+        queue = [{"text": i[0]} for i in self.playlist.queue]
+        self.ids.rv.data = queue
 
 
 class PlaylistItem(EventDispatcher):
