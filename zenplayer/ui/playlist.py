@@ -62,22 +62,22 @@ class PlayList(object):
             return {}
 
     @staticmethod
-    def get_text(filefolder):
+    def get_text(file_folder):
         """
         Return the text to display on the playlist given the specified file.
         """
-        parts = filefolder.split(sep)
+        parts = file_folder.split(sep)
         return " - ".join(parts[-3:])
 
-    def add_files(self, filefolder):
+    def add_files(self, file_folder):
         """ Add the specified folder to the queue """
-        Logger.info("playlist.py: processing {0}".format(filefolder))
-        if path.isdir(filefolder):
-            for f in sorted(listdir(filefolder)):
-                self.add_files(path.join(filefolder, f))
-        elif filefolder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            self.queue.append({"filename": filefolder,
-                               "text": self.get_text(filefolder)})
+        Logger.info("playlist.py: processing {0}".format(file_folder))
+        if path.isdir(file_folder):
+            for f in sorted(listdir(file_folder)):
+                self.add_files(path.join(file_folder, f))
+        elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
+            self.queue.append({"filename": file_folder,
+                               "text": self.get_text(file_folder)})
 
     def clear_files(self):
         """ Clear the existing playlist"""
@@ -175,17 +175,3 @@ class PlaylistItem(EventDispatcher):
         if self.selected and touch.is_double_tap:
             self.ctrl.play_index(self.playlist_index)
 
-
-class PlaylistImage(PlaylistItem, Image):
-    pass
-
-
-class PlaylistLabel(PlaylistItem, Label):
-    """
-    The label shown in the playlist giving the details of the track.
-    """
-    back_color = ListProperty([0, 0, 0, 0])
-
-    def on_selected(self, _widget, value):
-        """ The label has been selected. Change the visuals accordingly. """
-        self.back_color = [0.5, 0.5, 1, 0.5] if value else [0, 0, 0, 0]
