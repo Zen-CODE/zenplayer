@@ -107,7 +107,7 @@ class PlayList(object):
         """ The playlist screen is being closed """
         all_items = {}
         for k, item in enumerate(self.queue):
-            all_items.update({"item" + str(k + 1): item[0]})
+            all_items.update({"item" + str(k + 1): item["filename"]})
         store.put("playlist",
                   current=self.current,
                   items=all_items)
@@ -157,21 +157,5 @@ class PlayListScreen(Screen):
         self.playlist = playlist
         self.ctrl = ctrl
         super(PlayListScreen, self).__init__(**kwargs)
+
         self.ids.rv.data = self.playlist.queue
-
-
-class PlaylistItem(EventDispatcher):
-    """
-    A mixin class for adding playlist click/play behaviour.
-    """
-
-    playlist_index = NumericProperty()
-    ctrl = ObjectProperty()
-    selected = BooleanProperty(False)
-
-    def on_touch_down(self, touch):
-        """ Add support for clicking to play. """
-        self.selected = self.collide_point(*touch.pos)
-        if self.selected and touch.is_double_tap:
-            self.ctrl.play_index(self.playlist_index)
-
