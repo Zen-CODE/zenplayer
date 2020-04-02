@@ -20,7 +20,7 @@
                         size: self.size
             BoxLayout:
                 orientation: 'horizontal'
-                Button:
+                ZenButton:
                     text: "Up"
                     size_hint_x: 0.1
                     on_release: root.folder_up()
@@ -28,7 +28,7 @@
                     id: label_sel
                     text: "Selection - None"
                     size_hint_x: 0.8
-                Button:
+                ZenButton:
                     text: "Root"
                     size_hint_x: 0.1
 
@@ -42,12 +42,12 @@
             orientation: 'horizontal'
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
-            Button:
+            ZenButton:
                 text: 'Back'
                 on_release: root.ctrl.show_main()
-            Button:
+            ZenButton:
                 text: "Add and replace"
                 on_release: root.add_replace()
-            Button:
+            ZenButton:
                 text: "Add"
                 on_release: root.add_files()

@@ -10,6 +10,7 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
 <PlaylistRV>:
     viewclass: 'SelectableLabel'
     SelectableRecycleBoxLayout:
@@ -18,8 +19,8 @@
         size_hint_y: None
         height: self.minimum_height
         orientation: 'vertical'
-        multiselect: True
-        touch_multiselect: True
+        # multiselect: True
+        # touch_multiselect: True
 
 <PlayListScreen>:
     BoxLayout:
@@ -42,6 +43,6 @@
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
-            Button:
+            ZenButton:
                 text: 'Back'
                 on_release: root.ctrl.show_main()
