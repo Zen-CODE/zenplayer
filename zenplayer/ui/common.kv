@@ -1,9 +1,16 @@
 #:kivy 1.10
 
 <ZenButton@ButtonBehavior+Label>:
-    canvas:
+    canvas.before:
+        # Outer rectangle
         Color:
-            rgba: [0.7, 0.7, 1, 0.5] if root.state == "pressed" else [0.3, 0.3, 0.7, 0.5]
+            rgba: [0.2, 0.2, 1, 1.0]
         Rectangle:
             pos: self.pos
             size: self.size
+        # Inner
+        Color:
+            rgba: [0.5, 0.5, 0.1, 1] if root.state == "down" else [0.25, 0.25, 0.75, 1]
+        Rectangle:
+            pos: self.x + 2, self.y + 2
+            size: self.width - 4, self.height - 4
