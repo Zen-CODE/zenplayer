@@ -11,7 +11,6 @@ from kivy.lang import Builder
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.event import EventDispatcher
-from ui.playlistrv import PlaylistRV
 
 
 class PlayList(object):
