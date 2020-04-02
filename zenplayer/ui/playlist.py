@@ -17,8 +17,15 @@ class PlayList(object):
     """
     Holds the current playlist class.
     """
-    current = 0  # The index of the currently playing track in the queue
-    queue = []  # contains a list of (filename, albumart) pairs
+    current = 0
+    """ The index of the currently playing track in the queue. """
+
+    queue = []
+    """
+    Contains a list of dictionaries with the following keys:
+        * text: Used to display the track in the playlist
+        * filename: Full path to the audio file
+    """
 
     def __init__(self, store):
 
@@ -43,16 +50,24 @@ class PlayList(object):
     def get_current_file(self):
         """Returns the filename of the current audio file."""
         if len(self.queue) > self.current:
-            return self.queue[self.current][0]
+            return self.queue[self.current]["filename"]
         else:
             return ""
 
     def get_current_info(self):
         """ Return a dictionary of information on the current track"""
         if len(self.queue) > self.current:
-            return self.get_info(self.queue[self.current][0])
+            return self.get_info(self.queue[self.current]["filename"])
         else:
             return {}
+
+    @staticmethod
+    def get_text(filefolder):
+        """
+        Return the text to display on the playlist given the specified file.
+        """
+        parts = filefolder.split(sep)
+        return " - ".join(parts[-3:])
 
     def add_files(self, filefolder):
         """ Add the specified folder to the queue """
@@ -61,7 +76,8 @@ class PlayList(object):
             for f in sorted(listdir(filefolder)):
                 self.add_files(path.join(filefolder, f))
         elif filefolder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            self.queue.append((filefolder, self.get_albumart(filefolder)))
+            self.queue.append({"filename": filefolder,
+                               "text": self.get_text(filefolder)})
 
     def clear_files(self):
         """ Clear the existing playlist"""
@@ -141,10 +157,7 @@ class PlayListScreen(Screen):
         self.playlist = playlist
         self.ctrl = ctrl
         super(PlayListScreen, self).__init__(**kwargs)
-
-        # [{'text': str(x)} for x in range(100)]
-        queue = [{"text": i[0]} for i in self.playlist.queue]
-        self.ids.rv.data = queue
+        self.ids.rv.data = self.playlist.queue
 
 
 class PlaylistItem(EventDispatcher):
