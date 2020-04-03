@@ -177,6 +177,12 @@ class Controller(EventDispatcher):
         self.playlist.current = index
         self.play_pause()
 
+    def remove_index(self, index):
+        """
+        Remove the track with the specified playlist index
+        """
+        self.playlist.remove_index(index)
+
     def play_pause(self):
         """ Play or pause the currently playing track """
         if self.state == "playing":

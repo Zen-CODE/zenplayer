@@ -81,4 +81,5 @@ class PlaylistPopup(Popup):
         print("info")
 
     def button_remove(self):
-        print("remove")
+        """ Play the track selected track. """
+        self.ctrl.remove_index(self.index)
