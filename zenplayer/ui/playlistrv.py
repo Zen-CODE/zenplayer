@@ -4,7 +4,7 @@ This module houses helper classes for the ZenPlayer RecycleView playlist.
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
-from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
@@ -23,10 +23,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
 
-    @staticmethod
-    def on_long_touch(rv):
+    def on_long_touch(self, rv):
         """ Event fired when the label has been held down for a long time. """
-        PlaylistPopup(playlist=rv.playlist).open()
+        data = rv.ctrl.playlist.get_info(index=self.index)
+        PlaylistPopup(
+            title="Track: {artist} - {album} - {file}".format(**data),
+            ctrl=rv.ctrl,
+            index=self.index).open()
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -64,16 +67,19 @@ class PlaylistRV(RecycleView):
     """
     The RecycleView widget embedded in the playlist.
     """
-    playlist = ObjectProperty()
-    """ A reference to the Playlist object"""
+    ctrl = ObjectProperty()
+    """ A reference to the controller object"""
 
 
 class PlaylistPopup(Popup):
     """
     The Popup show when the playlist item is tapped and held.
     """
-    playlist = ObjectProperty()
-    """ A reference to the Playlist object"""
+    ctrl = ObjectProperty()
+    """ A reference to the controller object"""
+
+    index = NumericProperty()
+    """ The index of the selected track in the Playlist.queue"""
 
     def button_play(self):
         print("play")

@@ -59,11 +59,11 @@ class Playlist(EventDispatcher):
             return {}
 
     @staticmethod
-    def get_text(file_folder):
+    def get_text(file_):
         """
         Return the text to display on the playlist given the specified file.
         """
-        parts = file_folder.split(sep)
+        parts = file_.split(sep)
         return " - ".join(parts[-3:])
 
     def add_files(self, file_folder):
@@ -115,6 +115,11 @@ class Playlist(EventDispatcher):
         if index < len(self.queue):
             self.current = index
 
+    def remove_index(self, index):
+        """ Remove the specified track from the queue. """
+        if index < len(self.queue):
+            self.queue.pop(index)
+
     @staticmethod
     def get_album_art(audio_file):
         """
@@ -126,12 +131,14 @@ class Playlist(EventDispatcher):
                 return path.join(folder, f_name)
         return "images/zencode.jpg"
 
-    @staticmethod
-    def get_info(filename):
+    def get_info(self, filename=None, index=None):
         """
         Return a dictionary containing the metadata on the track """
         try:
-            parts = filename.split(sep)
+            if index is None:
+                parts = filename.split(sep)
+            else:
+                parts = self.queue[index]["filename"].split(sep)
             return {
                 "artist": parts[-3],
                 "album": parts[-2],

@@ -40,6 +40,7 @@
         PlaylistRV:
             id: rv
             size_hint_y: 0.8
+            ctrl: root.ctrl
             data: root.ctrl.playlist.queue
         BoxLayout:
             padding: 10, 10, 10, 10
@@ -49,7 +50,6 @@
                 on_release: root.ctrl.show_main()
 
 <PlaylistPopup>:
-    title: "Track options"
     size_hint: 0.75, 0.75
     auto_dismiss: False
     BoxLayout:

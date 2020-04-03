@@ -83,7 +83,7 @@ class Controller(EventDispatcher):
             for key, value in state.items():
                 setattr(self, key, value)
 
-    def set_state(self, widet, value):
+    def set_state(self, _widget, value):
         """
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters the end of track.
@@ -92,7 +92,7 @@ class Controller(EventDispatcher):
             if self.advance:
                 self.play_next()
 
-    def on_state(self, widget, value):
+    def on_state(self, _widget, value):
         """ React to the change of state event """
         if value == "playing":
             if self.sound.state == "playing":
@@ -131,7 +131,7 @@ class Controller(EventDispatcher):
                     int(length % 60))
                 self.position = pos
 
-    def on_file_name(self, widget, value):
+    def on_file_name(self, _widget, value):
         """ Respond to the change of file name and set the info fields."""
         parts = value.split(sep)
         if len(parts) > 2:
