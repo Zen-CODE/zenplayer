@@ -4,7 +4,7 @@ This module houses helper classes for the ZenPlayer RecycleView playlist.
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
-from kivy.properties import BooleanProperty
+from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
@@ -23,14 +23,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
 
-    def __init__(self, **kwargs):
-        super(SelectableLabel, self).__init__(**kwargs)
-        self.register_event_type('on_long_touch')
-
-    def on_long_touch(self, *args):
+    @staticmethod
+    def on_long_touch(rv):
         """ Event fired when the label has been held down for a long time. """
-        print("on_long_touch fired!")
-        PlaylistPopup().open()
+        PlaylistPopup(playlist=rv.playlist).open()
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -45,7 +41,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if self.collide_point(*touch.pos) and self.selectable:
             # Set a timer to generate the long_touch event
             touch.long_touch = Clock.schedule_once(
-                lambda dt: self.dispatch("on_long_touch"), 1)
+                lambda dt: self.on_long_touch(self.parent.recycleview), 1)
             return self.parent.select_with_touch(self.index, touch)
 
     def on_touch_up(self, touch):
@@ -68,7 +64,22 @@ class PlaylistRV(RecycleView):
     """
     The RecycleView widget embedded in the playlist.
     """
+    playlist = ObjectProperty()
+    """ A reference to the Playlist object"""
 
 
 class PlaylistPopup(Popup):
-    pass
+    """
+    The Popup show when the playlist item is tapped and held.
+    """
+    playlist = ObjectProperty()
+    """ A reference to the Playlist object"""
+
+    def button_play(self):
+        print("play")
+
+    def button_info(self):
+        print("info")
+
+    def button_remove(self):
+        print("remove")
