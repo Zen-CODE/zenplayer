@@ -116,11 +116,11 @@ class Playlist(EventDispatcher):
             self.current = index
 
     @staticmethod
-    def get_albumart(audiofile):
+    def get_album_art(audio_file):
         """
         Return the full image filename from the folder
         """
-        folder = audiofile[0: audiofile.rfind(sep)]
+        folder = audio_file[0: audio_file.rfind(sep)]
         for f_name in reversed(listdir(folder)):
             if f_name[-4:] in [".png", ".bmp", ".jpg", "jpeg"]:
                 return path.join(folder, f_name)
