@@ -42,17 +42,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if super(SelectableLabel, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos) and self.selectable:
-            # Set a timer to generate the long_touch event
-            touch.long_touch = Clock.schedule_once(
-                lambda dt: self.on_long_touch(self.parent.recycleview), 1)
+            Clock.schedule_once(
+                lambda dt: self.on_long_touch(self.parent.recycleview))
             return self.parent.select_with_touch(self.index, touch)
 
-    def on_touch_up(self, touch):
-        """ Prevent firing of the `on_long_touch` event. """
-        event = getattr(touch, "long_touch", None)
-        if event is not None:
-            event.cancel()
-        return super(SelectableLabel, self).on_touch_up(touch)
 
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
