@@ -1,4 +1,4 @@
-from ui.playlist import PlayList, PlayListScreen
+from ui.playlist import Playlist, PlaylistScreen
 from ui.filebrowser import ZenFileBrowser
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
@@ -59,7 +59,7 @@ class Controller(EventDispatcher):
         super(Controller, self).__init__(**kwargs)
         self._store = JsonStore(join(self._get_settings_folder(),
                                      "zenplayer.json"))
-        self.playlist = PlayList(self._store)
+        self.playlist = Playlist(self._store)
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
@@ -249,12 +249,12 @@ class Controller(EventDispatcher):
         """ Switch to the playlist screen """
         if not self.kivy3dgui:
             if "playlist" not in self.sm.screen_names:
-                self.sm.add_widget(PlayListScreen(ctrl=self, name="playlist"))
+                self.sm.add_widget(PlaylistScreen(ctrl=self, name="playlist"))
             self.sm.current = "playlist"
         else:
             if "playlist" not in self.playing.ids.c_sm.screen_names:
                 self.playing.ids.c_sm.add_widget(
-                    PlayListScreen(ctrl=self, name="playlist"))
+                    PlaylistScreen(ctrl=self, name="playlist"))
             player3d = self.playing.ids.player3d
             from kivy.animation import Animation
 

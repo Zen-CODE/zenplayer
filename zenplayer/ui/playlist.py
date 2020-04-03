@@ -1,7 +1,8 @@
 """
-This class houses the PlayList class for ZenPlayer
+This class houses the Playlist class for ZenPlayer
 """
 from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
 from kivy.properties import NumericProperty, ListProperty, ObjectProperty
 from kivy.event import EventDispatcher
 from os import sep, path, listdir
@@ -10,7 +11,7 @@ from os.path import exists
 from kivy.lang import Builder
 
 
-class PlayList(EventDispatcher):
+class Playlist(EventDispatcher):
     """
     Holds the current playlist class.
     """
@@ -26,7 +27,7 @@ class PlayList(EventDispatcher):
 
     def __init__(self, store):
 
-        super(PlayList, self).__init__()
+        super(Playlist, self).__init__()
         self._load(store)
 
     def _load(self, store):
@@ -143,7 +144,7 @@ class PlayList(EventDispatcher):
                 "file": "-"}
 
 
-class PlayListScreen(Screen):
+class PlaylistScreen(Screen):
     """
     Displays the playlist along with some simple editing options.
     """
@@ -152,4 +153,6 @@ class PlayListScreen(Screen):
 
     def __init__(self, **kwargs):
         Builder.load_file("ui/playlist.kv")
-        super(PlayListScreen, self).__init__(**kwargs)
+        super(PlaylistScreen, self).__init__(**kwargs)
+
+
