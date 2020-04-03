@@ -2,3 +2,4 @@ kivy3dgui
 *.pyc
 zenplayer.ini
 venv/
+.env
