@@ -2,7 +2,7 @@
 This class houses the PlayList class for ZenPlayer
 """
 from kivy.uix.screenmanager import Screen
-from kivy.properties import NumericProperty, ListProperty
+from kivy.properties import NumericProperty, ListProperty, ObjectProperty
 from kivy.event import EventDispatcher
 from os import sep, path, listdir
 from kivy.logger import Logger
@@ -147,10 +147,9 @@ class PlayListScreen(Screen):
     """
     Displays the playlist along with some simple editing options.
     """
+    ctrl = ObjectProperty()
+    """ Reference to the controller """
 
-    def __init__(self, sm, ctrl, playlist, **kwargs):
+    def __init__(self, **kwargs):
         Builder.load_file("ui/playlist.kv")
-        self.sm = sm
-        self.playlist = playlist
-        self.ctrl = ctrl
         super(PlayListScreen, self).__init__(**kwargs)

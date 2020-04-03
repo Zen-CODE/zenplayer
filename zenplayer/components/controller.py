@@ -42,6 +42,9 @@ class Controller(EventDispatcher):
 
     app = ObjectProperty()
 
+    playlist = ObjectProperty()
+    """ Reference to the Playlist object. """
+
     sm = None
     ''' A Reference to the active ScreenManager class. '''
 
@@ -53,6 +56,7 @@ class Controller(EventDispatcher):
 
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
+        super(Controller, self).__init__(**kwargs)
         self._store = JsonStore(join(self._get_settings_folder(),
                                      "zenplayer.json"))
         self.playlist = PlayList(self._store)
@@ -70,7 +74,6 @@ class Controller(EventDispatcher):
         self.sound.bind(state=self.set_state)
         Clock.schedule_interval(self._update_progress, 1/5)
 
-        super(Controller, self).__init__(**kwargs)
         self._restore_state()
 
     def _restore_state(self):
@@ -246,17 +249,12 @@ class Controller(EventDispatcher):
         """ Switch to the playlist screen """
         if not self.kivy3dgui:
             if "playlist" not in self.sm.screen_names:
-                self.sm.add_widget(PlayListScreen(self.sm,
-                                                  self,
-                                                  self.playlist,
-                                                  name="playlist"))
+                self.sm.add_widget(PlayListScreen(ctrl=self, name="playlist"))
             self.sm.current = "playlist"
         else:
             if "playlist" not in self.playing.ids.c_sm.screen_names:
-                self.playing.ids.c_sm.add_widget(PlayListScreen(self.sm,
-                                                 self,
-                                                 self.playlist,
-                                                 name="playlist"))
+                self.playing.ids.c_sm.add_widget(
+                    PlayListScreen(ctrl=self, name="playlist"))
             player3d = self.playing.ids.player3d
             from kivy.animation import Animation
 
