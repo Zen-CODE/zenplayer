@@ -2,25 +2,22 @@
 This class houses the PlayList class for ZenPlayer
 """
 from kivy.uix.screenmanager import Screen
-from kivy.properties import (ObjectProperty, NumericProperty, BooleanProperty,
-                             ListProperty)
+from kivy.properties import NumericProperty, ListProperty
+from kivy.event import EventDispatcher
 from os import sep, path, listdir
 from kivy.logger import Logger
 from os.path import exists
 from kivy.lang import Builder
-from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.event import EventDispatcher
 
 
-class PlayList(object):
+class PlayList(EventDispatcher):
     """
     Holds the current playlist class.
     """
-    current = 0
+    current = NumericProperty(0)
     """ The index of the currently playing track in the queue. """
 
-    queue = []
+    queue = ListProperty([])
     """
     Contains a list of dictionaries with the following keys:
         * text: Used to display the track in the playlist
@@ -157,5 +154,3 @@ class PlayListScreen(Screen):
         self.playlist = playlist
         self.ctrl = ctrl
         super(PlayListScreen, self).__init__(**kwargs)
-
-        self.ids.rv.data = self.playlist.queue

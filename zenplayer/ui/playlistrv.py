@@ -63,7 +63,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
 
 class PlaylistRV(RecycleView):
-    # def __init__(self, **kwargs):
-    #     super(PlaylistRV, self).__init__(**kwargs)
-    #     self.data = [{'text': str(x)} for x in range(100)]
-    pass
+    """
+    The RecycleView widget embedded in the playlist.
+    """
