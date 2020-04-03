@@ -46,7 +46,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
                 lambda dt: self.on_long_touch(self.parent.recycleview))
             return self.parent.select_with_touch(self.index, touch)
 
-
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
@@ -75,7 +74,8 @@ class PlaylistPopup(Popup):
     """ The index of the selected track in the Playlist.queue"""
 
     def button_play(self):
-        print("play")
+        """ Play the track selected track. """
+        self.ctrl.play_index(self.index)
 
     def button_info(self):
         print("info")
