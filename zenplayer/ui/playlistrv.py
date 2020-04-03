@@ -9,6 +9,7 @@ from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.clock import Clock
+from kivy.uix.popup import Popup
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
@@ -29,6 +30,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def on_long_touch(self, *args):
         """ Event fired when the label has been held down for a long time. """
         print("on_long_touch fired!")
+        PlaylistPopup().open()
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -66,3 +68,7 @@ class PlaylistRV(RecycleView):
     """
     The RecycleView widget embedded in the playlist.
     """
+
+
+class PlaylistPopup(Popup):
+    pass

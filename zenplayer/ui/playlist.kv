@@ -47,3 +47,20 @@
             ZenButton:
                 text: 'Back'
                 on_release: root.ctrl.show_main()
+
+<PlaylistPopup>:
+    title: "Track options"
+    size_hint: 0.75, 0.75
+    auto_dismiss: False
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10, 10, 10, 10
+        spacing: 10
+        ZenButton:
+            text: "Play"
+        ZenButton:
+            text: "Info"
+        ZenButton:
+            text: "Remove"
+        ZenButton:
+            text: "Cancel"
