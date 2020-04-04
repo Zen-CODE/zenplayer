@@ -26,7 +26,8 @@ class KeyHandler:
         keypresses (keys) should call which functions (values).
         """
 
-    def _load_keymap(self):
+    @staticmethod
+    def _load_keymap():
         """ Load the specified key mappings from the json file. """
         with open(join(dirname(__file__), "keymap.json")) as f:
             mappings = load(f)
