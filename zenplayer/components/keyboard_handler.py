@@ -18,7 +18,7 @@ class KeyHandler:
             return
 
         self.kb_listener = ZenKeyboardListener(self.on_key_down,
-                                               ctrl.playing)
+                                               ctrl.sm.get_screen("main"))
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
         """
