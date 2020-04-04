@@ -4,6 +4,7 @@ This module houses a factory class for generating and retuning screens
 from ui.screens.playlist.playlist import PlaylistScreen
 from ui.screens.filebrowser.filebrowser import ZenFileBrowser
 from ui.screens.playing.playing import PlayingScreen
+from ui.screens.info.info import InfoScreen
 
 
 class ScreenFactory:
@@ -33,3 +34,8 @@ class ScreenFactory:
     def _get_main(**kwargs):
         """ Return the PlaylistScreen """
         return PlayingScreen(**kwargs)
+
+    @staticmethod
+    def _get_info(**kwargs):
+        """ Return the PlaylistScreen """
+        return InfoScreen(**kwargs)

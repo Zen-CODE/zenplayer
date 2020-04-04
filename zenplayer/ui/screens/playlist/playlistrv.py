@@ -78,7 +78,9 @@ class PlaylistPopup(Popup):
         self.ctrl.play_index(self.index)
 
     def button_info(self):
-        print("info")
+        """ Display detailed info on the selected track """
+        data = self.ctrl.playlist.queue[self.index]
+        self.ctrl.show_screen("info", filename=data["filename"])
 
     def button_remove(self):
         """ Play the track selected track. """
