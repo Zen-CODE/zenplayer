@@ -212,7 +212,10 @@ class Controller(EventDispatcher):
             self.sm.get_screen("filebrowser").save(self.store)
 
     def show_screen(self, name="main", **kwargs):
-        """ Switch to the main playing screen"""
+        """
+        Switch to the screen specified. The *kwargs* dictionary will be either
+        passed to the constructor, or their values manually applied.
+        """
         if name not in self.sm.screen_names:
             screen = ScreenFactory.get(name, ctrl=self, **kwargs)
             self.sm.add_widget(screen)
