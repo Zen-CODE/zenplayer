@@ -17,8 +17,36 @@
 
         BoxLayout:
             size_hint_y: 0.8
-            Label:
-                text: "Info here"
+            orientation: "horizontal"
+            Image:
+                id: image
+                size_hint_x: 0.5
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_x: 0.5
+                Label:
+                    markup: True
+                    color: 0.25, 1.0, 0.25, 1.0
+                    text: "[b]Track Info[/b]"
+                Label:
+                    id: artist
+                Label:
+                    id: album
+                Label:
+                    id: file
+                Label:
+                    id: filename
+                Label:
+                    markup: True
+                    text: "[b]Track Metadata[/b]"
+                Label:
+                    id: length
+                Label:
+                    id: bitrate
+                Label:
+                    id: channels
+                Label:
+                    id: sample_rate
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
