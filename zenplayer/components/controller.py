@@ -1,4 +1,3 @@
-from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from ui.screens.playing.playing import PlayingScreen
 from components.audioplayer import Sound
@@ -6,13 +5,14 @@ from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
-from os.path import join, expanduser, exists
-from os import mkdir, sep
+from os.path import join
+from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
 from components.filedrop import FileDrop
 from components.screens import ScreenFactory
 from ui.screens.playlist.playlist import Playlist
+from components.store import StoreFactory
 
 
 DEFAULT_COVER = "images/zencode.jpg"
@@ -54,11 +54,11 @@ class Controller(EventDispatcher):
     prune = True
     """ If set to true, remove files from the playlist once played. """
 
+    store = ObjectProperty(StoreFactory.get())
+
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
         super(Controller, self).__init__(**kwargs)
-        self.store = JsonStore(join(self._get_settings_folder(),
-                                    "zenplayer.json"))
         self.playlist = Playlist(self.store)
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
@@ -108,14 +108,6 @@ class Controller(EventDispatcher):
             self.sound.pause()
 
         self.prev_state = value
-
-    @staticmethod
-    def _get_settings_folder():
-        """ Return the folder when the setting file is stored. """
-        path = expanduser("~/.zencode")
-        if not exists(path):
-            mkdir(path)
-        return path
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
