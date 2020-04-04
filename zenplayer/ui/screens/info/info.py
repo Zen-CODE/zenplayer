@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.lang import Builder
 from kivy.clock import Clock
+from components.meta import  Metadata
 
 
 class InfoScreen(Screen):
@@ -39,7 +40,9 @@ class InfoScreen(Screen):
 
     def _show_meta(self, filename):
         """ Populate the track info """
-        pass
+        meta = Metadata.get(filename)
+        for key in meta.keys():
+            self.ids[key].text = f"{key.title()}: {meta[key]}"
 
     def _show_art(self, filename):
         """ Populate the track info """

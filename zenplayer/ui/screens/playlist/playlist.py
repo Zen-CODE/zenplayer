@@ -133,7 +133,7 @@ class Playlist(EventDispatcher):
 
     def get_info(self, filename=None, index=None):
         """
-        Return a dictionary containing the metadata on the track """
+        Return a dictionary containing the information on the track """
         try:
             if index is None:
                 parts = filename.split(sep)
