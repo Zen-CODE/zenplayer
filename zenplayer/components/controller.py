@@ -8,7 +8,7 @@ from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
 from components.filedrop import FileDrop
-from components.screens import ScreenFactory
+from ui.screens.screens import ScreenFactory
 from ui.screens.playlist.playlist import Playlist
 from components.store import StoreFactory
 
