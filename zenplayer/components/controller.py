@@ -1,5 +1,3 @@
-from ui.screens.playlist.playlist import Playlist, PlaylistScreen
-from ui.screens.filebrowser.filebrowser import ZenFileBrowser
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
 from ui.screens.playing.playing import PlayingScreen
@@ -13,6 +11,8 @@ from os import mkdir, sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
 from components.filedrop import FileDrop
+from components.screens import ScreenFactory
+from ui.screens.playlist.playlist import Playlist
 
 
 DEFAULT_COVER = "images/zencode.jpg"
@@ -57,9 +57,9 @@ class Controller(EventDispatcher):
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
         super(Controller, self).__init__(**kwargs)
-        self._store = JsonStore(join(self._get_settings_folder(),
-                                     "zenplayer.json"))
-        self.playlist = Playlist(self._store)
+        self.store = JsonStore(join(self._get_settings_folder(),
+                                    "zenplayer.json"))
+        self.playlist = Playlist(self.store)
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
@@ -77,8 +77,8 @@ class Controller(EventDispatcher):
 
     def _restore_state(self):
         """ Load the state when previously exited if possible. """
-        if "state" in self._store.keys():
-            state = self._store.get("state")
+        if "state" in self.store.keys():
+            state = self.store.get("state")
             for key, value in state.items():
                 setattr(self, key, value)
 
@@ -217,72 +217,19 @@ class Controller(EventDispatcher):
 
     def save(self):
         """ Save the state of the the playlist and volume. """
-        self.playlist.save(self._store)
-        self._store.put("state", volume=self.volume, position=self.position,
-                        state=self.state)
+        self.playlist.save(self.store)
+        self.store.put("state", volume=self.volume, position=self.position,
+                       state=self.state)
         if "filebrowser" in self.sm.screen_names:
-            self.sm.get_screen("filebrowser").save(self._store)
+            self.sm.get_screen("filebrowser").save(self.store)
 
-    def show_filebrowser(self):
-        """ Switch to the file browser screen """
-        if not self.kivy3dgui:
-            if "filebrowser" not in self.sm.screen_names:
-                self.sm.add_widget(ZenFileBrowser(self,
-                                                  self.playlist,
-                                                  self._store,
-                                                  name="filebrowser"))
-            self.sm.current = "filebrowser"
-
-        else:
-            if "filebrowser" not in self.playing.ids.p_sm.screen_names:
-                self.playing.ids.p_sm.add_widget(ZenFileBrowser(self,
-                                                 self.playlist,
-                                                 self._store,
-                                                 name="filebrowser"))
-
-            from kivy.animation import Animation
-            player3d = self.playing.ids.player3d
-            Animation.cancel_all(player3d)
-
-            (Animation(
-                look_at=[-33, 0, 20, -43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(
-                 look_at=[-83, 0, -83, 33, 0, -83, 0, 1, 0], duration=0.8)
-             ).start(player3d)
-
-    def show_playlist(self):
-        """ Switch to the playlist screen """
-        if not self.kivy3dgui:
-            if "playlist" not in self.sm.screen_names:
-                self.sm.add_widget(PlaylistScreen(ctrl=self, name="playlist"))
-            self.sm.current = "playlist"
-        else:
-            if "playlist" not in self.playing.ids.c_sm.screen_names:
-                self.playing.ids.c_sm.add_widget(
-                    PlaylistScreen(ctrl=self, name="playlist"))
-            player3d = self.playing.ids.player3d
-            from kivy.animation import Animation
-
-            Animation.cancel_all(player3d)
-
-            (Animation(
-                look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8) +
-             Animation(
-                 look_at=[83, 0, -83, -33, 0, -83, 0, 1, 0], duration=0.8)
-             ).start(player3d)
-
-    def show_main(self):
+    def show_screen(self, name="main", **kwargs):
         """ Switch to the main playing screen"""
-        if not self.kivy3dgui:
-            self.sm.current = "main"
-        else:
-            from kivy.animation import Animation
-            player3d = self.playing.ids.player3d
-            Animation.cancel_all(player3d)
+        if name not in self.sm.screen_names:
+            screen = ScreenFactory.get(name, ctrl=self, **kwargs)
+            self.sm.add_widget(screen)
 
-            (Animation(look_at=[33, 0, 20, 43, 0, -93, 0, 1, 0], duration=0.8)
-             + Animation(look_at=[0, 0, 10, 0, 0, 0, 0, 1, 0], duration=0.8)
-             ).start(player3d)
+        self.sm.current = name
 
     def stop(self):
         """ Stop any playing audio """
@@ -297,3 +244,6 @@ class Controller(EventDispatcher):
         self.save()
         self.stop()
         Clock.schedule_once(lambda dt: self.app.stop())
+
+
+

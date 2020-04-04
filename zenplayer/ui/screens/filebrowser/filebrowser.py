@@ -15,12 +15,12 @@ class ZenFileBrowser(Screen):
     """
     filechooser = ObjectProperty()
 
-    def __init__(self, ctrl, playlist, store, **kwargs):
+    ctrl = ObjectProperty()
+
+    def __init__(self, **kwargs):
         Builder.load_file('ui/screens/filebrowser/filebrowser.kv')
-        self.ctrl = ctrl
-        self.playlist = playlist
         super(ZenFileBrowser, self).__init__(**kwargs)
-        self._init(store)
+        self._init(self.ctrl.store)
         # Hack to make the ScrollView easier to do large scrolls on OSX
         sv = self.filechooser.layout.children[0].children[0]
         sv.bar_width = 15
@@ -40,7 +40,7 @@ class ZenFileBrowser(Screen):
     def add_files(self):
         """ Add any selected files/folders to the playlist"""
         for filefolder in self.filechooser.selection:
-            self.playlist.add_files(filefolder)
+            self.ctrl.playlist.add_files(filefolder)
 
     def add_replace(self):
         """ Add any selected files/folders to the playlist removing any that
@@ -48,7 +48,7 @@ class ZenFileBrowser(Screen):
         state = Sound.state
         if state == "playing":
             self.ctrl.stop()
-        self.playlist.clear_files()
+        self.ctrl.playlist.clear_files()
         self.add_files()
         self.ctrl.play_pause()
 
