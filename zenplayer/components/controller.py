@@ -216,7 +216,10 @@ class Controller(EventDispatcher):
         if name not in self.sm.screen_names:
             screen = ScreenFactory.get(name, ctrl=self, **kwargs)
             self.sm.add_widget(screen)
-
+        elif kwargs:
+            screen = self.sm.get_screen(name)
+            for key in kwargs.keys():
+                setattr(screen, key, kwargs[key])
         self.sm.current = name
 
     def stop(self):
