@@ -6,6 +6,7 @@ from kivy.properties import ObjectProperty
 from os.path import exists
 from components.audioplayer import Sound
 from kivy.lang import Builder
+from os.path import sep
 
 
 class ZenFileBrowser(Screen):
@@ -15,7 +16,7 @@ class ZenFileBrowser(Screen):
     filechooser = ObjectProperty()
 
     def __init__(self, ctrl, playlist, store, **kwargs):
-        Builder.load_file('ui/filebrowser.kv')
+        Builder.load_file('ui/screens/filebrowser/filebrowser.kv')
         self.ctrl = ctrl
         self.playlist = playlist
         super(ZenFileBrowser, self).__init__(**kwargs)
@@ -53,11 +54,9 @@ class ZenFileBrowser(Screen):
 
     def folder_up(self):
         """ Move a single folder up """
-        # TODO: Check this for windows
-        # print "folderUp fired" + str(self.filechooser.path)
         path = self.filechooser.path
-        if path.rfind('/') > 1:
-            self.filechooser.path = path[:path.rfind('/')]
+        if path.rfind(sep) > 1:
+            self.filechooser.path = path[:path.rfind(sep)]
 
     def save(self, store):
         """ Save the file browser state """

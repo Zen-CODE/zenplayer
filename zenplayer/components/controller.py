@@ -1,8 +1,8 @@
-from ui.playlist import Playlist, PlaylistScreen
-from ui.filebrowser import ZenFileBrowser
+from ui.screens.playlist.playlist import Playlist, PlaylistScreen
+from ui.screens.filebrowser.filebrowser import ZenFileBrowser
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager
-from ui.playing import PlayingScreen
+from ui.screens.playing.playing import PlayingScreen
 from components.audioplayer import Sound
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
