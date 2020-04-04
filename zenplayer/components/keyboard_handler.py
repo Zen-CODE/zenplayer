@@ -18,7 +18,7 @@ class KeyHandler:
             return
 
         self.kb_listener = ZenKeyboardListener(self.on_key_down,
-                                               ctrl.sm.get_screen("main"))
+                                               ctrl.sm)
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
         """
@@ -35,15 +35,17 @@ class KeyHandler:
 
     def on_key_down(self, _keyboard, keycode, text, modifiers):
         """ React to the keypress event """
-        print("KeyHandler: on")
+        print(f"KeyHandler: on_key_down - {keycode}")
         if modifiers:
+            print("KeyHandler: no modifiers. Returning")
             return
         key_name = keycode[1]
 
         func = self.keymap.get(key_name, None)
         if func is not None:
-            getattr(self.ctrl, func)()
+            getattr(self.ctrl, func["name"])(**func.get("kwargs", {}))
             return True
+        print(f"KeyHandler: No mapping found")
 
 
 class ZenKeyboardListener(EventDispatcher):

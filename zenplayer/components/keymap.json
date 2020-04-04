@@ -1,15 +1,49 @@
 {
     "keymap": {
-        "w": "volume_up",
-        "s": "volume_down",
-        "d": "move_forward",
-        "a": "move_backward",
-        "x": "play_pause",
-        "z": "play_previous",
-        "v": "stop",
-        "b": "play_next",
-        "f": "show_filebrowser",
-        "p": "show_playlist",
-        "m": "show_main",
-        "q": "quit"}
+        "w": {
+            "name": "volume_up"
+        },
+        "s": {
+            "name": "volume_down"
+        },
+        "d": {
+            "name": "move_forward"
+        },
+        "a": {
+            "name": "move_backward"
+        },
+        "x": {
+            "name": "play_pause"
+        },
+        "z": {
+            "name": "play_previous"
+        },
+        "v": {
+            "name": "stop"
+        },
+        "b": {
+            "name": "play_next"
+        },
+        "f": {
+            "name": "show_screen",
+            "kwargs": {
+                "name": "filebrowser"
+            }
+        },
+        "p": {
+            "name": "show_screen",
+            "kwargs": {
+                "name": "playlist"
+            }
+        },
+        "m": {
+            "name": "show_screen",
+            "kwargs": {
+                "name": "main"
+            }
+        },
+        "q": {
+            "name": "quit"
+        }
+    }
 }
