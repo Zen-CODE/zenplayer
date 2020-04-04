@@ -229,9 +229,8 @@ class Controller(EventDispatcher):
         self.advance = True
 
     def quit(self):
-        """ Close the appllication """
-        if self.state == "playing":
-            self.state = "paused"  # Enable saving of position
+        """ Close the application """
+        self.prune = False
         self.save()
         self.stop()
         Clock.schedule_once(lambda dt: self.app.stop())

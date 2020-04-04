@@ -35,6 +35,7 @@ class KeyHandler:
 
     def on_key_down(self, _keyboard, keycode, text, modifiers):
         """ React to the keypress event """
+        print("KeyHandler: on")
         if modifiers:
             return
         key_name = keycode[1]
