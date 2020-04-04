@@ -22,15 +22,25 @@ class InfoScreen(Screen):
 
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """
-        Clock.schedule_once(lambda dt: self._show_info(filename))
+        Clock.schedule_once(lambda dt: self._show(filename))
+
+    def _show(self, filename):
+        """ Show all the details on the given filename """
+        self._show_info(filename)
+        self._show_meta(filename)
+        self._show_art(filename)
 
     def _show_info(self, filename):
         """ Populate the track info """
         data = self.ctrl.playlist.get_info(filename=filename)
         for key in data.keys():
             self.ids[key].text = data[key]
-        self.ids["filename"] = filename
+        self.ids["filename"].text = filename
 
-    def _show_details(self, filename):
+    def _show_meta(self, filename):
         """ Populate the track info """
         pass
+
+    def _show_art(self, filename):
+        """ Populate the track info """
+        self.ids["image"].source = self.ctrl.playlist.get_album_art(filename)
