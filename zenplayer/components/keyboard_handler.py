@@ -17,7 +17,10 @@ class KeyHandler:
         if platform in ['ios', 'android']:
             return
 
-        self.kb_listener = ZenKeyboardListener(self.on_key_down)
+        self.kb_listener = Window.request_keyboard(
+            lambda: None, None, 'text')
+        self.kb_listener.bind(on_key_down=self.on_key_down)
+
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
 
@@ -46,16 +49,3 @@ class KeyHandler:
             getattr(self.ctrl, func["name"])(**func.get("kwargs", {}))
             return True
         print(f"KeyHandler: No mapping found")
-
-
-class ZenKeyboardListener(EventDispatcher):
-    """
-    This class handles the management of keypress to control volume, play,
-    stop, next etc.
-    """
-    def __init__(self, callback):
-        super(ZenKeyboardListener, self).__init__()
-        self._keyboard = Window.request_keyboard(
-            lambda: None, None, 'text')
-        self._keyboard.bind(on_key_down=callback)
-        self._cb = callback
