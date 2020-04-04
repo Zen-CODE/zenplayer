@@ -17,8 +17,7 @@ class KeyHandler:
         if platform in ['ios', 'android']:
             return
 
-        self.kb_listener = ZenKeyboardListener(self.on_key_down,
-                                               ctrl.sm)
+        self.kb_listener = ZenKeyboardListener(self.on_key_down)
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
         """
@@ -53,14 +52,15 @@ class ZenKeyboardListener(EventDispatcher):
     This class handles the management of keypress to control volume, play,
     stop, next etc.
     """
-    def __init__(self, callback, widget):
+    def __init__(self, callback):
         super(ZenKeyboardListener, self).__init__()
         self._keyboard = Window.request_keyboard(
-            self._keyboard_closed, widget, 'text')
+            self._keyboard_closed, None, 'text')
         self._keyboard.bind(on_key_down=callback)
         self._cb = callback
 
     def _keyboard_closed(self):
+        print("ZenKeyboardListener: Keyboard closed")
         self._keyboard.unbind(on_key_down=self._cb)
         self._keyboard = None
         self._cb = None
