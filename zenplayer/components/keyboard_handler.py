@@ -20,6 +20,7 @@ class KeyHandler:
         self.kb_listener = ZenKeyboardListener(self.on_key_down)
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
+
         """
         A dictionary of ("letter", "function_name") values specifying which
         keypresses (keys) should call which functions (values).
@@ -55,12 +56,6 @@ class ZenKeyboardListener(EventDispatcher):
     def __init__(self, callback):
         super(ZenKeyboardListener, self).__init__()
         self._keyboard = Window.request_keyboard(
-            self._keyboard_closed, None, 'text')
+            lambda: None, None, 'text')
         self._keyboard.bind(on_key_down=callback)
         self._cb = callback
-
-    def _keyboard_closed(self):
-        print("ZenKeyboardListener: Keyboard closed")
-        self._keyboard.unbind(on_key_down=self._cb)
-        self._keyboard = None
-        self._cb = None
