@@ -16,8 +16,7 @@ class InfoScreen(Screen):
 
     filename = StringProperty()
 
-    def __init__(self, ctrl, **kwargs):
-        self.ctrl = ctrl
+    def __init__(self, **kwargs):
         Builder.load_file("ui/screens/info/info.kv")
         super(InfoScreen, self).__init__(**kwargs)
 
