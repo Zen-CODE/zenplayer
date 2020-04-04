@@ -45,7 +45,7 @@ class Controller(EventDispatcher):
     playlist = ObjectProperty()
     """ Reference to the Playlist object. """
 
-    sm = None
+    sm = ObjectProperty(ScreenManager())
     ''' A Reference to the active ScreenManager class. '''
 
     kivy3dgui = False
@@ -63,7 +63,6 @@ class Controller(EventDispatcher):
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
-        self.sm = ScreenManager()
         self.playing = PlayingScreen(self, name="main")
         self.sm.add_widget(self.playing)
         self.sm.current = "main"
