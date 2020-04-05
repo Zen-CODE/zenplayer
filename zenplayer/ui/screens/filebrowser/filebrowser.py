@@ -37,20 +37,15 @@ class ZenFileBrowser(Screen):
                 if exists(file_path):
                     self.filechooser.path = file_path
 
-    def add_files(self):
-        """ Add any selected files/folders to the playlist"""
-        for filefolder in self.filechooser.selection:
-            self.ctrl.playlist.add_files(filefolder)
-
     def add_replace(self):
         """ Add any selected files/folders to the playlist removing any that
         already exist """
-        state = Sound.state
-        if state == "playing":
+        if self.filechooser.selection:
             self.ctrl.stop()
-        self.ctrl.playlist.clear_files()
-        self.add_files()
-        self.ctrl.play_pause()
+            self.ctrl.playlist.clear_files()
+            for file_folder in self.filechooser.selection:
+                self.ctrl.playlist.add_files(file_folder)
+            self.ctrl.play_index(0)
 
     def folder_up(self):
         """ Move a single folder up """
