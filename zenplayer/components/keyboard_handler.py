@@ -23,7 +23,6 @@ class KeyHandler:
 
         self.ctrl = ctrl
         self.keymap = self._load_keymap()
-
         """
         A dictionary of ("letter", "function_name") values specifying which
         keypresses (keys) should call which functions (values).
