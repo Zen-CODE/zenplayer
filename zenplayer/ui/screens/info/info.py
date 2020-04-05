@@ -41,7 +41,10 @@ class InfoScreen(Screen):
         """ Populate the track info """
         meta = Metadata.get(filename)
         for key in meta.keys():
-            self.ids[key].text = f"{key.title().replace('_', ' ')}: {meta[key]}"
+            val = meta[key]
+            if not isinstance(val, str):
+                val = int(val)  # Present horrible decimal values...
+            self.ids[key].text = f"{key.title().replace('_', ' ')}: {val}"
 
     def _show_art(self, filename):
         """ Populate the track info """
