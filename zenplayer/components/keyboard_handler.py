@@ -35,16 +35,23 @@ class KeyHandler:
             mappings = load(f)
         return mappings["keymap"]
 
+    @staticmethod
+    def _get_match(keymap, modifiers, key_name):
+        """
+        Return the value in the keymap that matches the modifiers and key_name
+        """
+        for key in keymap.keys():
+            parts = key.split("+")
+            hk_key_name = filter(lambda x: len(x) == 1, parts)
+            if next(hk_key_name) == key_name:
+                # The letter matches. Do the modifiers?
+                hk_modifiers = filter(lambda x: len(x) > 1, parts)
+                if not set(hk_modifiers).difference(set(modifiers)):
+                    return keymap[key]
+
     def on_key_down(self, _keyboard, keycode, text, modifiers):
         """ React to the keypress event """
-        print(f"KeyHandler: on_key_down - {keycode}")
-        if modifiers:
-            print("KeyHandler: no modifiers. Returning")
-            return
-        key_name = keycode[1]
-
-        func = self.keymap.get(key_name, None)
+        func = self._get_match(self._load_keymap(), modifiers, keycode[1])
         if func is not None:
             getattr(self.ctrl, func["name"])(**func.get("kwargs", {}))
             return True
-        print(f"KeyHandler: No mapping found")
