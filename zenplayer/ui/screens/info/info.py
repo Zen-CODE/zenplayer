@@ -16,6 +16,13 @@ class InfoScreen(Screen):
 
     filename = StringProperty()
 
+    units = {"length": " s",
+             "bitrate": " kbps",
+             "sample_rate": " hz"}
+    """
+    Defines the list of unit suffixes to be used when displaying track metadata.
+    """
+
     def __init__(self, **kwargs):
         Builder.load_file("ui/screens/info/info.kv")
         super(InfoScreen, self).__init__(**kwargs)
@@ -41,10 +48,16 @@ class InfoScreen(Screen):
         """ Populate the track info """
         meta = Metadata.get(filename)
         for key in meta.keys():
-            val = meta[key]
-            if not isinstance(val, str):
-                val = int(val)  # Present horrible decimal values...
+            val = self.format_meta_value(key, meta[key])
             self.ids[key].text = f"{key.title().replace('_', ' ')}: {val}"
+
+    @staticmethod
+    def format_meta_value(key, value):
+        """ Return the prettily formatted string for the given key """
+        if not isinstance(value, str):
+            val = int(value)  # Present horrible decimal values...
+        unit = InfoScreen.units.get(key, "")
+        return f"{value}{unit}"
 
     def _show_art(self, filename):
         """ Populate the track info """
