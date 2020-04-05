@@ -11,8 +11,12 @@ class FlaskThread(Thread):
         self.ctrl = ctrl
 
     def run(self):
-        ZenWebPlayer(self.ctrl).run(
-            debug=True, use_debugger=True, use_reloader=False, host="0.0.0.0")
+        try:
+            ZenWebPlayer(self.ctrl).run(
+                debug=True, use_debugger=True, use_reloader=False,
+                host="0.0.0.0")
+        except OSError as e:
+            print(f"Unable to start webserver: error {e}")
 
 
 class WebServer:
