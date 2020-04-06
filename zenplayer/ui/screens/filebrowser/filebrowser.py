@@ -4,7 +4,6 @@ Displays the file browsing screen for ZenPlayer
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from os.path import exists
-from components.audioplayer import Sound
 from kivy.lang import Builder
 from os.path import sep
 
@@ -46,6 +45,12 @@ class ZenFileBrowser(Screen):
             for file_folder in self.filechooser.selection:
                 self.ctrl.playlist.add_files(file_folder)
             self.ctrl.play_index(0)
+
+    def add_files(self):
+        """ Add any selected files/folders to the playlist  """
+        if self.filechooser.selection:
+            for file_folder in self.filechooser.selection:
+                self.ctrl.playlist.add_files(file_folder)
 
     def folder_up(self):
         """ Move a single folder up """
