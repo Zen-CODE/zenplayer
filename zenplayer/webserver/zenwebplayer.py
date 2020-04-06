@@ -40,7 +40,7 @@ class ZenWebPlayer:
         self.app.run(*args, **kwargs)
 
 
-class ZenPlayerAPI():
+class ZenPlayerAPI:
     """
     This class houses the interface to teh active Zenplayer
     """
@@ -265,4 +265,4 @@ class ZenPlayerAPI():
                              track
         """
         state = self.get_state()
-        return Response.from_image(state["cover"])
+        return Response.from_image(self.app, state["cover"])

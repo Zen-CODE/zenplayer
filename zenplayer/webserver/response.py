@@ -20,10 +20,16 @@ class Response:
         return resp
 
     @staticmethod
-    def from_image(file_name):
+    def from_image(app, file_name):
         """
         Generate and return the appropriate HTTP response object containing the
         image data from the file.
         """
-        ext = file_name.split(".")[-1].lower()
-        return send_file(file_name, mimetype='image/' + ext)
+        with app.app_context():
+            resp = make_response(send_file(file_name), 200)
+            resp.headers.update({
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'})
+        return resp
