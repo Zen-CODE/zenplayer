@@ -51,7 +51,7 @@ class ZenPlayerAPI:
         self.app = app
         """ Reference to the flask app context. """
 
-    def get_state(self):
+    def _get_state(self):
         """
         Return a dictionary containing the complete player state.
         """
@@ -251,7 +251,7 @@ class ZenPlayerAPI:
                                      file.
                         type: string
         """
-        return Response.from_dict(self.app, self.get_state())
+        return Response.from_dict(self.app, self._get_state())
 
     def get_track_cover(self):
         """
@@ -264,5 +264,5 @@ class ZenPlayerAPI:
                 description: Return the cover image for the currently active
                              track
         """
-        state = self.get_state()
+        state = self._get_state()
         return Response.from_image(self.app, state["cover"])
