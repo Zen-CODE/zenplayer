@@ -1,8 +1,9 @@
-from flask import Flask
+from flask import Flask, render_template
 from webserver.zenswagger import ZenSwagger
 from webserver.response import Response
 from components.meta import Metadata
 from kivy.clock import Clock
+from os.path import abspath, dirname, join
 
 
 class ZenWebPlayer:
@@ -13,8 +14,8 @@ class ZenWebPlayer:
 
     def __init__(self, ctrl):
         super(ZenWebPlayer, self).__init__()
-
-        self.app = Flask(__name__)
+        templates = join(abspath(dirname(__file__)), "templates")
+        self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """
 
         self.api = ZenPlayerAPI(ctrl, self.app)
@@ -32,12 +33,21 @@ class ZenWebPlayer:
                      "get_track_meta"]:
             self.app.add_url_rule(route + meth, route + meth,
                                   getattr(self.api, meth), methods=['GET'])
+        self.app.add_url_rule("/", "/",
+                              self.index, methods=['GET'])
 
     def run(self, *args, **kwargs):
         """
         Run the underlying flask app
         """
         self.app.run(*args, **kwargs)
+
+    @staticmethod
+    def index():
+        """
+        Serve the index as a minimally functional HTML page
+        """
+        return render_template("index.html")
 
 
 class ZenPlayerAPI:
