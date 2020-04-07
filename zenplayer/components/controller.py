@@ -11,9 +11,7 @@ from components.filedrop import FileDrop
 from ui.screens.screens import ScreenFactory
 from ui.screens.playlist.playlist import Playlist
 from components.store import StoreFactory
-
-
-DEFAULT_COVER = "images/zencode.jpg"
+from os.path import dirname, join, abspath
 
 
 class Controller(EventDispatcher):
@@ -27,7 +25,8 @@ class Controller(EventDispatcher):
     artist = StringProperty("-")
     album = StringProperty("-")
     track = StringProperty("-")
-    cover = StringProperty(DEFAULT_COVER)
+    cover = StringProperty(join(abspath(dirname(__file__)),
+                                "../images/zencode.jpg"))
     time_display = StringProperty("-")
     state = OptionProperty("", options=["stopped", "paused", "playing", ""])
     prev_state = None
