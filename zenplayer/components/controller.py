@@ -45,9 +45,6 @@ class Controller(EventDispatcher):
     sm = ObjectProperty(ScreenManager())
     """ A reference to the active ScreenManager class. """
 
-    kivy3dgui = False
-    """ Set whether to use the kivy3dgui interface on not """
-
     prune = True
     """ If set to true, remove files from the playlist once played. """
 
