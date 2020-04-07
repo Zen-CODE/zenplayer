@@ -22,7 +22,7 @@ class HotKeyHandler:
     @staticmethod
     def _load_hotkeymap():
         """ Load the specified hotkey mappings from the json file. """
-        with open(join(dirname(__file__), "hotkeymap.json")) as f:
+        with open(join(dirname(__file__), "../config/hotkeymap.json")) as f:
             mappings = load(f)
         return mappings["hotkeymap"]
 

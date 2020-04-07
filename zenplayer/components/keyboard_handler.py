@@ -31,7 +31,7 @@ class KeyHandler:
     @staticmethod
     def _load_keymap():
         """ Load the specified key mappings from the json file. """
-        with open(join(dirname(__file__), "keymap.json")) as f:
+        with open(join(dirname(__file__), "../config/keymap.json")) as f:
             mappings = load(f)
         return mappings["keymap"]
 
