@@ -42,7 +42,8 @@ class ZenWebPlayer:
         """
         self.app.run(*args, **kwargs)
 
-    def index(self):
+    @staticmethod
+    def index():
         """
         Serve the index as a minimally functional HTML page
         """

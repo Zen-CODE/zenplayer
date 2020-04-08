@@ -1,7 +1,10 @@
-from vlc import MediaPlayer, Instance, EventType
+from vlc import MediaPlayer, EventType
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
 from kivy.clock import mainthread
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class Sound(EventDispatcher):
@@ -12,15 +15,23 @@ class Sound(EventDispatcher):
     player = ObjectProperty(None)
     """ Reference to the underlying vlc instance. """
 
-    def __init__(self, **kwargs):
-        super(Sound, self).__init__(**kwargs)
-        self.player = MediaPlayer()
-        self.player.event_manager().event_attach(
+    def _set_player(self, file_name):
+        """ Create and set a new media player for the given file """
+        logger.debug(f"Entering _set_player. file_name={file_name}")
+        if self.player is not None:
+            logger.debug("Detaching event and unloading.")
+            self.player.event_manager().event_detach(
+                EventType.MediaPlayerEndReached)
+            self.player.stop()
+
+        player = self.player = MediaPlayer(file_name)
+        player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
 
     @mainthread
     def _track_finished(self, *args):
         """ Event fired when the track is finished. """
+        logger.debug(f"Entering _track_finished. state={self.state}")
         if self.state != "stopped":
             self.state = "stopped"
 
@@ -35,17 +46,25 @@ class Sound(EventDispatcher):
             * length: The length of the song in seconds.
 
         """
-        return (self.player.get_position(),
-                self.player.get_length() / 1000.0)
+        logger.debug(f"Entering get_pos_length. player={self.player}")
+        if self.player:
+            return (self.player.get_position(),
+                    self.player.get_length() / 1000.0)
+        else:
+            return 0.0, 0.0
 
     def stop(self):
         """ Stop any playing audio """
-        self.player.stop()
-        self.state = "stopped"
+        logger.debug(f"Entering stop. player={self.player}")
+        if self.player:
+            self.player.stop()
+            self.state = "stopped"
 
     def pause(self):
         """ Pause and resume the currently playing audio track. """
-        if self.state in ["playing", "paused"]:
+        logger.debug(f"Entering pause. state={self.state},"
+                     f" player={self.player}")
+        if self.state in ["playing", "paused"] and self.player:
             self.player.pause()
             self.state = "paused" if self.state == "playing" else "playing"
 
@@ -54,30 +73,33 @@ class Sound(EventDispatcher):
         Play the file specified by the filename. If on_stop is passed in,
         this function is called when the sound stops
         """
-        if self.state in ["playing", "paused"]:
-            self.player.stop()
-
-        self.player.set_media(Instance().media_new(filename))
+        logger.debug(f"Entering play. player={self.player}")
+        self._set_player(filename)
         self.set_volume(volume)
-        self.player.play()
-        self.state = "playing"
         if pos != 0.0:
             self.player.set_position(pos)
+
+        self.player.play()
+        self.state = "playing"
 
     def set_position(self, value):
         """
         The position of the currently playing sound as a fraction between 0
         and 1.
         """
-        self.player.set_position(value)
+        logger.debug(f"Entering set_position. player={self.player}")
+        if self.player:
+            self.player.set_position(value)
 
     def set_volume(self, value):
         """
         The volume of the currently playing sound, where the value is between
         0 and 1.
         """
-        vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
-        self.player.audio_set_volume(int(vol))
+        logger.debug(f"Entering set_volume. player={self.player}")
+        if self.player:
+            vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
+            self.player.audio_set_volume(int(vol))
 
 
 if __name__ == "__main__":
