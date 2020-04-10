@@ -78,7 +78,7 @@ class ZenPlayerAPI:
             "file_name": ctrl.file_name
         }
 
-    def safe_call(self, func):
+    def _safe_call(self, func):
         """
         Call the given function in a clock event and return a success reponse.
         """
@@ -139,7 +139,7 @@ class ZenPlayerAPI:
                         enum: ["success", "failed"]
 
         """
-        return self.safe_call(self.ctrl.play_pause)
+        return self._safe_call(self.ctrl.play_pause)
 
     def volume_up(self):
         """
@@ -153,7 +153,7 @@ class ZenPlayerAPI:
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self.safe_call(self.ctrl.volume_up)
+        return self._safe_call(self.ctrl.volume_up)
 
     def volume_down(self):
         """
@@ -167,7 +167,7 @@ class ZenPlayerAPI:
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self.safe_call(self.ctrl.volume_down)
+        return self._safe_call(self.ctrl.volume_down)
 
     def play_previous(self):
         """
@@ -181,7 +181,7 @@ class ZenPlayerAPI:
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self.safe_call(self.ctrl.play_previous)
+        return self._safe_call(self.ctrl.play_previous)
 
     def play_next(self):
         """
@@ -195,7 +195,7 @@ class ZenPlayerAPI:
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self.safe_call(self.ctrl.play_next)
+        return self._safe_call(self.ctrl.play_next)
 
     def stop(self):
         """
@@ -209,7 +209,7 @@ class ZenPlayerAPI:
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self.safe_call(self.ctrl.stop)
+        return self._safe_call(self.ctrl.stop)
 
     def get_track_info(self):
         """
