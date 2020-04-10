@@ -233,7 +233,6 @@ class Controller(EventDispatcher):
     def quit(self):
         """ Close the application """
         logger.debug("controller.py: Entering quit. About to save.")
-        self.prune = False
         self.save()
         logger.debug("controller.py: About to stop.")
         self.stop()
