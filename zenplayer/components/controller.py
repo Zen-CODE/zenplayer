@@ -12,15 +12,17 @@ from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
 from components.store import StoreFactory
 from os.path import dirname, join, abspath
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class Controller(EventDispatcher):
     """
     Controls the playing of audio and coordinates the updating of the playlist
-    and screen displays
+    and screen displays.
     """
 
-    # The following fields control the display in the playlist
     volume = NumericProperty(1.0)
     artist = StringProperty("-")
     album = StringProperty("-")
@@ -71,8 +73,9 @@ class Controller(EventDispatcher):
         """ Load the state when previously exited if possible. """
         if "state" in self.store.keys():
             state = self.store.get("state")
-            for key, value in state.items():
-                setattr(self, key, value)
+            self.position = state["position"]
+            self.volume = state["volume"]
+            self.state = state["state"]
 
     def set_state(self, _widget, value):
         """
@@ -85,13 +88,13 @@ class Controller(EventDispatcher):
 
     def on_state(self, _widget, value):
         """ React to the change of state event """
+        logger.debug(f"controller.py: Entering on_state. value={value}")
         if value == "playing":
             if self.sound.state == "playing":
                 self.sound.stop()
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
-                pos = 0 if self.prev_state != "paused" else self.position
-                self.sound.play(self.file_name, self.volume, pos)
+                self.sound.play(self.file_name, self.volume, self.position)
         elif value == "stopped":
             self.sound.stop()
         elif value == "paused" and self.prev_state is not None:
@@ -229,9 +232,12 @@ class Controller(EventDispatcher):
 
     def quit(self):
         """ Close the application """
+        logger.debug("controller.py: Entering quit. About to save.")
         self.prune = False
         self.save()
+        logger.debug("controller.py: About to stop.")
         self.stop()
+        logger.debug("controller.py: Firing app stop.")
         Clock.schedule_once(lambda dt: self.app.stop())
 
 
