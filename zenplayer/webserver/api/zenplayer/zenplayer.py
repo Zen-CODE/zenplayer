@@ -31,7 +31,7 @@ class Zenplayer(ZenAPIBase):
         Call the given function in a clock event and return a success reponse.
         """
         Clock.schedule_once(lambda dt: func())
-        return Response.from_dict(self.app, {"status": "success"})
+        return Response.from_dict({"status": "success"})
 
     def get_track_meta(self):
         """
@@ -63,7 +63,7 @@ class Zenplayer(ZenAPIBase):
 
         """
         meta = Metadata.get(self.ctrl.file_name)
-        return Response.from_dict(self.app, meta)
+        return Response.from_dict(meta)
 
     def play_pause(self):
         """
@@ -209,7 +209,7 @@ class Zenplayer(ZenAPIBase):
                                      file.
                         type: string
         """
-        return Response.from_dict(self.app, self._get_state())
+        return Response.from_dict(self._get_state())
 
     def get_track_cover(self):
         """
@@ -223,4 +223,4 @@ class Zenplayer(ZenAPIBase):
                              track
         """
         state = self._get_state()
-        return Response.from_image(self.app, state["cover"])
+        return Response.from_image(state["cover"])

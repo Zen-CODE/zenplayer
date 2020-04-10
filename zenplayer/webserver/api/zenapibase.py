@@ -12,5 +12,3 @@ class ZenAPIBase:
         super(ZenAPIBase, self).__init__()
         self.ctrl = ctrl
         """ Reference to the controller object. """
-        self.app = app
-        """ Reference to the flask app context. """
