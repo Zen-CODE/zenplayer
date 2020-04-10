@@ -222,6 +222,13 @@ class Zenplayer(ZenAPIBase):
             200:
                 description: Return the cover image for the currently active
                              track
+                content:
+                    image/*:     # Media type
+                        schema:
+                            type: string
+                            format: binary
+
+
         """
         state = self._get_state()
         return Response.from_image(state["cover"])

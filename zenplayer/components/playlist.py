@@ -117,10 +117,11 @@ class Playlist(EventDispatcher):
         """
         Return the full image filename from the folder
         """
-        folder = audio_file[0: audio_file.rfind(sep)]
-        for f_name in reversed(listdir(folder)):
-            if f_name[-4:] in [".png", ".bmp", ".jpg", "jpeg"]:
-                return path.join(folder, f_name)
+        if audio_file:
+            folder = audio_file[0: audio_file.rfind(sep)]
+            for f_name in reversed(listdir(folder)):
+                if f_name[-4:] in [".png", ".bmp", ".jpg", "jpeg"]:
+                    return path.join(folder, f_name)
         return "images/zencode.jpg"
 
     def get_info(self, filename=None, index=None):

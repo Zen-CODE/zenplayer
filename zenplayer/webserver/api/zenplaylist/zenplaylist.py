@@ -66,3 +66,25 @@ class Zenplaylist(ZenAPIBase):
                         type: string
         """
         return Response.from_dict(self.ctrl.playlist.queue)
+
+    def get_current_art(self):
+        """
+        Return the image for the currently playing track.
+        ---
+        tags:
+            - ZenPlaylist
+        responses:
+            200:
+                description: Return the cover image for the currently active
+                             track
+                content:
+                    image/*:     # Media type
+                        schema:
+                            type: string
+                            format: binary
+
+        """
+        pl = self.ctrl.playlist
+        file_name = pl.get_current_file()
+        image = pl.get_album_art(file_name)
+        return Response.from_image(image)
