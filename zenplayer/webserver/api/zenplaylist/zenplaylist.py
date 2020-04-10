@@ -38,3 +38,31 @@ class Zenplaylist(ZenAPIBase):
         data = self.ctrl.playlist.get_current_info()
         return Response.from_dict(data)
 
+    def get_playlist(self):
+        """
+        Return the current playlist as a list of full paths to the audio file.
+        ---
+        tags:
+            - ZenPlaylist
+        responses:
+            200:
+                description: Return information on the currently active  track.
+                schema:
+                    $ref: '#/definitions/Playlist'
+        definitions:
+            Playlist:
+                type: array
+                items:
+                    $ref: '#/definitions/PlaylistItem'
+            PlaylistItem:
+                type: object
+                properties:
+                    text:
+                        description: The text for the item displayed in the
+                                     playlist
+                        type: string
+                    filename:
+                        description: The full path to the audio file
+                        type: string
+        """
+        return Response.from_dict(self.ctrl.playlist.queue)
