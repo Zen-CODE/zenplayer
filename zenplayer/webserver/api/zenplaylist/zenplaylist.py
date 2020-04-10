@@ -1,5 +1,5 @@
 """
-This module houses teh API interface for the ZenPlaylist
+This module houses teh API interface for the Zenplaylist
 """
 from webserver.api.zenapibase import ZenAPIBase
 from webserver.response import Response

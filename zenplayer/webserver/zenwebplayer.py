@@ -3,6 +3,7 @@ from webserver.zenswagger import ZenSwagger
 from os.path import abspath, dirname, join
 from webserver.api.zenplayer.zenplayer import Zenplayer
 from webserver.api.zenplaylist.zenplaylist import Zenplaylist
+from webserver.api.zenlibrary.zenlibrary import Zenlibrary
 from inspect import ismethod
 
 
@@ -18,6 +19,7 @@ class ZenWebPlayer:
 
         self.add_routes("zenplayer", Zenplayer(ctrl))
         self.add_routes("zenplaylist", Zenplaylist(ctrl))
+        self.add_routes("zenlibrary", Zenlibrary(ctrl))
         app.add_url_rule("/", "/", self.index, methods=['GET'])
         ZenSwagger.init_swagger(app)
 
