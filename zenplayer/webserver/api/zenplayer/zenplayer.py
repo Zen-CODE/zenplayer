@@ -1,18 +1,13 @@
 from webserver.response import Response
 from components.meta import Metadata
 from kivy.clock import Clock
+from webserver.api.zenapibase import ZenAPIBase
 
 
-class Zenplayer:
+class Zenplayer(ZenAPIBase):
     """
     This class houses the interface to teh active Zenplayer
     """
-    def __init__(self, ctrl, app):
-        super(Zenplayer, self).__init__()
-        self.ctrl = ctrl
-        """ Reference to the controller object. """
-        self.app = app
-        """ Reference to the flask app context. """
 
     def _get_state(self):
         """
