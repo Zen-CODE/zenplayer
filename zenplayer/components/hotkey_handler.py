@@ -2,7 +2,7 @@
 This module adds global hotkey support from ZenPlayer
 """
 from keyboard import add_hotkey
-from os.path import join, dirname
+from os.path import join, dirname, exists
 from json import load
 from kivy.clock import Clock
 from kivy.utils import platform
@@ -13,6 +13,9 @@ class HotKeyHandler:
     This class add global hotkey for calling ZenPlayer funtions. Hotkey
     bindings are set via the `hotkey.json` file in this folder.
     """
+    _hk_map = None
+    """ A dictionary containing the currently loaded hotkey map """
+
     @staticmethod
     def add_bindings(ctrl):
         """ Add the specified keybinding to action on the given controller. """
@@ -21,8 +24,20 @@ class HotKeyHandler:
 
     @staticmethod
     def _load_hotkeymap():
-        """ Load the specified hotkey mappings from the json file. """
-        with open(join(dirname(__file__), "../config/hotkeymap.json")) as f:
+        """
+        Return the specified hotkey mappings. Load from the json file if
+        we have not done that already.
+        """
+        if HotKeyHandler._hk_map is not None:
+            return HotKeyHandler._hk_map
+
+        file_path = join(dirname(__file__), "../config/")
+        if exists(join(file_path, f"hotkeymap_{platform}.json")):
+            file_path = join(file_path, f"hotkeymap_{platform}.json")
+        else:
+            file_path = join(file_path, f"hotkeymap.json")
+
+        with open(file_path) as f:
             mappings = load(f)
         return mappings["hotkeymap"]
 
@@ -45,8 +60,6 @@ class HotKeyHandler:
         """
         try:
             for key, method in mapping.items():
-                if platform == "macosx":
-                    key = key.replace("alt", "command+ctrl")
                 add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
         except ImportError:
             print("Please run as root to enable hotkey support")
