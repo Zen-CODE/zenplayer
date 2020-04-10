@@ -43,7 +43,7 @@ class KeyHandler:
         for key in keymap.keys():
             parts = key.split("+")
             hk_key_name = filter(lambda x: len(x) == 1, parts)
-            if next(hk_key_name) == key_name:
+            if next(hk_key_name, '') == key_name:
                 # The letter matches. Do the modifiers?
                 hk_modifiers = filter(lambda x: len(x) > 1, parts)
                 if not set(hk_modifiers).difference(set(modifiers)):
