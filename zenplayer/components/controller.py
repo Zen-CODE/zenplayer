@@ -11,10 +11,8 @@ from components.filedrop import FileDrop
 from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
 from components.store import StoreFactory
-from logging import getLogger
+from kivy.logger import Logger
 from components.paths import rel_to_base
-
-logger = getLogger(__name__)
 
 
 class Controller(EventDispatcher):
@@ -87,7 +85,7 @@ class Controller(EventDispatcher):
 
     def on_state(self, _widget, value):
         """ React to the change of state event """
-        logger.debug(f"controller.py: Entering on_state. value={value}")
+        Logger.debug(f"controller.py: Entering on_state. value={value}")
         if value == "playing":
             if self.sound.state == "playing":
                 self.sound.stop()
@@ -237,11 +235,9 @@ class Controller(EventDispatcher):
 
     def quit(self):
         """ Close the application """
-        logger.debug("controller.py: Entering quit. About to save.")
+        Logger.debug("controller.py: Entering quit. About to save.")
         self.save()
-        logger.debug("controller.py: About to stop.")
         self.stop()
-        logger.debug("controller.py: Firing app stop.")
         Clock.schedule_once(lambda dt: self.app.stop())
 
 

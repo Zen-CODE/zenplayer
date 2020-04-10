@@ -4,10 +4,8 @@ This module handles the keyboard integration for ZenPlayer
 from kivy.core.window import Window
 from kivy.utils import platform
 from json import load
-from logging import getLogger
+from kivy.logger import Logger
 from components.paths import rel_to_base
-
-logger = getLogger(__name__)
 
 
 class KeyHandler:
@@ -50,7 +48,7 @@ class KeyHandler:
         """
         Return the value in the keymap that matches the modifiers and key_name
         """
-        logger.debug("keyboard_handler.py: _get_match: Look for "
+        Logger.debug("keyboard_handler.py: _get_match: Look for "
                      f"modifiers={modifiers}, key_name={key_name}")
         for key in keymap.keys():
             parts = key.split("+")

@@ -2,9 +2,7 @@ from vlc import MediaPlayer, EventType
 from kivy.properties import OptionProperty, ObjectProperty
 from kivy.event import EventDispatcher
 from kivy.clock import mainthread
-from logging import getLogger
-
-logger = getLogger(__name__)
+from kivy.logger import Logger
 
 
 class Sound(EventDispatcher):
@@ -17,9 +15,9 @@ class Sound(EventDispatcher):
 
     def _set_player(self, file_name):
         """ Create and set a new media player for the given file """
-        logger.debug(f"Entering _set_player. file_name={file_name}")
+        Logger.debug(f"Entering _set_player. file_name={file_name}")
         if self.player is not None:
-            logger.debug("Detaching event and unloading.")
+            Logger.debug("Detaching event and unloading.")
             self.player.event_manager().event_detach(
                 EventType.MediaPlayerEndReached)
             self.player.stop()
@@ -31,7 +29,7 @@ class Sound(EventDispatcher):
     @mainthread
     def _track_finished(self, *args):
         """ Event fired when the track is finished. """
-        logger.debug(f"Entering _track_finished. state={self.state}")
+        Logger.debug(f"Entering _track_finished. state={self.state}")
         if self.state != "stopped":
             self.state = "stopped"
 
@@ -46,7 +44,7 @@ class Sound(EventDispatcher):
             * length: The length of the song in seconds.
 
         """
-        logger.debug(f"Entering get_pos_length. player={self.player}")
+        Logger.debug(f"Entering get_pos_length. player={self.player}")
         if self.player:
             return (self.player.get_position(),
                     self.player.get_length() / 1000.0)
@@ -55,14 +53,14 @@ class Sound(EventDispatcher):
 
     def stop(self):
         """ Stop any playing audio """
-        logger.debug(f"Entering stop. player={self.player}")
+        Logger.debug(f"Entering stop. player={self.player}")
         if self.player:
             self.player.stop()
             self.state = "stopped"
 
     def pause(self):
         """ Pause and resume the currently playing audio track. """
-        logger.debug(f"Entering pause. state={self.state},"
+        Logger.debug(f"Entering pause. state={self.state},"
                      f" player={self.player}")
         if self.state in ["playing", "paused"] and self.player:
             self.player.pause()
@@ -73,7 +71,7 @@ class Sound(EventDispatcher):
         Play the file specified by the filename. If on_stop is passed in,
         this function is called when the sound stops
         """
-        logger.debug(f"Entering play. player={self.player}")
+        Logger.debug(f"Entering play. player={self.player}")
         self._set_player(filename)
         self.set_volume(volume)
         self.player.play()
@@ -86,7 +84,7 @@ class Sound(EventDispatcher):
         The position of the currently playing sound as a fraction between 0
         and 1.
         """
-        logger.debug(f"Entering set_position. player={self.player}")
+        Logger.debug(f"Entering set_position. player={self.player}")
         if self.player:
             self.player.set_position(value)
 
@@ -95,7 +93,7 @@ class Sound(EventDispatcher):
         The volume of the currently playing sound, where the value is between
         0 and 1.
         """
-        logger.debug(f"Entering set_volume. player={self.player}")
+        Logger.debug(f"Entering set_volume. player={self.player}")
         if self.player:
             vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
             self.player.audio_set_volume(int(vol))

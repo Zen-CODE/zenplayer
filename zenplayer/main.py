@@ -10,7 +10,8 @@ __author__ = 'ZenCODE'
 from kivy.app import App
 from components.controller import Controller
 from webserver.webserver import WebServer
-from components.zenlogging import init_logging
+from kivy.logger import Logger
+from logging import DEBUG
 
 
 class ZenPlayer(App):
@@ -19,6 +20,10 @@ class ZenPlayer(App):
     """
     ctrl = None
     ''' Reference to the instantiated Controller class. '''
+
+    @staticmethod
+    def init_logging():
+        Logger.setLevel(DEBUG)
 
     def on_pause(self):
         """ Enable support for pause """
@@ -30,7 +35,7 @@ class ZenPlayer(App):
 
     def build(self):
         """ Build the app and return the screen manager """
-        init_logging()
+        self.init_logging()
         self.ctrl = Controller(app=self)
         WebServer.start(self.ctrl)
         return self.ctrl.sm
