@@ -1,9 +1,9 @@
 {
     "keymap": {
-        "shift+w": {
+        "shift+up": {
             "name": "volume_up"
         },
-        "shift+s": {
+        "shift+down": {
             "name": "volume_down"
         },
         "shift+d": {
@@ -41,6 +41,9 @@
             "kwargs": {
                 "name": "main"
             }
+        },
+        "shift+i": {
+            "name": "show_current_info"
         },
         "shift+q": {
             "name": "quit"

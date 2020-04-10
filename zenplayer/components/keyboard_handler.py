@@ -1,11 +1,13 @@
 """
 This module handles the keyboard integration for ZenPlayer
 """
-from kivy.event import EventDispatcher
 from kivy.core.window import Window
 from kivy.utils import platform
 from json import load
 from os.path import join, dirname
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class KeyHandler:
@@ -36,16 +38,27 @@ class KeyHandler:
         return mappings["keymap"]
 
     @staticmethod
+    def _is_normal_key(key):
+        """
+        Return True if the given character represents a normal key and not a
+        modifier.
+        """
+        return len(key) == 1 or key in ["up", "down"]
+
+    @staticmethod
     def _get_match(keymap, modifiers, key_name):
         """
         Return the value in the keymap that matches the modifiers and key_name
         """
+        logger.debug("keyboard_handler.py: _get_match: Look for "
+                     f"modifiers={modifiers}, key_name={key_name}")
         for key in keymap.keys():
             parts = key.split("+")
-            hk_key_name = filter(lambda x: len(x) == 1, parts)
+            hk_key_name = filter(KeyHandler._is_normal_key, parts)
             if next(hk_key_name, '') == key_name:
                 # The letter matches. Do the modifiers?
-                hk_modifiers = filter(lambda x: len(x) > 1, parts)
+                hk_modifiers = filter(
+                    lambda x: not KeyHandler._is_normal_key(x), parts)
                 if not set(hk_modifiers).difference(set(modifiers)):
                     return keymap[key]
 
