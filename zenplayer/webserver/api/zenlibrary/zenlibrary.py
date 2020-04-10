@@ -4,8 +4,6 @@ This module houses teh API interface for the Zenlibrary
 from webserver.api.zenapibase import ZenAPIBase
 from os.path import expanduser, join, isdir
 from os import listdir
-from webserver.response import Response
-# TODO: Move the response packaging to an inherited method
 # TODO: Move the base folder lookup to single method
 
 
@@ -33,4 +31,4 @@ class Zenlibrary(ZenAPIBase):
         """
         contents = [name for name in listdir(self.lib_path)
                     if isdir(join(self.lib_path, name))]
-        return Response.from_dict([name for name in sorted(contents)])
+        return self.resp_from_data([name for name in sorted(contents)])

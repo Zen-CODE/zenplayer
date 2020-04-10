@@ -1,4 +1,3 @@
-from webserver.response import Response
 from components.meta import Metadata
 from kivy.clock import Clock
 from webserver.api.zenapibase import ZenAPIBase
@@ -26,13 +25,12 @@ class Zenplayer(ZenAPIBase):
             "file_name": ctrl.file_name
         }
 
-    @staticmethod
-    def _safe_call(func):
+    def _safe_call(self, func):
         """
         Call the given function in a clock event and return a success reponse.
         """
         Clock.schedule_once(lambda dt: func())
-        return Response.from_dict({"status": "success"})
+        return self.resp_from_data({"status": "success"})
 
     def get_track_meta(self):
         """
@@ -64,7 +62,7 @@ class Zenplayer(ZenAPIBase):
 
         """
         meta = Metadata.get(self.ctrl.file_name)
-        return Response.from_dict(meta)
+        return self.resp_from_data(meta)
 
     def play_pause(self):
         """
@@ -210,7 +208,7 @@ class Zenplayer(ZenAPIBase):
                                      file.
                         type: string
         """
-        return Response.from_dict(self._get_state())
+        return self.resp_from_data(self._get_state())
 
     def get_track_cover(self):
         """
@@ -231,4 +229,4 @@ class Zenplayer(ZenAPIBase):
 
         """
         state = self._get_state()
-        return Response.from_image(state["cover"])
+        return self.resp_from_image(state["cover"])

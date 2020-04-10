@@ -2,7 +2,6 @@
 This module houses teh API interface for the Zenplaylist
 """
 from webserver.api.zenapibase import ZenAPIBase
-from webserver.response import Response
 
 
 class Zenplaylist(ZenAPIBase):
@@ -36,7 +35,7 @@ class Zenplaylist(ZenAPIBase):
 
         """
         data = self.ctrl.playlist.get_current_info()
-        return Response.from_dict(data)
+        return self.resp_from_data(data)
 
     def get_playlist(self):
         """
@@ -65,7 +64,7 @@ class Zenplaylist(ZenAPIBase):
                         description: The full path to the audio file
                         type: string
         """
-        return Response.from_dict(self.ctrl.playlist.queue)
+        return self.resp_from_data(self.ctrl.playlist.queue)
 
     def get_current_art(self):
         """
@@ -87,4 +86,4 @@ class Zenplaylist(ZenAPIBase):
         pl = self.ctrl.playlist
         file_name = pl.get_current_file()
         image = pl.get_album_art(file_name)
-        return Response.from_image(image)
+        return self.resp_from_image(image)
