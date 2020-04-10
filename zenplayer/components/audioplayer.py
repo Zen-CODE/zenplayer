@@ -76,10 +76,9 @@ class Sound(EventDispatcher):
         logger.debug(f"Entering play. player={self.player}")
         self._set_player(filename)
         self.set_volume(volume)
+        self.player.play()
         if pos != 0.0:
             self.player.set_position(pos)
-
-        self.player.play()
         self.state = "playing"
 
     def set_position(self, value):
