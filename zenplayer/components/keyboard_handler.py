@@ -4,8 +4,8 @@ This module handles the keyboard integration for ZenPlayer
 from kivy.core.window import Window
 from kivy.utils import platform
 from json import load
-from os.path import join, dirname
 from logging import getLogger
+from components.paths import rel_to_base
 
 logger = getLogger(__name__)
 
@@ -33,7 +33,7 @@ class KeyHandler:
     @staticmethod
     def _load_keymap():
         """ Load the specified key mappings from the json file. """
-        with open(join(dirname(__file__), "../config/keymap.json")) as f:
+        with open(rel_to_base("config", "keymap.json")) as f:
             mappings = load(f)
         return mappings["keymap"]
 

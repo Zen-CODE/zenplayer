@@ -11,8 +11,8 @@ from components.filedrop import FileDrop
 from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
 from components.store import StoreFactory
-from os.path import dirname, join, abspath
 from logging import getLogger
+from components.paths import rel_to_base
 
 logger = getLogger(__name__)
 
@@ -27,8 +27,7 @@ class Controller(EventDispatcher):
     artist = StringProperty("-")
     album = StringProperty("-")
     track = StringProperty("-")
-    cover = StringProperty(join(abspath(dirname(__file__)),
-                                "../images/zencode.jpg"))
+    cover = StringProperty(rel_to_base("images", "zencode.jpg"))
     time_display = StringProperty("-")
     state = OptionProperty("", options=["stopped", "paused", "playing", ""])
     prev_state = None

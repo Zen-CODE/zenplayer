@@ -2,10 +2,11 @@
 This module adds global hotkey support from ZenPlayer
 """
 from keyboard import add_hotkey
-from os.path import join, dirname, exists
+from os.path import join, exists
 from json import load
 from kivy.clock import Clock
 from kivy.utils import platform
+from components.paths import rel_to_base
 
 
 class HotKeyHandler:
@@ -31,7 +32,7 @@ class HotKeyHandler:
         if HotKeyHandler._hk_map is not None:
             return HotKeyHandler._hk_map
 
-        file_path = join(dirname(__file__), "../config/")
+        file_path = rel_to_base("config")
         if exists(join(file_path, f"hotkeymap_{platform}.json")):
             file_path = join(file_path, f"hotkeymap_{platform}.json")
         else:

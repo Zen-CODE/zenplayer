@@ -1,10 +1,10 @@
 from flask import Flask, render_template
 from webserver.zenswagger import ZenSwagger
-from os.path import abspath, dirname, join
 from webserver.api.zenplayer.zenplayer import Zenplayer
 from webserver.api.zenplaylist.zenplaylist import Zenplaylist
 from webserver.api.zenlibrary.zenlibrary import Zenlibrary
 from inspect import ismethod
+from components.paths import rel_to_base
 
 
 class ZenWebPlayer:
@@ -13,7 +13,7 @@ class ZenWebPlayer:
     """
     def __init__(self, ctrl):
         super().__init__()
-        templates = join(abspath(dirname(__file__)), "templates")
+        templates = rel_to_base("webserver", "templates")
         app = self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """
 

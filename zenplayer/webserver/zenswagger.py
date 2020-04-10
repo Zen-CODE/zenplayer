@@ -1,6 +1,6 @@
 from flasgger import Swagger
 from json import loads
-from os.path import dirname, join
+from components.paths import rel_to_base
 
 
 class ZenSwagger():
@@ -28,7 +28,7 @@ class ZenSwagger():
         Initialize the Swagger UI application and configuration exposing the
         API documentation. Once running, go to http://localhost:5000/swagger/
         """
-        with open(join(dirname(__file__), "swagger.template.json"), "rb") as f:
+        with open(rel_to_base("config", "swagger.template.json"), "rb") as f:
             return Swagger(app,
                            template=loads(f.read()),
                            config=ZenSwagger.get_swagger_config())
