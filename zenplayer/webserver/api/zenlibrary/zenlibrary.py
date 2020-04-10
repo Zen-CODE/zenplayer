@@ -12,7 +12,7 @@ class Zenlibrary(ZenAPIBase):
     Present an API interface for interaction with the Zenplaylist object.
     """
     def __init__(self, *args, **kwargs):
-        super(Zenlibrary, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.lib_path = expanduser("~/Music")
 
     def get_artists(self):

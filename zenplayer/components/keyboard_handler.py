@@ -15,7 +15,7 @@ class KeyHandler:
     This class handles the keypress monitoring and event delegation.
     """
     def __init__(self, ctrl):
-        super(KeyHandler, self).__init__()
+        super().__init__()
         if platform in ['ios', 'android']:
             return
 

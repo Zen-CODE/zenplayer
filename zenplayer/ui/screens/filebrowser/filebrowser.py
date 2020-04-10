@@ -18,7 +18,7 @@ class ZenFileBrowser(Screen):
 
     def __init__(self, **kwargs):
         Builder.load_file('ui/screens/filebrowser/filebrowser.kv')
-        super(ZenFileBrowser, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._init(self.ctrl.store)
         # Hack to make the ScrollView easier to do large scrolls on OSX
         sv = self.filechooser.layout.children[0].children[0]

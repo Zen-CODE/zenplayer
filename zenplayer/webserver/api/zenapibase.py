@@ -10,7 +10,7 @@ class ZenAPIBase:
     sets up the *ctrl* and "app* objects.
     """
     def __init__(self, ctrl):
-        super(ZenAPIBase, self).__init__()
+        super().__init__()
         self.ctrl = ctrl
         """ Reference to the controller object. """
 

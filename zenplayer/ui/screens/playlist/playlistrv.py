@@ -52,12 +52,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Catch and handle the view changes """
         self.index = index
         self.current_track = bool(rv.current == index)
-        return super(SelectableLabel, self).refresh_view_attrs(
-            rv, index, data)
+        return super().refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """
-        if super(SelectableLabel, self).on_touch_down(touch):
+        if super().on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos):
             Clock.schedule_once(

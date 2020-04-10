@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     class MainScreen(FloatLayout):
         def __init__(self, **kwargs):
-            super(MainScreen, self).__init__(**kwargs)
+            super().__init__(**kwargs)
             self.pb = ImageProgressBar(size_hint=(0.5, 0.5),
                                        pos_hint={"center_x": 0.5,
                                                  "center_y": 0.5},

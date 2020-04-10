@@ -7,7 +7,7 @@ class FlaskThread(Thread):
     Start the Flask Application on a background thread to blocking the GUI.
     """
     def __init__(self, ctrl):
-        super(FlaskThread, self).__init__()
+        super().__init__()
         self.ctrl = ctrl
 
     def run(self):

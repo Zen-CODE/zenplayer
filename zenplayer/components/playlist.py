@@ -21,7 +21,7 @@ class Playlist(EventDispatcher):
 
     def __init__(self, store):
 
-        super(Playlist, self).__init__()
+        super().__init__()
         self._load(store)
 
     def _load(self, store):

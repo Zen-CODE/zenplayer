@@ -54,7 +54,7 @@ class Controller(EventDispatcher):
 
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
-        super(Controller, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.playlist = Playlist(self.store)
         self.file_drop = FileDrop(self.playlist)
         self.advance = True

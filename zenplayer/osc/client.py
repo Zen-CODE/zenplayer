@@ -15,7 +15,7 @@ Button:
 class OSCClient(object):
     """ Handles the client side of comms with the OSCServer class. """
     def __init__(self):
-        super(OSCClient, self).__init__()
+        super().__init__()
         osc.init()
         osc_id = osc.listen(ipAddr='127.0.0.1', port=OSCServer.client_port)
         osc.bind(osc_id, OSCClient.kivy_client, 'kivy_client')

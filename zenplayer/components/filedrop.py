@@ -9,7 +9,7 @@ class FileDrop:
     Convenience class for handling the dragging and dropping of files.
     """
     def __init__(self, playlist):
-        super(FileDrop, self).__init__()
+        super().__init__()
         self.playlist = playlist
         Window.bind(on_dropfile=self.on_dropfile)
 

@@ -12,7 +12,7 @@ class ZenWebPlayer:
     Main class dispatching commands to the active ZenPlayer controller object.
     """
     def __init__(self, ctrl):
-        super(ZenWebPlayer, self).__init__()
+        super().__init__()
         templates = join(abspath(dirname(__file__)), "templates")
         app = self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """

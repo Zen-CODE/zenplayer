@@ -18,4 +18,4 @@ class PlaylistScreen(Screen):
 
     def __init__(self, **kwargs):
         Builder.load_file("ui/screens/playlist/playlist.kv")
-        super(PlaylistScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)

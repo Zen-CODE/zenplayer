@@ -25,7 +25,7 @@ class InfoScreen(Screen):
 
     def __init__(self, **kwargs):
         Builder.load_file("ui/screens/info/info.kv")
-        super(InfoScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """
