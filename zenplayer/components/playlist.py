@@ -48,10 +48,7 @@ class Playlist(EventDispatcher):
 
     def get_current_info(self):
         """ Return a dictionary of information on the current track"""
-        if len(self.queue) > self.current:
-            return self.get_info(self.queue[self.current]["filename"])
-        else:
-            return {}
+        return self.get_info(index=self.current)
 
     @staticmethod
     def get_text(file_):

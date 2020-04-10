@@ -26,7 +26,8 @@ class Zenplayer(ZenAPIBase):
             "file_name": ctrl.file_name
         }
 
-    def _safe_call(self, func):
+    @staticmethod
+    def _safe_call(func):
         """
         Call the given function in a clock event and return a success reponse.
         """
@@ -169,9 +170,9 @@ class Zenplayer(ZenAPIBase):
             200:
                 description: Return the state of the current track.
                 schema:
-                    $ref: '#/definitions/TrackInfo'
+                    $ref: '#/definitions/PlayingTrackInfo'
         definitions:
-            TrackInfo:
+            PlayingTrackInfo:
                 type: object
                 properties:
                     volume:

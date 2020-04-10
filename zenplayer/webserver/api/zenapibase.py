@@ -8,7 +8,7 @@ class ZenAPIBase:
     The Base class for ZenPlayer object presenting an API interface. This class
     sets up the *ctrl* and "app* objects.
     """
-    def __init__(self, ctrl, app):
+    def __init__(self, ctrl):
         super(ZenAPIBase, self).__init__()
         self.ctrl = ctrl
         """ Reference to the controller object. """

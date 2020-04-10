@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from webserver.zenswagger import ZenSwagger
 from os.path import abspath, dirname, join
 from webserver.api.zenplayer.zenplayer import Zenplayer
+from webserver.api.zenplaylist.zenplaylist import Zenplaylist
 from inspect import ismethod
 
 
@@ -9,15 +10,14 @@ class ZenWebPlayer:
     """
     Main class dispatching commands to the active ZenPlayer controller object.
     """
-    base_url = "/zenplayer/"
-
     def __init__(self, ctrl):
         super(ZenWebPlayer, self).__init__()
         templates = join(abspath(dirname(__file__)), "templates")
         app = self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """
 
-        self.add_routes("zenplayer", Zenplayer(ctrl, app))
+        self.add_routes("zenplayer", Zenplayer(ctrl))
+        self.add_routes("zenplaylist", Zenplaylist(ctrl))
         app.add_url_rule("/", "/", self.index, methods=['GET'])
         ZenSwagger.init_swagger(app)
 
