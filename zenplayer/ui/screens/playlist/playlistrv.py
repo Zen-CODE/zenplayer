@@ -4,7 +4,8 @@ This module houses helper classes for the ZenPlayer RecycleView playlist.
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
-from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
+from kivy.properties import (BooleanProperty, ObjectProperty, NumericProperty,
+                             ListProperty)
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
@@ -20,8 +21,24 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """ Add selection support to the Label """
     index = None
+    back_color = ListProperty([0, 0, 0, 1])
     selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
+    current_track = BooleanProperty(False)
+
+    def _set_back_color(self):
+        """ Set the back color of the label considering the playlist """
+        if self.selected:
+            self.back_color = [.5, .5, 1.0, .3]
+        elif self.current_track:
+            self.back_color = [.5, 1.0, .50, .3]
+        else:
+            self.back_color = [0, 0, 0, 1]
+
+    def on_selected(self, _widget, _value):
+        self._set_back_color()
+
+    def on_current_track(self, _widget, _value):
+        self._set_back_color()
 
     def on_long_touch(self, rv):
         """ Event fired when the label has been held down for a long time. """
@@ -34,6 +51,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.index = index
+        self.current_track = bool(rv.current == index)
         return super(SelectableLabel, self).refresh_view_attrs(
             rv, index, data)
 
@@ -41,7 +59,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Add selection on touch down """
         if super(SelectableLabel, self).on_touch_down(touch):
             return True
-        if self.collide_point(*touch.pos) and self.selectable:
+        if self.collide_point(*touch.pos):
             Clock.schedule_once(
                 lambda dt: self.on_long_touch(self.parent.recycleview))
             return self.parent.select_with_touch(self.index, touch)

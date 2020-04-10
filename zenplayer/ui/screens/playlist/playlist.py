@@ -13,8 +13,9 @@ class PlaylistScreen(Screen):
     ctrl = ObjectProperty()
     """ Reference to the controller """
 
+    current = NumericProperty(-1)
+    """ The index of the currently playing track in the queue. """
+
     def __init__(self, **kwargs):
         Builder.load_file("ui/screens/playlist/playlist.kv")
         super(PlaylistScreen, self).__init__(**kwargs)
-
-

@@ -6,7 +6,7 @@
     # Draw a background to indicate selection
     canvas.before:
         Color:
-            rgba: (.5, .5, 1.0, .3) if self.selected else (0, 0, 0, 1)
+            rgba: self.back_color
         Rectangle:
             pos: self.pos
             size: self.size
@@ -19,8 +19,6 @@
         size_hint_y: None
         height: self.minimum_height
         orientation: 'vertical'
-        # multiselect: True
-        # touch_multiselect: True
 
 <PlaylistScreen>:
     BoxLayout:
@@ -42,6 +40,7 @@
             size_hint_y: 0.8
             ctrl: root.ctrl
             data: root.ctrl.playlist.queue
+            current: root.ctrl.playlist.current
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
