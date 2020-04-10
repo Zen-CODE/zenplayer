@@ -54,5 +54,8 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: 'Back'
+                text: 'Main screen'
+                on_release: root.ctrl.show_screen("main")
+            ZenButton:
+                text: 'Playlist'
                 on_release: root.ctrl.show_screen("playlist")

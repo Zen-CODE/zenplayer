@@ -210,6 +210,12 @@ class Controller(EventDispatcher):
         if "filebrowser" in self.sm.screen_names:
             self.sm.get_screen("filebrowser").save(self.store)
 
+    def show_current_info(self):
+        """
+        Show information on the current track
+        """
+        self.show_screen("info", filename=self.playlist.get_current_file())
+
     def show_screen(self, name="main", **kwargs):
         """
         Switch to the screen specified. The *kwargs* dictionary will be either
