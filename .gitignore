@@ -3,3 +3,4 @@ kivy3dgui
 zenplayer.ini
 venv/
 .env
+*.log
