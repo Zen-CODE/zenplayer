@@ -135,9 +135,9 @@ class Playlist(EventDispatcher):
             return {
                 "artist": parts[-3],
                 "album": parts[-2],
-                "file": parts[-1]}
+                "track": parts[-1]}
         except IndexError:
             return {
                 "artist": "-",
                 "album": "-",
-                "file": "-"}
+                "track": "-"}

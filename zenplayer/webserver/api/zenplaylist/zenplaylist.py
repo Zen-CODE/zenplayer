@@ -29,8 +29,8 @@ class ZenPlaylist(ZenAPIBase):
                     album:
                         description: The name of the album the track is from
                         type: string
-                    file:
-                        description: The full path to the audio file
+                    track:
+                        description: The name of the track (audio file name)
                         type: string
 
         """
