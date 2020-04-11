@@ -16,8 +16,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/zenplayer/main.py",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/zenplayer"
+            "console": "integratedTerminal"
         },
         {
             "name": "Python: Launch AudioPlayer",
