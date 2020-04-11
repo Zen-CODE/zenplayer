@@ -5,7 +5,7 @@ from webserver.api.zenapibase import ZenAPIBase
 
 class ZenPlayer(ZenAPIBase):
     """
-    This class houses the interface to teh active Zenplayer
+    This class houses the interface to the active ZenPlayer Kivy application.
     """
 
     def _get_state(self):

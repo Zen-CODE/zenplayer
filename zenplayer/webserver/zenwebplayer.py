@@ -15,7 +15,7 @@ class ZenWebPlayer:
         app = self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """
 
-        classes = Loader().get_classes(ctrl)
+        classes = Loader.get_classes(ctrl)
         for name, instance in classes:
             self.add_routes(name.lower(), instance)
         app.add_url_rule("/", "/", self.index, methods=['GET'])

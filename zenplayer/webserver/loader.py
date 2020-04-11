@@ -11,18 +11,19 @@ class Loader:
     """
     A convenience class for dynamically loading webserver modules.
     """
-    def __init__(self):
-        super().__init__()
-        with open(rel_to_base("config", "webserver_classes.json")) as f:
-            self._config = load(f)
-
-    def get_classes(self, ctrl):
+    @staticmethod
+    def get_classes(ctrl):
         """
         Return a list of (name, class) tuples to load.
         """
-        ret = []
-        for item in self._config:
-            name = item["name"].lower()
-            mod = import_module(f"webserver.api.{name}.{name}")
-            ret.append((item["name"], getattr(mod, item["name"])(ctrl)))
-        return ret
+        with open(rel_to_base("config", "webserver_classes.json")) as f:
+            class_list = load(f)
+
+        return [(name, Loader._get_class(name)) for name in class_list]
+
+    @staticmethod
+    def _get_class(name):
+        """ Return the class definition given the name of the class"""
+        mod_name = name.lower()
+        mod = import_module(f"webserver.api.{mod_name}.{mod_name}")
+        return getattr(mod, name)
