@@ -7,6 +7,7 @@ from json import load
 from kivy.clock import Clock
 from kivy.utils import platform
 from components.paths import rel_to_base
+from kivy.logger import Logger
 
 
 class HotKeyHandler:
@@ -20,6 +21,7 @@ class HotKeyHandler:
     @staticmethod
     def add_bindings(ctrl):
         """ Add the specified keybinding to action on the given controller. """
+        Logger.info("HotKeyHandler: Adding bindings...")
         mapping = HotKeyHandler._load_hotkeymap()
         HotKeyHandler._create_bindings(mapping, ctrl)
 
@@ -48,7 +50,7 @@ class HotKeyHandler:
         next clock event. This (hopefully) prevents segmentation faults.
         """
         func = getattr(ctrl, method)
-        return Clock.schedule_once(lambda dt: func())
+        return lambda: Clock.schedule_once(lambda dt: func())
 
     @staticmethod
     def _create_bindings(mapping, ctrl):
@@ -63,4 +65,5 @@ class HotKeyHandler:
             for key, method in mapping.items():
                 add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
         except ImportError:
-            print("Please run as root to enable hotkey support")
+            Logger.warning("HotKeyHandler: Please run as root to enable hotkey"
+                           " support")
