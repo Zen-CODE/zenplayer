@@ -1,5 +1,5 @@
 from threading import Thread
-from webserver.zenwebplayer import ZenWebPlayer
+from webserver.zenwebserver import ZenWebServer
 from components.paths import rel_to_base
 from json import load
 from kivy.logger import Logger
@@ -17,7 +17,7 @@ class FlaskThread(Thread):
     def run(self):
         """ Run the Flask server with the given configuration options """
         try:
-            ZenWebPlayer(self.ctrl).run(**self.config)
+            ZenWebServer(self.ctrl).run(**self.config)
         except OSError as e:
             print(f"Unable to start webserver: error {e}")
 

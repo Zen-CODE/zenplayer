@@ -5,7 +5,7 @@ from components.paths import rel_to_base
 from webserver.loader import Loader
 
 
-class ZenWebPlayer:
+class ZenWebServer:
     """
     Main class dispatching commands to the active ZenPlayer controller object.
     """

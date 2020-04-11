@@ -14,7 +14,7 @@
   },
   "tags": [{
     "name": "Placeholder",
-    "description": "Tags are built and replaced dynamically. Please see the zenwebplayer module."
+    "description": "Tags are built and replaced dynamically. Please see the ZenWebServer module."
     }
   ],
   "basePath": "/",
