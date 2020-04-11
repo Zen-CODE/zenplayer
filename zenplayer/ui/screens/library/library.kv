@@ -1,0 +1,35 @@
+#:kivy 1.10
+
+<LibraryScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.1
+            Label:
+                text: "Music Library"
+                canvas:
+                    Color:
+                        rgba: 0.25, 0.25, 0.75, 0.5
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+        RecycleView:
+            id: rv
+            size_hint_y: 0.8
+            ctrl: root.ctrl
+            # data: root.ctrl.playlist.queue
+            # current: root.ctrl.playlist.current
+        BoxLayout:
+            padding: 10, 10, 10, 10
+            size_hint_y: 0.1
+            ZenButton:
+                text: 'Main'
+                on_release: root.ctrl.show_screen("main")
+            ZenButton:
+                text: 'Artists'
+            ZenButton:
+                text: 'Random'
+            ZenButton:
+                text: 'Random'

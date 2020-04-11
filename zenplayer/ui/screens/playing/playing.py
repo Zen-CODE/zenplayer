@@ -54,5 +54,4 @@ class PlayingScreen(Screen):
     def __init__(self, ctrl, **kwargs):
         self.ctrl = ctrl
         Builder.load_file("ui/screens/playing/playing.kv")
-        Builder.load_file("ui/common.kv")
         super().__init__(**kwargs)

@@ -6,16 +6,8 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
 from kivy.properties import (BooleanProperty, ObjectProperty, NumericProperty,
                              ListProperty)
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.clock import Clock
 from kivy.uix.popup import Popup
-
-
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
-    """ Adds selection and focus behaviour to the view. """
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
@@ -66,14 +58,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
-
-
-class PlaylistRV(RecycleView):
-    """
-    The RecycleView widget embedded in the playlist.
-    """
-    ctrl = ObjectProperty()
-    """ A reference to the controller object"""
 
 
 class PlaylistPopup(Popup):

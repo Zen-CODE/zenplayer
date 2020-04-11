@@ -1,6 +1,6 @@
 #:kivy 1.10
+#: import SelectableLabel ui.screens.playlist.playlistrv.SelectableLabel
 
-#: import PlaylistRV ui.screens.playlist.playlistrv.PlaylistRV
 
 <SelectableLabel>:
     # Draw a background to indicate selection
@@ -10,15 +10,6 @@
         Rectangle:
             pos: self.pos
             size: self.size
-
-<PlaylistRV>:
-    viewclass: 'SelectableLabel'
-    SelectableRecycleBoxLayout:
-        default_size: None, dp(56)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
 
 <PlaylistScreen>:
     BoxLayout:
@@ -35,8 +26,9 @@
                         pos: self.pos
                         size: self.size
 
-        PlaylistRV:
+        ZenRecycleView:
             id: rv
+            viewclass: 'SelectableLabel'
             size_hint_y: 0.8
             ctrl: root.ctrl
             data: root.ctrl.playlist.queue

@@ -4,6 +4,7 @@ This class houses the Playlist class for ZenPlayer
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty, ListProperty, ObjectProperty
 from kivy.lang import Builder
+from ui.common import Common
 
 
 class PlaylistScreen(Screen):
@@ -17,5 +18,6 @@ class PlaylistScreen(Screen):
     """ The index of the currently playing track in the queue. """
 
     def __init__(self, **kwargs):
+        Common.load_common()
         Builder.load_file("ui/screens/playlist/playlist.kv")
         super().__init__(**kwargs)
