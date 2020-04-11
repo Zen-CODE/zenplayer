@@ -2,7 +2,7 @@
 This class houses the Playlist class for ZenPlayer
 """
 from kivy.uix.screenmanager import Screen
-from kivy.properties import NumericProperty, ListProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from kivy.lang import Builder
 from ui.common import Common
 

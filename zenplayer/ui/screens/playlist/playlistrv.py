@@ -1,7 +1,6 @@
 """
 This module houses helper classes for the ZenPlayer RecycleView playlist.
 """
-from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
 from kivy.properties import (BooleanProperty, ObjectProperty, NumericProperty,
