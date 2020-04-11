@@ -40,6 +40,7 @@ class ZenLibrary(ZenAPIBase):
             200:
                 description: Return the state of the current track.
                 schema:
+                    id: ArtistList
                     type: array
                     items:
                         string
@@ -62,12 +63,14 @@ class ZenLibrary(ZenAPIBase):
             200:
                 description: Return a list of the artist albums
                 schema:
+                    id: AlbumList
                     type: array
                     items:
                         string
             400:
                 description: No album found for artist=\<artist\>
                 schema:
+                    id: ErrorMessage
                     type: object
                     properties:
                         message:
