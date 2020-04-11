@@ -5,6 +5,7 @@ modules for both swagger docs and the zenwebserver.
 from components.paths import rel_to_base
 from json import load
 from importlib import import_module
+from inspect import ismethod
 
 
 class Loader:
@@ -12,14 +13,25 @@ class Loader:
     A convenience class for dynamically loading webserver modules.
     """
     @staticmethod
-    def get_classes(ctrl):
+    def get_class_data(ctrl):
         """
-        Return a list of (name, class) tuples to load.
+        Return a list of dictionaries, where each dictionary contains the
+        following keys:
+
+            "name": The name of the class
+            "instance": A reference to the instantiated instance of this class
+            "methods": A list of public methods of the class exposed for the API
         """
         with open(rel_to_base("config", "webserver_classes.json")) as f:
             class_list = load(f)
 
-        return [(name, Loader._get_class(name)(ctrl)) for name in class_list]
+        ret = []
+        for name in class_list:
+            obj = Loader._get_class(name)(ctrl)
+            ret.append({"name": name,
+                        "instance": obj,
+                        "methods": Loader._get_public_methods(obj)})
+        return ret
 
     @staticmethod
     def _get_class(name):
@@ -27,3 +39,10 @@ class Loader:
         mod_name = name.lower()
         mod = import_module(f"webserver.api.{mod_name}.{mod_name}")
         return getattr(mod, name)
+
+    @staticmethod
+    def _get_public_methods(obj):
+        """ Return a list of the public methods of the given object. """
+        return [method_name for method_name in dir(obj)
+                if ismethod(getattr(obj, method_name))
+                and method_name[0] != "_"]
