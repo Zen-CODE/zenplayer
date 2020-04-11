@@ -1,0 +1,13 @@
+[{
+    "name": "ZenPlayer",
+    "description": "A Kivy front-end for a vlc backend audio player, based on the concept of playing folders as album containers."
+    },
+  {
+    "name": "ZenPlaylist",
+    "description": "Present and manages the list of audio files which ZenPlayer will play through."
+    },
+  {
+    "name": "ZenLibrary",
+    "description": "Present our music library given a root folder. Artist, Album and Track are inferred from the path i.e. Artist\\Album\\Track"
+    }
+  ]

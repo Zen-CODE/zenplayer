@@ -1,10 +1,8 @@
 from flask import Flask, render_template
 from webserver.zenswagger import ZenSwagger
-from webserver.api.zenplayer.zenplayer import Zenplayer
-from webserver.api.zenplaylist.zenplaylist import Zenplaylist
-from webserver.api.zenlibrary.zenlibrary import Zenlibrary
 from inspect import ismethod
 from components.paths import rel_to_base
+from webserver.loader import Loader
 
 
 class ZenWebPlayer:
@@ -17,11 +15,11 @@ class ZenWebPlayer:
         app = self.app = Flask(__name__, template_folder=templates)
         """ The instance of the Flask application. """
 
-        self.add_routes("zenplayer", Zenplayer(ctrl))
-        self.add_routes("zenplaylist", Zenplaylist(ctrl))
-        self.add_routes("zenlibrary", Zenlibrary(ctrl))
+        classes = Loader().get_classes(ctrl)
+        for name, instance in classes:
+            self.add_routes(name.lower(), instance)
         app.add_url_rule("/", "/", self.index, methods=['GET'])
-        ZenSwagger.init_swagger(app)
+        ZenSwagger.init_swagger(app, classes)
 
     @staticmethod
     def _get_public_methods(obj):

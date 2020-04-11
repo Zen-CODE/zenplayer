@@ -7,7 +7,7 @@ from os import listdir
 # TODO: Move the base folder lookup to single method
 
 
-class Zenlibrary(ZenAPIBase):
+class ZenLibrary(ZenAPIBase):
     """
     Present an API interface for interaction with the Zenplaylist object.
     """

@@ -3,7 +3,7 @@ from kivy.clock import Clock
 from webserver.api.zenapibase import ZenAPIBase
 
 
-class Zenplayer(ZenAPIBase):
+class ZenPlayer(ZenAPIBase):
     """
     This class houses the interface to teh active Zenplayer
     """

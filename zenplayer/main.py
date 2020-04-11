@@ -11,7 +11,7 @@ from kivy.app import App
 from components.controller import Controller
 from webserver.webserver import WebServer
 from kivy.logger import Logger
-from logging import DEBUG
+from logging import INFO
 
 
 class ZenPlayer(App):
@@ -23,7 +23,7 @@ class ZenPlayer(App):
 
     @staticmethod
     def init_logging():
-        Logger.setLevel(DEBUG)
+        Logger.setLevel(INFO)
 
     def on_pause(self):
         """ Enable support for pause """

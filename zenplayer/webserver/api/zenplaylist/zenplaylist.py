@@ -4,7 +4,7 @@ This module houses teh API interface for the Zenplaylist
 from webserver.api.zenapibase import ZenAPIBase
 
 
-class Zenplaylist(ZenAPIBase):
+class ZenPlaylist(ZenAPIBase):
     """
     Present an API interface for interaction with the Zenplaylist object.
     """
