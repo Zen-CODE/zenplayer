@@ -39,17 +39,17 @@ class ZenLibrary(ZenAPIBase):
         responses:
             200:
                 description: Return the state of the current track.
-            schema:
-                type: array
-                items:
-                    string
+                schema:
+                    type: array
+                    items:
+                        string
         """
         contents = [name for name in listdir(self.lib_path)
                     if isdir(join(self.lib_path, name))]
         return self.resp_from_data([name for name in sorted(contents)])
 
     def get_albums(self):
-        """
+        r"""
         Return a list of albums for the specified artist.
         ---
         tags:
@@ -60,11 +60,19 @@ class ZenLibrary(ZenAPIBase):
               type: string
         responses:
             200:
-                description: Return the state of the current track.
-            schema:
-                type: array
-                items:
-                    string
+                description: Return a list of the artist albums
+                schema:
+                    type: array
+                    items:
+                        string
+            400:
+                description: No album found for artist=\<artist\>
+                schema:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            description: The reason the request failed.
         """
         artist = request.args.get("artist")
         if artist:
@@ -72,7 +80,5 @@ class ZenLibrary(ZenAPIBase):
             contents = self._safe_listdir(_path, isdir)
             if contents:
                 return self.resp_from_data([name for name in sorted(contents)])
-            else:
-                return self.resp_from_data(
-                    {"message": f"No album found for {artist}"}, 400)
-        return self.resp_from_data({"message": "No artist specified"}, 400)
+        return self.resp_from_data(
+            {"message": f"No album found for artist={artist}"}, 400)
