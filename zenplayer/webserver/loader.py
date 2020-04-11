@@ -20,7 +20,8 @@ class Loader:
 
             "name": The name of the class
             "instance": A reference to the instantiated instance of this class
-            "methods": A list of public methods of the class exposed for the API
+            "methods": A list of public methods of the class exposed for the
+                       API
         """
         with open(rel_to_base("config", "webserver_classes.json")) as f:
             class_list = load(f)
