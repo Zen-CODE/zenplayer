@@ -1,32 +1,22 @@
 """
 This module houses helper classes for the ZenPlayer RecycleView playlist.
 """
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.label import Label
-from kivy.properties import (BooleanProperty, ObjectProperty, NumericProperty,
-                             ListProperty)
+from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.uix.popup import Popup
+from ui.common import SelectableLabel
 
 
-class SelectableLabel(RecycleDataViewBehavior, Label):
+class PlaylistLabel(SelectableLabel):
     """ Add selection support to the Label """
-    index = None
-    back_color = ListProperty([0, 0, 0, 1])
-    selected = BooleanProperty(False)
     current_track = BooleanProperty(False)
 
     def _set_back_color(self):
         """ Set the back color of the label considering the playlist """
-        if self.selected:
-            self.back_color = [.5, .5, 1.0, .3]
-        elif self.current_track:
+        if self.current_track:
             self.back_color = [.5, 1.0, .50, .3]
         else:
-            self.back_color = [0, 0, 0, 1]
-
-    def on_selected(self, _widget, _value):
-        self._set_back_color()
+            super()._set_back_color()
 
     def on_current_track(self, _widget, _value):
         self._set_back_color()
@@ -41,7 +31,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
-        self.index = index
         self.current_track = bool(rv.current == index)
         return super().refresh_view_attrs(rv, index, data)
 
