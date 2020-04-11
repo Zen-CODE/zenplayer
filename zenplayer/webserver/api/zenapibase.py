@@ -37,4 +37,3 @@ class ZenAPIBase:
             'Pragma': 'no-cache',
             'Expires': '0'})
         return resp
-

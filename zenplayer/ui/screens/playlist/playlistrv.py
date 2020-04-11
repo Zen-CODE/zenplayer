@@ -44,7 +44,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Event fired when the label has been held down for a long time. """
         data = rv.ctrl.playlist.get_info(index=self.index)
         PlaylistPopup(
-            title="Track: {artist} - {album} - {file}".format(**data),
+            title="Track: {artist} - {album} - {track}".format(**data),
             ctrl=rv.ctrl,
             index=self.index).open()
 
