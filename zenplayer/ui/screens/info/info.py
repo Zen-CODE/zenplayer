@@ -5,7 +5,8 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.lang import Builder
 from kivy.clock import Clock
-from components.meta import  Metadata
+from components.meta import Metadata
+from kivy.logger import Logger
 
 
 class InfoScreen(Screen):
@@ -14,7 +15,10 @@ class InfoScreen(Screen):
     """
     ctrl = ObjectProperty(None)
 
-    filename = StringProperty()
+    filename = StringProperty(allownone=True)
+    """ Display the track with the given filename. If set to None, the current
+    track will be displayed and updated on track changing.
+    """
 
     units = {"length": " s",
              "bitrate": " kbps",
@@ -27,9 +31,22 @@ class InfoScreen(Screen):
         Builder.load_file("ui/screens/info/info.kv")
         super().__init__(**kwargs)
 
+    def _show_current_track(self, *args):
+        """ Display the currently playing track in the playlist """
+        self._show(self.ctrl.playlist.get_current_file())
+
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """
-        Clock.schedule_once(lambda dt: self._show(filename))
+        if filename is None:
+            Logger.info("InfoScreen: Binding to the current track.")
+            Clock.schedule_once(self._show_current_track)
+            self.ctrl.playlist.bind(current=self._show_current_track)
+            self.ctrl.playlist.bind(queue=self._show_current_track)
+        else:
+            Logger.info("InfoScreen: Unbinding. Set to fixed track.")
+            self.ctrl.playlist.unbind(current=self._show_current_track)
+            self.ctrl.playlist.unbind(queue=self._show_current_track)
+            Clock.schedule_once(lambda dt: self._show(filename))
 
     def _show(self, filename):
         """ Show all the details on the given filename """

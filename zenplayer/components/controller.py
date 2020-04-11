@@ -211,7 +211,8 @@ class Controller(EventDispatcher):
         """
         Show information on the current track
         """
-        self.show_screen("info", filename=self.playlist.get_current_file())
+        # TODO: If this works, we can probably change keyboard shortcut
+        self.show_screen("info", filename=None)
 
     def show_screen(self, name="main", **kwargs):
         """

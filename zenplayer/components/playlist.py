@@ -19,9 +19,8 @@ class Playlist(EventDispatcher):
         * filename: Full path to the audio file
     """
 
-    def __init__(self, store):
-
-        super().__init__()
+    def __init__(self, store, **kwargs):
+        super().__init__(**kwargs)
         self._load(store)
 
     def _load(self, store):
