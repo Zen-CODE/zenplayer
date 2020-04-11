@@ -65,5 +65,5 @@ class HotKeyHandler:
             for key, method in mapping.items():
                 add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
         except ImportError:
-            Logger.warning("HotKeyHandler: Please run as root to enable hotkey"
-                           " support")
+            Logger.warning("HotKeyHandler: Load failed. Please run as root to "
+                           "enable hotkey support")

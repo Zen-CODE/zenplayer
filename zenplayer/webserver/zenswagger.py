@@ -1,3 +1,7 @@
+"""
+The is module houses the Swagger documentation helper
+"""
+
 from flasgger import Swagger
 from json import loads
 from components.paths import rel_to_base
