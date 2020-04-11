@@ -40,4 +40,3 @@ class ZenWebServer:
         Serve the index as a minimally functional HTML page
         """
         return render_template("index.html", class_data=self.class_data)
-
