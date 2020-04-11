@@ -3,5 +3,7 @@
     "python.linting.flake8Enabled": true,
     "editor.rulers": [80],
     "files.trimTrailingWhitespace": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.linting.mypyPath": "${workspaceFolder}/zenplayer"
+
 }

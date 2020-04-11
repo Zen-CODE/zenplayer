@@ -4,7 +4,6 @@ This module houses teh API interface for the Zenlibrary
 from webserver.api.zenapibase import ZenAPIBase
 from os.path import expanduser, join, isdir
 from os import listdir
-# TODO: Move the base folder lookup to single method
 
 
 class ZenLibrary(ZenAPIBase):
