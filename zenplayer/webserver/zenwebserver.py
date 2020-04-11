@@ -35,11 +35,9 @@ class ZenWebServer:
         """
         self.app.run(*args, **kwargs)
 
-    @staticmethod
-    def index():
+    def index(self):
         """
         Serve the index as a minimally functional HTML page
         """
-        return render_template("index.html")
-
+        return render_template("index.html", class_data=self.class_data)
 
