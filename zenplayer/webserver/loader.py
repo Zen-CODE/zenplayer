@@ -19,7 +19,7 @@ class Loader:
         with open(rel_to_base("config", "webserver_classes.json")) as f:
             class_list = load(f)
 
-        return [(name, Loader._get_class(name)) for name in class_list]
+        return [(name, Loader._get_class(name)(ctrl)) for name in class_list]
 
     @staticmethod
     def _get_class(name):
