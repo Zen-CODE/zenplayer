@@ -1,5 +1,5 @@
 from kivy.uix.screenmanager import ScreenManager
-from components.audioplayer import Sound
+from components.sound import Sound
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
 from kivy.event import EventDispatcher
