@@ -12,9 +12,10 @@ class InfoScreen(ZenScreen):
     """
     The main screen that shows whats currently playing
     """
-    filename = StringProperty(allownone=True)
-    """ Display the track with the given filename. If set to None, the current
-    track will be displayed and updated on track changing.
+    filename = StringProperty(None, allownone=True)
+    """ Display the track with the given filename. If set to anything Falsy,
+    the current track will be displayed and updated on track changing. We set
+    to None so an empty string still trigger on `on_filename` event.
     """
 
     units = {"length": " s",
@@ -32,16 +33,16 @@ class InfoScreen(ZenScreen):
 
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """
-        if filename is None:
-            Logger.info("InfoScreen: Binding to the current track.")
-            Clock.schedule_once(self._show_current_track)
-            self.ctrl.playlist.bind(current=self._show_current_track)
-            self.ctrl.playlist.bind(queue=self._show_current_track)
-        else:
+        if filename:
             Logger.info("InfoScreen: Unbinding. Set to fixed track.")
             self.ctrl.playlist.unbind(current=self._show_current_track)
             self.ctrl.playlist.unbind(queue=self._show_current_track)
             Clock.schedule_once(lambda dt: self._show(filename))
+        else:
+            Logger.info("InfoScreen: Binding to the current track.")
+            Clock.schedule_once(self._show_current_track)
+            self.ctrl.playlist.bind(current=self._show_current_track)
+            self.ctrl.playlist.bind(queue=self._show_current_track)
 
     def _show(self, filename):
         """ Show all the details on the given filename """

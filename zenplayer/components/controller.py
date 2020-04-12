@@ -211,13 +211,6 @@ class Controller(EventDispatcher):
         if "FileBrowser" in self.sm.screen_names:
             self.sm.get_screen("FileBrowser").save(self.store)
 
-    def show_current_info(self):
-        """
-        Show information on the current track
-        """
-        # TODO: If this works, we can probably change keyboard shortcut
-        self.show_screen("Info", filename=None)
-
     def show_screen(self, name="Playing", **kwargs):
         """
         Switch to the screen specified. The *kwargs* dictionary will be either
