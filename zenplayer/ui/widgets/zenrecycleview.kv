@@ -1,0 +1,23 @@
+#:kivy 1.10
+#: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
+#: import SelectableLabel ui.widgets.zenrecycleview.SelectableLabel
+#: import SelectableRecycleBoxLayout ui.widgets.zenrecycleview.SelectableRecycleBoxLayout
+
+<ZenRecycleView>:
+    viewclass: 'SelectableLabel'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: self.back_color
+
+        Rectangle:
+            pos: self.pos
+            size: self.size

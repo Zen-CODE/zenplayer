@@ -1,19 +1,25 @@
 """
-This module houses shared components that across multiple UI components.
+Houses the ZenRecycleView class
 """
-
+from kivy.uix.recycleview import RecycleView
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
+from kivy.uix.label import Label
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.recycleview import RecycleView
-from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
-from kivy.uix.label import Label
+from ui.kvloader import KVLoader
 
 
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
-    """ Adds selection and focus behaviour to the view. """
+class ZenRecycleView(RecycleView):
+    """
+    Provides a shared component for Playlist and Library recycleviews.
+    """
+    ctrl = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        KVLoader.load("ui/widgets/zenrecycleview.kv")
+        super().__init__(**kwargs)
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
@@ -49,8 +55,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             return self.parent.select_with_touch(self.index, touch)
 
 
-class ZenRecycleView(RecycleView):
-    """
-    Provides a shared component for Playlist and Library recycleviews.
-    """
-    ctrl = ObjectProperty()
+class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+    """ Adds selection and focus behaviour to the view. """

@@ -16,6 +16,6 @@ class ZenScreen(Screen):
     """ A reference to the `Controller` object. """
 
     def __init__(self, **kwargs):
-        KVLoader.load("ui/common.kv")
+        KVLoader.load("ui/widgets/zenbutton.kv")
         KVLoader.load("ui/screens/{0}/{0}.kv".format(kwargs["name"].lower()))
         super().__init__(**kwargs)

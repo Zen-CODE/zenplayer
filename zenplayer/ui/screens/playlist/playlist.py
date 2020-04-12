@@ -3,7 +3,7 @@ This class houses the Playlist class for ZenPlayer
 """
 from kivy.properties import NumericProperty, ObjectProperty, BooleanProperty
 from kivy.uix.popup import Popup
-from ui.common import SelectableLabel
+from ui.widgets.zenrecycleview import SelectableLabel
 from kivy.clock import Clock
 from ui.screens.zenscreen import ZenScreen
 

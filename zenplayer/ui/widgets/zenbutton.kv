@@ -1,6 +1,4 @@
 #:kivy 1.10
-#: import ZenRecycleView ui.common.ZenRecycleView
-
 <ZenButton@ButtonBehavior+Label>:
     canvas.before:
         # Outer rectangle
@@ -15,12 +13,3 @@
         Rectangle:
             pos: self.x + 2, self.y + 2
             size: self.width - 4, self.height - 4
-
-<ZenRecycleView>:
-    viewclass: 'SelectableLabel'
-    SelectableRecycleBoxLayout:
-        default_size: None, dp(56)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
