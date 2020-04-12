@@ -14,9 +14,12 @@ from components.store import StoreFactory
 from kivy.logger import Logger
 from components.paths import rel_to_base
 from ui.common import Common
+from kivy.core.window import Window
+
 
 Common.load_common()
 # TODO: Move this into perhap a common subclass?
+
 
 class Controller(EventDispatcher):
     """
@@ -125,6 +128,7 @@ class Controller(EventDispatcher):
             self.album = parts[-2]
             self.artist = parts[-3]
             self.cover = self.playlist.get_album_art(value)
+            Window.set_icon(self.cover)
 
     def volume_up(self):
         """ Turn the volume up """
