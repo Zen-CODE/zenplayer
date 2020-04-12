@@ -4,7 +4,7 @@ screens in this app.
 """
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
-from kivy.lang import Builder
+from ui.kvloader import KVLoader
 
 
 class ZenScreen(Screen):
@@ -15,17 +15,7 @@ class ZenScreen(Screen):
     ctrl = ObjectProperty()
     """ A reference to the `Controller` object. """
 
-    _loaded = []
-
     def __init__(self, **kwargs):
-        ZenScreen.load_kv("ui/common.kv")
-        ZenScreen.load_kv(
-            "ui/screens/{0}/{0}.kv".format(kwargs["name"].lower()))
+        KVLoader.load("ui/common.kv")
+        KVLoader.load("ui/screens/{0}/{0}.kv".format(kwargs["name"].lower()))
         super().__init__(**kwargs)
-
-    @staticmethod
-    def load_kv(file_name):
-        """ Load commond kv, ensuring not to do it multiple times. """
-        if file_name not in ZenScreen._loaded:
-            Builder.load_file(file_name)
-            ZenScreen._loaded.append(file_name)
