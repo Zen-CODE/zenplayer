@@ -1,23 +1,19 @@
 """
 Displays the file browsing screen for ZenPlayer
 """
-from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from os.path import exists
-from kivy.lang import Builder
 from os.path import sep
+from ui.screens.zenscreen import ZenScreen
 
 
-class FileBrowserScreen(Screen):
+class FileBrowserScreen(ZenScreen):
     """
     Displays a file browsing screen for ZenPlayer
     """
     filechooser = ObjectProperty()
 
-    ctrl = ObjectProperty()
-
     def __init__(self, **kwargs):
-        Builder.load_file('ui/screens/filebrowser/filebrowser.kv')
         super().__init__(**kwargs)
         self._init(self.ctrl.store)
         # Hack to make the ScrollView easier to do large scrolls on OSX

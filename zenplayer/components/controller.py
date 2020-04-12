@@ -13,12 +13,7 @@ from components.playlist import Playlist
 from components.store import StoreFactory
 from kivy.logger import Logger
 from components.paths import rel_to_base
-from ui.common import Common
 from kivy.core.window import Window
-
-
-Common.load_common()
-# TODO: Move this into perhap a common subclass?
 
 
 class Controller(EventDispatcher):

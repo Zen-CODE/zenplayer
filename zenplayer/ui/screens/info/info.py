@@ -1,20 +1,17 @@
 """
 This module houses the screen displaying track information
 """
-from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivy.clock import Clock
 from components.meta import Metadata
 from kivy.logger import Logger
+from ui.screens.zenscreen import ZenScreen
 
 
-class InfoScreen(Screen):
+class InfoScreen(ZenScreen):
     """
     The main screen that shows whats currently playing
     """
-    ctrl = ObjectProperty(None)
-
     filename = StringProperty(allownone=True)
     """ Display the track with the given filename. If set to None, the current
     track will be displayed and updated on track changing.
@@ -27,15 +24,11 @@ class InfoScreen(Screen):
     Defines the list of unit suffixes to be used when displaying track metadata.
     """
 
-    def __init__(self, **kwargs):
-        Builder.load_file("ui/screens/info/info.kv")
-        super().__init__(**kwargs)
-
     def _show_current_track(self, *args):
         """ Display the currently playing track in the playlist """
         file_name = self.ctrl.playlist.get_current_file()
         if file_name:
-            self._show()
+            self._show(file_name)
 
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """

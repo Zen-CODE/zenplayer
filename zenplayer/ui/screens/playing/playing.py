@@ -1,8 +1,7 @@
 from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.screenmanager import Screen
-from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.slider import Slider
+from ui.screens.zenscreen import ZenScreen
 
 
 class MediaButton(FloatLayout):
@@ -45,13 +44,7 @@ class VolumeSlider(Slider):
         return super().on_touch_up(touch)
 
 
-class PlayingScreen(Screen):
+class PlayingScreen(ZenScreen):
     """
     The main screen that shows whats currently playing
     """
-    ctrl = ObjectProperty(None)
-
-    def __init__(self, ctrl, **kwargs):
-        self.ctrl = ctrl
-        Builder.load_file("ui/screens/playing/playing.kv")
-        super().__init__(**kwargs)
