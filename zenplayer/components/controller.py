@@ -233,6 +233,7 @@ class Controller(EventDispatcher):
     def stop(self):
         """ Stop any playing audio """
         self.advance = False
+        self.position = 0.0
         self.state = "stopped"
         self.advance = True
 
