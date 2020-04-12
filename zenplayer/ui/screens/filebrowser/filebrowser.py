@@ -8,7 +8,7 @@ from kivy.lang import Builder
 from os.path import sep
 
 
-class ZenFileBrowser(Screen):
+class FileBrowserScreen(Screen):
     """
     Displays a file browsing screen for ZenPlayer
     """
@@ -30,9 +30,9 @@ class ZenFileBrowser(Screen):
         The filebrowser screen is being opened for the first time.
         Initialize the paths to the one stored.
         """
-        if store.exists("filebrowser"):
-            if "path" in store.get("filebrowser").keys():
-                file_path = store.get("filebrowser")["path"]
+        if store.exists("FileBrowser"):
+            if "path" in store.get("FileBrowser").keys():
+                file_path = store.get("FileBrowser")["path"]
                 if exists(file_path):
                     self.filechooser.path = file_path
 
@@ -61,4 +61,4 @@ class ZenFileBrowser(Screen):
     def save(self, store):
         """ Save the file browser state """
         if len(self.filechooser.selection) > 0:
-            store.put("filebrowser", path=self.filechooser.selection[0])
+            store.put("FileBrowser", path=self.filechooser.selection[0])

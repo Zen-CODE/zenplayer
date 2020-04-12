@@ -26,15 +26,15 @@ class Playlist(EventDispatcher):
     def _load(self, store):
         """ Initialize and load previous state """
         # See if there is an existing playlist to restore
-        if store.exists("playlist"):
-            if "items" in store.get("playlist"):
-                items = store.get("playlist")["items"]
+        if store.exists("Playlist"):
+            if "items" in store.get("Playlist"):
+                items = store.get("Playlist")["items"]
                 k = 1
                 while "item" + str(k) in items.keys():
                     if exists(items["item" + str(k)]):
                         self.add_files(items["item" + str(k)])
                     k += 1
-            self.current = store.get("playlist")["current"]
+            self.current = store.get("Playlist")["current"]
             if self.current >= len(self.queue) - 1:
                 self.current = 0
 
@@ -96,7 +96,7 @@ class Playlist(EventDispatcher):
         all_items = {}
         for k, item in enumerate(self.queue):
             all_items.update({"item" + str(k + 1): item["filename"]})
-        store.put("playlist",
+        store.put("Playlist",
                   current=self.current,
                   items=all_items)
 

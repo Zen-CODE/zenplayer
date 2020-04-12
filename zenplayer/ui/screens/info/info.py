@@ -33,7 +33,9 @@ class InfoScreen(Screen):
 
     def _show_current_track(self, *args):
         """ Display the currently playing track in the playlist """
-        self._show(self.ctrl.playlist.get_current_file())
+        file_name = self.ctrl.playlist.get_current_file()
+        if file_name:
+            self._show()
 
     def on_filename(self, _widget, filename):
         """ Respond to the changing of the filename """

@@ -15,7 +15,7 @@
                         pos: self.pos
                         size: self.size
 
-        RecycleView:
+        ZenRecycleView:
             id: rv
             size_hint_y: 0.8
             ctrl: root.ctrl
@@ -25,11 +25,5 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: 'Main'
-                on_release: root.ctrl.show_screen("main")
-            ZenButton:
-                text: 'Artists'
-            ZenButton:
-                text: 'Random'
-            ZenButton:
-                text: 'Random'
+                text: "Playing"
+                on_release: root.ctrl.show_screen("Playing")

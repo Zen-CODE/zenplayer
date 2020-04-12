@@ -2,9 +2,7 @@
 This module houses a factory class for generating and retuning screens
 """
 from ui.screens.playlist.playlist import PlaylistScreen
-from ui.screens.filebrowser.filebrowser import ZenFileBrowser
-from ui.screens.playing.playing import PlayingScreen
-from ui.screens.info.info import InfoScreen
+from importlib import import_module
 
 
 class ScreenFactory:
@@ -18,24 +16,6 @@ class ScreenFactory:
         Create and return a screen of the type specified by *name* and pass it
         the given **kwargs**.
         """
-        return getattr(ScreenFactory, f"_get_{name}")(name=name, **kwargs)
-
-    @staticmethod
-    def _get_playlist(**kwargs):
-        """ Return the PlaylistScreen """
-        return PlaylistScreen(**kwargs)
-
-    @staticmethod
-    def _get_filebrowser(**kwargs):
-        """ Return the PlaylistScreen """
-        return ZenFileBrowser(**kwargs)
-
-    @staticmethod
-    def _get_main(**kwargs):
-        """ Return the PlaylistScreen """
-        return PlayingScreen(**kwargs)
-
-    @staticmethod
-    def _get_info(**kwargs):
-        """ Return the PlaylistScreen """
-        return InfoScreen(**kwargs)
+        # e.g. ui.screens.playlist.playlist.PlaylistScreen
+        mod = import_module(f"ui.screens.{name.lower()}.{name.lower()}")
+        return getattr(mod, f"{name}Screen")(name=name, **kwargs)

@@ -27,19 +27,19 @@
         "shift+f": {
             "name": "show_screen",
             "kwargs": {
-                "name": "filebrowser"
+                "name": "FileBrowser"
             }
         },
         "shift+p": {
             "name": "show_screen",
             "kwargs": {
-                "name": "playlist"
+                "name": "Playlist"
             }
         },
         "shift+m": {
             "name": "show_screen",
             "kwargs": {
-                "name": "main"
+                "name": "Playing"
             }
         },
         "shift+i": {

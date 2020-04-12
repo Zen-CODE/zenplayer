@@ -82,7 +82,7 @@ class PlaylistPopup(Popup):
     def button_info(self):
         """ Display detailed info on the selected track """
         data = self.ctrl.playlist.queue[self.index]
-        self.ctrl.show_screen("info", filename=data["filename"])
+        self.ctrl.show_screen("Info", filename=data["filename"])
 
     def button_remove(self):
         """ Play the track selected track. """

@@ -6,7 +6,7 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 
 
-class LibraryScreen(Screen):
+class ArtistsScreen(Screen):
     """
     Displays a interface for viewing and interacting with the `Library`
     component
@@ -15,5 +15,5 @@ class LibraryScreen(Screen):
 
     def __init__(self, ctrl, **kwargs):
         self.ctrl = ctrl
-        Builder.load_file("ui/screens/library/library.kv")
+        Builder.load_file("ui/screens/library/artists.kv")
         super().__init__(**kwargs)

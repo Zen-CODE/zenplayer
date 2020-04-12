@@ -62,7 +62,7 @@ class Controller(EventDispatcher):
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
-        self.show_screen("main")
+        self.show_screen("Playing")
 
         HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
@@ -211,17 +211,17 @@ class Controller(EventDispatcher):
         self.playlist.save(self.store)
         self.store.put("state", volume=self.volume, position=self.position,
                        state=self.state)
-        if "filebrowser" in self.sm.screen_names:
-            self.sm.get_screen("filebrowser").save(self.store)
+        if "FileBrowser" in self.sm.screen_names:
+            self.sm.get_screen("FileBrowser").save(self.store)
 
     def show_current_info(self):
         """
         Show information on the current track
         """
         # TODO: If this works, we can probably change keyboard shortcut
-        self.show_screen("info", filename=None)
+        self.show_screen("Info", filename=None)
 
-    def show_screen(self, name="main", **kwargs):
+    def show_screen(self, name="Playing", **kwargs):
         """
         Switch to the screen specified. The *kwargs* dictionary will be either
         passed to the constructor, or their values manually applied.

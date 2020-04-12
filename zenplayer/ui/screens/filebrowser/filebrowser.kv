@@ -1,12 +1,11 @@
 #:kivy 1.10
 
-<ZenFileBrowser>:
+<FileBrowserScreen>:
     filechooser: filechooser
     label_sel: label_sel
 
     BoxLayout:
         orientation: 'vertical'
-        #FileChooserIconView:
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 0.1
@@ -44,7 +43,7 @@
             size_hint_y: 0.1
             ZenButton:
                 text: 'Back'
-                on_release: root.ctrl.show_screen("main")
+                on_release: root.ctrl.show_screen("Playing")
             ZenButton:
                 text: "Add and replace"
                 on_release: root.add_replace()
