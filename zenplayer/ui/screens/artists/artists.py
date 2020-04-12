@@ -9,3 +9,7 @@ class ArtistsScreen(ZenScreen):
     Displays a interface for viewing and interacting with the `Library`
     component
     """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.rv.data = [
+            {"text": artist} for artist in self.ctrl.library.get_artists()]

@@ -8,6 +8,7 @@ from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
 from components.filedrop import FileDrop
+from components.library import Library
 from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
 from components.store import StoreFactory
@@ -54,6 +55,7 @@ class Controller(EventDispatcher):
         """ Initialize the screens and the screen manager """
         super().__init__(**kwargs)
         self.playlist = Playlist(self.store)
+        self.library = Library()
         self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
