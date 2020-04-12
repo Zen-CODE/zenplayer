@@ -1,0 +1,4 @@
+{
+    "log_level": "info",
+    "enable_webserver": true
+}

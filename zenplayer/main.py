@@ -10,8 +10,9 @@ __author__ = 'ZenCODE'
 from kivy.app import App
 from components.controller import Controller
 from webserver.webserver import WebServer
-from kivy.logger import Logger
-from logging import INFO
+from kivy.logger import Logger, LOG_LEVELS
+from json import load
+from components.paths import rel_to_base
 
 
 class ZenPlayer(App):
@@ -21,9 +22,14 @@ class ZenPlayer(App):
     ctrl = None
     ''' Reference to the instantiated Controller class. '''
 
-    @staticmethod
-    def init_logging():
-        Logger.setLevel(INFO)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        with open(rel_to_base("config", "zenplayer.json")) as f:
+            self._config = load(f)
+        self.init_logging()
+
+    def init_logging(self):
+        Logger.setLevel(LOG_LEVELS[self._config["log_level"]])
 
     def on_pause(self):
         """ Enable support for pause """
@@ -35,9 +41,11 @@ class ZenPlayer(App):
 
     def build(self):
         """ Build the app and return the screen manager """
-        self.init_logging()
         self.ctrl = Controller(app=self)
-        WebServer.start(self.ctrl)
+        if self._config["enable_webserver"]:
+            WebServer.start(self.ctrl)
+        else:
+            Logger.info("ZenPlayer: Disabling WebServer")
         return self.ctrl.sm
 
     def on_stop(self):

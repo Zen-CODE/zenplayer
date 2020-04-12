@@ -41,14 +41,11 @@ class WebServer:
     def start(ctrl):
         """ Start the ZenPlayer web API backend. """
         config = WebServer._get_config()
-        if config.pop("enabled"):
-            Logger.info("Webserver: Starting web server ")
-            thread = FlaskThread(ctrl, config)
-            thread.daemon = True
-            thread.start()
-            WebServer._thread = thread
-        else:
-            Logger.info("Webserver: Web server disabled")
+        Logger.info("Webserver: Starting web server ")
+        thread = FlaskThread(ctrl, config)
+        thread.daemon = True
+        thread.start()
+        WebServer._thread = thread
 
     @staticmethod
     def stop():
