@@ -1,5 +1,5 @@
 #:kivy 1.10
-#: import SelectableLabel ui.screens.playlist.playlistrv.SelectableLabel
+#: import PlaylistLabel ui.screens.playlist.playlist.PlaylistLabel
 
 
 <SelectableLabel>:
@@ -28,7 +28,7 @@
 
         ZenRecycleView:
             id: rv
-            viewclass: 'SelectableLabel'
+            viewclass: 'PlaylistLabel'
             size_hint_y: 0.8
             ctrl: root.ctrl
             data: root.ctrl.playlist.queue
