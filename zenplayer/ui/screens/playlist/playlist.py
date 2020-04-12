@@ -45,12 +45,11 @@ class PlaylistLabel(SelectableLabel):
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """
-        if super().on_touch_down(touch):
-            return True
-        if self.collide_point(*touch.pos):
+        ret = super().on_touch_down(touch)
+        if not ret and self.collide_point(*touch.pos):
             Clock.schedule_once(
                 lambda dt: self.on_long_touch(self.parent.recycleview))
-            return self.parent.select_with_touch(self.index, touch)
+        return ret
 
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """

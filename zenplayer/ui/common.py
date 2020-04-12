@@ -41,6 +41,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
 
+    def on_touch_down(self, touch):
+        """ Add selection on touch down """
+        if super().on_touch_down(touch):
+            return True
+        if self.collide_point(*touch.pos):
+            return self.parent.select_with_touch(self.index, touch)
+
 
 class ZenRecycleView(RecycleView):
     """
