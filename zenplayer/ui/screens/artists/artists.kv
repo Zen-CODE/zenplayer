@@ -23,11 +23,5 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: "Back to Albums"
-                on_release: root.ctrl.show_screen("Albums")
-            ZenButton:
-                text: "Add to Playlist"
-                on_release: root.add_to_playlist()
-            ZenButton:
-                text: "Random "
-                on_release: root.choose_random()
+                text: "Back to Playing"
+                on_release: root.ctrl.show_screen("Playing")

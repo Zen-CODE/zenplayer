@@ -7,7 +7,7 @@
             orientation: 'vertical'
             size_hint_y: 0.1
             Label:
-                text: "Music Library - Albums"
+                text: "Music Library - Albums - " + root.artist
                 canvas:
                     Color:
                         rgba: 0.25, 0.25, 0.75, 0.5
@@ -23,5 +23,11 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: "Back to Playing"
-                on_release: root.ctrl.show_screen("Playing")
+                text: "Back to Artists"
+                on_release: root.ctrl.show_screen("Artists")
+            ZenButton:
+                text: "Add to Playlist"
+                on_release: root.add_to_playlist()
+            ZenButton:
+                text: "Random "
+                on_release: root.choose_random()

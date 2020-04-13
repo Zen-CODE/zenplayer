@@ -9,6 +9,7 @@ class ArtistsScreen(ZenScreen):
     Displays a interface for viewing and interacting with the artists
     list from the library.
     """
+
     def __init__(self, **kwargs):
 
         super().__init__(**kwargs)

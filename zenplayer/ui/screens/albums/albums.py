@@ -4,7 +4,7 @@ This module houses the Zen Music Library browser based on the recycleview
 from ui.screens.zenscreen import ZenScreen
 from kivy.properties import StringProperty
 from ui.widgets.zenrecycleview import SelectableLabel
-
+from kivy.clock import Clock
 
 class AlbumsScreen(ZenScreen):
     """
@@ -14,11 +14,13 @@ class AlbumsScreen(ZenScreen):
     artist = StringProperty()
     """ The artist for which to display the ALbum """
 
-    def __init__(self, **kwargs):
-
-        super().__init__(**kwargs)
-        self.ids.rv.data = [
-            {"text": artist} for artist in self.ctrl.library.get_artists()]
+    def on_artist(self, _widget, artist):
+        """ Respond to the changing of artists"""
+        def update(_dt):
+            self.ids.rv.data = [
+                {"text": album} for album in self.ctrl.library.get_albums(
+                    artist)]
+        Clock.schedule_once(update)
 
     def on_selected(self, index, text):
         """
