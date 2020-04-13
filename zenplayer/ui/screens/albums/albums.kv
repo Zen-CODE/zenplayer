@@ -1,13 +1,13 @@
 #:kivy 1.10
 #
-<ArtistsScreen>:
+<AlbumsScreen>:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 0.1
             Label:
-                text: "Music Library - Artists"
+                text: "Music Library - Albums"
                 canvas:
                     Color:
                         rgba: 0.25, 0.25, 0.75, 0.5
@@ -17,17 +17,13 @@
 
         ZenRecycleView:
             id: rv
-            size_hint_y: 0.8
             handler: root
+            size_hint_y: 0.8
+            ctrl: root.ctrl
+            # current: root.ctrl.playlist.current
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: "Back to Albums"
-                on_release: root.ctrl.show_screen("Albums")
-            ZenButton:
-                text: "Add to Playlist"
-                on_release: root.add_to_playlist()
-            ZenButton:
-                text: "Random "
-                on_release: root.choose_random()
+                text: "Back to Playing"
+                on_release: root.ctrl.show_screen("Playing")

@@ -15,7 +15,8 @@ class ZenRecycleView(RecycleView):
     """
     Provides a shared component for Playlist and Library recycleviews.
     """
-    ctrl = ObjectProperty()
+    handler = ObjectProperty()
+    """ Object that should handle the "on_selected" method. """
 
     def __init__(self, **kwargs):
         KVLoader.load("ui/widgets/zenrecycleview.kv")
@@ -46,6 +47,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
+        if rv.handler:
+            rv.handler.on_selected(index, self.text)
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """
