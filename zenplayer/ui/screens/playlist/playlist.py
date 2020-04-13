@@ -65,4 +65,4 @@ class PlaylistPopup(Popup):
 
     def button_remove(self):
         """ Play the track selected track. """
-        self.ctrl.remove_index(self.index)
+        self.ctrl.playlist.remove_index(self.index)
