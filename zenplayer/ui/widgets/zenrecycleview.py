@@ -47,7 +47,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
-        if rv.handler:
+        if is_selected and  rv.handler:
             rv.handler.on_selected(index, self.text)
 
     def on_touch_down(self, touch):
