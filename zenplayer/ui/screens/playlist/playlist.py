@@ -15,6 +15,14 @@ class PlaylistScreen(ZenScreen):
     current = NumericProperty(-1)
     """ The index of the currently playing track in the queue. """
 
+    def on_selected(self, index, text):
+        """ Handle the selection event """
+        data = self.ctrl.playlist.get_info(index=index)
+        PlaylistPopup(
+            title="Track: {artist} - {album} - {track}".format(**data),
+            ctrl=self.ctrl,
+            index=index).open()
+
 
 class PlaylistLabel(SelectableLabel):
     """ Add selection support to the Label """
@@ -30,30 +38,10 @@ class PlaylistLabel(SelectableLabel):
     def on_current_track(self, _widget, _value):
         self._set_back_color()
 
-    def on_long_touch(self, rv):
-        """ Event fired when the label has been held down for a long time. """
-        data = rv.ctrl.playlist.get_info(index=self.index)
-        PlaylistPopup(
-            title="Track: {artist} - {album} - {track}".format(**data),
-            ctrl=rv.ctrl,
-            index=self.index).open()
-
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.current_track = bool(rv.current == index)
         return super().refresh_view_attrs(rv, index, data)
-
-    def on_touch_down(self, touch):
-        """ Add selection on touch down """
-        ret = super().on_touch_down(touch)
-        if not ret and self.collide_point(*touch.pos):
-            Clock.schedule_once(
-                lambda dt: self.on_long_touch(self.parent.recycleview))
-        return ret
-
-    def apply_selection(self, rv, index, is_selected):
-        """ Respond to the selection of items in the view. """
-        self.selected = is_selected
 
 
 class PlaylistPopup(Popup):
