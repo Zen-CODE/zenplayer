@@ -41,7 +41,7 @@ class ZenPlayer(App):
 
     def build(self):
         """ Build the app and return the screen manager """
-        self.ctrl = Controller(app=self)
+        self.ctrl = Controller(app=self, config=self.config)
         if self._config["enable_webserver"]:
             WebServer.start(self.ctrl)
         else:

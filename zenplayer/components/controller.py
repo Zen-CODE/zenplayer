@@ -7,7 +7,6 @@ from kivy.clock import Clock
 from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
-from components.filedrop import FileDrop
 from components.library import Library
 from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
@@ -53,10 +52,10 @@ class Controller(EventDispatcher):
 
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
+        self.prune = kwargs.pop("config").pop("prune", True)
         super().__init__(**kwargs)
         self.playlist = Playlist(self.store)
         self.library = Library()
-        self.file_drop = FileDrop(self.playlist)
         self.advance = True
 
         self.show_screen("Playing")

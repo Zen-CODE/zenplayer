@@ -3,6 +3,7 @@ from os import sep, path, listdir
 from kivy.logger import Logger
 from os.path import exists
 from kivy.properties import NumericProperty, ListProperty
+from components.filedrop import FileDrop
 
 
 class Playlist(EventDispatcher):
@@ -22,6 +23,7 @@ class Playlist(EventDispatcher):
     def __init__(self, store, **kwargs):
         super().__init__(**kwargs)
         self._load(store)
+        self.file_drop = FileDrop(self)
 
     def _load(self, store):
         """ Initialize and load previous state """

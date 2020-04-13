@@ -1,4 +1,5 @@
 {
     "log_level": "info",
-    "enable_webserver": true
+    "enable_webserver": true,
+    "prunt": true
 }
