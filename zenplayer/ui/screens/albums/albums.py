@@ -15,7 +15,7 @@ class AlbumsScreen(ZenScreen):
     artist = StringProperty()
     """ The artist for which to display the ALbum """
 
-    album = StringProperty()
+    album = StringProperty("")
     """ The album that has been selected. """
 
     def on_artist(self, _widget, artist):
