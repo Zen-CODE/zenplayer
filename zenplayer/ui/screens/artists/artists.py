@@ -10,11 +10,16 @@ class ArtistsScreen(ZenScreen):
     list from the library.
     """
 
-    def __init__(self, **kwargs):
-
-        super().__init__(**kwargs)
-        self.ids.rv.data = [
-            {"text": artist} for artist in self.ctrl.library.get_artists()]
+    def on_enter(self):
+        """
+        As the loadinbg can sometimes take time, do this once the screen is
+        shown.
+        """
+        if not self.ids.rv.data:
+            self.ids.rv.data = [
+                {"text": artist} for artist in self.ctrl.library.get_artists()]
+            lbl = self.ids.wait_label
+            lbl.parent.remove_widget(lbl)
 
     def on_selected(self, index, text):
         """

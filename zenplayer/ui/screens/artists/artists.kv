@@ -14,11 +14,18 @@
                     Rectangle:
                         pos: self.pos
                         size: self.size
-
-        ZenRecycleView:
-            id: rv
+        FloatLayout:
             size_hint_y: 0.8
-            handler: root
+            Label:
+                id: wait_label
+                text: "Loading library..."
+                size_hint: 1, 1
+                pos_hint: {"x": 0, "y": 0}
+            ZenRecycleView:
+                id: rv
+                handler: root
+                size_hint: 1, 1
+                pos_hint: {"x": 0, "y": 0}
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
