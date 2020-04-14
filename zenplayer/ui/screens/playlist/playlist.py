@@ -15,8 +15,8 @@ class PlaylistScreen(ZenScreen):
     current = NumericProperty(-1)
     """ The index of the currently playing track in the queue. """
 
-    def on_selected(self, index, text):
-        """ Handle the selection event """
+    def show_popup(self, index):
+        """ Show the popup for selecting the specified index in the playlist """
         data = self.ctrl.playlist.get_info(index=index)
         PlaylistPopup(
             title="Track: {artist} - {album} - {track}".format(**data),
@@ -27,6 +27,7 @@ class PlaylistScreen(ZenScreen):
 class PlaylistLabel(SelectableLabel):
     """ Add selection support to the Label """
     current_track = BooleanProperty(False)
+    handler = None
 
     def _set_back_color(self):
         """ Set the back color of the label considering the playlist """
@@ -41,7 +42,14 @@ class PlaylistLabel(SelectableLabel):
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
         self.current_track = bool(rv.current == index)
+        if not PlaylistLabel.handler:
+            PlaylistLabel.handler = rv.handler
         return super().refresh_view_attrs(rv, index, data)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.handler.show_popup(self.index)
+        return super().on_touch_down(touch)
 
 
 class PlaylistPopup(Popup):
