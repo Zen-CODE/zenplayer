@@ -23,11 +23,17 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: "Back to Artists"
+                text: "Playing"
+                on_release: root.ctrl.show_screen("Playing")
+            ZenButton:
+                text: "Artists"
                 on_release: root.ctrl.show_screen("Artists")
             ZenButton:
                 text: "Add"
                 on_release: root.add_to_playlist()
+            ZenButton:
+                text: "Insert"
+                # on_release: root.add_to_playlist()
             ZenButton:
                 text: "Replace"
                 on_release: root.add_to_playlist(replace=True)
