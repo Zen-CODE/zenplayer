@@ -26,8 +26,11 @@
                 text: "Back to Artists"
                 on_release: root.ctrl.show_screen("Artists")
             ZenButton:
-                text: "Add to Playlist"
+                text: "Add"
                 on_release: root.add_to_playlist()
+            ZenButton:
+                text: "Replace"
+                on_release: root.add_to_playlist(replace=True)
             ZenButton:
                 text: "Random "
                 on_release: root.choose_random()

@@ -59,8 +59,10 @@ class Playlist(EventDispatcher):
         parts = file_.split(sep)
         return " - ".join(parts[-3:])
 
-    def add_files(self, file_folder):
+    def add_files(self, file_folder, replace=False):
         """ Add the specified folder to the queue """
+        if replace:
+            self.clear_files()
         Logger.info("playlist.py: processing {0}".format(file_folder))
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder)):

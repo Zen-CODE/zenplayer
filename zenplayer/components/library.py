@@ -44,3 +44,15 @@ class Library:
         _path = join(self.lib_path, artist)
         contents = self._safe_listdir(_path, isdir)
         return sorted(contents)
+
+    def get_path(self, artist=None, album=None):
+        """
+        Return the path to the relevant folder. If niether album nor artist
+        is specified, the root of the music library is returned.
+        """
+        if artist and album:
+            return join(self.lib_path, artist, album)
+        elif artist:
+            return join(self.lib_path, artist)
+        else:
+            return self.lib_path
