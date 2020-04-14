@@ -3,6 +3,7 @@ This module houses the Zen Music Library class
 """
 from os.path import expanduser, join, isdir, exists
 from os import listdir
+from random import choice
 
 
 class Library:
@@ -56,3 +57,12 @@ class Library:
             return join(self.lib_path, artist)
         else:
             return self.lib_path
+
+    def get_random_album(self):
+        """
+        Choose and return a random album, returning the artist and album as
+        a tuple.
+        """
+        artist = choice(self.get_artists())
+        album = choice(self.get_albums(artist))
+        return artist, album

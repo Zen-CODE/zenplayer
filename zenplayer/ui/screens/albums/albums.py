@@ -40,6 +40,6 @@ class AlbumsScreen(ZenScreen):
             album_path = self.ctrl.library.get_path(self.artist, self.album)
             self.ctrl.playlist.add_files(album_path, replace)
 
-    def choose_randon(self):
-        # TODO
-        pass
+    def choose_random(self):
+        """ Choose and display a randbom album. """
+        self.artist, self.album = self.ctrl.library.get_random_album()
