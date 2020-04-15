@@ -22,6 +22,7 @@ class ZenRecycleView(RecycleView):
         KVLoader.load("ui/widgets/zenrecycleview.kv")
         super().__init__(**kwargs)
 
+
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
     Add selection support to the Label
