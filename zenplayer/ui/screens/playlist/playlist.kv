@@ -1,6 +1,7 @@
 #:kivy 1.10
 
 <PlaylistScreen>:
+    current: root.ctrl.playlist.current
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -20,7 +21,6 @@
             size_hint_y: 0.8
             handler: root
             data: root.ctrl.playlist.queue
-            current: root.ctrl.playlist.current
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1

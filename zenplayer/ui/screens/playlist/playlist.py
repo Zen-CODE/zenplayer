@@ -23,12 +23,12 @@ class PlaylistScreen(ZenScreen):
             ctrl=self.ctrl,
             index=item.index).open()
 
-    def set_label_back_color(self, label):
+    def item_draw(self, label):
         """ Set the back color of the label considering the playlist """
         if label.index == self.current:
             label.back_color = [.5, 1.0, .50, .3]
-        else:
-            super().set_back_color()
+            return True
+        return False
 
 
 class PlaylistPopup(Popup):
