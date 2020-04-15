@@ -63,11 +63,12 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
         handler = self.handler = rv.handler
-        if not (getattr(handler, "item_draw") and handler.item_draw(self)):
-            self.item_draw()
-
         if is_selected and hasattr(handler, "item_selected"):
             handler.item_selected(self)
+        if getattr(handler, "item_draw"):
+            if handler.item_draw(self):
+                return
+        self.item_draw()
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """
