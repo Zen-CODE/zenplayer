@@ -39,8 +39,13 @@ class AlbumsScreen(ZenScreen):
         """
         Add the selected album to the playlist
         """
+        pl = self.ctrl.playlist
+        if replace:
+            pl.clear_files()
         album_path = self.ctrl.library.get_path(self.artist, self.album)
-        self.ctrl.playlist.add_files(album_path, replace)
+        pl.add_files(album_path)
+        if replace:
+            self.ctrl.play_index(0)
 
     def choose_random(self):
         """ Choose and display a randbom album. """
