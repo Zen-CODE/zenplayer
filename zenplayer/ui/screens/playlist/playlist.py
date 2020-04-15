@@ -15,13 +15,13 @@ class PlaylistScreen(ZenScreen):
     current = NumericProperty(-1)
     """ The index of the currently playing track in the queue. """
 
-    def item_touched(self, index):
+    def item_touched(self, item):
         """ Show the popup for selecting the specified index in the playlist """
-        data = self.ctrl.playlist.get_info(index=index)
+        data = self.ctrl.playlist.get_info(index=item.index)
         PlaylistPopup(
             title="Track: {artist} - {album} - {track}".format(**data),
             ctrl=self.ctrl,
-            index=index).open()
+            index=item.index).open()
 
     def set_label_back_color(self, label):
         """ Set the back color of the label considering the playlist """
