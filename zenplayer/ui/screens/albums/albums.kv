@@ -28,15 +28,27 @@
             ZenButton:
                 text: "Artists"
                 on_release: root.ctrl.show_screen("Artists")
-            ZenButton:
-                text: "Add"
-                on_release: root.add_to_playlist()
-            ZenButton:
-                text: "Insert"
-                # on_release: root.add_to_playlist()
-            ZenButton:
-                text: "Replace"
-                on_release: root.add_to_playlist(replace=True)
-            ZenButton:
-                text: "Random "
-                on_release: root.choose_random()
+
+<AlbumPopup>:
+    size_hint: 0.75, 0.75
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    auto_dismiss: False
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10, 10, 10, 10
+        spacing: 10
+        ZenButton:
+            text: "Add to playlist"
+            on_release: root.dismiss; handler.add_to_playlist()
+        ZenButton:
+            text: "Insert and play now"
+            on_release: root.dismiss; handler.insert_and_play()
+        ZenButton:
+            text: "Replace and play now"
+            on_release: root.dismiss; handler.add_to_playlist(replace=True)
+        ZenButton:
+            text: "Choose Random album"
+            on_release: root.dismiss; handler.choose_random()
+        ZenButton:
+            text: "Cancel"
+            on_press: root.dismiss()

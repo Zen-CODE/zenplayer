@@ -6,6 +6,8 @@ from kivy.properties import StringProperty
 from ui.widgets.zenrecycleview import SelectableLabel
 from kivy.clock import Clock
 from ui.widgets.zenrecycleview import SelectableLabel
+from kivy.uix.popup import Popup
+from kivy.properties import ObjectProperty
 
 
 class AlbumsScreen(ZenScreen):
@@ -37,23 +39,23 @@ class AlbumsScreen(ZenScreen):
         """
         Add the selected album to the playlist
         """
-        if self.album:
-            album_path = self.ctrl.library.get_path(self.artist, self.album)
-            self.ctrl.playlist.add_files(album_path, replace)
+        album_path = self.ctrl.library.get_path(self.artist, self.album)
+        self.ctrl.playlist.add_files(album_path, replace)
 
     def choose_random(self):
         """ Choose and display a randbom album. """
         self.artist, self.album = self.ctrl.library.get_random_album()
 
+    def item_touched(self, item):
+        """ Show the popup for selecting the album """
+        AlbumPopup(
+            title="Track: {self.artist} - {self.album}",
+            handler=self).open()
 
-class AlbumLabel(SelectableLabel):
-    """ Provides a SelectableLabel that also indicates the current selection.
+
+class AlbumPopup(Popup):
     """
-    def refresh_view_attrs(self, rv, index, data):
-        """ Catch and handle the view changes """
-        print(f"Refreshing:for {rv.handler.album}. text={data['text']}")
-        # self.selected = bool(data["text"] == rv.handler.album)
-        self.selected = False
-        self._set_back_color()
-        return super().refresh_view_attrs(rv, index, data)
-
+    The Popup show when the playlist item is tapped and held.
+    """
+    handler = ObjectProperty()
+    """ A reference to the controller object"""
