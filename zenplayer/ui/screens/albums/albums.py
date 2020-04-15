@@ -42,8 +42,7 @@ class AlbumsScreen(ZenScreen):
         pl = self.ctrl.playlist
         if replace:
             pl.clear_files()
-        album_path = self.ctrl.library.get_path(self.artist, self.album)
-        pl.add_files(album_path)
+        pl.add_files(self.ctrl.library.get_path(self.artist, self.album))
         if replace:
             self.ctrl.play_index(0)
 
