@@ -65,7 +65,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         handler = self.handler = rv.handler
         if is_selected and hasattr(handler, "item_selected"):
             handler.item_selected(self)
-        if getattr(handler, "item_draw"):
+        if hasattr(handler, "item_draw"):
             if handler.item_draw(self):
                 return
         self.item_draw()
