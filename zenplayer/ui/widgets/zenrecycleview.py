@@ -22,22 +22,21 @@ class ZenRecycleView(RecycleView):
         KVLoader.load("ui/widgets/zenrecycleview.kv")
         super().__init__(**kwargs)
 
+    def set_label_back_color(self, label):
+        """ Handle the setting of the label back_color, so we call pull this
+        logic out of the recycleview rabbit hole.
+        """
+        if label.selected:
+            label.back_color = [.5, .5, 1.0, .3]
+        else:
+            label.back_color = [0, 0, 0, 1]
+
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """ Add selection support to the Label """
     index = None
     back_color = ListProperty([0, 0, 0, 1])
     selected = BooleanProperty(False)
-
-    def _set_back_color(self):
-        """ Set the back color of the label considering the playlist """
-        if self.selected:
-            self.back_color = [.5, .5, 1.0, .3]
-        else:
-            self.back_color = [0, 0, 0, 1]
-
-    def on_selected(self, _widget, _value):
-        self._set_back_color()
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -47,7 +46,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
         self.selected = is_selected
-        if is_selected and rv.handler and hasattr(rv.handler, "on_selected"):
+        rv.set_label_back_color(self)
+        if is_selected and hasattr(rv.handler, "on_selected"):
             rv.handler.on_selected(index, self.text)
 
     def on_touch_down(self, touch):
