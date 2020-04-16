@@ -58,7 +58,7 @@ class AlbumsScreen(ZenScreen):
     def item_touched(self, item):
         """ Show the popup for selecting the album """
         AlbumPopup(
-            title="Track: {self.artist} - {self.album}",
+            title=f"Track: {self.artist} - {self.album}",
             handler=self).open()
 
 

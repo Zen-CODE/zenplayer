@@ -23,14 +23,14 @@
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
             ZenButton:
-                text: "Playing"
-                on_release: root.ctrl.show_screen("Playing")
-            ZenButton:
-                text: "Artists"
+                text: "Back"
                 on_release: root.ctrl.show_screen("Artists")
+            ZenButton:
+                text: "Choose random"
+                on_release: root.choose_random()
 
 <AlbumPopup>:
-    size_hint: 0.75, 0.75
+    size_hint: 0.75, 0.65
     pos_hint: {"center_x": 0.5, "center_y": 0.5}
     auto_dismiss: False
     BoxLayout:
@@ -46,9 +46,6 @@
         ZenButton:
             text: "Replace"
             on_release: root.dismiss(); root.handler.add_to_playlist(mode="replace")
-        ZenButton:
-            text: "Choose Random album"
-            on_release: root.dismiss(); root.handler.choose_random()
         ZenButton:
             text: "Cancel"
             on_press: root.dismiss()
