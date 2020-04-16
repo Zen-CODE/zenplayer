@@ -53,6 +53,10 @@ class AlbumsScreen(ZenScreen):
         """ Choose and display a randbom album. """
         self.artist, self.album = self.ctrl.library.get_random_album()
 
+    def search(self):
+        """ Search for any album or artist that contains a match. """
+        ret = self.ctrl.library.search(self.ids.text)
+
     def item_touched(self, item):
         """ Show the popup for selecting the album """
         AlbumPopup(

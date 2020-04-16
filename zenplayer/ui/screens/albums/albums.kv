@@ -28,6 +28,13 @@
             ZenButton:
                 text: "Choose random"
                 on_release: root.choose_random()
+            BoxLayout:
+                orientation: "horizontal"
+                ZenButton:
+                    text: "Search:"
+                    on_release: root.search()
+                TextInput:
+                    id: text
 
 <AlbumPopup>:
     size_hint: 0.75, 0.65
