@@ -55,7 +55,7 @@ class Library:
 
     def get_albums(self, artist):
         """ Return a list of albums for the *artist*. """
-        return self._artists.get(artist, [])
+        return sorted(self._artists.get(artist, []))
 
     # def get_cover(self, artist, album):
     #     """
