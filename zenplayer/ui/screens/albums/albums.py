@@ -35,15 +35,20 @@ class AlbumsScreen(ZenScreen):
         """
         self.album = label.text
 
-    def add_to_playlist(self, replace=False):
+    def add_to_playlist(self, mode="add"):
         """
-        Add the selected album to the playlist
+        Add the selected album to the playlist. *mode* can be one of
+        * "add" - add to the end of the playlist
+        * "replace" - clear the existing playlist and add the files
+        * "insert" - insert the selected album at the beginning of the playlist
         """
         pl = self.ctrl.playlist
-        if replace:
+        if mode == "replace":
             pl.clear_files()
-        pl.add_files(self.ctrl.library.get_path(self.artist, self.album))
-        if replace:
+
+        pl.add_files(self.ctrl.library.get_path(self.artist, self.album),
+                     mode=mode)
+        if mode != "add":
             self.ctrl.play_index(0)
 
     def choose_random(self):

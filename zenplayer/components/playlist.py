@@ -59,15 +59,22 @@ class Playlist(EventDispatcher):
         parts = file_.split(sep)
         return " - ".join(parts[-3:])
 
-    def add_files(self, file_folder):
-        """ Add the specified folder to the queue """
+    def add_files(self, file_folder, mode="add"):
+        """
+        Add the specified folder to the queue.
+        """
         Logger.info("playlist.py: processing {0}".format(file_folder))
         if path.isdir(file_folder):
-            for f in sorted(listdir(file_folder)):
-                self.add_files(path.join(file_folder, f))
+            for f in sorted(listdir(file_folder),
+                            reverse=bool(mode == "insert")):
+                self.add_files(path.join(file_folder, f), mode=mode)
         elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            self.queue.append({"filename": file_folder,
-                               "text": self.get_text(file_folder)})
+            if mode == "insert":
+                self.queue.insert(0, ({"filename": file_folder,
+                                      "text": self.get_text(file_folder)}))
+            else:
+                self.queue.append({"filename": file_folder,
+                                  "text": self.get_text(file_folder)})
 
     def clear_files(self):
         """ Clear the existing playlist"""

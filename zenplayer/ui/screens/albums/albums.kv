@@ -38,14 +38,14 @@
         padding: 10, 10, 10, 10
         spacing: 10
         ZenButton:
-            text: "Add to playlist"
+            text: "Add"
             on_release: root.dismiss(); root.handler.add_to_playlist()
         ZenButton:
-            text: "Insert and play now"
-            on_release: root.dismiss(); root.handler.insert_and_play()
+            text: "Insert"
+            on_release: root.dismiss(); root.handler.add_to_playlist(mode="insert")
         ZenButton:
-            text: "Replace and play now"
-            on_release: root.dismiss(); root.handler.add_to_playlist(replace=True)
+            text: "Replace"
+            on_release: root.dismiss(); root.handler.add_to_playlist(mode="replace")
         ZenButton:
             text: "Choose Random album"
             on_release: root.dismiss(); root.handler.choose_random()
