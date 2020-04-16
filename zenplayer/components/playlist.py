@@ -1,6 +1,5 @@
 from kivy.event import EventDispatcher
 from os import sep, path, listdir
-from kivy.logger import Logger
 from os.path import exists
 from kivy.properties import NumericProperty, ListProperty
 from components.filedrop import FileDrop

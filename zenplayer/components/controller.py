@@ -237,6 +237,3 @@ class Controller(EventDispatcher):
         self.save()
         self.stop()
         Clock.schedule_once(lambda dt: self.app.stop())
-
-
-
