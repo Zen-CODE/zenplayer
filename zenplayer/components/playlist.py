@@ -61,9 +61,11 @@ class Playlist(EventDispatcher):
 
     def add_files(self, file_folder, mode="add"):
         """
-        Add the specified folder to the queue.
+        Add the selected album to the queue. *mode* can be one of
+        * "add" - add to the end of the playlist
+        * "replace" - clear the existing playlist and add the files
+        * "insert" - insert the selected album at the beginning of the playlist
         """
-        Logger.info("playlist.py: processing {0}".format(file_folder))
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),
                             reverse=bool(mode == "insert")):
