@@ -39,16 +39,16 @@
         spacing: 10
         ZenButton:
             text: "Add to playlist"
-            on_release: root.dismiss; root.handler.add_to_playlist()
+            on_release: root.dismiss(); root.handler.add_to_playlist()
         ZenButton:
             text: "Insert and play now"
-            on_release: root.dismiss; root.handler.insert_and_play()
+            on_release: root.dismiss(); root.handler.insert_and_play()
         ZenButton:
             text: "Replace and play now"
-            on_release: root.dismiss; root.handler.add_to_playlist(replace=True)
+            on_release: root.dismiss(); root.handler.add_to_playlist(replace=True)
         ZenButton:
             text: "Choose Random album"
-            on_release: root.dismiss; root.handler.choose_random()
+            on_release: root.dismiss(); root.handler.choose_random()
         ZenButton:
             text: "Cancel"
             on_press: root.dismiss()
