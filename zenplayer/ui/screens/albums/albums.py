@@ -3,9 +3,7 @@ This module houses the Zen Music Library browser based on the recycleview
 """
 from ui.screens.zenscreen import ZenScreen
 from kivy.properties import StringProperty
-from ui.widgets.zenrecycleview import SelectableLabel
 from kivy.clock import Clock
-from ui.widgets.zenrecycleview import SelectableLabel
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 
@@ -67,6 +65,7 @@ class AlbumsScreen(ZenScreen):
             label.back_color = [.5, 1.0, .50, .3]
             return True
         return False
+
 
 class AlbumPopup(Popup):
     """
