@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, FadeTransition
 from components.sound import Sound
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
@@ -42,7 +42,7 @@ class Controller(EventDispatcher):
     playlist = ObjectProperty()
     """ Reference to the Playlist object. """
 
-    sm = ObjectProperty(ScreenManager())
+    sm = ObjectProperty(ScreenManager(transition=FadeTransition(duration=0.2)))
     """ A reference to the active ScreenManager class. """
 
     prune = True
