@@ -3,6 +3,7 @@ from os import sep, path, listdir
 from os.path import exists
 from kivy.properties import NumericProperty, ListProperty
 from components.filedrop import FileDrop
+from glob import glob
 
 
 class Playlist(EventDispatcher):
@@ -128,9 +129,9 @@ class Playlist(EventDispatcher):
         """
         if audio_file:
             folder = audio_file[0: audio_file.rfind(sep)]
-            for f_name in reversed(listdir(folder)):
-                if f_name[-4:] in [".png", ".bmp", ".jpg", "jpeg"]:
-                    return path.join(folder, f_name)
+            ret = glob(folder + "/cover.*")
+            if ret:
+                return ret[0]
         return "images/zencode.jpg"
 
     def get_info(self, filename=None, index=None):
