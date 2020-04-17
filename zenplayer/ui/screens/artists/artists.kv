@@ -31,3 +31,6 @@
             ZenButton:
                 text: "Back"
                 on_release: root.ctrl.show_screen("Playing")
+            ZenButton:
+                text: "Random "
+                on_release: root.ctrl.show_screen("Albums", randomise=True)

@@ -2,7 +2,7 @@
 This module houses the Zen Music Library browser based on the recycleview
 """
 from ui.screens.zenscreen import ZenScreen
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
@@ -18,6 +18,9 @@ class AlbumsScreen(ZenScreen):
 
     album = StringProperty("")
     """ The album that has been selected. """
+
+    randomise = BooleanProperty(False)
+    """ Set to True to seleact a random album """
 
     def on_artist(self, _widget, artist):
         """ Respond to the changing of artists"""
@@ -49,11 +52,13 @@ class AlbumsScreen(ZenScreen):
         if mode != "add":
             self.ctrl.play_index(0)
 
-    def choose_random(self):
+    def on_randomise(self, _widget, value):
         """ Choose and display a randbom album. """
-        # Set the album before the artist to prevent reset on loading
-        _artist, self.album = self.ctrl.library.get_random_album()
-        self.artist = _artist
+        if value:
+            # Set the album before the artist to prevent reset on loading
+            _artist, self.album = self.ctrl.library.get_random_album()
+            self.artist = _artist
+            self.randomise = False
 
     def search(self):
         """ Search for any album or artist that contains a match. """
