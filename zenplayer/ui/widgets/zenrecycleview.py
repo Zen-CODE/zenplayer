@@ -22,6 +22,14 @@ class ZenRecycleView(RecycleView):
         KVLoader.load("ui/widgets/zenrecycleview.kv")
         super().__init__(**kwargs)
 
+    def find_item(self, text):
+        """ Jump to the first item that has a text match with *text* """
+        length = len(self.data)
+        for i, data in enumerate(self.data):
+            if data["text"].find(text) > -1:
+                self.scroll_y = 1.0 - float(i) / float(length)
+                return
+
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
