@@ -28,6 +28,7 @@ class AlbumsScreen(ZenScreen):
             self.ids.rv.data = [
                 {"text": album} for album in self.ctrl.library.get_albums(
                     artist)]
+            self.ids.rv.find_item(self.album)
         Clock.schedule_once(update)
 
     def item_selected(self, label):
@@ -64,7 +65,8 @@ class AlbumsScreen(ZenScreen):
         """ Search for any album or artist that contains a match. """
         ret = self.ctrl.library.search(self.ids.text.text)
         if ret:
-            self.artist, self.album = ret["artist"], ret["album"]
+            _artist, self.album = ret["artist"], ret["album"]
+            self.artist = _artist
 
     def item_touched(self, item):
         """ Show the popup for selecting the album """
