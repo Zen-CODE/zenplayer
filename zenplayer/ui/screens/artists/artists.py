@@ -12,7 +12,7 @@ class ArtistsScreen(ZenScreen):
 
     def on_enter(self):
         """
-        As the loadinbg can sometimes take time, do this once the screen is
+        As the loading can sometimes take time, do this once the screen is
         shown.
         """
         if not self.ids.rv.data:
