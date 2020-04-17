@@ -27,6 +27,10 @@
             ZenButton:
                 text: 'Back'
                 on_release: root.ctrl.show_screen("Playing")
+            ZenButton:
+                text: 'Clear'
+                on_release: root.ctrl.playlist.clear_files()
+
 
 <PlaylistPopup>:
     size_hint: 0.75, 0.75
