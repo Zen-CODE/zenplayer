@@ -51,7 +51,9 @@ class AlbumsScreen(ZenScreen):
 
     def choose_random(self):
         """ Choose and display a randbom album. """
-        self.artist, self.album = self.ctrl.library.get_random_album()
+        # Set the album before the artist to prevent reset on loading
+        _artist, self.album = self.ctrl.library.get_random_album()
+        self.artist = _artist
 
     def search(self):
         """ Search for any album or artist that contains a match. """
