@@ -21,8 +21,9 @@ class ArtistsScreen(ZenScreen):
             lbl = self.ids.wait_label
             lbl.parent.remove_widget(lbl)
 
-    def item_selected(self, label):
+    def item_selected(self, label, selected):
         """
         An label with the given text has been selected from the recycleview.
         """
-        self.ctrl.show_screen("Albums", artist=label.text)
+        if selected:
+            self.ctrl.show_screen("Albums", artist=label.text)

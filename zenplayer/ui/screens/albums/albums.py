@@ -31,11 +31,11 @@ class AlbumsScreen(ZenScreen):
             self.ids.rv.find_item(self.album)
         Clock.schedule_once(update)
 
-    def item_selected(self, label):
+    def item_selected(self, label, selected):
         """
         An item (SelectableLabel) has been selected from the recycleview.
         """
-        self.album = label.text
+        self.album = label.text if selected else ""
 
     def add_to_playlist(self, mode="add"):
         """
