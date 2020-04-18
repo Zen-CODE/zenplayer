@@ -24,15 +24,25 @@ class ArtistsScreen(ZenScreen):
     be dispalyed.
     """
 
+    search_text = StringProperty("")
+    """
+    Text entered by the user to move to the first artist staring with the
+    text.
+    """
     def on_enter(self):
         """
         As the loading can sometimes take time, do this once the screen is
         shown.
         """
+        self.ctrl.kb_handler.add_callback(self.on_key_down)
         if not self.ids.rv.data:
             self.ids.rv.data = [
                 {"text": artist} for artist in self.ctrl.library.get_artists()]
             self.note_text = ""
+
+    def on_leave(self):
+        """ The screen is being exited. Removed the callback """
+        self.ctrl.kb_handler.remove_callback(self.on_key_down)
 
     def item_selected(self, label, selected):
         """
@@ -44,8 +54,11 @@ class ArtistsScreen(ZenScreen):
     def on_show_note(self, widget, value):
         """ Either hide of show the note label """
         end_vale = 1 if value else 0
-        Animation(opacity=end_vale, duration=1).start(self.ids.note_label)
+        Animation(opacity=end_vale, duration=2).start(self.ids.note_label)
 
     def on_note_text(self, widget, text):
         """ Handle the change of note text """
         self.show_note = bool(text)
+
+    def on_key_down(self, keycode, text, modifiers):
+        print(f"Got keydown {text}")

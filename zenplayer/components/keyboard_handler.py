@@ -28,6 +28,18 @@ class KeyHandler:
         keypresses (keys) should call which functions (values).
         """
 
+        self._callbacks = []
+        """ A list of functions which have requested to receives keyboard events
+        """
+
+    def add_callback(self, callback):
+        """ Add a callback function to be called on keyboard event """
+        self._callbacks.append(callback)
+
+    def remove_callback(self, callback):
+        """ Add a callback function to be called on keyboard event """
+        self._callbacks.remove(callback)
+
     @staticmethod
     def _load_keymap():
         """ Load the specified key mappings from the json file. """
@@ -66,3 +78,5 @@ class KeyHandler:
         if func is not None:
             getattr(self.ctrl, func["name"])(**func.get("kwargs", {}))
             return True
+        for cb in self._callbacks:
+            cb(keycode, text, modifiers)
