@@ -2,6 +2,7 @@
 This module houses a mixin class to add keyboard seach suppport to the
 ZenRecycleView class when loaded in a ZenScreen subclass
 """
+# pylint: disable=no-member
 
 
 class ZenKeyDown:
