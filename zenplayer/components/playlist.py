@@ -97,7 +97,7 @@ class Playlist(EventDispatcher):
 
     def move_next(self):
         """ Move the selected track to the next"""
-        if len(self.queue) > self.current:
+        if len(self.queue) > self.current + 1:
             self.current += 1
         elif len(self.queue) > 0:
             self.current = 1
