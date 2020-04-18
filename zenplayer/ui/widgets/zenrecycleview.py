@@ -9,6 +9,7 @@ from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from ui.kvloader import KVLoader
+from kivy.clock import Clock
 
 
 class ZenRecycleView(RecycleView):
@@ -84,7 +85,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             return True
         if self.collide_point(*touch.pos):
             if self.handler and hasattr(self.handler, "item_touched"):
-                self.handler.item_touched(self)
+                Clock.schedule_once(lambda dt: self.handler.item_touched(self))
             return self.parent.select_with_touch(self.index, touch)
 
 
