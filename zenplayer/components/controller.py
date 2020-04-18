@@ -176,12 +176,19 @@ class Controller(EventDispatcher):
         else:
             self.state = "playing"
 
+    def add_random_album(self):
+        """ Add a random album to the playlist """
+        artist, album = self.library.get_random_album()
+        self.playlist.add_files(self.library.get_path(artist, album))
+
     def play_next(self):
         """ Play the next track in the playlist. """
         self.advance = False
         self.stop()
         if self.prune:
             self.playlist.remove_current()
+            if len(self.playlist.queue) == 0:
+                self.add_random_album()
         else:
             self.playlist.move_next()
         self.position = 0
