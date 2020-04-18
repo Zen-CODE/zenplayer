@@ -27,8 +27,8 @@ class ZenRecycleView(RecycleView):
         """ Jump to the first item that has a text match with *text* """
         length = len(self.data)
         for i, data in enumerate(self.data):
-            if data["text"].find(text) > -1:
-                self.scroll_y = 1.0 - float(i) / float(length)
+            if data["text"].lower().find(text) > -1:
+                self.scroll_y = 1.0 - 1.005 * float(i) / float(length)
                 return
 
 

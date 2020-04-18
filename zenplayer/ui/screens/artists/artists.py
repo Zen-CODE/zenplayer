@@ -43,6 +43,7 @@ class ArtistsScreen(ZenScreen):
     def on_leave(self):
         """ The screen is being exited. Removed the callback """
         self.ctrl.kb_handler.remove_callback(self.on_key_down)
+        self.search_text = ""
 
     def item_selected(self, label, selected):
         """
@@ -60,5 +61,21 @@ class ArtistsScreen(ZenScreen):
         """ Handle the change of note text """
         self.show_note = bool(text)
 
+    def on_search_text(self, widget, text):
+        """ Handle the display and mechanics of searching for matches """
+        if text:
+            self.note_text = f"Searching for: {text}"
+            self.ids.rv.find_item(text)
+        else:
+            self.note_text = ""
+
     def on_key_down(self, keycode, text, modifiers):
-        print(f"Got keydown {text}")
+        """ Respond the pressing of a key """
+        # print(f"Got keydown text: {text}, keybode={keycode}")
+        if text is not None:
+            self.search_text += text
+        elif keycode[0] == 8 and self.search_text:  # delete
+            self.search_text = self.search_text[:-1]
+        elif keycode[0] == 27:  # escape
+            if self.search_text:
+                self.search_text = ""
