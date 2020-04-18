@@ -207,8 +207,6 @@ class Controller(EventDispatcher):
         self.playlist.save(self.store)
         self.store.put("state", volume=self.volume, position=self.position,
                        state=self.state)
-        if "FileBrowser" in self.sm.screen_names:
-            self.sm.get_screen("FileBrowser").save(self.store)
 
     def show_screen(self, name="Playing", **kwargs):
         """

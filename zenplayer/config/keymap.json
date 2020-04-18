@@ -24,10 +24,10 @@
         "shift+b": {
             "name": "play_next"
         },
-        "shift+f": {
+        "shift+a": {
             "name": "show_screen",
             "kwargs": {
-                "name": "FileBrowser"
+                "name": "Artists"
             }
         },
         "shift+p": {
