@@ -1,14 +1,13 @@
 """
 This class houses the Playlist class for ZenPlayer
 """
-from kivy.properties import NumericProperty, ObjectProperty, BooleanProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from kivy.uix.popup import Popup
-from ui.widgets.zenrecycleview import SelectableLabel
-from kivy.clock import Clock
 from ui.screens.zenscreen import ZenScreen
+from ui.widgets.zenkeydown import ZenKeyDown
 
 
-class PlaylistScreen(ZenScreen):
+class PlaylistScreen(ZenKeyDown, ZenScreen):
     """
     Displays the playlist along with some simple editing options.
     """
