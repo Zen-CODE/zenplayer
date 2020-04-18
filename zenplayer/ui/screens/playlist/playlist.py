@@ -15,7 +15,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     """ The index of the currently playing track in the queue. """
 
     def item_touched(self, item):
-        """ Show the popup for selecting the specified index in the playlist """
+        """ Show the popup for selecting the index in the playlist """
         data = self.ctrl.playlist.get_info(index=item.index)
         PlaylistPopup(
             title="Track: {artist} - {album} - {track}".format(**data),
