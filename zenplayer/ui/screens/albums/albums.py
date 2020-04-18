@@ -22,6 +22,9 @@ class AlbumsScreen(ZenScreen):
     randomise = BooleanProperty(False)
     """ Set to True to seleact a random album """
 
+    chosen = StringProperty("")
+    """ The last album selected via randomize """
+
     def on_artist(self, _widget, artist):
         """ Respond to the changing of artists"""
         def update(_dt):
@@ -35,8 +38,7 @@ class AlbumsScreen(ZenScreen):
         """
         An item (SelectableLabel) has been selected from the recycleview.
         """
-        if selected:
-            self.album = label.text
+        self.album = label.text if selected else self.chosen
 
     def add_to_playlist(self, mode="add"):
         """
@@ -58,7 +60,8 @@ class AlbumsScreen(ZenScreen):
         """ Choose and display a randbom album. """
         if value:
             # Set the album before the artist to prevent reset on loading
-            _artist, self.album = self.ctrl.library.get_random_album()
+            _artist, self.chosen = self.ctrl.library.get_random_album()
+            self.album = self.chosen
             self.artist = _artist
             self.randomise = False
 
@@ -77,7 +80,7 @@ class AlbumsScreen(ZenScreen):
 
     def item_draw(self, label):
         """ Set the back color of the label considering the playlist """
-        if label.text == self.album:
+        if label.text == self.chosen:
             label.back_color = [.5, 1.0, .50, .3]
             return True
         return False
