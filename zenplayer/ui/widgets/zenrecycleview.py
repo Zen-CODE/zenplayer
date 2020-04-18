@@ -59,8 +59,8 @@ class ZenRecycleView(FloatLayout):
 
     def on_show_note(self, widget, value):
         """ Either hide of show the note label """
-        end_vale = 1 if value else 0
-        Animation(opacity=end_vale, duration=2).start(self.ids.note_label)
+        end_value = 1 if value else 0
+        Animation(opacity=end_value, duration=2).start(self.ids.note_label)
 
     def on_note_text(self, widget, text):
         """ Handle the change of note text """
@@ -82,8 +82,7 @@ class ZenRecycleView(FloatLayout):
         elif keycode[0] == 8 and self.search_text:  # delete
             self.search_text = self.search_text[:-1]
         elif keycode[0] == 27:  # escape
-            if self.search_text:
-                self.search_text = ""
+            self.search_text = ""
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
