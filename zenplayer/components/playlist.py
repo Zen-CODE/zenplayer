@@ -61,8 +61,8 @@ class Playlist(EventDispatcher):
 
     def _add_files(self, file_folder, mode="add"):
         """
-        Internal implementation of the addition, support recursion but extracted
-        for once of setup in add_file
+        Internal implementation of the addition, support recursion but
+        extracted for once of setup in add_file
         """
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),
