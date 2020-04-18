@@ -61,13 +61,6 @@ class AlbumsScreen(ZenScreen):
             self.artist = _artist
             self.randomise = False
 
-    def search(self):
-        """ Search for any album or artist that contains a match. """
-        ret = self.ctrl.library.search(self.ids.text.text)
-        if ret:
-            _artist, self.album = ret["artist"], ret["album"]
-            self.artist = _artist
-
     def item_touched(self, item):
         """ Show the popup for selecting the album """
         AlbumPopup(
