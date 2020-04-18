@@ -6,9 +6,10 @@ from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
+from ui.widgets.zenkeydown import ZenKeyDown
 
 
-class AlbumsScreen(ZenScreen):
+class AlbumsScreen(ZenKeyDown, ZenScreen):
     """
     Displays a interface for viewing and interacting with the `Library`
     component
