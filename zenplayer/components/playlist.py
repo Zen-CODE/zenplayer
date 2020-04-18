@@ -65,15 +65,18 @@ class Playlist(EventDispatcher):
         * "add" - add to the end of the playlist
         * "replace" - clear the existing playlist and add the files
         * "insert" - insert the selected album at the beginning of the playlist
+        * *next* - insert directly after the currently playing track
         """
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),
-                            reverse=bool(mode == "insert")):
+                            reverse=bool(mode in ["insert", "next"])):
                 self.add_files(path.join(file_folder, f), mode=mode)
         elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            if mode == "insert":
-                self.queue.insert(0, ({"filename": file_folder,
-                                      "text": self.get_text(file_folder)}))
+            if mode in ["insert", "next"]:
+                index = 0 if (mode == "insert" and len(self.queue) > 0) else 1
+                self.queue.insert(
+                    index, ({"filename": file_folder,
+                            "text": self.get_text(file_folder)}))
             else:
                 self.queue.append({"filename": file_folder,
                                   "text": self.get_text(file_folder)})
