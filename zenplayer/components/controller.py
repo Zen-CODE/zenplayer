@@ -52,7 +52,8 @@ class Controller(EventDispatcher):
 
     def __init__(self, **kwargs):
         """ Initialize the screens and the screen manager """
-        self.prune = kwargs.pop("config").pop("prune", True)
+        config = kwargs.pop("config")
+        self.prune = config["prune"]
         super().__init__(**kwargs)
         self.playlist = Playlist(self.store)
         self.library = Library()
@@ -60,7 +61,8 @@ class Controller(EventDispatcher):
 
         self.show_screen("Playing")
 
-        HotKeyHandler.add_bindings(self)
+        if config["enable_hotkeys"]:
+            HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
         self.sound = Sound()
         self.sound.bind(state=self.set_state)
