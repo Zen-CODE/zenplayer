@@ -1,11 +1,6 @@
 #:kivy 1.10
 #
 <ArtistsScreen>:
-    Label:
-        id: wait_label
-        text: "Loading library..."
-        size_hint: 1, 1
-        pos_hint: {"x": 0, "y": 0}
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -34,3 +29,17 @@
             ZenButton:
                 text: "Random "
                 on_release: root.ctrl.show_screen("Albums", randomise=True)
+    Label:
+        id: note_label
+        canvas.before:
+            Color:
+                rgba: 1.0, 1.0, 1.0, 0.2
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+        text: root.note_text
+        size_hint: None, None
+        size: self.texture_size[0] * 1.5, self.texture_size[1] * 1.25
+        halign: 'right'
+        valign: 'middle'
+        pos_hint: {"right": 0.975, "center_y": 0.95}
