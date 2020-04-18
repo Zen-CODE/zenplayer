@@ -47,13 +47,9 @@ class AlbumsScreen(ZenScreen):
         * "replace" - clear the existing playlist and add the files
         * "insert" - insert the selected album at the beginning of the playlist
         """
-        pl = self.ctrl.playlist
-        if mode == "replace":
-            pl.clear_files()
-
-        pl.add_files(self.ctrl.library.get_path(self.artist, self.album),
-                     mode=mode)
-        if mode != "add":
+        self.ctrl.playlist.add_files(
+            self.ctrl.library.get_path(self.artist, self.album), mode=mode)
+        if mode in ["replace", "insert"]:
             self.ctrl.play_index(0)
 
     def on_randomise(self, _widget, value):
