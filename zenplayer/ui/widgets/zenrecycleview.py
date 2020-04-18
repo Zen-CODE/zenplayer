@@ -1,7 +1,7 @@
 """
 Houses the ZenRecycleView class
 """
-from kivy.uix.recycleview import RecycleView
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
 from kivy.uix.label import Label
@@ -12,12 +12,15 @@ from ui.kvloader import KVLoader
 from kivy.clock import Clock
 
 
-class ZenRecycleView(RecycleView):
+class ZenRecycleView(FloatLayout):
     """
     Provides a shared component for Playlist and Library recycleviews.
     """
     handler = ObjectProperty()
     """ Object that should handle the "on_selected" method. """
+
+    data = ObjectProperty([])
+    """ The data synchronized with the recycleview """
 
     def __init__(self, **kwargs):
         KVLoader.load("ui/widgets/zenrecycleview.kv")
@@ -28,7 +31,7 @@ class ZenRecycleView(RecycleView):
         length = len(self.data)
         for i, data in enumerate(self.data):
             if data["text"].lower().find(text) > -1:
-                self.scroll_y = 1.0 - 1.005 * float(i) / float(length)
+                self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(length)
                 return
 
 

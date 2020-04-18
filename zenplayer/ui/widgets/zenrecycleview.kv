@@ -4,13 +4,19 @@
 #: import SelectableRecycleBoxLayout ui.widgets.zenrecycleview.SelectableRecycleBoxLayout
 
 <ZenRecycleView>:
-    viewclass: 'SelectableLabel'
-    SelectableRecycleBoxLayout:
-        default_size: None, dp(56)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
+    RecycleView:
+        id: rv
+        viewclass: 'SelectableLabel'
+        data: root.data
+        handler: root.handler
+        pos_hint: {"x": 0, "y": 0}
+        size_hint: 1, 1
+        SelectableRecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
 
 <SelectableLabel>:
     # Draw a background to indicate selection
