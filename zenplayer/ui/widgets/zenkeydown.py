@@ -16,9 +16,6 @@ class ZenKeyDown:
         shown.
         """
         self.ctrl.kb_handler.add_callback(self.ids.rv.on_key_down)
-        if not self.ids.rv.data:
-            self.ids.rv.data = [
-                {"text": artist} for artist in self.ctrl.library.get_artists()]
 
     def on_leave(self):
         """ The screen is being exited. Removed the callback """

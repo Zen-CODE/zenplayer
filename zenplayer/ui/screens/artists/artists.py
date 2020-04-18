@@ -10,6 +10,13 @@ class ArtistsScreen(ZenKeyDown, ZenScreen):
     Displays a interface for viewing and interacting with the artists
     list from the library.
     """
+    def on_enter(self):
+        """ Handle the on enter event """
+        super().on_enter()
+        if not self.ids.rv.data:
+            self.ids.rv.data = [
+                {"text": artist} for artist in self.ctrl.library.get_artists()]
+
     def item_selected(self, label, selected):
         """
         An label with the given text has been selected from the recycleview.
