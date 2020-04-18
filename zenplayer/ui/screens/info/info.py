@@ -18,7 +18,7 @@ class InfoScreen(ZenScreen):
     to None so an empty string still trigger on `on_filename` event.
     """
 
-    units = {"length": " s",
+    units = {"length": "s",
              "bitrate": " kbps",
              "sample_rate": " hz"}
     """
@@ -68,8 +68,8 @@ class InfoScreen(ZenScreen):
     @staticmethod
     def format_meta_value(key, value):
         """ Return the prettily formatted string for the given key """
-        if not isinstance(value, str):
-            value = int(value)  # Present horrible decimal values...
+        if key == "length":
+            value = f"{int(value / 60.0)}m {int(value % 60)}"
         unit = InfoScreen.units.get(key, "")
         return f"{value}{unit}"
 
