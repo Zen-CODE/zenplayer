@@ -35,7 +35,8 @@ class AlbumsScreen(ZenScreen):
         """
         An item (SelectableLabel) has been selected from the recycleview.
         """
-        self.album = label.text if selected else ""
+        if selected:
+            self.album = label.text
 
     def add_to_playlist(self, mode="add"):
         """
