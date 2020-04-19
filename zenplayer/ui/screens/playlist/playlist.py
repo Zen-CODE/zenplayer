@@ -14,11 +14,12 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     current = NumericProperty(-1)
     """ The index of the currently playing track in the queue. """
 
-    def on_pre_enter(self):
+    def on_enter(self):
         """
         Relod the data from the playlist queue. This is required to refesh
         after items have been removed or added.
         """
+        super().on_enter()
         self.ids.rv.data = []
         self.ids.rv.data = self.ctrl.playlist.queue
 
