@@ -1,8 +1,7 @@
 from threading import Thread
 from webserver.zenwebserver import ZenWebServer
-from components.paths import rel_to_base
-from json import load
 from kivy.logger import Logger
+from components.config import Config
 
 
 class FlaskThread(Thread):
@@ -30,17 +29,9 @@ class WebServer:
     _thread = None
 
     @staticmethod
-    def _get_config():
-        """
-        Return a dictionary with our configuration options.
-        """
-        with open(rel_to_base("config", "webserver.json")) as f:
-            return load(f)
-
-    @staticmethod
     def start(ctrl):
         """ Start the ZenPlayer web API backend. """
-        config = WebServer._get_config()
+        config = Config.load("webserver.json")
         Logger.info("Webserver: Starting web server ")
         thread = FlaskThread(ctrl, config)
         thread.daemon = True

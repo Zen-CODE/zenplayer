@@ -2,8 +2,7 @@
 This module provides a help class to dynamically loads and present classes and
 modules for both swagger docs and the zenwebserver.
 """
-from components.paths import rel_to_base
-from json import load
+from components.config import Config
 from importlib import import_module
 from inspect import ismethod
 
@@ -23,9 +22,7 @@ class Loader:
             "methods": A list of public methods of the class exposed for the
                        API
         """
-        with open(rel_to_base("config", "webserver_classes.json")) as f:
-            class_list = load(f)
-
+        class_list = Config.load("webserver_classes.json")
         ret = []
         for name in class_list:
             obj = Loader._get_class(name)(ctrl)

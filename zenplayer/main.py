@@ -11,8 +11,8 @@ from kivy.app import App
 from components.controller import Controller
 from webserver.webserver import WebServer
 from kivy.logger import Logger, LOG_LEVELS
-from json import load
-from components.paths import rel_to_base
+from components.config import Config
+
 
 
 class ZenPlayer(App):
@@ -24,8 +24,7 @@ class ZenPlayer(App):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        with open(rel_to_base("config", "zenplayer.json")) as f:
-            self._config = load(f)
+        self._config = Config.load("zenplayer.json")
         self.init_logging()
 
     def init_logging(self):

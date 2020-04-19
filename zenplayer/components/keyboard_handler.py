@@ -3,9 +3,8 @@ This module handles the keyboard integration for ZenPlayer
 """
 from kivy.core.window import Window
 from kivy.utils import platform
-from json import load
 from kivy.logger import Logger
-from components.paths import rel_to_base
+from components.config import Config
 
 
 class KeyHandler:
@@ -43,8 +42,7 @@ class KeyHandler:
     @staticmethod
     def _load_keymap():
         """ Load the specified key mappings from the json file. """
-        with open(rel_to_base("config", "keymap.json")) as f:
-            mappings = load(f)
+        mappings = Config.load("keymap.json")
         return mappings["keymap"]
 
     @staticmethod
