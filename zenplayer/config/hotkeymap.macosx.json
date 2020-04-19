@@ -1,0 +1,9 @@
+{
+    "hotkeymap": {
+        "command+up": "volume_up",
+        "command+down": "volume_down",
+        "command+2": "play_pause",
+        "command+1": "play_previous",
+        "command+3": "stop",
+        "command+4": "play_next"}
+}
