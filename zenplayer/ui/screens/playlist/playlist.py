@@ -14,12 +14,20 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     current = NumericProperty(-1)
     """ The index of the currently playing track in the queue. """
 
+    def on_pre_enter(self):
+        """
+        Relod the data from the playlist queue. This is required to refesh
+        after items have been removed or added.
+        """
+        self.ids.rv.data = []
+        self.ids.rv.data = self.ctrl.playlist.queue
+
     def item_touched(self, item):
         """ Show the popup for selecting the index in the playlist """
         data = self.ctrl.playlist.get_info(index=item.index)
         PlaylistPopup(
             title="Track: {artist} - {album} - {track}".format(**data),
-            ctrl=self.ctrl,
+            screen=self,
             index=item.index).open()
 
     def item_draw(self, label):
@@ -29,26 +37,32 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
             return True
         return False
 
+    def button_play(self, index):
+        """ Play the track selected track. """
+        self.ctrl.play_index(index)
+
+    def button_info(self, index):
+        """ Display detailed info on the selected track """
+        data = self.ctrl.playlist.queue[index]
+        self.ctrl.show_screen("Info", filename=data["filename"])
+
+    def button_remove(self, index):
+        """ Play the track selected track. """
+        self.ctrl.playlist.remove_index(index)
+        self.on_pre_enter()
+
+    def button_clear_files(self):
+        """ Remove all files from the playlist """
+        self.ctrl.playlist.clear_files()
+        self.on_pre_enter()
+
 
 class PlaylistPopup(Popup):
     """
     The Popup show when the playlist item is tapped and held.
     """
-    ctrl = ObjectProperty()
-    """ A reference to the controller object"""
+    screen = ObjectProperty()
+    """ A reference to the Playlist screen"""
 
     index = NumericProperty()
     """ The index of the selected track in the Playlist.queue"""
-
-    def button_play(self):
-        """ Play the track selected track. """
-        self.ctrl.play_index(self.index)
-
-    def button_info(self):
-        """ Display detailed info on the selected track """
-        data = self.ctrl.playlist.queue[self.index]
-        self.ctrl.show_screen("Info", filename=data["filename"])
-
-    def button_remove(self):
-        """ Play the track selected track. """
-        self.ctrl.playlist.remove_index(self.index)

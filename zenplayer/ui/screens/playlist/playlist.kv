@@ -20,7 +20,6 @@
             id: rv
             size_hint_y: 0.8
             handler: root
-            data: root.ctrl.playlist.queue
         BoxLayout:
             padding: 10, 10, 10, 10
             size_hint_y: 0.1
@@ -29,7 +28,7 @@
                 on_release: root.ctrl.show_screen("Playing")
             ZenButton:
                 text: 'Clear'
-                on_release: root.ctrl.playlist.clear_files()
+                on_release: root.button_clear_files()
 
 
 <PlaylistPopup>:
@@ -42,13 +41,13 @@
         spacing: 10
         ZenButton:
             text: "Play"
-            on_press: root.dismiss(); root.button_play()
+            on_press: root.dismiss(); root.screen.button_play(root.index)
         ZenButton:
             text: "Info"
-            on_press: root.dismiss(); root.button_info()
+            on_press: root.dismiss(); root.screen.button_info(root.index)
         ZenButton:
             text: "Remove"
-            on_press: root.dismiss(); root.button_remove()
+            on_press: root.dismiss(); root.screen.button_remove(root.index)
         ZenButton:
             text: "Cancel"
             on_press: root.dismiss()
