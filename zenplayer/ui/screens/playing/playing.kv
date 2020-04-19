@@ -83,7 +83,7 @@
                     source: 'images/stop.png'
                     on_click: root.ctrl.stop()
                 MediaButton:
-                    source: 'images/play.png' if root.ctrl.state != "paused" else "images/pause.png"
+                    source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
                     on_click: root.ctrl.play_pause()
                 MediaButton:
                     id: next
