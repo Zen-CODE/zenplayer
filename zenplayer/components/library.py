@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import join, isdir, basename, expanduser
+from os.path import join, isdir, basename, expanduser, exists
 from random import sample
 from glob import glob
 from random import choice
@@ -12,7 +12,9 @@ class Library:
     """
 
     def __init__(self):
-        self.path = expanduser("~/Music")
+        # self.path = expanduser("~/Music")
+        # Create a symbolic link to this folder if it does not exist
+        self.path = expanduser("~/Zen/Music")
         dirs = [name for name in listdir(self.path) if
                 isdir(join(self.path, name))]
         artists = {}

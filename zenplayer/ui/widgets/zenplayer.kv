@@ -1,10 +1,8 @@
 #:kivy 1.10
-#: set img_opacity 0.75
 
 <ZenIcon@Image>:
     size_hint: None, 0.9
     width: self.height
-    opacity: img_opacity
 
 <ZenPlayer>:
     BoxLayout:
@@ -31,7 +29,7 @@
             Label:
                 text: f"[b]{root.header}[/b]"
                 markup: True
-                color: 1, 1, 0, img_opacity
+                color: 1, 1, 0, 1
                 font_size: 0.4 * self.height
                 size_hint: 0.1, 1
                 pos_hint: {'center_x': 0.5, 'y': 0}
