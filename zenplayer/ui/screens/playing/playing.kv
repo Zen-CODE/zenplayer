@@ -41,17 +41,23 @@
                     opacity: img_opacity
         BoxLayout:
             # Column 2
-            size_hint_x: 0.1
+            size_hint_x: 0.05
+            orientation: "vertical"
             MediaButton:
                 id: previous
                 source: 'images/previous.png'
                 on_click: root.ctrl.play_previous()
                 opacity: img_opacity
+            MediaButton:
+                source: 'images/stop.png'
+                on_click: root.ctrl.stop()
+                id: stop
+                opacity: img_opacity
 
         BoxLayout:
             # Center column - 3
             id: center_screen
-            size_hint_x: 0.8
+            size_hint_x: 0.9
             orientation: "vertical"
             padding: 10, 10, 10, 10
             Label:
@@ -59,9 +65,6 @@
                 size_hint_y: 0.05
             Label:
                 text: root.ctrl.album
-                size_hint_y: 0.05
-            Label:
-                text: root.ctrl.track
                 size_hint_y: 0.05
             BoxLayout:
                 size_hint_y: 0.65
@@ -71,25 +74,23 @@
                     source: root.ctrl.cover
                     allow_stretch: True
             Label:
+                text: root.ctrl.track
+                size_hint_y: 0.05
+            Label:
                 text: root.ctrl.time_display
                 size_hint_y: 0.05
-            BoxLayout:
-                size_hint_y: 0.075
-                orientation: "horizontal"
-                MediaButton:
-                    source: 'images/stop.png'
-                    on_click: root.ctrl.stop()
-                    id: stop
-                MediaButton:
-                    source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
-                    on_click: root.ctrl.play_pause()
         BoxLayout:
             # Column 4
-            size_hint_x: 0.1
+            size_hint_x: 0.05
+            orientation: "vertical"
             MediaButton:
                 id: next
                 source: 'images/next.png'
                 on_click: root.ctrl.play_next()
+                opacity: img_opacity
+            MediaButton:
+                source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
+                on_click: root.ctrl.play_pause()
                 opacity: img_opacity
 
         BoxLayout:
