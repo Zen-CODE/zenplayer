@@ -49,11 +49,6 @@
                 source: 'images/previous.png'
                 on_click: root.ctrl.play_previous()
                 opacity: img_opacity
-            MediaButton:
-                source: 'images/stop.png'
-                on_click: root.ctrl.stop()
-                id: stop
-                opacity: img_opacity
 
         BoxLayout:
             # Center column - 3
@@ -74,12 +69,23 @@
                 Image:
                     source: root.ctrl.cover
                     allow_stretch: True
-            Label:
-                text: root.ctrl.track
-                size_hint_y: 0.05
-            Label:
-                text: root.ctrl.time_display
-                size_hint_y: 0.05
+            BoxLayout:
+                size_hint_y: 0.1
+                MediaButton:
+                    source: 'images/stop.png'
+                    on_click: root.ctrl.stop()
+                    id: stop
+                    opacity: img_opacity
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        text: root.ctrl.track
+                    Label:
+                        text: root.ctrl.time_display
+                MediaButton:
+                    source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
+                    on_click: root.ctrl.play_pause()
+                    opacity: img_opacity
         BoxLayout:
             # Column 4
             size_hint_x: 0.05
@@ -88,10 +94,6 @@
                 id: next
                 source: 'images/next.png'
                 on_click: root.ctrl.play_next()
-                opacity: img_opacity
-            MediaButton:
-                source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
-                on_click: root.ctrl.play_pause()
                 opacity: img_opacity
 
         BoxLayout:
