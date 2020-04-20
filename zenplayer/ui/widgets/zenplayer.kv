@@ -33,8 +33,9 @@
                 markup: True
                 color: 1, 1, 0, img_opacity
                 font_size: 0.4 * self.height
-                size_hint: 1, 1
-                pos_hint: {'x': 0, 'y': 0}
+                size_hint: 0.1, 1
+                pos_hint: {'center_x': 0.5, 'y': 0}
+                on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
 
             ZenIcon:
                 source: "images/album.png"
