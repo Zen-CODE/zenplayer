@@ -36,8 +36,10 @@ class ZenPlayer(FloatLayout):
         if name not in sm.screen_names:
             screen = ScreenFactory.get(name, ctrl=self.ctrl, **kwargs)
             sm.add_widget(screen)
-        elif kwargs:
+        else:
             screen = sm.get_screen(name)
-            for key in kwargs.keys():
-                setattr(screen, key, kwargs[key])
+            if kwargs:
+                for key in kwargs.keys():
+                    setattr(screen, key, kwargs[key])
         sm.current = name
+        self.header = screen.header

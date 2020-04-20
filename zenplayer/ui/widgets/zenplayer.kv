@@ -23,6 +23,7 @@
             ZenIcon:
                 source: "images/zencode.jpg"
                 pos_hint: {'x': 0, 'center_y': 0.5}
+                on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
             ZenIcon:
                 source: "images/add.png"
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
