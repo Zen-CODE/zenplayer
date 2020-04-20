@@ -5,28 +5,43 @@
         orientation: 'vertical'
         pos_hint: {"x": 0, "y": 0}
         size_hint: 1, 1
-        BoxLayout:
+        FloatLayout:
             # Header bar
-            orientation: 'horizontal'
-            size_hint_y: 0.05
-            spacing: 20
+            size_hint_y: 0.075
+            canvas:
+                Color:
+                    rgba: 0.25, 0.25, 0.75, 0.5
+                Line:
+                    width: 2
+                    points: self.x, self.y, self.right, self.y
             Image:
                 source: "images/zencode.jpg"
-                size_hint_x: None
+                pos_hint: {'x': 0, 'center_y': 0.5}
+                size_hint: None, 0.9
                 width: self.height
+
+            Image:
+                source: "images/add.png"
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                size_hint: None, 0.9
+                width: self.height
+
             Label:
                 text: root.header
-                canvas:
-                    Color:
-                        rgba: 0.25, 0.25, 0.75, 0.5
-                    Line:
-                        width: 2
-                        points: self.x, self.y, self.right, self.y
+                size_hint: 1, 1
+                pos_hint: {'x': 0, 'y': 0}
+
+            Image:
+                source: "images/playlist.png"
+                pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+                size_hint: None, 0.9
+                width: self.height
 
             Image:
                 source: "images/info.png"
-                size_hint_x: None
+                pos_hint: {'right': 1, 'center_y': 0.5}
+                size_hint: None, 0.9
                 width: self.height
         ScreenManager:
             id: sm
-            size_hint_y: 0.95
+            size_hint_y: 0.925
