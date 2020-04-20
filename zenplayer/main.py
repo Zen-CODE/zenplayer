@@ -14,7 +14,6 @@ from kivy.logger import Logger, LOG_LEVELS
 from components.config import Config
 
 
-
 class ZenPlayer(App):
     """
     The App initialisation class
@@ -45,7 +44,7 @@ class ZenPlayer(App):
             WebServer.start(self.ctrl)
         else:
             Logger.info("ZenPlayer: Disabling WebServer")
-        return self.ctrl.sm
+        return self.ctrl.zenplayer
 
     def on_stop(self):
         """The app is closing. Save the state."""

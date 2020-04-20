@@ -1,4 +1,3 @@
-from kivy.uix.screenmanager import ScreenManager, FadeTransition
 from components.sound import Sound
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
@@ -8,12 +7,12 @@ from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
 from components.library import Library
-from ui.screens.screens import ScreenFactory
 from components.playlist import Playlist
 from components.store import StoreFactory
 from kivy.logger import Logger
 from components.paths import rel_to_base
 from kivy.core.window import Window
+from ui.widgets.zenplayer import ZenPlayer
 
 
 class Controller(EventDispatcher):
@@ -42,9 +41,6 @@ class Controller(EventDispatcher):
     playlist = ObjectProperty()
     """ Reference to the Playlist object. """
 
-    sm = ObjectProperty(ScreenManager(transition=FadeTransition(duration=0.2)))
-    """ A reference to the active ScreenManager class. """
-
     prune = True
     """ If set to true, remove files from the playlist once played. """
 
@@ -55,6 +51,7 @@ class Controller(EventDispatcher):
         config = kwargs.pop("config")
         self.prune = config["prune"]
         super().__init__(**kwargs)
+        self.zenplayer = ZenPlayer(ctrl=self)
         self.playlist = Playlist(self.store)
         self.library = Library()
         self.advance = True
@@ -222,14 +219,7 @@ class Controller(EventDispatcher):
         Switch to the screen specified. The *kwargs* dictionary will be either
         passed to the constructor, or their values manually applied.
         """
-        if name not in self.sm.screen_names:
-            screen = ScreenFactory.get(name, ctrl=self, **kwargs)
-            self.sm.add_widget(screen)
-        elif kwargs:
-            screen = self.sm.get_screen(name)
-            for key in kwargs.keys():
-                setattr(screen, key, kwargs[key])
-        self.sm.current = name
+        self.zenplayer.show_screen(name=name, **kwargs)
 
     def stop(self):
         """ Stop any playing audio """
