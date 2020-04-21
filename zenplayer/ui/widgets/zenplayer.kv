@@ -1,9 +1,18 @@
 #:kivy 1.10
 #: import ZenIcon ui.widgets.zenicon.ZenIcon
+#: import VolumeSlider ui.screens.playing.playing.VolumeSlider
+
 
 <ZenIconSized@ZenIcon>:
     size_hint: None, 0.9
     width: self.height
+
+<MediaButton>:
+    ZenIcon:
+        source: root.source
+        pos_hint: {'x': 0, 'y': 0}
+        size_hint: 1, 1
+        on_release: root.dispatch('on_click')
 
 <ZenPlayer>:
     BoxLayout:
@@ -12,7 +21,7 @@
         size_hint: 1, 1
         FloatLayout:
             # Header bar
-            size_hint_y: 0.075
+            size_hint: 1, 0.075
             canvas:
                 Color:
                     rgba: 0.25, 0.25, 0.75, 0.5
@@ -20,7 +29,7 @@
                     width: 2
                     points: self.x, self.y, self.right, self.y
             ZenIconSized:
-                source: "images/zencode.jpg"
+                source: "images/home.png"
                 pos_hint: {'x': 0, 'center_y': 0.5}
                 on_release: root.show_screen("Playing")
             ZenIconSized:
@@ -35,16 +44,60 @@
                 size_hint: 0.1, 1
                 pos_hint: {'center_x': 0.5, 'y': 0}
                 on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
-
             ZenIconSized:
                 source: "images/album.png"
                 pos_hint: {'center_x': 0.75, 'center_y': 0.5}
                 on_release: root.show_screen("Playlist")
-
             ZenIconSized:
                 source: "images/info.png"
                 pos_hint: {'right': 1, 'center_y': 0.5}
                 on_release: root.show_screen("Info", filename="")
-        ScreenManager:
-            id: sm
-            size_hint_y: 0.925
+
+        BoxLayout:
+            # Main screen area (below title bar)
+            size_hint: 1, 0.85
+            Slider:
+                #  Track progress
+                size_hint: None, 1
+                orientation: "vertical"
+                max: 1
+                value: root.ctrl.position
+                on_touch_up: self.collide_point(*args[1].pos) and root.ctrl.set_position(self.value)
+            ScreenManager:
+                id: sm
+                size_hint: 1, 1
+            VolumeSlider:
+                ctrl: root.ctrl
+                size_hint: None, 1
+                orientation: "vertical"
+                value: self.value if self.dragging else root.ctrl.volume
+                max: 1
+        BoxLayout:
+            size_hint: 1, 0.075
+            ZenIconSized:
+                # Track progress icon
+                source: 'images/progress.png'
+            Widget:
+            ZenIconSized:
+                # Previous track button
+                id: previous
+                source: 'images/previous.png'
+                on_release: root.ctrl.play_previous()
+            Widget:
+            ZenIconSized:
+                # Stop
+                source: "images/stop.png"
+                on_release: root.ctrl.stop()
+            Widget:
+            ZenIconSized:
+                # Play button
+                source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
+                on_release: root.ctrl.play_pause()
+            Widget:
+            ZenIconSized:
+                id: next
+                source: 'images/next.png'
+                on_release: root.ctrl.play_next()
+            Widget:
+            ZenIconSized:
+                source: 'images/speaker.png'

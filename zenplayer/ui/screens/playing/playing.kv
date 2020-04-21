@@ -1,108 +1,28 @@
 #:kivy 1.10
-#: import VolumeSlider ui.screens.playing.playing.VolumeSlider
-#: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
-#: import ZenIcon ui.widgets.zenicon.ZenIcon
 
-<MediaButton>:
-    ZenIcon:
-        source: root.source
-        pos_hint: {'x': 0, 'y': 0}
-        size_hint: 1, 1
-        on_release: root.dispatch('on_click')
 
 <PlayingScreen>:
     header: "ZenPlayer"
     BoxLayout:
-        orientation: 'horizontal'
-        canvas:
-            Color:
-                rgba: 0, 0, 0, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        BoxLayout:
-            # Column 1
-            size_hint_x: 0.1
-            BoxLayout:
-                size_hint: (1, 1)
-                orientation: "vertical"
-                padding: 10
-                spacing: 10
-                Slider:
-                    size_hint_y: 0.9
-                    orientation: "vertical"
-                    max: 1
-                    value: root.ctrl.position
-                    on_touch_up: self.collide_point(*args[1].pos) and root.ctrl.set_position(self.value)
-                Image:
-                    size_hint_y: 0.075
-                    source: 'images/progress.png'
-        BoxLayout:
-            # Column 2
-            size_hint_x: 0.05
-            orientation: "vertical"
-            MediaButton:
-                id: previous
-                source: 'images/previous.png'
-                on_click: root.ctrl.play_previous()
-
-        BoxLayout:
-            # Center column - 3
-            id: center_screen
-            size_hint_x: 0.9
-            orientation: "vertical"
-            padding: 10, 10, 10, 10
-            Label:
-                text: root.ctrl.artist
-                size_hint_y: 0.05
-            Label:
-                text: root.ctrl.album
-                size_hint_y: 0.05
-            BoxLayout:
-                size_hint_y: 0.65
-                padding: 10, 10, 10, 10
-                on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
-                Image:
-                    source: root.ctrl.cover
-                    allow_stretch: True
-            BoxLayout:
-                size_hint_y: 0.1
-                padding: 0, 0.25 * self.height, 0, 0.25 * self.height
-                MediaButton:
-                    source: 'images/stop.png'
-                    on_click: root.ctrl.stop()
-                    id: stop
-                BoxLayout:
-                    orientation: "vertical"
-                    Label:
-                        text: root.ctrl.track
-                    Label:
-                        text: root.ctrl.time_display
-                MediaButton:
-                    source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
-                    on_click: root.ctrl.play_pause()
-        BoxLayout:
-            # Column 4
-            size_hint_x: 0.05
-            orientation: "vertical"
-            MediaButton:
-                id: next
-                source: 'images/next.png'
-                on_click: root.ctrl.play_next()
-
-        BoxLayout:
-            # Right sidebar  - Column 5
-            orientation: "vertical"
-            size_hint_x: 0.1
-            padding: 10
-            spacing: 10
-            VolumeSlider:
-                ctrl: root.ctrl
-                size_hint_y: 0.9
-                orientation: "vertical"
-                value: self.value if self.dragging else root.ctrl.volume
-                max: 1
-            Image:
-                size_hint_y: 0.075
-                source: 'images/speaker.png'
+        # Center column - 3
+        id: center_screen
+        orientation: "vertical"
+        padding: 10, 10, 10, 10
+        Label:
+            text: root.ctrl.artist
+            size_hint_y: 0.05
+        Label:
+            text: root.ctrl.album
+            size_hint_y: 0.05
+        Image:
+            size_hint: 1, 0.8
+            pos_hint_x: "center"
+            on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
+            source: root.ctrl.cover
+            allow_stretch: True
+        Label:
+            text: root.ctrl.track
+            size_hint_y: 0.05
+        Label:
+            text: root.ctrl.time_display
+            size_hint_y: 0.05
