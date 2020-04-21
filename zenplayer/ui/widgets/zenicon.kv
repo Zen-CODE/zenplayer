@@ -1,0 +1,10 @@
+#:kivy 1.10
+#: set gap 4
+
+<ZenIcon>:
+    canvas.after:
+        Color:
+            rgba: root.back_color
+        RoundedRectangle:
+            pos: self.x - gap, self.y - gap
+            size: self.width + 2 * gap, self.height + 2 * gap

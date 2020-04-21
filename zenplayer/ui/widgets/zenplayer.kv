@@ -1,6 +1,7 @@
 #:kivy 1.10
+#: import ZenIcon ui.widgets.zenicon.ZenIcon
 
-<ZenIcon@Image>:
+<ZenIconSized@ZenIcon>:
     size_hint: None, 0.9
     width: self.height
 
@@ -18,14 +19,14 @@
                 Line:
                     width: 2
                     points: self.x, self.y, self.right, self.y
-            ZenIcon:
+            ZenIconSized:
                 source: "images/zencode.jpg"
                 pos_hint: {'x': 0, 'center_y': 0.5}
-                on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
-            ZenIcon:
+                on_release: root.show_screen("Playing")
+            ZenIconSized:
                 source: "images/add.png"
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-                on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Artists")
+                on_release: root.show_screen("Artists")
             Label:
                 text: "[b]" + root.header + "[/b]"
                 markup: True
@@ -35,15 +36,15 @@
                 pos_hint: {'center_x': 0.5, 'y': 0}
                 on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
 
-            ZenIcon:
+            ZenIconSized:
                 source: "images/album.png"
                 pos_hint: {'center_x': 0.75, 'center_y': 0.5}
-                on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playlist")
+                on_release: root.show_screen("Playlist")
 
-            ZenIcon:
+            ZenIconSized:
                 source: "images/info.png"
                 pos_hint: {'right': 1, 'center_y': 0.5}
-                on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
+                on_release: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
         ScreenManager:
             id: sm
             size_hint_y: 0.925
