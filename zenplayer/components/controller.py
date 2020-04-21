@@ -25,7 +25,7 @@ class Controller(EventDispatcher):
     artist = StringProperty("-")
     album = StringProperty("-")
     track = StringProperty("-")
-    cover = StringProperty(rel_to_base("images", "zencode.jpg"))
+    cover = StringProperty(rel_to_base("images", "zencode.png"))
     time_display = StringProperty("-")
     state = OptionProperty("", options=["stopped", "paused", "playing", ""])
     prev_state = None

@@ -144,7 +144,7 @@ class Playlist(EventDispatcher):
             ret = glob(folder + "/cover.*")
             if ret:
                 return ret[0]
-        return "images/zencode.jpg"
+        return "images/zencode.png"
 
     def get_info(self, filename=None, index=None):
         """
