@@ -94,4 +94,5 @@
                 on_release: root.ctrl.play_next()
             Widget:
             ZenIconSized:
-                source: 'images/speaker.png'
+                source: 'images/random.png'
+                on_release: root.ctrl.zenplayer.show_screen("Albums", randomise=True)
