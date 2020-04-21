@@ -7,6 +7,7 @@ from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from ui.widgets.zenkeydown import ZenKeyDown
+from random import choice
 
 
 class AlbumsScreen(ZenKeyDown, ZenScreen):
@@ -23,23 +24,25 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
     randomise = BooleanProperty(False)
     """ Set to True to seleact a random album """
 
-    chosen = StringProperty("")
-    """ The last album selected via randomize """
-
     def on_artist(self, _widget, artist):
         """ Respond to the changing of artists"""
         def update(_dt):
+            albums = self.ctrl.library.get_albums(artist)
             self.ids.rv.data = [
-                {"text": album} for album in self.ctrl.library.get_albums(
-                    artist)]
+                {"text": album} for album in albums]
+            if not self.album:
+                self.album = choice(albums)
+
             self.ids.rv.find_item(self.album)
+            self.ctrl.zenplayer.set_header(f"Albums: {artist} - {self.album}")
         Clock.schedule_once(update)
 
     def item_selected(self, label, selected):
         """
         An item (SelectableLabel) has been selected from the recycleview.
         """
-        self.album = label.text if selected else self.chosen
+        if selected:
+            self.album = label.text
 
     def add_to_playlist(self, mode="add"):
         """
@@ -57,9 +60,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
         """ Choose and display a randbom album. """
         if value:
             # Set the album before the artist to prevent reset on loading
-            _artist, self.chosen = self.ctrl.library.get_random_album()
-            self.album = self.chosen
-            self.artist = _artist
+            self.artist, self.album = self.ctrl.library.get_random_album()
             self.randomise = False
 
     def item_touched(self, item):
@@ -70,7 +71,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
 
     def item_draw(self, label):
         """ Set the back color of the label considering the playlist """
-        if label.text == self.chosen:
+        if label.text == self.album:
             label.back_color = [.5, 1.0, .50, .3]
             return True
         return False
