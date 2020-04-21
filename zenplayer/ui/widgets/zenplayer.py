@@ -42,4 +42,8 @@ class ZenPlayer(FloatLayout):
                 for key in kwargs.keys():
                     setattr(screen, key, kwargs[key])
         sm.current = name
-        self.header = screen.header
+        self.set_header(screen.header)
+
+    def set_header(self, header):
+        """ Set the header for the screen """
+        self.header = header
