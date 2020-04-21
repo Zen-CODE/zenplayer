@@ -45,7 +45,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     def button_info(self, index):
         """ Display detailed info on the selected track """
         data = self.ctrl.playlist.queue[index]
-        self.ctrl.show_screen("Info", filename=data["filename"])
+        self.ctrl.zenplayer.show_screen("Info", filename=data["filename"])
 
     def button_remove(self, index):
         """ Play the track selected track. """

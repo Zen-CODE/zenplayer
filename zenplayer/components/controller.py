@@ -56,7 +56,7 @@ class Controller(EventDispatcher):
         self.library = Library()
         self.advance = True
 
-        self.show_screen("Playing")
+        self.zenplayer.show_screen("Playing")
 
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
@@ -213,13 +213,6 @@ class Controller(EventDispatcher):
         self.playlist.save(self.store)
         self.store.put("state", volume=self.volume, position=self.position,
                        state=self.state)
-
-    def show_screen(self, name="Playing", **kwargs):
-        """
-        Switch to the screen specified. The *kwargs* dictionary will be either
-        passed to the constructor, or their values manually applied.
-        """
-        self.zenplayer.show_screen(name=name, **kwargs)
 
     def stop(self):
         """ Stop any playing audio """
