@@ -27,7 +27,7 @@
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Artists")
             Label:
-                text: f"[b]{root.header}[/b]"
+                text: "[b]" + root.header + "[/b]"
                 markup: True
                 color: 1, 1, 0, 1
                 font_size: 0.4 * self.height
