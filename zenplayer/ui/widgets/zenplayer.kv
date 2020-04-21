@@ -1,27 +1,21 @@
 #:kivy 1.10
 #: import ZenIcon ui.widgets.zenicon.ZenIcon
 #: import VolumeSlider ui.screens.playing.playing.VolumeSlider
-
+#: set pad 2
 
 <ZenIconSized@ZenIcon>:
-    size_hint: None, 0.9
+    size_hint: None, 1
     width: self.height
-
-<MediaButton>:
-    ZenIcon:
-        source: root.source
-        pos_hint: {'x': 0, 'y': 0}
-        size_hint: 1, 1
-        on_release: root.dispatch('on_click')
 
 <ZenPlayer>:
     BoxLayout:
         orientation: 'vertical'
         pos_hint: {"x": 0, "y": 0}
         size_hint: 1, 1
-        FloatLayout:
+        BoxLayout:
             # Header bar
             size_hint: 1, 0.075
+            padding: pad
             canvas:
                 Color:
                     rgba: 0.25, 0.25, 0.75, 0.5
@@ -30,27 +24,25 @@
                     points: self.x, self.y, self.right, self.y
             ZenIconSized:
                 source: "images/home.png"
-                pos_hint: {'x': 0, 'center_y': 0.5}
                 on_release: root.show_screen("Playing")
+            Widget:
             ZenIconSized:
                 source: "images/add.png"
-                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_release: root.show_screen("Artists")
+            Widget:
             Label:
                 text: "[b]" + root.header + "[/b]"
                 markup: True
                 color: 1, 1, 0, 1
                 font_size: 0.4 * self.height
-                size_hint: 0.1, 1
-                pos_hint: {'center_x': 0.5, 'y': 0}
                 on_touch_down: self.collide_point(*args[1].pos) and root.show_screen("Playing")
+            Widget:
             ZenIconSized:
                 source: "images/album.png"
-                pos_hint: {'center_x': 0.75, 'center_y': 0.5}
                 on_release: root.show_screen("Playlist")
+            Widget:
             ZenIconSized:
                 source: "images/info.png"
-                pos_hint: {'right': 1, 'center_y': 0.5}
                 on_release: root.show_screen("Info", filename="")
 
         BoxLayout:
@@ -58,7 +50,7 @@
             size_hint: 1, 0.85
             Slider:
                 #  Track progress
-                size_hint: None, 1
+                size_hint: 0.05, 1
                 orientation: "vertical"
                 max: 1
                 value: root.ctrl.position
@@ -68,26 +60,27 @@
                 size_hint: 1, 1
             VolumeSlider:
                 ctrl: root.ctrl
-                size_hint: None, 1
+                size_hint: 0.05, 1
                 orientation: "vertical"
                 value: self.value if self.dragging else root.ctrl.volume
                 max: 1
         BoxLayout:
             size_hint: 1, 0.075
+            padding: pad
+            # ZenIconSized:
+            #     # Track progress icon
+            #     source: 'images/progress.png'
+            # Widget:
             ZenIconSized:
-                # Track progress icon
-                source: 'images/progress.png'
+                # Stop
+                source: "images/stop.png"
+                on_release: root.ctrl.stop()
             Widget:
             ZenIconSized:
                 # Previous track button
                 id: previous
                 source: 'images/previous.png'
                 on_release: root.ctrl.play_previous()
-            Widget:
-            ZenIconSized:
-                # Stop
-                source: "images/stop.png"
-                on_release: root.ctrl.stop()
             Widget:
             ZenIconSized:
                 # Play button
