@@ -1,13 +1,14 @@
 #:kivy 1.10
 #: import VolumeSlider ui.screens.playing.playing.VolumeSlider
 #: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
+#: import ZenIcon ui.widgets.zenicon.ZenIcon
 
 <MediaButton>:
-    Image:
+    ZenIcon:
         source: root.source
         pos_hint: {'x': 0, 'y': 0}
         size_hint: 1, 1
-        on_touch_down: self.collide_point(*args[1].pos) and root.dispatch('on_click')
+        on_release: root.dispatch('on_click')
 
 <PlayingScreen>:
     header: "ZenPlayer"
