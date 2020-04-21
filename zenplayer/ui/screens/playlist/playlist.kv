@@ -4,18 +4,9 @@
 <PlaylistScreen>:
     current: root.ctrl.playlist.current
     header: "Playlist"
-    BoxLayout:
-        orientation: 'vertical'
-        ZenRecycleView:
-            id: rv
-            size_hint_y: 0.8
-            handler: root
-        BoxLayout:
-            padding: 10, 10, 10, 10
-            size_hint_y: 0.1
-            ZenButton:
-                text: 'Clear'
-                on_release: root.button_clear_files()
+    ZenRecycleView:
+        id: rv
+        handler: root
 
 
 <PlaylistPopup>:
@@ -35,6 +26,9 @@
         ZenButton:
             text: "Remove"
             on_press: root.dismiss(); root.screen.button_remove(root.index)
+        ZenButton:
+            text: "Remove all"
+            on_press: root.dismiss(); root.screen.button_clear_files()
         ZenButton:
             text: "Cancel"
             on_press: root.dismiss()

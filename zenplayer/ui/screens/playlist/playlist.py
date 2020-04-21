@@ -55,7 +55,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     def button_clear_files(self):
         """ Remove all files from the playlist """
         self.ctrl.playlist.clear_files()
-        self.on_pre_enter()
+        self.on_enter()
 
 
 class PlaylistPopup(Popup):
