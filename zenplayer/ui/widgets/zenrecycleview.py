@@ -52,6 +52,7 @@ class ZenRecycleView(FloatLayout):
     def find_item(self, text):
         """ Jump to the first item that has a text match with *text* """
         length = len(self.data)
+        text = text.lower()
         for i, data in enumerate(self.data):
             if data["text"].lower().find(text) > -1:
                 self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(length)
