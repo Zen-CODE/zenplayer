@@ -27,7 +27,6 @@ class ZenIcon(ButtonBehavior, Image):
         if self.animation is not None:
             self.animation.cancel(self)
         if state == "down":
-            print("Starting animation")
             self.animation = Animation(back_color=[1, 1, 0, 0.5],
                                        duration=self.duration)
         else:
