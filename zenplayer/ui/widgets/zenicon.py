@@ -22,20 +22,24 @@ class ZenIcon(ButtonBehavior, Image):
         super().__init__(**kwargs)
         self.animation = None
 
-    def _get_back_color(self, state):
+    def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
-        if state == "down":
+        if self.state == "down":
             return [1, 1, 0, 0.5]
         else:
             return [1, 1, 0, 0.0]
 
-    def on_state(self, widget, state):
-        """ Animate the change of colour when  the image is pressed """
+    def draw_widget(self):
+        """ Set the back_color of the widget preventing clashing animations """
         if self.animation is not None:
             self.animation.cancel(self)
-        self.animation = Animation(back_color=self._get_back_color(state),
+        self.animation = Animation(back_color=self._get_back_color(),
                                    duration=self.duration)
         self.animation.start(self)
+
+    def on_state(self, widget, state):
+        """ Animate the change of colour when  the image is pressed """
+        self.draw_widget()
 
 
 class ZenSelectableIcon(ZenIcon):
@@ -71,15 +75,20 @@ class ZenSelectableIcon(ZenIcon):
         for widget in ZenSelectableIcon._groups.get(self.group, []):
             widget.selected = bool(self == widget)
 
-    def _get_back_color(self, state):
+    def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
         if self.selected:
-            return [0, 1, 0, 0.25]
+            return [0, 1, 0, 0.35]
         else:
-            return super()._get_back_color(state)
+            return super()._get_back_color()
 
     def on_state(self, widget, state):
         """ Animate the change of colour when  the image is pressed """
         if state == "down":
             self._set_selected()
-        super().on_state(widget, self.state)
+        else:
+            super().on_state(widget, state)
+
+    def on_selected(self, _widget, _value):
+        """ Trigger the redrawing of the widget on selection changes """
+        self.draw_widget()
