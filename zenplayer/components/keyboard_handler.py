@@ -74,7 +74,10 @@ class KeyHandler:
         """ React to the keypress event """
         func = self._get_match(self._load_keymap(), modifiers, keycode[1])
         if func is not None:
-            getattr(self.ctrl, func["name"])(**func.get("kwargs", {}))
+            # Lookup the function from the component if specified, else ctrl
+            obj = self.ctrl if "component" not in func.keys() else \
+                getattr(self.ctrl, func["component"])
+            getattr(obj, func["name"])(**func.get("kwargs", {}))
             return True
         for cb in self._callbacks:
             cb(keycode, text, modifiers)

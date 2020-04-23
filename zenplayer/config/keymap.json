@@ -9,9 +9,6 @@
         "shift+d": {
             "name": "move_forward"
         },
-        "shift+a": {
-            "name": "move_backward"
-        },
         "shift+x": {
             "name": "play_pause"
         },
@@ -25,24 +22,28 @@
             "name": "play_next"
         },
         "shift+a": {
-            "name": "show_screen",
+            "component": "zenplayer",
+    	    "name": "show_screen",
             "kwargs": {
                 "name": "Artists"
             }
         },
         "shift+p": {
+	    "component": "zenplayer",
             "name": "show_screen",
             "kwargs": {
                 "name": "Playlist"
             }
         },
         "shift+m": {
+            "component": "zenplayer",
             "name": "show_screen",
             "kwargs": {
                 "name": "Playing"
             }
         },
         "shift+i": {
+            "component": "zenplayer",
             "name": "show_screen",
             "kwargs": {
                 "name": "Info",
