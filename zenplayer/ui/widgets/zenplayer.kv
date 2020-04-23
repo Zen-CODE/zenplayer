@@ -1,13 +1,10 @@
 #:kivy 1.10
 #: import ZenIcon ui.widgets.zenicon.ZenIcon
+#: import ZenSelectableIcon ui.widgets.zenicon.ZenSelectableIcon
 #: import VolumeSlider ui.screens.playing.playing.VolumeSlider
 #: set pad 3
 <Label>:
     font_size: 0.5 * self.height  # Increase the default font size
-
-<ZenIconSized@ZenIcon>:
-    size_hint: None, 1
-    width: self.height
 
 <ZenPlayer>:
     BoxLayout:
@@ -24,11 +21,13 @@
                 Line:
                     width: 2
                     points: self.x, self.y, self.right, self.y
-            ZenIconSized:
+            ZenSelectableIcon:
+                group: "header"
                 source: "images/home.png"
                 on_release: root.show_screen("Playing")
             Widget:
-            ZenIconSized:
+            ZenSelectableIcon:
+                group: "header"
                 source: "images/add.png"
                 on_release: root.show_screen("Artists")
             Widget:
@@ -38,11 +37,13 @@
                 color: 1, 1, 0, 1
                 font_size: 0.6 * self.height
             Widget:
-            ZenIconSized:
+            ZenSelectableIcon:
+                group: "header"
                 source: "images/album.png"
                 on_release: root.show_screen("Playlist")
             Widget:
-            ZenIconSized:
+            ZenSelectableIcon:
+                group: "header"
                 source: "images/info.png"
                 on_release: root.show_screen("Info", filename="")
 
@@ -74,27 +75,27 @@
                 Line:
                     width: 2
                     points: self.x, self.top, self.right, self.top
-            ZenIconSized:
+            ZenIcon:
                 # Stop
                 source: "images/stop.png"
                 on_release: root.ctrl.stop()
             Widget:
-            ZenIconSized:
+            ZenIcon:
                 # Previous track button
                 id: previous
                 source: 'images/previous.png'
                 on_release: root.ctrl.play_previous()
             Widget:
-            ZenIconSized:
+            ZenIcon:
                 # Play button
                 source: 'images/play.png' if root.ctrl.state != "playing" else "images/pause.png"
                 on_release: root.ctrl.play_pause()
             Widget:
-            ZenIconSized:
+            ZenIcon:
                 id: next
                 source: 'images/next.png'
                 on_release: root.ctrl.play_next()
             Widget:
-            ZenIconSized:
+            ZenIcon:
                 source: 'images/random.png'
                 on_release: root.ctrl.zenplayer.show_screen("Albums", randomise=True)

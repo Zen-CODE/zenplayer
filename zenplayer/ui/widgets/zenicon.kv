@@ -2,9 +2,11 @@
 #: set gap 4
 
 <ZenIcon>:
-    canvas.after:
+    canvas.before:
         Color:
             rgba: root.back_color
         RoundedRectangle:
             pos: self.x - gap, self.y - gap
             size: self.width + 2 * gap, self.height + 2 * gap
+    size_hint: None, 1
+    width: self.height
