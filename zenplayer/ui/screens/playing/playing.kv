@@ -12,7 +12,7 @@
         Image:
             size_hint: 1, 0.75
             pos_hint_x: "center"
-            on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
+            on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.zenplayer.show_screen("Info", filename="")
             source: root.ctrl.cover
             allow_stretch: True
         Label:
