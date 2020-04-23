@@ -8,9 +8,9 @@
         orientation: "vertical"
         Label:
             text: root.ctrl.artist + " - " + root.ctrl.album
-            size_hint_y: 0.075
+            size_hint_y: 0.05
         Image:
-            size_hint: 1, 0.825
+            size_hint: 1, 0.75
             pos_hint_x: "center"
             on_touch_down: self.collide_point(*args[1].pos) and root.ctrl.show_screen("Info", filename="")
             source: root.ctrl.cover

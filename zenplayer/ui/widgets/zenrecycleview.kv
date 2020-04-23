@@ -12,7 +12,7 @@
         pos_hint: {"x": 0, "y": 0}
         size_hint: 1, 1
         SelectableRecycleBoxLayout:
-            default_size: None, dp(56)
+            default_size: None, 0.06 * root.height
             default_size_hint: 1, None
             size_hint_y: None
             height: self.minimum_height
@@ -26,8 +26,8 @@
                 pos: self.pos
                 size: self.size
         text: root.note_text
-        size_hint: None, None
-        size: self.texture_size[0] * 1.5, self.texture_size[1] * 1.5
+        size_hint: None, 0.06
+        width: self.texture_size[0] * 1.5
         halign: 'right'
         valign: 'middle'
         pos_hint: {"right": 0.975, "center_y": 0.95}
