@@ -1,4 +1,6 @@
 #:kivy 1.10
+<Spacer@Widget>:
+    size_hint_y: 0.75
 
 <InfoScreen>:
     header: "Track"
@@ -13,20 +15,24 @@
             BoxLayout:
                 orientation: "vertical"
                 size_hint_x: 0.5
+                Spacer:
                 Label:
                     markup: True
                     color: 0.25, 1.0, 0.25, 1.0
                     text: "[b]Track Info[/b]"
+                Spacer:
                 Label:
                     id: artist
                 Label:
                     id: album
                 Label:
                     id: track
+                Spacer:
                 Label:
                     markup: True
                     color: 0.25, 1.0, 0.25, 1.0
                     text: "[b]Track Metadata[/b]"
+                Spacer:
                 Label:
                     id: length
                 Label:
@@ -37,3 +43,4 @@
                     id: channels
                 Label:
                     id: sample_rate
+                Spacer:
