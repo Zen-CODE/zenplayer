@@ -3,9 +3,9 @@ This module houses a VLC audio component that supports the Kivy `Sound`
 interface.
 """
 from kivy.core.audio import Sound, SoundLoader
-from vlc import MediaPlayer, EventType
+from vlc import MediaPlayer, EventType, Instance
 from kivy.clock import mainthread
-\
+
 
 class VLCSound(Sound):
     '''
@@ -19,6 +19,7 @@ class VLCSound(Sound):
     def __init__(self, **kwargs):
         self._mediaplayer = None
         self._state = ""
+        self._length = 0
         super().__init__(**kwargs)
 
     @mainthread
@@ -41,10 +42,15 @@ class VLCSound(Sound):
     def load(self):
         """ Loads the Media player for the suitable `source` filename """
         self._unload_vlc()
-        player = self._mediaplayer = MediaPlayer(self.source)
+        media = Instance().media_new(self.source)
+        media.parse()  # Determine duration
+
+        player = self._mediaplayer = media.player_new_from_media()
         player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
+
         self._set_volume(self.volume)
+        self._length = media.get_duration() / 1000.0
         self._state = 'paused'
 
     def unload(self):
@@ -80,13 +86,13 @@ class VLCSound(Sound):
 
     def get_pos(self):
         """ Return the position of int the currently playing track """
-
         if self._mediaplayer is not None:
-            return self._mediaplayer.get_position()
+            return self._mediaplayer.get_position() * self._length
         return 0
 
     def on_volume(self, instance, volume):
-        self.set_volume(volume)
+        """ Respond to the setting of the volume """
+        self._set_volume(volume)
 
     def _set_volume(self, value):
         """
@@ -98,25 +104,46 @@ class VLCSound(Sound):
             self._mediaplayer.audio_set_volume(int(vol))
 
     def _get_length(self):
-        if self._mediaplayer is not None:
-            return self._mediaplayer.get_length() / 1000.0
-        return super()._get_length()
+        """ Getter method to fetch the track length """
+        return self._length
 
 
 if __name__ == "__main__":
     from time import sleep
-    sound = VLCSound(source="/home/fruitbat/Music/Various/Music With Attitude/04 - "
-                            "dEUS - Everybody's Weird.mp3")
-    sound.load()
+
+    file = "/home/fruitbat/Music/Various/Music With Attitude/04 - " \
+           "dEUS - Everybody's Weird.mp3"
+    if False:
+        sound = VLCSound(source=file)
+        sound.load()
+    else:
+        # Legit Kivy sound
+        sound = SoundLoader.load(file)
     if sound:
+        print("Loaded sound")
+        # sound.volume = 0.0
         sound.play()
+
         i = 0
         while i < 5:
             print("Sound found at %s" % sound.source)
             print("Sound is %.3f seconds" % sound.length)
+            print("Position is %.3f seconds" % sound.get_pos())
+            sleep(2)
             i += 1
 
         sound.stop()
         sleep(2)
         sound.play()
         sleep(2)
+    else:
+        print("Failed to load sound")
+
+    # from kivy.app import App
+    # from kivy.uix.label import Label
+
+    # class TestApp(App):
+    #     def build(self):
+    #         return Label(text="Test")
+
+    # TestApp().run()
