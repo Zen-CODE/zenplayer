@@ -81,7 +81,7 @@ class VLCSound(Sound):
     def seek(self, position):
         """ Set the player to the given position in second """
         if self._mediaplayer:
-            value = position / (self._mediaplayer.get_length() / 1000.0)
+            value = position / self._length
             self._mediaplayer.set_position(value)
 
     def get_pos(self):
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     file = "/home/fruitbat/Music/Various/Music With Attitude/04 - " \
            "dEUS - Everybody's Weird.mp3"
-    if False:
+    if True:
         sound = VLCSound(source=file)
         sound.load()
     else:
@@ -121,11 +121,12 @@ if __name__ == "__main__":
         sound = SoundLoader.load(file)
     if sound:
         print("Loaded sound")
-        # sound.volume = 0.0
+        sound.volume = 0.5
         sound.play()
+        sound.seek(10)
 
         i = 0
-        while i < 5:
+        while True:
             print("Sound found at %s" % sound.source)
             print("Sound is %.3f seconds" % sound.length)
             print("Position is %.3f seconds" % sound.get_pos())
