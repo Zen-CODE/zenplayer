@@ -86,7 +86,7 @@ class VLCSound(Sound):
 
     def get_pos(self):
         """ Return the position of int the currently playing track """
-        if self._mediaplayer is not None:
+        if self._mediaplayer is not None and self._state == "playing":
             return self._mediaplayer.get_position() * self._length
         return 0
 
