@@ -18,7 +18,6 @@ class VLCSound(Sound):
 
     def __init__(self, **kwargs):
         self._mediaplayer = None
-        self._state = ""
         self._length = 0
         super().__init__(**kwargs)
 
@@ -37,7 +36,6 @@ class VLCSound(Sound):
             self._mediaplayer.event_manager().event_detach(
                 EventType.MediaPlayerEndReached)
             self._mediaplayer.stop()
-        self._state = ""
 
     def load(self):
         """ Loads the Media player for the suitable `source` filename """
@@ -51,7 +49,6 @@ class VLCSound(Sound):
 
         self._set_volume(self.volume)
         self._length = media.get_duration() / 1000.0
-        self._state = 'paused'
 
     def unload(self):
         """ Unload any instances of the player """
@@ -59,22 +56,20 @@ class VLCSound(Sound):
 
     def play(self):
         """ Play the audio file """
-        if self._state == 'playing':
+        if self.state == 'play':
             super().play()
             return
         if self._mediaplayer is None:
             self.load()
 
         self._mediaplayer.play()
-        self._state = 'playing'
         self.state = 'play'
         super().play()
 
     def stop(self):
         """ Stop any currently playing audio file """
-        if self._mediaplayer and self._state == 'playing':
+        if self._mediaplayer and self.state == 'play':
             self._mediaplayer.pause()
-            self._state = 'paused'
             self.state = 'stop'
         super().stop()
 
@@ -86,7 +81,7 @@ class VLCSound(Sound):
 
     def get_pos(self):
         """ Return the position of int the currently playing track """
-        if self._mediaplayer is not None and self._state == "playing":
+        if self._mediaplayer is not None and self.state == "play":
             return self._mediaplayer.get_position() * self._length
         return 0
 
