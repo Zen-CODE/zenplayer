@@ -20,6 +20,15 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         after items have been removed or added.
         """
         super().on_enter()
+        self._reload_data()
+        self.ctrl.playlist.bind(queue=self._reload_data)
+
+    def on_leave(self):
+        """ Unregister our callback to monitor queue changes """
+        self.ctrl.playlist.unbind(queue=self._reload_data)
+
+    def _reload_data(self, *args):
+        """ Reload the data from the playlist queue """
         self.ids.rv.data = []
         self.ids.rv.data = self.ctrl.playlist.queue
 
