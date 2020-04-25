@@ -37,7 +37,8 @@ class KeyHandler:
 
     def remove_callback(self, callback):
         """ Add a callback function to be called on keyboard event """
-        self._callbacks.remove(callback)
+        if callback in self._callbacks:
+            self._callbacks.remove(callback)
 
     @staticmethod
     def _load_keymap():
