@@ -184,12 +184,10 @@ class Controller(EventDispatcher):
         """ Play the next track in the playlist. """
         self.advance = False
         self.stop()
-        if self.prune:
-            self.playlist.remove_current()
-            if len(self.playlist.queue) == 0:
-                self.add_random_album()
-        else:
-            self.playlist.move_next()
+        self.playlist.move_next(self.prune)
+        if len(self.playlist.queue) == 0:
+            self.add_random_album()
+
         self.position = 0
         self.play_pause()
         self.advance = True

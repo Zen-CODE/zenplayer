@@ -95,24 +95,24 @@ class Playlist(EventDispatcher):
         self.queue = []
         self.current = 0
 
-    def move_next(self):
-        """ Move the selected track to the next"""
-        if len(self.queue) > self.current + 1:
-            self.current += 1
-        elif len(self.queue) > 0:
-            self.current = 1
+    def move_next(self, prune=False):
+        """
+        Move the selected track to the next. If *prune* is True, the
+        current track is removed from the playlist.
+        """
+        if prune:
+            if self.current < len(self.queue):
+                self.queue.pop(self.current)
         else:
-            self.current = 0
+            self.current += 1
+
+        if self.current + 1 > len(self.queue):
+            self.current = max(0, len(self.queue) - 1)
 
     def move_previous(self):
         """ Move the selected track to the previous entry"""
         if 0 < self.current:
             self.current += -1
-
-    def remove_current(self):
-        """ Remove the currently playing track from the playlist """
-        if self.current < len(self.queue):
-            self.queue.pop(self.current)
 
     def save(self, store):
         """ The playlist screen is being closed """
