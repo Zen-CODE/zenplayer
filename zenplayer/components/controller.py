@@ -108,7 +108,7 @@ class Controller(EventDispatcher):
                 if sound:
                     sound.play()
                     sound.volume = self.volume
-                    sound.seek(self.position)
+                    self.set_position(self.position)
             else:
                 self.sound.play()
         elif value == "stopped":
