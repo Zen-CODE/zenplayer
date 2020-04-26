@@ -22,4 +22,5 @@ class ArtistsScreen(ZenKeyDown, ZenScreen):
         An label with the given text has been selected from the recycleview.
         """
         if selected:
-            self.ctrl.zenplayer.show_screen("Albums", artist=label.text)
+            self.ctrl.zenplayer.show_screen(
+                "Albums", artist=label.text, album="")
