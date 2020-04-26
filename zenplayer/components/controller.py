@@ -74,16 +74,18 @@ class Controller(EventDispatcher):
             self.volume = state["volume"]
             self.state = state["state"]
 
-    def _get_sound(self, filename):
+    def _set_sound(self):
         """
-        Ret a new sound from the SoundLoader, being sure to remove and create
-        binding as appropraite
+        Set and return a new sound from the SoundLoader, being sure to remove
+        and create binding as appropraite
         """
         if self.sound is not None:
             self.sound.unbind(state=self.set_state)
             self.sound.stop()
-        self.sound = SoundLoader.load(filename)
-        self.sound.bind(state=self.set_state)
+        self.file_name = self.playlist.get_current_file()
+        self.sound = SoundLoader.load(self.file_name)
+        if self.sound is not None:
+            self.sound.bind(state=self.set_state)
         return self.sound
 
     def set_state(self, _widget, value):
@@ -91,7 +93,7 @@ class Controller(EventDispatcher):
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters the end of track.
         """
-        if value == "stop" and self.state not in  ["stopped", "paused"]:
+        if value == "stop" and self.state not in ["stopped", "paused"]:
             if self.advance:
                 self.play_next()
             else:
@@ -101,14 +103,14 @@ class Controller(EventDispatcher):
         """ React to the change of state event """
         Logger.debug(f"controller.py: Entering on_state. value={value}")
         if value == "playing":
-            self.file_name = self.playlist.get_current_file()
-            if self.file_name:
-                sound = self._get_sound(self.file_name)
-                sound.play()
-                sound.volume = self.volume
-                sound.seek(self.position)
+            if self.sound is None:
+                sound = self._set_sound()
+                if sound:
+                    sound.play()
+                    sound.volume = self.volume
+                    sound.seek(self.position)
             else:
-                self.stop()
+                self.sound.play()
         elif value == "stopped":
             self.stop()
         elif value == "paused" and self.sound:
@@ -170,6 +172,7 @@ class Controller(EventDispatcher):
         """
         self.stop()
         self.playlist.current = index
+        self._set_sound()
         self.play_pause()
 
     def remove_index(self, index):
@@ -197,7 +200,7 @@ class Controller(EventDispatcher):
         self.playlist.move_next(self.prune)
         if len(self.playlist.queue) == 0:
             self.add_random_album()
-
+        self._set_sound()
         self.position = 0
         self.play_pause()
         self.advance = True
@@ -208,6 +211,7 @@ class Controller(EventDispatcher):
         self.stop()
         self.position = 0
         self.playlist.move_previous()
+        self._set_sound()
         self.play_pause()
         self.advance = True
 
