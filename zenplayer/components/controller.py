@@ -1,4 +1,4 @@
-from components.sound import Sound
+from components.audio_vlc import SoundVLCPlayer  # noqa: F401
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
 from kivy.event import EventDispatcher
@@ -13,6 +13,7 @@ from kivy.logger import Logger
 from components.paths import rel_to_base
 from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
+from kivy.core.audio import SoundLoader
 
 
 class Controller(EventDispatcher):
@@ -28,7 +29,6 @@ class Controller(EventDispatcher):
     cover = StringProperty(rel_to_base("images", "zencode.png"))
     time_display = StringProperty("-")
     state = OptionProperty("", options=["stopped", "paused", "playing", ""])
-    prev_state = None
 
     position = NumericProperty(0.0)
     """ Position is the track as a fraction between 0 and 1. """
@@ -61,8 +61,7 @@ class Controller(EventDispatcher):
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
         self.kb_handler = KeyHandler(self)
-        self.sound = Sound()
-        self.sound.bind(state=self.set_state)
+        self.sound = None
         Clock.schedule_interval(self._update_progress, 1/5)
 
         self._restore_state()
@@ -75,42 +74,55 @@ class Controller(EventDispatcher):
             self.volume = state["volume"]
             self.state = state["state"]
 
+    def _get_sound(self, filename):
+        """
+        Ret a new sound from the SoundLoader, being sure to remove and create
+        binding as appropraite
+        """
+        if self.sound is not None:
+            self.sound.unbind(state=self.set_state)
+            self.sound.stop()
+        self.sound = SoundLoader.load(filename)
+        self.sound.bind(state=self.set_state)
+        return self.sound
+
     def set_state(self, _widget, value):
         """
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters the end of track.
         """
-        if value == "stopped" and self.state != "stopped":
+        if value == "stop" and self.state not in  ["stopped", "paused"]:
             if self.advance:
                 self.play_next()
+            else:
+                self.stop()
 
     def on_state(self, _widget, value):
         """ React to the change of state event """
         Logger.debug(f"controller.py: Entering on_state. value={value}")
         if value == "playing":
-            if self.sound.state == "playing":
-                self.sound.stop()
             self.file_name = self.playlist.get_current_file()
             if self.file_name:
-                self.sound.play(self.file_name, self.volume, self.position)
+                sound = self._get_sound(self.file_name)
+                sound.play()
+                sound.volume = self.volume
+                sound.seek(self.position)
+            else:
+                self.stop()
         elif value == "stopped":
+            self.stop()
+        elif value == "paused" and self.sound:
             self.sound.stop()
-        elif value == "paused" and self.prev_state is not None:
-            # If the prev_state is None, we have just restored state on start
-            self.position, _length = self.sound.get_pos_length()
-            self.sound.pause()
-
-        self.prev_state = value
 
     def _update_progress(self, _dt):
         """ Update the progressbar  """
-        if self.sound.state == "playing":
-            pos, length = self.sound.get_pos_length()
-            pos_secs = pos * length
+        if self.sound.state == "play":
+            pos = self.sound.get_pos()
+            length = self.sound.length
             if length > 0:
                 self.time_display = "{0}m {1:02d}s / {2}m {3:02d}s".format(
-                    int(pos_secs / 60),
-                    int(pos_secs % 60),
+                    int(pos / 60),
+                    int(pos % 60),
                     int(length / 60),
                     int(length % 60))
                 self.position = pos
@@ -135,24 +147,22 @@ class Controller(EventDispatcher):
 
     def on_volume(self, _widget, value):
         """ Set the volume of the currently playing sound """
-        self.volume = abs(value) % 1.0 if value < 1 else 1
-        self.sound.set_volume(value)
+        volume = self.volume = abs(value) % 1.0 if value < 1 else 1
+        if self.sound is not None:
+            self.sound.volume = volume
 
     def move_forward(self):
         """ Move the current playing time 5s forward """
-        pos, length = self.sound.get_pos_length()
-        if length:
-            one_sec = 1 / length
-            if pos + 5 * one_sec < 1:
-                self.set_position(pos + 5 * one_sec)
+        pos = self.sound.get_pos()
+        length = self.sound.length
+        if length < pos + 5:
+            self.set_position(pos + 5)
 
     def move_backward(self):
         """ Move the current playing time 5s backward """
-        pos, length = self.sound.get_pos_length()
-        if length:
-            one_sec = 1 / length
-            if pos - 5 * one_sec > 0:
-                self.set_position(pos - 5 * one_sec)
+        pos = self.sound.get_pos()
+        if pos > 5:
+            self.set_position(pos - 5)
 
     def play_index(self, index):
         """

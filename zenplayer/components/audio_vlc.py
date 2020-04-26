@@ -76,19 +76,22 @@ class SoundVLCPlayer(Sound):
         super().stop()
 
     def seek(self, position):
-        """ Set the player to the given position in second """
+        """ Set the player to the given position in seconds """
         if self._mediaplayer:
             value = position / self._length
             self._mediaplayer.set_position(value)
 
     def get_pos(self):
-        """ Return the position of int the currently playing track """
+        """ Return the position in seconds the currently playing track """
         if self._mediaplayer is not None and self.state == "play":
             return self._mediaplayer.get_position() * self._length
         return 0
 
     def on_volume(self, instance, volume):
-        """ Respond to the setting of the volume """
+        """
+        Respond to the setting of the volume. This value is fraction between
+        0 and 1.
+         """
         self._set_volume(volume)
 
     def _set_volume(self, value):
