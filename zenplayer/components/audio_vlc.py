@@ -3,11 +3,11 @@ This module houses a VLC audio component that supports the Kivy `Sound`
 interface.
 """
 from kivy.core.audio import Sound, SoundLoader
-from vlc import MediaPlayer, EventType, Instance
+from vlc import EventType, Instance
 from kivy.clock import mainthread
 
 
-class VLCSound(Sound):
+class SoundVLCPlayer(Sound):
     '''
     A Kivy `Sound` object based on a VLC audio backend.
     '''
@@ -103,13 +103,15 @@ class VLCSound(Sound):
         return self._length
 
 
+SoundLoader.register(SoundVLCPlayer)
+
 if __name__ == "__main__":
     from time import sleep
 
     file = "/home/fruitbat/Music/Various/Music With Attitude/04 - " \
            "dEUS - Everybody's Weird.mp3"
-    if True:
-        sound = VLCSound(source=file)
+    if False:
+        sound = SoundVLCPlayer(source=file)
         sound.load()
     else:
         # Legit Kivy sound
