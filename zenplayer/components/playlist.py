@@ -163,7 +163,10 @@ class Playlist(EventDispatcher):
             """
             not_ext = _basename[0: _basename.rfind(".")]
             parts = not_ext.split("-")
-            return str(int(parts[0])), "-".join(parts[1:]).strip()
+            try:
+                return str(int(parts[0])), "-".join(parts[1:]).strip()
+            except ValueError:
+                return "-", not_ext
 
         try:
             if index is None:
