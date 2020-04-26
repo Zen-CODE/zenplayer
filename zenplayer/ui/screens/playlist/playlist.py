@@ -36,7 +36,8 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         """ Show the popup for selecting the index in the playlist """
         data = self.ctrl.playlist.get_info(index=item.index)
         PlaylistPopup(
-            title="Track: {artist} - {album} - {track}".format(**data),
+            title="Track: {artist} - {album}: {track_number} - {track_name}"\
+                .format(**data),
             screen=self,
             index=item.index).open()
 

@@ -148,18 +148,37 @@ class Playlist(EventDispatcher):
 
     def get_info(self, filename=None, index=None):
         """
-        Return a dictionary containing the information on the track """
+        Return a dictionary containing the track information with the following
+        keys:
+            * artist
+            * album
+            * track_name
+            * track_number
+
+        """
+        def number_name(_basename):
+            """
+            Return a tuple of the number and name of the track where the
+            *_basename* is the filename without the path.
+            """
+            not_ext = _basename[0: _basename.rfind(".")]
+            parts = not_ext.split("-")
+            return str(int(parts[0])), "-".join(parts[1:]).strip()
+
         try:
             if index is None:
                 parts = filename.split(sep)
             else:
                 parts = self.queue[index]["filename"].split(sep)
+            number, name = number_name(parts[-1])
             return {
                 "artist": parts[-3],
                 "album": parts[-2],
-                "track": parts[-1]}
+                "track_name": name,
+                "track_number": number}
         except IndexError:
             return {
                 "artist": "-",
                 "album": "-",
-                "track": "-"}
+                "track_name": "-",
+                "track_number": "-"}
