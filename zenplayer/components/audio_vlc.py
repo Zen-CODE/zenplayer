@@ -5,6 +5,7 @@ interface.
 from kivy.core.audio import Sound, SoundLoader
 from vlc import EventType, Instance
 from kivy.clock import mainthread
+from kivy.logger import Logger
 
 
 class SoundVLCPlayer(Sound):
@@ -17,6 +18,7 @@ class SoundVLCPlayer(Sound):
         return ("mp3", "mp4", "flac", "mkv", "wav", "ogg", "m4a")
 
     def __init__(self, **kwargs):
+        Logger.debug("SoundVLCPlayer: Creating an instance of `SoundVLCPlayer`")
         self._mediaplayer = None
         self._length = 0
         super().__init__(**kwargs)
@@ -110,12 +112,9 @@ if __name__ == "__main__":
 
     file = "/home/fruitbat/Music/Various/Music With Attitude/04 - " \
            "dEUS - Everybody's Weird.mp3"
-    if False:
-        sound = SoundVLCPlayer(source=file)
-        sound.load()
-    else:
-        # Legit Kivy sound
-        sound = SoundLoader.load(file)
+    # Use the `KIVY_AUDIO=vlcplayer` setting in environment variables to use
+    # our provider
+    sound = SoundLoader.load(file)
     if sound:
         print("Loaded sound")
         sound.volume = 0.5
