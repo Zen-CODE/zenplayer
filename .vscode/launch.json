@@ -23,8 +23,9 @@
             "name": "Python: Launch AudioPlayer",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/zenplayer/components/audioplayer.py",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/zenplayer/components/audio_vlc.py",
+            "console": "integratedTerminal",
+            "env"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "python.pythonPath": "venv/bin/python3",
-    "python.envFile": "${workspaceFolder}/.env",
+    "python.envFile": "${workspaceFolder}/zenplayer/.env",
     "python.linting.flake8Enabled": true,
     "editor.rulers": [80],
     "files.trimTrailingWhitespace": true,
