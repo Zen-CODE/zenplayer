@@ -6,7 +6,10 @@
         "shift+down": {
             "name": "volume_down"
         },
-        "shift+d": {
+        "shift+left": {
+            "name": "move_backward"
+        },
+        "shift+right": {
             "name": "move_forward"
         },
         "shift+x": {

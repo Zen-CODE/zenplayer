@@ -52,7 +52,7 @@ class KeyHandler:
         Return True if the given character represents a normal key and not a
         modifier.
         """
-        return len(key) == 1 or key in ["up", "down"]
+        return len(key) == 1 or key in ["up", "down", "left", "right"]
 
     @staticmethod
     def _get_match(keymap, modifiers, key_name):

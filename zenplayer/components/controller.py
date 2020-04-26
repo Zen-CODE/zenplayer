@@ -155,7 +155,7 @@ class Controller(EventDispatcher):
         """ Move the current playing time 5s forward """
         pos = self.sound.get_pos()
         length = self.sound.length
-        if length < pos + 5:
+        if length >= pos + 5:
             self.sound.seek(pos + 5)
 
     def move_backward(self):
