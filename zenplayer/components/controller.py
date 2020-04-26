@@ -125,7 +125,7 @@ class Controller(EventDispatcher):
                     int(pos % 60),
                     int(length / 60),
                     int(length % 60))
-                self.position = pos
+                self.position = pos / length
 
     def on_file_name(self, _widget, value):
         """ Respond to the change of file name and set the info fields."""
@@ -156,13 +156,13 @@ class Controller(EventDispatcher):
         pos = self.sound.get_pos()
         length = self.sound.length
         if length < pos + 5:
-            self.set_position(pos + 5)
+            self.sound.seek(pos + 5)
 
     def move_backward(self):
         """ Move the current playing time 5s backward """
         pos = self.sound.get_pos()
         if pos > 5:
-            self.set_position(pos - 5)
+            self.sound.seek(pos - 5)
 
     def play_index(self, index):
         """
@@ -212,9 +212,13 @@ class Controller(EventDispatcher):
         self.advance = True
 
     def set_position(self, value):
-        """ Set the playing position to the specified value. """
-        self.position = value
-        self.sound.set_position(value)
+        """
+        Set the playing position to the specified value, where value is  a
+        fraction between 0 and 1.
+        """
+        sound = self.sound
+        if sound and sound.length:
+            sound.seek(value * sound.length)
 
     def save(self):
         """ Save the state of the the playlist and volume. """
