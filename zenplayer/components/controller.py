@@ -86,6 +86,7 @@ class Controller(EventDispatcher):
         self.sound = SoundLoader.load(self.file_name)
         if self.sound is not None:
             self.sound.bind(state=self.set_state)
+            self.sound.volume = self.volume
         return self.sound
 
     def set_state(self, _widget, value):
@@ -107,7 +108,6 @@ class Controller(EventDispatcher):
                 sound = self._set_sound()
                 if sound:
                     sound.play()
-                    sound.volume = self.volume
                     self.set_position(self.position)
             else:
                 self.sound.play()
