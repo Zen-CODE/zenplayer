@@ -2,6 +2,8 @@
 This module houses teh API interface for the Zenplaylist
 """
 from webserver.api.zenapibase import ZenAPIBase
+from flask import request
+from os.path import exists
 
 
 class ZenPlaylist(ZenAPIBase):
@@ -87,3 +89,39 @@ class ZenPlaylist(ZenAPIBase):
         file_name = pl.get_current_file()
         image = pl.get_album_art(file_name)
         return self.resp_from_image(image)
+
+    def add_files(self):
+        """
+        Add the specified folder or file to the playlist
+        ---
+        tags:
+            - ZenPlaylist
+        parameters:
+            - name: folder
+              in: query
+              type: string
+              required: true
+
+        responses:
+            200:
+                description: The folder was successfully added to the playlist.
+                schema:
+                    id:
+                    type: object
+                    properties:
+                        message:
+                            description: Contains a description of the
+                                         response.
+                            type: string
+            404:
+                description: THe folder would not befounf
+        """
+        folder = request.args.get("folder")
+        if folder or not exists(folder):
+            self.ctrl.playlist.add_files(folder)
+            return self.resp_from_data(
+                {"message": f"Folder '{folder}' added to playlist"})
+
+        else:
+            return self.resp_from_data(
+                {"message": f"No such folder found: '{folder}'"}, 404)
