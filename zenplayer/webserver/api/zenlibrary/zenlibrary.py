@@ -67,7 +67,7 @@ class ZenLibrary(ZenAPIBase):
 
     def get_random_album(self):
         """
-        Return a random album, togther with a link to add it to the playlist.
+        Return a random album selected from the library.
         ---
         tags:
             - ZenLibrary
