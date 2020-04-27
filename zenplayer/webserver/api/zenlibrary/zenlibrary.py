@@ -80,15 +80,19 @@ class ZenLibrary(ZenAPIBase):
                     properties:
                         artist:
                             type: string
-                            derscription: The artist name
+                            description: The artist name
                         album:
                             type: string
-                            derscription: The album name
+                            description: The album name
+                        path:
+                            type: string
+                            description: The full path to the folder
 
         """
-        artist, album = self.ctrl.library.get_random_album()
-
+        lib = self.ctrl.library
+        artist, album = lib.get_random_album()
         return self.resp_from_data({
             "artist": artist,
-            "album": album
+            "album": album,
+            "path": lib.get_path(artist, album)
         })
