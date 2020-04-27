@@ -1,7 +1,8 @@
 from kivy.event import EventDispatcher
 from os import sep, path, listdir
 from os.path import exists
-from kivy.properties import NumericProperty, ListProperty
+from kivy.properties import (  # pylint: disable=no-name-in-module
+    NumericProperty, ListProperty)
 from components.filedrop import FileDrop
 from glob import glob
 

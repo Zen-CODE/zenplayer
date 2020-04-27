@@ -2,8 +2,6 @@
 This module houses teh API interface for the Zenlibrary
 """
 from webserver.api.zenapibase import ZenAPIBase
-
-
 from flask import request
 
 
@@ -31,7 +29,7 @@ class ZenLibrary(ZenAPIBase):
         return self.resp_from_data(contents)
 
     def get_albums(self):
-        """
+        r"""
         Return a list of albums for the specified artist.
         ---
         tags:
@@ -40,6 +38,7 @@ class ZenLibrary(ZenAPIBase):
             - name: artist
               in: query
               type: string
+              required: true
         responses:
             200:
                 description: Return a list of the artist albums
@@ -49,7 +48,7 @@ class ZenLibrary(ZenAPIBase):
                     items:
                         string
             400:
-                description: No album found for artist=\\<artist\\>
+                description: No album found for artist=\<artist\>
                 schema:
                     id: ErrorMessage
                     type: object
