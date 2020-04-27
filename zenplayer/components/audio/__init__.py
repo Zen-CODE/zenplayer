@@ -4,16 +4,14 @@ SoundVLCPlayer as the default audio provider.
 """
 from .audio_vlc import SoundVLCPlayer
 from kivy.core.audio import SoundLoader
-from os import environ
 
 
 def register_vlc():
     """
     Register the SoundVLCPlayer as the default audio player for the Kivy
-    Sounloader class
+    Sounloader class. To set as the default"
+
+        from os import environ
+        environ["KIVY_AUDIO"] = "vlcplayer"
     """
     SoundLoader.register(SoundVLCPlayer)
-    environ["KIVY_AUDIO"] = "vlcplayer"
-
-
-register_vlc()

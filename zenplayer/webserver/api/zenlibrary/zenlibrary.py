@@ -64,3 +64,31 @@ class ZenLibrary(ZenAPIBase):
                 return self.resp_from_data([name for name in sorted(contents)])
         return self.resp_from_data(
             {"message": f"No album found for artist={artist}"}, 400)
+
+    def get_random_album(self):
+        """
+        Return a random album, togther with a link to add it to the playlist.
+        ---
+        tags:
+            - ZenLibrary
+        responses:
+            200:
+                description: Return the state of the current track.
+                schema:
+                    id: Album
+                    type: object
+                    properties:
+                        artist:
+                            type: string
+                            derscription: The artist name
+                        album:
+                            type: string
+                            derscription: The album name
+
+        """
+        artist, album = self.ctrl.library.get_random_album()
+
+        return self.resp_from_data({
+            "artist": artist,
+            "album": album
+        })

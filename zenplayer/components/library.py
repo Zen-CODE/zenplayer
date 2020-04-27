@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import join, isdir, basename, expanduser, exists
+from os.path import join, isdir, basename, expanduser
 from random import sample
 from glob import glob
 from random import choice
