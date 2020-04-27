@@ -13,24 +13,25 @@ class ZenLibrary(ZenAPIBase):
     """
     def get_artists(self):
         """
-        Return a list of artist available in this collection.
+        Return a list of artists available in this collection.
         ---
         tags:
             - ZenLibrary
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return a list of artists in the current library.
                 schema:
                     id: ArtistList
                     type: array
                     items:
-                        string
+                        type: string
+                        description: The name of the artist.
         """
         contents = self.ctrl.library.get_artists()
         return self.resp_from_data(contents)
 
     def get_albums(self):
-        r"""
+        """
         Return a list of albums for the specified artist.
         ---
         tags:
@@ -48,7 +49,7 @@ class ZenLibrary(ZenAPIBase):
                     items:
                         string
             400:
-                description: No album found for artist=\<artist\>
+                description: No album found for artist=\\<artist\\>
                 schema:
                     id: ErrorMessage
                     type: object
@@ -73,7 +74,7 @@ class ZenLibrary(ZenAPIBase):
             - ZenLibrary
         responses:
             200:
-                description: Return the state of the current track.
+                description: Return a random artist and album.
                 schema:
                     id: Album
                     type: object
