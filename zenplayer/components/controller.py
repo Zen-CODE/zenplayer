@@ -1,5 +1,5 @@
-from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
-                             OptionProperty)
+from kivy.properties import (  # pylint: disable=no-name-in-module
+    NumericProperty, ObjectProperty, StringProperty, OptionProperty)
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from os import sep

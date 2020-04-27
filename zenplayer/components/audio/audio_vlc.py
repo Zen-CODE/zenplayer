@@ -8,7 +8,6 @@ from kivy.clock import mainthread
 from kivy.logger import Logger
 
 
-
 class SoundVLCPlayer(Sound):
     '''
     A Kivy `Sound` object based on a VLC audio backend.
@@ -19,7 +18,7 @@ class SoundVLCPlayer(Sound):
         return ("mp3", "mp4", "flac", "mkv", "wav", "ogg", "m4a")
 
     def __init__(self, **kwargs):
-        Logger.debug("SoundVLCPlayer: Creating an instance of `SoundVLCPlayer`")
+        Logger.debug("SoundVLCPlayer: Creating an instance")
         self._mediaplayer = None
         self._length = 0
         super().__init__(**kwargs)
