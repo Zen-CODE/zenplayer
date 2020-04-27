@@ -84,6 +84,7 @@ class Controller(EventDispatcher):
             self.sound.stop()
         self.file_name = self.playlist.get_current_file()
         self.sound = SoundLoader.load(self.file_name)
+
         if self.sound is not None:
             self.sound.bind(state=self.set_state)
             self.sound.volume = self.volume
@@ -172,6 +173,7 @@ class Controller(EventDispatcher):
         """
         self.stop()
         self.playlist.current = index
+        self.position = 0
         self._set_sound()
         self.play_pause()
 
