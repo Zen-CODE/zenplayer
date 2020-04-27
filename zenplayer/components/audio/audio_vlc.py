@@ -8,6 +8,7 @@ from kivy.clock import mainthread
 from kivy.logger import Logger
 
 
+
 class SoundVLCPlayer(Sound):
     '''
     A Kivy `Sound` object based on a VLC audio backend.
@@ -107,8 +108,6 @@ class SoundVLCPlayer(Sound):
         """ Getter method to fetch the track length """
         return self._length
 
-
-SoundLoader.register(SoundVLCPlayer)
 
 if __name__ == "__main__":
     from time import sleep

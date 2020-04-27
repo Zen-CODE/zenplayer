@@ -1,4 +1,3 @@
-from components.audio_vlc import SoundVLCPlayer  # noqa: F401
 from kivy.properties import (NumericProperty, ObjectProperty, StringProperty,
                              OptionProperty)
 from kivy.event import EventDispatcher
@@ -13,7 +12,7 @@ from kivy.logger import Logger
 from components.paths import rel_to_base
 from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
-from kivy.core.audio import SoundLoader
+from components.audio import SoundLoader, register_vlc
 
 
 class Controller(EventDispatcher):
@@ -57,6 +56,7 @@ class Controller(EventDispatcher):
         self.advance = True
 
         self.zenplayer.show_screen("Playing")
+        register_vlc()
 
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
