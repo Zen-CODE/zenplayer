@@ -3,7 +3,7 @@ This module houses a VLC audio component that supports the Kivy `Sound`
 interface.
 """
 from kivy.core.audio import Sound, SoundLoader
-from vlc import EventType, Instance
+from vlc import EventType, Instance, MediaPlayer
 from kivy.clock import mainthread
 from kivy.logger import Logger
 
@@ -40,12 +40,27 @@ class SoundVLCPlayer(Sound):
             self._mediaplayer.stop()
 
     def load(self):
-        """ Loads the Media player for the suitable `source` filename """
+        """
+        Loads the Media player for the suitable `source` filename.
+
+        *Note*
+
+        There are various approach to loading the player, some of which cause
+        problems after prolonged use. e.g.
+
+            media = Instance().media_new(self.source)
+            media.parse()  # Determine duration
+            player = self._mediaplayer = media.player_new_from_media()
+
+        It seems we need to create a new instance for each track to get better
+        reliability.
+        """
         self._unload_vlc()
         media = Instance().media_new(self.source)
         media.parse()  # Determine duration
 
-        player = self._mediaplayer = media.player_new_from_media()
+        player = self._mediaplayer = MediaPlayer()
+        player.set_media(media)
         player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
 
