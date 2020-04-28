@@ -1,12 +1,10 @@
 """
 This module adds global hotkey support from ZenPlayer
 """
-from keyboard import add_hotkey
-from os.path import join, exists
-from json import load
 from kivy.clock import Clock
 from kivy.logger import Logger
 from components.config import Config
+from pynput.keyboard import GlobalHotKeys
 
 
 class HotKeyHandler:
@@ -14,8 +12,6 @@ class HotKeyHandler:
     This class add global hotkey for calling ZenPlayer funtions. Hotkey
     bindings are set via the `hotkey.json` file in this folder.
     """
-    _hk_map = None
-    """ A dictionary containing the currently loaded hotkey map """
 
     @staticmethod
     def add_bindings(ctrl):
@@ -30,9 +26,6 @@ class HotKeyHandler:
         Return the specified hotkey mappings. Load from the json file if
         we have not done that already.
         """
-        if HotKeyHandler._hk_map is not None:
-            return HotKeyHandler._hk_map
-
         mappings = Config.load("hotkeymap.json")
         return mappings["hotkeymap"]
 
@@ -53,9 +46,7 @@ class HotKeyHandler:
             mapping a dictionary with the key as the hotkey combination and the
             value as the controller action.
         """
-        try:
-            for key, method in mapping.items():
-                add_hotkey(key, HotKeyHandler.get_function(ctrl, method))
-        except ImportError:
-            Logger.warning("HotKeyHandler: Load failed. Please run as root to "
-                           "enable hotkey support")
+        mapdict = {
+            k: HotKeyHandler.get_function(ctrl, v) for k, v in mapping.items()}
+        ghk = GlobalHotKeys(mapdict)
+        ghk.start()
