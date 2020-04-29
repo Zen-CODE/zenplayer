@@ -1,6 +1,7 @@
 from components.meta import Metadata
 from kivy.clock import Clock
 from webserver.api.zenapibase import ZenAPIBase
+from flask import request
 
 
 class ZenPlayer(ZenAPIBase):
@@ -25,11 +26,11 @@ class ZenPlayer(ZenAPIBase):
             "file_name": ctrl.file_name
         }
 
-    def _safe_call(self, func):
+    def _safe_call(self, func, *args):
         """
         Call the given function in a clock event and return a success reponse.
         """
-        Clock.schedule_once(lambda dt: func())
+        Clock.schedule_once(lambda dt: func(*args))
         return self.resp_from_data({"status": "success"})
 
     def get_track_meta(self):
@@ -87,6 +88,37 @@ class ZenPlayer(ZenAPIBase):
 
         """
         return self._safe_call(self.ctrl.play_pause)
+
+    def volume_set(self):
+        """
+        Set the volume of the player to a specific value.
+        ---
+        tags:
+            - ZenPlayer
+        parameters:
+            - name: volume
+              in: query
+              type: string
+              required: true
+
+        responses:
+            200:
+                description: Return the status of the requested action.
+                schema:
+                    $ref: '#/definitions/ActionResponse'
+        """
+        def get_float(value):
+            try:
+                return float(value)
+            except Exception:
+                return None
+
+        val = get_float(request.args.get("volume", None))
+        if val is not None:
+            return self._safe_call(self.ctrl.on_volume, None, val)
+        else:
+            return self.resp_from_data(
+                {"message": "Invalid value for volume"}, 400)
 
     def volume_up(self):
         """

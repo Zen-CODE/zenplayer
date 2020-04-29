@@ -1,7 +1,7 @@
 {
     "hotkeymap": {
-        "<alt>+<up>": "volume_up",
-        "<alt>+<down>": "volume_down",
+        "<alt>+w": "volume_up",
+        "<alt>+s": "volume_down",
         "<alt>+d": "move_forward",
         "<alt>+a": "move_backward",
         "<alt>+x": "play_pause",
