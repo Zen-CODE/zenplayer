@@ -102,7 +102,8 @@ class ZenPlaylist(ZenAPIBase):
               type: string
               required: true
             - name: mode
-              description: Specifies the way in which the files should be added.
+              description: Specifies the way in which the files should be
+                           added.
               in: query
               type: string
               enum: ["add", "replace", "insert", "next"]
