@@ -101,6 +101,12 @@ class ZenPlaylist(ZenAPIBase):
               in: query
               type: string
               required: true
+            - name: mode
+              description: Specifies the way in which the files should be added.
+              in: query
+              type: string
+              enum: ["add", "replace", "insert", "next"]
+              required: false
 
         responses:
             200:
@@ -114,11 +120,12 @@ class ZenPlaylist(ZenAPIBase):
                                          response.
                             type: string
             404:
-                description: THe folder would not befounf
+                description: The folder could not be found.
         """
         folder = request.args.get("folder")
         if folder or not exists(folder):
-            self.ctrl.playlist.add_files(folder)
+            mode = request.args.get("mode", "add")
+            self.ctrl.playlist.add_files(folder, mode)
             return self.resp_from_data(
                 {"message": f"Folder '{folder}' added to playlist"})
 
