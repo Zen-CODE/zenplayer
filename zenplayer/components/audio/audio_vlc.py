@@ -52,20 +52,25 @@ class SoundVLCPlayer(Sound):
             media.parse()  # Determine duration
             player = self._mediaplayer = media.player_new_from_media()
 
+        Similarly, even this seems to give the same errors over time:
+
+            media = Instance().media_new(self.source)
+            player = self._mediaplayer = MediaPlayer(self.source)
+            player.set_media(media)
+
+
         It seems we need to create a new instance for each track to get better
         reliability.
         """
         self._unload_vlc()
         media = Instance().media_new(self.source)
         media.parse()  # Determine duration
+        self._length = media.get_duration() / 1000.0
 
-        player = self._mediaplayer = MediaPlayer()
-        player.set_media(media)
+        player = self._mediaplayer = MediaPlayer(self.source)
         player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
-
         self._set_volume(self.volume)
-        self._length = media.get_duration() / 1000.0
 
     def unload(self):
         """ Unload any instances of the player """
