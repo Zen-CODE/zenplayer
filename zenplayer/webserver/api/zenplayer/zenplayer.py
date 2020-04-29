@@ -158,9 +158,10 @@ class ZenPlayer(ZenAPIBase):
         """
         return self._safe_call(self.ctrl.stop)
 
-    def get_track_info(self):
+    def get_state(self):
         """
-        Return the details of the currently playing track
+        Return the state of the ZenPlayer. This include details of the
+        currently playing track.
         ---
         tags:
             - ZenPlayer
@@ -198,7 +199,7 @@ class ZenPlayer(ZenAPIBase):
                     state:
                         description: The state of the currently playing track.
                         type: string
-                        enum: ["stopped", "paused", "playing", ""]
+                        enum: ["Stopped", "paused", "Playing", ""]
                     position:
                         description: The position in the currently active track
                                      as presented by a number between 0 and 1.

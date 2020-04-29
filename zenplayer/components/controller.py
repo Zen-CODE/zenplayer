@@ -27,7 +27,7 @@ class Controller(EventDispatcher):
     track = StringProperty("-")
     cover = StringProperty(rel_to_base("images", "zencode.png"))
     time_display = StringProperty("-")
-    state = OptionProperty("", options=["stopped", "paused", "playing", ""])
+    state = OptionProperty("", options=["Stopped", "Paused", "Playing", ""])
 
     position = NumericProperty(0.0)
     """ Position is the track as a fraction between 0 and 1. """
@@ -95,7 +95,7 @@ class Controller(EventDispatcher):
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters the end of track.
         """
-        if value == "stop" and self.state not in ["stopped", "paused"]:
+        if value == "stop" and self.state not in ["Stopped", "Paused"]:
             if self.advance:
                 self.play_next()
             else:
@@ -104,7 +104,7 @@ class Controller(EventDispatcher):
     def on_state(self, _widget, value):
         """ React to the change of state event """
         Logger.debug(f"controller.py: Entering on_state. value={value}")
-        if value == "playing":
+        if value == "Playing":
             if self.sound is None:
                 sound = self._set_sound()
                 if sound:
@@ -112,9 +112,9 @@ class Controller(EventDispatcher):
                     self.set_position(self.position)
             else:
                 self.sound.play()
-        elif value == "stopped":
+        elif value == "Stopped":
             self.stop()
-        elif value == "paused" and self.sound:
+        elif value == "Paused" and self.sound:
             self.sound.stop()
 
     def _update_progress(self, _dt):
@@ -185,10 +185,10 @@ class Controller(EventDispatcher):
 
     def play_pause(self):
         """ Play or pause the currently playing track """
-        if self.state == "playing":
-            self.state = "paused"
+        if self.state == "Playing":
+            self.state = "Paused"
         else:
-            self.state = "playing"
+            self.state = "Playing"
 
     def add_random_album(self):
         """ Add a random album to the playlist """
@@ -236,7 +236,7 @@ class Controller(EventDispatcher):
         """ Stop any playing audio """
         self.advance = False
         self.position = 0.0
-        self.state = "stopped"
+        self.state = "Stopped"
         self.advance = True
 
     def quit(self):
