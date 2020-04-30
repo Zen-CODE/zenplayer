@@ -69,6 +69,41 @@ class ZenLibrary(ZenAPIBase):
         return self.resp_from_data(
             {"message": f"No album found for artist={artist}"}, 400)
 
+    def get_tracks(self):
+        """
+        Return a list of the tracks in the specified album
+        ---
+        tags:
+            - ZenLibrary
+        parameters:
+            - name: artist
+              in: query
+              type: string
+              required: true
+            - name: album
+              in: query
+              type: string
+              required: true
+        responses:
+            200:
+                description: Return a list of tracks for the given artist and
+                             album
+                schema:
+                    id: TracksList
+                    type: array
+                    items:
+                        type: string
+                        description: The list of tracks in the given album
+        """
+        artist = request.args.get("artist", "")
+        album = request.args.get("album", "")
+        if not (album and artist):
+            return self.resp_from_data(
+                {"message":  "Please specify a valid artist and album"}, 403)
+        else:
+            tracks = self.ctrl.library.get_tracks(artist, album)
+            return self.resp_from_data(tracks)
+
     def get_random_album(self):
         """
         Return a random album selected from the library.
