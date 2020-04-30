@@ -29,7 +29,7 @@ class ZenLibrary(ZenAPIBase):
         return self.resp_from_data(contents)
 
     def get_albums(self):
-        r"""
+        """
         Return a list of albums for the specified artist.
         ---
         tags:
@@ -46,9 +46,9 @@ class ZenLibrary(ZenAPIBase):
                     id: AlbumList
                     type: array
                     items:
-                        string
+                        $ref: '#/definitions/Album'
             400:
-                description: No album found for artist=\<artist\>
+                description: No album found for artist "{artist}"
                 schema:
                     id: ErrorMessage
                     type: object
@@ -59,9 +59,13 @@ class ZenLibrary(ZenAPIBase):
         """
         artist = request.args.get("artist")
         if artist:
-            contents = self.ctrl.library.get_albums(artist)
-            if contents:
-                return self.resp_from_data([name for name in sorted(contents)])
+            lib = self.ctrl.library
+            lst = sorted(self.ctrl.library.get_albums(artist))
+            albums = [{"artist": artist,
+                       "album": album,
+                       "path": lib.get_path(artist, album)} for album in lst]
+            if lst:
+                return self.resp_from_data(albums)
         return self.resp_from_data(
             {"message": f"No album found for artist={artist}"}, 400)
 
@@ -75,18 +79,20 @@ class ZenLibrary(ZenAPIBase):
             200:
                 description: Return a random artist and album.
                 schema:
-                    id: Album
-                    type: object
-                    properties:
-                        artist:
-                            type: string
-                            description: The artist name
-                        album:
-                            type: string
-                            description: The album name
-                        path:
-                            type: string
-                            description: The full path to the folder
+                    $ref: '#/definitions/Album'
+        definitions:
+            Album:
+                type: object
+                properties:
+                    artist:
+                        type: string
+                        description: The artist name
+                    album:
+                        type: string
+                        description: The album name
+                    path:
+                        type: string
+                        description: The full path to the folder
 
         """
         lib = self.ctrl.library
