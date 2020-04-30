@@ -5,6 +5,7 @@ from kivy.core.window import Window
 from kivy.utils import platform
 from kivy.logger import Logger
 from components.config import Config
+from functools import lru_cache
 
 
 class KeyHandler:
@@ -41,6 +42,7 @@ class KeyHandler:
             self._callbacks.remove(callback)
 
     @staticmethod
+    @lru_cache()
     def _load_keymap():
         """ Load the specified key mappings from the json file. """
         mappings = Config.load("keymap.json")
