@@ -138,3 +138,38 @@ class ZenLibrary(ZenAPIBase):
         else:
             cover = self.ctrl.library.get_album_cover(artist, album)
             return self.resp_from_image(cover)
+
+    def search(self):
+        """
+        Return a list of albums that have any match for the specified query
+        string.
+        ---
+        tags:
+            - ZenLibrary
+        parameters:
+            - name: query
+              in: query
+              type: string
+              required: true
+        responses:
+            200:
+                description: Return a list of the matches
+                schema:
+                    $ref: '#/definitions/Album'
+            400:
+                description: No matches
+                schema:
+                    id: ErrorMessage
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            description: The reason the request failed.
+        """
+        query = request.args.get("query", "")
+        if query:
+            album = self.ctrl.library.search(query)
+            return self.resp_from_data(album)
+        return self.resp_from_data(
+            {"message": "No query parameters specified"}, 400)
+

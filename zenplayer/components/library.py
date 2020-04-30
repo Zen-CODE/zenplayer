@@ -112,8 +112,8 @@ class Library:
         name of the album name, then return one on them randomly.
 
         Returns:
-             A dictionary with the artist and album as keys if found. Return an
-             empty dictionary otherwise.
+             A dictionary with the keys "artist", "album" and "path" as keys
+             if found. Return an empty dictionary otherwise.
         """
         terms = term.lower().split(" ")
         matches = []
@@ -121,5 +121,8 @@ class Library:
             for album in self._artists[artist]:
                 if all([(artist + album).lower().find(t) > -1
                         for t in terms]):
-                    matches.append({"artist": artist, "album": album})
+                    matches.append(
+                        {"artist": artist,
+                         "album": album,
+                         "path": self.get_path(artist, album)})
         return choice(matches) if matches else []
