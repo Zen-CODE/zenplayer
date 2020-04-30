@@ -11,7 +11,11 @@ class ZenWebServer:
     def __init__(self, ctrl):
         super().__init__()
         templates = rel_to_base("webserver", "templates")
-        app = self.app = Flask(__name__, template_folder=templates)
+        app = self.app = Flask(
+            __name__,
+            template_folder=templates,
+            static_url_path='/static',
+            static_folder=rel_to_base('webserver', 'static'))
         """ The instance of the Flask application. """
 
         self.class_data = Loader.get_class_data(ctrl)
