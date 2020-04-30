@@ -59,15 +59,15 @@ class Library:
         """ Return a list of albums for the *artist*. """
         return sorted(self._artists.get(artist, []))
 
-    # def get_cover(self, artist, album):
-    #     """
-    #     Return the album cover for the specified album or the default library
-    #     image one does not exist.
-    #     """
-    #     path = join(self.path, artist, album)
-    #     pattern = "cover.*"
-    #     matches = glob(join(path, pattern))
-    #     return matches[0] if matches else join(self.path, "default.png")
+    def get_album_cover(self, artist, album):
+        """
+        Return the full path to the album cover for the specified album or the
+        default library image one does not exist.
+        """
+        path = join(self.path, artist, album)
+        pattern = "cover.*"
+        matches = glob(join(path, pattern))
+        return matches[0] if matches else join(self.path, "default.png")
 
     def get_path(self, artist, album):
         """ Return the full path to the specified album. """

@@ -74,4 +74,6 @@ class InfoScreen(ZenScreen):
 
     def _show_art(self, filename):
         """ Populate the track info """
-        self.ids["image"].source = self.ctrl.playlist.get_album_art(filename)
+        ids = self.ids
+        self.ids["image"].source = self.ctrl.library.get_album_cover(
+            ids.artist.text, ids.album.text)

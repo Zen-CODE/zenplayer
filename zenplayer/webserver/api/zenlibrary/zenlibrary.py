@@ -96,3 +96,39 @@ class ZenLibrary(ZenAPIBase):
             "album": album,
             "path": lib.get_path(artist, album)
         })
+
+    def get_album_cover(self):
+        """
+        Return the image for the currently playing track.
+        ---
+        tags:
+            - ZenLibrary
+        parameters:
+            - name: artist
+              in: query
+              type: string
+              required: true
+            - name: album
+              in: query
+              type: string
+              required: true
+
+        responses:
+            200:
+                description: Return the cover image for the currently active
+                             track
+                content:
+                    image/*:     # Media type
+                        schema:
+                            type: string
+                            format: binary
+
+        """
+        artist = request.args.get("artist", "")
+        album = request.args.get("album", "")
+        if not (album and artist):
+            return self.resp_from_data(
+                {"message":  "Please specify a valid artist and album"}, 403)
+        else:
+            cover = self.ctrl.library.get_album_cover(artist, album)
+            return self.resp_from_image(cover)

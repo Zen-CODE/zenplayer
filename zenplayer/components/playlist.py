@@ -135,18 +135,6 @@ class Playlist(EventDispatcher):
         if index < len(self.queue):
             self.queue.pop(index)
 
-    @staticmethod
-    def get_album_art(audio_file):
-        """
-        Return the full image filename from the folder
-        """
-        if audio_file:
-            folder = audio_file[0: audio_file.rfind(sep)]
-            ret = glob(folder + "/cover.*")
-            if ret:
-                return ret[0]
-        return "images/zencode.png"
-
     def get_info(self, filename=None, index=None):
         """
         Return a dictionary containing the track information with the following

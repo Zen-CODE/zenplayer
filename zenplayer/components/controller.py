@@ -137,7 +137,7 @@ class Controller(EventDispatcher):
             self.track = parts[-1]
             self.album = parts[-2]
             self.artist = parts[-3]
-            self.cover = self.playlist.get_album_art(value)
+            self.cover = self.library.get_album_cover(self.artist, self.album)
             Window.set_icon(self.cover)
 
     def volume_up(self):
