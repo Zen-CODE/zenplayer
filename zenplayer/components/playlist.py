@@ -4,7 +4,6 @@ from os.path import exists
 from kivy.properties import (  # pylint: disable=no-name-in-module
     NumericProperty, ListProperty)
 from components.filedrop import FileDrop
-from glob import glob
 
 
 class Playlist(EventDispatcher):
