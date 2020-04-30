@@ -101,9 +101,9 @@ class ZenPlaylist(ZenAPIBase):
             404:
                 description: The folder could not be found.
         """
-        folder = request.args.get("folder")
+        folder = self.get_request_arg("folder")
         if folder or not exists(folder):
-            mode = request.args.get("mode", "add")
+            mode = self.get_request_arg("mode", "add")
             self.ctrl.playlist.add_files(folder, mode)
             return self.resp_from_data(
                 {"message": f"Folder '{folder}' added to playlist"})

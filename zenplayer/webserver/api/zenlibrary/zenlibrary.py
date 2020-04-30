@@ -2,7 +2,7 @@
 This module houses teh API interface for the Zenlibrary
 """
 from webserver.api.zenapibase import ZenAPIBase
-from flask import request
+
 
 
 class ZenLibrary(ZenAPIBase):
@@ -57,7 +57,7 @@ class ZenLibrary(ZenAPIBase):
                             type: string
                             description: The reason the request failed.
         """
-        artist = request.args.get("artist")
+        artist = self.get_request_arg("artist")
         if artist:
             lib = self.ctrl.library
             lst = sorted(self.ctrl.library.get_albums(artist))
@@ -95,8 +95,8 @@ class ZenLibrary(ZenAPIBase):
                         type: string
                         description: The list of tracks in the given album
         """
-        artist = request.args.get("artist", "")
-        album = request.args.get("album", "")
+        artist = self.get_request_arg("artist")
+        album = self.get_request_arg("album")
         if not (album and artist):
             return self.resp_from_data(
                 {"message":  "Please specify a valid artist and album"}, 403)
@@ -165,8 +165,8 @@ class ZenLibrary(ZenAPIBase):
                             format: binary
 
         """
-        artist = request.args.get("artist", "")
-        album = request.args.get("album", "")
+        artist = self.get_request_arg("artist")
+        album = self.get_request_arg("album")
         if not (album and artist):
             return self.resp_from_data(
                 {"message":  "Please specify a valid artist and album"}, 403)
@@ -201,7 +201,7 @@ class ZenLibrary(ZenAPIBase):
                             type: string
                             description: The reason the request failed.
         """
-        query = request.args.get("query", "")
+        query = self.get_request_arg("query")
         if query:
             album = self.ctrl.library.search(query)
             return self.resp_from_data(album)

@@ -2,7 +2,8 @@
 Houses the base class for ZenPlayer classes presenting a API Interface
 """
 from flask import make_response, jsonify, send_file
-
+from flask import request
+from urllib.parse import unquote
 
 class ZenAPIBase:
     """
@@ -13,6 +14,12 @@ class ZenAPIBase:
         super().__init__()
         self.ctrl = ctrl
         """ Reference to the controller object. """
+
+    @staticmethod
+    def get_request_arg(key, default=""):
+        """ Get the request argument, being sure to unescape the URL encoded
+        value. """
+        return unquote(request.args.get(key, default))
 
     @staticmethod
     def resp_from_data(data, code=200):
