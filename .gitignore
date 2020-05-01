@@ -1,3 +1,5 @@
 *.pyc
 venv/
 *.log
+zenplayer/webserver/static
+zenplayer/webserver/flask_monitoringdashboard.db
