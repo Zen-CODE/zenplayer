@@ -56,7 +56,6 @@ class Controller(EventDispatcher):
         self.library = Library()
         self.advance = True
 
-        self.zenplayer.show_screen("Playing")
         register_vlc()
 
         if config["enable_hotkeys"]:

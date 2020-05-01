@@ -26,6 +26,8 @@ class ZenPlayer(FloatLayout):
     def __init__(self, **kwargs):
         KVLoader.load("ui/widgets/zenplayer.kv")
         super().__init__(**kwargs)
+        self.show_screen()
+
 
     def show_screen(self, name="Playing", **kwargs):
         """
