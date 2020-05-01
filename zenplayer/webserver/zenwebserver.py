@@ -18,8 +18,6 @@ class ZenWebServer:
             static_folder=rel_to_base('webserver', 'static'))
         """ The instance of the Flask application. """
 
-        self.add_dashboard()
-
         self.class_data = Loader.get_class_data(ctrl)
         [self.add_routes(class_datum) for class_datum in self.class_data]
         app.add_url_rule("/", "/", self.index, methods=['GET'])
@@ -44,6 +42,9 @@ class ZenWebServer:
         """
         Run the underlying flask app
         """
+        if kwargs.pop("enable_dashboard", False):
+            self.add_dashboard()
+
         self.app.run(*args, **kwargs)
 
     def index(self):
