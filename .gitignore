@@ -2,4 +2,5 @@
 venv/
 *.log
 zenplayer/webserver/static
-zenplayer/webserver/flask_monitoringdashboard.db
+zenplayer/webserver/flask_monitoring*
+zenplayer/keys

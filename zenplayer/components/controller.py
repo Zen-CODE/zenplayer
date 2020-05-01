@@ -32,8 +32,8 @@ class Controller(EventDispatcher):
     position = NumericProperty(0.0)
     """ Position is the track as a fraction between 0 and 1. """
 
-    # The following is used to trigger the above
     file_name = StringProperty("")
+    """ The file name of the currently playing track """
 
     app = ObjectProperty()
 
