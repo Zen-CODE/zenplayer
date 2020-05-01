@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from threading import Thread
 from socket import gethostname
 from components.paths import rel_to_base
+from kivy.logger import Logger
 
 
 class NowPlaying:
@@ -24,8 +25,6 @@ class NowPlaying:
 
     _client = None
     """ The singleton firestore client instance. """
-
-    fields = ['artist', 'album', 'track', 'state', 'machine', 'datetime']
 
     def __init__(self, **kwargs):
         if self._client is None:
@@ -76,6 +75,8 @@ class NowPlaying:
         in a background thread to try and avoid locking when we get stale
         transport errors.
         """
+        Logger.info("NowPlaying: Writing state to cloud firestore...")
+
         def save_to_fs():
             """ Save to firestore """
             NowPlaying(artist=ctrl.artist, album=ctrl.album,
@@ -84,18 +85,3 @@ class NowPlaying:
                        datetime=datetime.now() - timedelta(hours=2)).save()
 
         Thread(target=save_to_fs).start()
-
-
-if __name__ == "__main__":
-    # ## Write date
-    # from datetime import datetime, timedelta
-    # obj = NowPlaying(
-    #     artist="Us3",
-    #     album="Cantaloop 2004",
-    #     track="01 - Cantaloop 2004 Soul.mp3",
-    #     state="playing",
-    #     machine="zenbox",
-    #     date=datetime.now() - timedelta(hours=2))  # Adjust for time zone
-    # obj.save()
-
-    NowPlaying.get_last()
