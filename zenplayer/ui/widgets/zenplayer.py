@@ -28,7 +28,6 @@ class ZenPlayer(FloatLayout):
         super().__init__(**kwargs)
         self.show_screen()
 
-
     def show_screen(self, name="Playing", **kwargs):
         """
         Switch to the screen specified. The *kwargs* dictionary will be either
