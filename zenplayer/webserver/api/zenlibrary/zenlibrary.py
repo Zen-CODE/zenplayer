@@ -1,7 +1,7 @@
 """
 This module houses teh API interface for the Zenlibrary
 """
-from webserver.api.zenapibase import ZenAPIBase
+from webserver.api.zenapibase import ZenAPIBase  # pylint: disable=import-error
 
 
 class ZenLibrary(ZenAPIBase):
@@ -206,4 +206,3 @@ class ZenLibrary(ZenAPIBase):
             return self.resp_from_data(album)
         return self.resp_from_data(
             {"message": "No query parameters specified"}, 400)
-

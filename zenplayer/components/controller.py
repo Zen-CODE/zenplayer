@@ -15,6 +15,7 @@ from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 from components.cloud_firestore import NowPlaying
 
+
 class Controller(EventDispatcher):
     """
     Controls the playing of audio and coordinates the updating of the playlist
