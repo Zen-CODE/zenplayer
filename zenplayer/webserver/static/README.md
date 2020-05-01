@@ -1,0 +1,1 @@
+This folder should be populed with the static resources for the react UI.
