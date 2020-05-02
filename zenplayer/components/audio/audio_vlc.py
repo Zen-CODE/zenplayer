@@ -13,13 +13,14 @@ class SoundVLCPlayer(Sound):
     A Kivy `Sound` object based on a VLC audio backend.
     '''
 
+    player = None
+
     @staticmethod
     def extensions():
         return ("mp3", "mp4", "flac", "mkv", "wav", "ogg", "m4a")
 
     def __init__(self, **kwargs):
         Logger.debug("SoundVLCPlayer: Creating an instance")
-        self._mediaplayer = None
         self._length = 0
         super().__init__(**kwargs)
 
@@ -30,14 +31,15 @@ class SoundVLCPlayer(Sound):
             self.stop()
         else:
             self.seek(0.)
-            self._mediaplayer.play()
+            SoundVLCPlayer.player.play()
 
     def _unload_vlc(self):
         """ Unload the VLC Media player if it not already unloaded """
-        if self._mediaplayer is not None:
-            self._mediaplayer.event_manager().event_detach(
+        if SoundVLCPlayer.player is not None:
+            Logger.info("VLCPlayer: Unloading previous instance")
+            SoundVLCPlayer.player.event_manager().event_detach(
                 EventType.MediaPlayerEndReached)
-            self._mediaplayer.stop()
+            SoundVLCPlayer.player.stop()
 
     def load(self):
         """
@@ -62,12 +64,13 @@ class SoundVLCPlayer(Sound):
         It seems we need to create a new instance for each track to get better
         reliability.
         """
+        Logger.info("VLCPlayer: Entering load")
         self._unload_vlc()
         media = Instance().media_new(self.source)
         media.parse()  # Determine duration
         self._length = media.get_duration() / 1000.0
 
-        player = self._mediaplayer = MediaPlayer(self.source)
+        player = SoundVLCPlayer.player = MediaPlayer(self.source)
         player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
         self._set_volume(self.volume)
@@ -81,30 +84,30 @@ class SoundVLCPlayer(Sound):
         if self.state == 'play':
             super().play()
             return
-        if self._mediaplayer is None:
+        if SoundVLCPlayer.player is None:
             self.load()
 
-        self._mediaplayer.play()
+        SoundVLCPlayer.player.play()
         self.state = 'play'
         super().play()
 
     def stop(self):
         """ Stop any currently playing audio file """
-        if self._mediaplayer and self.state == 'play':
-            self._mediaplayer.pause()
+        if SoundVLCPlayer.player and self.state == 'play':
+            SoundVLCPlayer.player.pause()
             self.state = 'stop'
         super().stop()
 
     def seek(self, position):
         """ Set the player to the given position in seconds """
-        if self._mediaplayer:
+        if SoundVLCPlayer.player:
             value = position / self._length
-            self._mediaplayer.set_position(value)
+            SoundVLCPlayer.player.set_position(value)
 
     def get_pos(self):
         """ Return the position in seconds the currently playing track """
-        if self._mediaplayer is not None and self.state == "play":
-            return self._mediaplayer.get_position() * self._length
+        if SoundVLCPlayer.player is not None and self.state == "play":
+            return SoundVLCPlayer.player.get_position() * self._length
         return 0
 
     def on_volume(self, instance, volume):
@@ -119,9 +122,9 @@ class SoundVLCPlayer(Sound):
         The volume of the currently playing sound, where the value is between
         0 and 1.
         """
-        if self._mediaplayer:
+        if SoundVLCPlayer.player:
             vol = 100 if abs(value) >= 1.0 else 100 * abs(value)
-            self._mediaplayer.audio_set_volume(int(vol))
+            SoundVLCPlayer.player.audio_set_volume(int(vol))
 
     def _get_length(self):
         """ Getter method to fetch the track length """
