@@ -14,6 +14,7 @@ from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 from components.cloud_firestore import NowPlaying
+from os import environ
 
 
 class Controller(EventDispatcher):
@@ -56,7 +57,8 @@ class Controller(EventDispatcher):
         self.library = Library()
         self.advance = True
 
-        register_vlc()
+        if environ.get("KIVY_AUDIO", "") == "vlcplayer":
+            register_vlc()
 
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
