@@ -13,5 +13,9 @@ def register_vlc():
 
         from os import environ
         environ["KIVY_AUDIO"] = "vlcplayer"
+
+    Other options include:
+
+        ffpyplayer, sdl2 and gstplayer
     """
     SoundLoader.register(SoundVLCPlayer)

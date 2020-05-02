@@ -8,27 +8,23 @@
         id: rv
         handler: root
 
-
 <PlaylistPopup>:
-    size_hint: 0.75, 0.75
-    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-    auto_dismiss: False
     BoxLayout:
         orientation: "vertical"
         padding: 10, 10, 10, 10
         spacing: 10
         ZenButton:
             text: "Play"
-            on_press: root.dismiss(); root.screen.button_play(root.index)
+            on_press: root.dismiss(); root.handler.button_play(root.index)
         ZenButton:
             text: "Info"
-            on_press: root.dismiss(); root.screen.button_info(root.index)
+            on_press: root.dismiss(); root.handler.button_info(root.index)
         ZenButton:
             text: "Remove"
-            on_press: root.dismiss(); root.screen.button_remove(root.index)
+            on_press: root.dismiss(); root.handler.button_remove(root.index)
         ZenButton:
             text: "Remove all"
-            on_press: root.dismiss(); root.screen.button_clear_files()
+            on_press: root.dismiss(); root.handler.button_clear_files()
         ZenButton:
             text: "Cancel"
             on_press: root.dismiss()

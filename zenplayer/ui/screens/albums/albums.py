@@ -4,9 +4,9 @@ This module houses the Zen Music Library browser based on the recycleview
 from ui.screens.zenscreen import ZenScreen
 from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
-from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from ui.widgets.zenkeydown import ZenKeyDown
+from ui.widgets.zenpopup import ZenPopup
 from random import choice
 
 
@@ -77,9 +77,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
         return False
 
 
-class AlbumPopup(Popup):
+class AlbumPopup(ZenPopup):
     """
     The Popup show when the playlist item is tapped and held.
     """
-    handler = ObjectProperty()
-    """ A reference to the controller object"""

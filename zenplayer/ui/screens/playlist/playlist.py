@@ -2,7 +2,7 @@
 This class houses the Playlist class for ZenPlayer
 """
 from kivy.properties import NumericProperty, ObjectProperty
-from kivy.uix.popup import Popup
+from ui.widgets.zenpopup import ZenPopup
 from ui.screens.zenscreen import ZenScreen
 from ui.widgets.zenkeydown import ZenKeyDown
 
@@ -36,9 +36,9 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         """ Show the popup for selecting the index in the playlist """
         data = self.ctrl.playlist.get_info(index=item.index)
         PlaylistPopup(
-            title="Track: {artist} - {album}: {track_number} - {track_name}"\
-                .format(**data),
-            screen=self,
+            title="Track: {artist} - {album}: {track_number} - {track_name}"
+                  .format(**data),
+            handler=self,
             index=item.index).open()
 
     def item_draw(self, label):
@@ -68,12 +68,9 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         self.on_enter()
 
 
-class PlaylistPopup(Popup):
+class PlaylistPopup(ZenPopup):
     """
     The Popup show when the playlist item is tapped and held.
     """
-    screen = ObjectProperty()
-    """ A reference to the Playlist screen"""
-
     index = NumericProperty()
     """ The index of the selected track in the Playlist.queue"""
