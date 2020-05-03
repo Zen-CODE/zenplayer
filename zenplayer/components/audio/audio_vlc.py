@@ -14,6 +14,7 @@ class SoundVLCPlayer(Sound):
     '''
 
     instance = None
+    player = None
 
     @staticmethod
     def extensions():
@@ -24,7 +25,6 @@ class SoundVLCPlayer(Sound):
         if self.instance is None:
             Logger.debug("SoundVLCPlayer: Creating an instance")
             SoundVLCPlayer.instance = Instance()
-        self.player = None
         super().__init__(**kwargs)
 
     @mainthread
@@ -41,7 +41,7 @@ class SoundVLCPlayer(Sound):
         self._unload_player()
 
         Logger.info("VLCPlayer: Loading player")
-        self.player = player = self.instance.media_player_new()
+        SoundVLCPlayer.player = player = self.instance.media_player_new()
         media = player.set_mrl(filename)
         player.event_manager().event_attach(
             EventType.MediaPlayerEndReached, self._track_finished)
@@ -58,31 +58,10 @@ class SoundVLCPlayer(Sound):
             if self.player.is_playing():
                 self.player.stop()
             self.player.release()
-            self.player = None
+            SoundVLCPlayer.player = None
 
     def load(self):
-        """
-        Loads the Media player for the suitable `source` filename.
-
-        *Note*
-
-        There are various approach to loading the player, some of which cause
-        problems after prolonged use. e.g.
-
-            media = Instance().media_new(self.source)
-            media.parse()  # Determine duration
-            player = self._mediaplayer = media.player_new_from_media()
-
-        Similarly, even this seems to give the same errors over time:
-
-            media = Instance().media_new(self.source)
-            player = self._mediaplayer = MediaPlayer(self.source)
-            player.set_media(media)
-
-
-        It seems we need to create a new instance for each track to get better
-        reliability.
-        """
+        """ Loads the Media player for the suitable `source` filename. """
         Logger.info("VLCPlayer: Entering load")
         self._load_player(self.source)
         self._set_volume(self.volume)
