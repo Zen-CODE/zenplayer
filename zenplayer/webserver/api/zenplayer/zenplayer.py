@@ -26,13 +26,6 @@ class ZenPlayer(ZenAPIBase):
             "file_name": ctrl.file_name
         }
 
-    def _safe_call(self, func, *args):
-        """
-        Call the given function in a clock event and return a success reponse.
-        """
-        Clock.schedule_once(lambda dt: func(*args))
-        return self.resp_from_data({"status": "success"})
-
     def get_track_meta(self):
         """
         Return the technical metadata on the current track
@@ -87,7 +80,7 @@ class ZenPlayer(ZenAPIBase):
                         enum: ["success", "failed"]
 
         """
-        return self._safe_call(self.ctrl.play_pause)
+        return self.safe_call(self.ctrl.play_pause)
 
     def volume_set(self):
         """
@@ -115,7 +108,7 @@ class ZenPlayer(ZenAPIBase):
 
         val = get_float(request.args.get("volume", None))
         if val is not None:
-            return self._safe_call(self.ctrl.on_volume, None, val)
+            return self.safe_call(self.ctrl.on_volume, None, val)
         else:
             return self.resp_from_data(
                 {"message": "Invalid value for volume"}, 400)
@@ -132,7 +125,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self._safe_call(self.ctrl.volume_up)
+        return self.safe_call(self.ctrl.volume_up)
 
     def volume_down(self):
         """
@@ -146,7 +139,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self._safe_call(self.ctrl.volume_down)
+        return self.safe_call(self.ctrl.volume_down)
 
     def play_previous(self):
         """
@@ -160,7 +153,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self._safe_call(self.ctrl.play_previous)
+        return self.safe_call(self.ctrl.play_previous)
 
     def play_next(self):
         """
@@ -174,7 +167,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self._safe_call(self.ctrl.play_next)
+        return self.safe_call(self.ctrl.play_next)
 
     def stop(self):
         """
@@ -188,7 +181,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
-        return self._safe_call(self.ctrl.stop)
+        return self.safe_call(self.ctrl.stop)
 
     def get_state(self):
         """

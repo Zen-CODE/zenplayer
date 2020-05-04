@@ -104,9 +104,11 @@ class ZenPlaylist(ZenAPIBase):
         folder = self.get_request_arg("folder")
         if folder or not exists(folder):
             mode = self.get_request_arg("mode", "add")
-            self.ctrl.playlist.add_files(folder, mode)
-            return self.resp_from_data(
-                {"message": f"Folder '{folder}' added to playlist"})
+            response = self.safe_call(
+                self.ctrl.playlist.add_files, folder, mode)
+            if mode in ["replace", "insert"]:
+                self.safe_call(self.ctrl.play_index, 0, get_response=False)
+            return response
 
         else:
             return self.resp_from_data(

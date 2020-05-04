@@ -4,6 +4,8 @@ Houses the base class for ZenPlayer classes presenting a API Interface
 from flask import make_response, jsonify, send_file
 from flask import request
 from urllib.parse import unquote
+from kivy.clock import Clock
+
 
 class ZenAPIBase:
     """
@@ -44,3 +46,12 @@ class ZenAPIBase:
             'Pragma': 'no-cache',
             'Expires': '0'})
         return resp
+
+    def safe_call(self, func, *args, get_response=True):
+        """
+        Call the given function in a clock event. Return a success reponse if
+        *get_response* is True, otherwise return None
+        """
+        Clock.schedule_once(lambda dt: func(*args))
+        if get_response:
+            return self.resp_from_data({"status": "success"})
