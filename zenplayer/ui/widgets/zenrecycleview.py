@@ -67,7 +67,6 @@ class ZenRecycleView(FloatLayout):
                 label.selected = True
                 return
 
-
     def on_show_note(self, widget, value):
         """ Either hide of show the note label """
         end_value = 1 if value else 0

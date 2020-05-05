@@ -22,6 +22,8 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         super().on_enter()
         self._reload_data()
         self.ctrl.playlist.bind(queue=self._reload_data)
+        track = self.ctrl.playlist.get_current_info()
+        self.ids.rv.find_item(track["track_name"])
 
     def on_leave(self):
         """ Unregister our callback to monitor queue changes """
