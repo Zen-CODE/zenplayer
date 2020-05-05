@@ -1,7 +1,7 @@
 """
 This class houses the Playlist class for ZenPlayer
 """
-from kivy.properties import NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty
 from ui.widgets.zenpopup import ZenPopup
 from ui.screens.zenscreen import ZenScreen
 from ui.widgets.zenkeydown import ZenKeyDown
@@ -40,13 +40,6 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
                   .format(**data),
             handler=self,
             index=item.index).open()
-
-    def item_draw(self, label):
-        """ Set the back color of the label considering the playlist """
-        if label.index == self.current:
-            label.back_color = [.5, 1.0, .50, .3]
-            return True
-        return False
 
     def button_play(self, index):
         """ Play the track selected track. """

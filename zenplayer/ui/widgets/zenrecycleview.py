@@ -3,7 +3,7 @@ Houses the ZenRecycleView class
 """
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
+from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from kivy.uix.label import Label
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
@@ -11,7 +11,7 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from ui.kvloader import KVLoader
 from kivy.clock import Clock
 from kivy.animation import Animation
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import BooleanProperty
 
 
 class ZenRecycleView(FloatLayout):
@@ -51,12 +51,22 @@ class ZenRecycleView(FloatLayout):
 
     def find_item(self, text):
         """ Jump to the first item that has a text match with *text* """
+        self.ids.rv.layout_manager.clear_selection()
         length = len(self.data)
-        text = text.lower()
+        text_lower = text.lower()
         for i, data in enumerate(self.data):
-            if data["text"].lower().find(text) > -1:
+            if data["text"].lower().find(text_lower) > -1:
                 self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(length)
+                Clock.schedule_once(lambda dt: self._select_item(text_lower))
                 return
+
+    def _select_item(self, text_lower):
+        """ Select the first itme that contains matching text. """
+        for _k, label in self.ids.rv.view_adapter.views.items():
+            if label.text.lower().find(text_lower) > -1:
+                label.selected = True
+                return
+
 
     def on_show_note(self, widget, value):
         """ Either hide of show the note label """
@@ -105,10 +115,9 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
         * item_selected(item, True/False)
         * item_touched(item)
-        * item_draw(item)
     """
 
-    def item_draw(self):
+    def _item_draw(self):
         """ Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
         """
@@ -116,6 +125,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             self.back_color = [.5, .5, 1.0, .3]
         else:
             self.back_color = [0, 0, 0, 1]
+
+    def on_selected(self, _widget, _value):
+        """ Respond to the change of selection """
+        self._item_draw()
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -128,10 +141,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         handler = self.handler = rv.handler
         if hasattr(handler, "item_selected"):
             handler.item_selected(self, is_selected)
-        if hasattr(handler, "item_draw"):
-            if handler.item_draw(self):
-                return
-        self.item_draw()
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """

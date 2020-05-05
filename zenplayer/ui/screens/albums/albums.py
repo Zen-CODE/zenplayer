@@ -69,13 +69,6 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
             title=f"Track: {self.artist} - {self.album}",
             handler=self).open()
 
-    def item_draw(self, label):
-        """ Set the back color of the label considering the playlist """
-        if label.text == self.album:
-            label.back_color = [.5, 1.0, .50, .3]
-            return True
-        return False
-
 
 class AlbumPopup(ZenPopup):
     """
