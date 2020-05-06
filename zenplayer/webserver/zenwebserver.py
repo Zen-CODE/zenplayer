@@ -24,6 +24,9 @@ class ZenWebServer:
         ZenSwagger.init_swagger(app, self.class_data)
 
     def add_dashboard(self):
+        """ Add the flash dashboard monitoring tool. Note that we move the
+        import here to avoid the need to install this as a dependency.
+        """
         import flask_monitoringdashboard as dashboard
         dashboard.config.init_from(file=rel_to_base("config", "dashboard.ini"))
         dashboard.bind(self.app)

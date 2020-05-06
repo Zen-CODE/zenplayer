@@ -27,6 +27,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
 
     def on_leave(self):
         """ Unregister our callback to monitor queue changes """
+        super().on_leave()
         self.ctrl.playlist.unbind(queue=self._reload_data)
 
     def _reload_data(self, *args):
