@@ -6,8 +6,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from ui.kvloader import KVLoader
 from ui.screens.screens import ScreenFactory
-# from kivy.uix.screenmanager import ScreenManager, FadeTransition
-# sm = ObjectProperty(ScreenManager(transition=FadeTransition(duration=0.2)))
 # """ A reference to the active ScreenManager class. """
 
 
