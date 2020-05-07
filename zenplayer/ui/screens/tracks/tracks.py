@@ -13,5 +13,12 @@ class TracksScreen(ZenScreen):
 
     album = StringProperty()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def on_enter(self):
+        super().on_enter()
+
+        lib = self.ctrl.library
+        self.ids.image.source = lib.get_album_cover(
+            self.artist, self.album)
+        self.ids.rv.data = [
+            {"text": item} for item in lib.get_tracks(self.artist,
+                                                      self.album)]
