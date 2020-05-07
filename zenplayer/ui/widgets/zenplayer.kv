@@ -26,12 +26,14 @@
             ZenSelectableIcon:
                 group: "header"
                 source: "images/home.png"
-                on_release: root.show_screen("Playing")
+                on_press: root.show_screen("Playing")
+                selected: sm.current == "Playing"
             Widget:
             ZenSelectableIcon:
                 group: "header"
                 source: "images/add.png"
-                on_release: root.show_screen("Artists")
+                on_press: root.show_screen("Artists")
+                selected: sm.current in ["Artists", "Albums"]
             Widget:
             Label:
                 text: "[b]" + root.header + "[/b]"
@@ -42,13 +44,14 @@
             ZenSelectableIcon:
                 group: "header"
                 source: "images/album.png"
-                on_release: root.show_screen("Playlist")
+                on_press: root.show_screen("Playlist")
+                selected: sm.current == "Playlist"
             Widget:
             ZenSelectableIcon:
                 group: "header"
                 source: "images/info.png"
-                on_release: root.show_screen("Info", filename="")
-
+                on_press: root.show_screen("Info", filename="")
+                selected: sm.current == "Info"
         BoxLayout:
             # Main screen area (below title bar)
             size_hint: 1, 0.85
@@ -81,24 +84,24 @@
             ZenIcon:
                 # Stop
                 source: "images/stop.png"
-                on_release: root.ctrl.stop()
+                on_press: root.ctrl.stop()
             Widget:
             ZenIcon:
                 # Previous track button
                 id: previous
                 source: 'images/previous.png'
-                on_release: root.ctrl.play_previous()
+                on_press: root.ctrl.play_previous()
             Widget:
             ZenIcon:
                 # Play button
                 source: 'images/play.png' if root.ctrl.state != "Playing" else "images/pause.png"
-                on_release: root.ctrl.play_pause()
+                on_press: root.ctrl.play_pause()
             Widget:
             ZenIcon:
                 id: next
                 source: 'images/next.png'
-                on_release: root.ctrl.play_next()
+                on_press: root.ctrl.play_next()
             Widget:
             ZenIcon:
                 source: 'images/random.png'
-                on_release: root.ctrl.zenplayer.show_screen("Albums", randomise=True)
+                on_press: root.ctrl.zenplayer.show_screen("Albums", randomise=True)

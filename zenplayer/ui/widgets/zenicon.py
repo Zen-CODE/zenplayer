@@ -17,6 +17,10 @@ class ZenIcon(ButtonBehavior, Image):
     duration = 0.2
     """ The duration of the press animation """
 
+    selected = BooleanProperty(False)
+    """ Indicated when the button is selected on not """
+
+
     def __init__(self, **kwargs):
         KVLoader.load("ui/widgets/zenicon.kv")
         super().__init__(**kwargs)
@@ -24,7 +28,7 @@ class ZenIcon(ButtonBehavior, Image):
 
     def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
-        if self.state == "down":
+        if self.state == "down" or self.selected:
             return [1, 1, 0, 0.5]
         else:
             return [1, 1, 0, 0.0]
@@ -39,6 +43,10 @@ class ZenIcon(ButtonBehavior, Image):
 
     def on_state(self, widget, state):
         """ Animate the change of colour when  the image is pressed """
+        self.draw_widget()
+
+    def on_selected(self, widget, value):
+        """ Animate the change of colour when  the icon is selected """
         self.draw_widget()
 
 
@@ -57,9 +65,6 @@ class ZenSelectableIcon(ZenIcon):
 
     _groups = {}
     """ A dictionary of group names used to maintain selection data """
-
-    selected = BooleanProperty(False)
-    """ Indicated when the button is selected on not """
 
     def on_group(self, widget, group):
         """ Allocate the obejct to a group for maintaining single selection """
