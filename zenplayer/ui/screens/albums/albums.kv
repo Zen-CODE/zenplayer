@@ -39,5 +39,8 @@
             text: "Play now (replace)"
             on_release: root.dismiss(); root.handler.add_to_playlist(mode="replace")
         ZenButton:
+            text: "View Tracks"
+            on_release: root.dismiss(); root.handler.view_tracks()
+        ZenButton:
             text: "Cancel"
             on_press: root.dismiss()

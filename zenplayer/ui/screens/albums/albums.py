@@ -68,6 +68,10 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
             title=f"Track: {self.artist} - {self.album}",
             handler=self).open()
 
+    def view_tracks(self):
+        """ Show a detailed track listing for this album """
+        self.ctrl.zenplayer.show_screen("Tracks", artist=self.artist,
+                                        album=self.album)
 
 class AlbumPopup(ZenPopup):
     """
