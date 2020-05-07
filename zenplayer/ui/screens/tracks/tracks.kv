@@ -25,5 +25,11 @@
 
                 ZenRecycleView:
                     id: rv
-                    size_hint_y: 0.8
+                    size_hint_y: 0.7
                     handler: root
+                BoxLayout:
+                    size_hint_y: 0.1
+                    padding: 10, 10, 10, 10
+                    ZenButton:
+                        text: "Back"
+                        on_press: root.ctrl.zenplayer.show_screen("Albums", artist=root.artist)
