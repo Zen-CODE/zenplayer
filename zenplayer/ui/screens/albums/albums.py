@@ -34,7 +34,6 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
                 self.album = choice(albums)
 
             self.ids.rv.find_item(self.album)
-            self.ctrl.zenplayer.set_header(f"Albums: {artist} - {self.album}")
         Clock.schedule_once(update)
 
     def item_selected(self, label, selected):

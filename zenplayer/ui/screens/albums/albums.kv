@@ -2,10 +2,23 @@
 #: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
 
 <AlbumsScreen>:
-    header: f"Albums for {root.artist}"
-    ZenRecycleView:
-        id: rv
-        handler: root
+    header: "Albums"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            canvas:
+                Color:
+                    rgba: 0, 0, 1, 0.5
+                Line:
+                    width: 2
+                    points: self.x, self.y + 5, self.right, self.y + 5
+            text: "Artist: " + root.artist
+            size_hint_y: 0.1
+
+        ZenRecycleView:
+            id: rv
+            size_hint_y: 0.9
+            handler: root
 
 <AlbumPopup>:
 
