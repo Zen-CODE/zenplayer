@@ -6,7 +6,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from ui.kvloader import KVLoader
 from ui.screens.screens import ScreenFactory
-# """ A reference to the active ScreenManager class. """
 
 
 class ZenPlayer(FloatLayout):
