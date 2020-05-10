@@ -34,6 +34,12 @@ class ZenPlaylist(ZenAPIBase):
                     track:
                         description: The name of the track (audio file name)
                         type: string
+                    track_name:
+                        description: The name of the track
+                        type: string
+                    track_number:
+                        description: The number of the track on the album
+                        type: integer
 
         """
         data = self.ctrl.playlist.get_current_info()
