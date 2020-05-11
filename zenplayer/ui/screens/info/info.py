@@ -54,7 +54,7 @@ class InfoScreen(ZenScreen):
     def _show_info(self, filename):
         """ Populate the track info """
         data = self.ctrl.playlist.get_info(filename=filename)
-        for key in data.keys():
+        for key in ["artist", "album", "track_name", "track_number"]:
             self.ids[key].text = data[key]
 
     def _show_meta(self, filename):
