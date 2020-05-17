@@ -102,10 +102,10 @@ class Controller(EventDispatcher):
         fired when the media player encounters the end of track.
         """
         if value == "stop" and self.state not in ["Stopped", "Paused"]:
+            self.stop()
             if self.advance:
                 self.play_next()
-            else:
-                self.stop()
+
 
     def on_state(self, _widget, value):
         """ React to the change of state event """
