@@ -20,7 +20,7 @@ class Metadata:
             return "unknown"
         else:
             val = int(bitrate_mode)
-            return ["unknowm", "cbr", "vbr", "abr"][val]
+            return ["Unknown", "CBR", "VBR", "ABR"][val]
 
     @staticmethod
     def get(file_name):
