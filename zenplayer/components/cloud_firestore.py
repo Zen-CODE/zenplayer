@@ -26,6 +26,16 @@ class NowPlaying:
     _client = None
     """ The singleton firestore client instance. """
 
+    _now_playing = []
+    """ A list of NowPlaying objects to execute in sequence.  We need to ensure
+    they are processed in order as the 'start' and 'stopped' events happen
+    very close together. If run in independent threads, they can write up in a
+    non-detereministic order.
+    """
+
+    _thread = None
+    """ Reference to the thread object currently processing the queue. """
+
     def __init__(self, **kwargs):
         if self._client is None:
             NowPlaying._client = self._get_client()
@@ -75,13 +85,27 @@ class NowPlaying:
         in a background thread to try and avoid locking when we get stale
         transport errors.
         """
-        Logger.info("NowPlaying: Writing state to cloud firestore...")
+        Logger.info("NowPlaying: Adding entry to the write queue.")
+        self._now_playing.append(NowPlaying(
+            artist=ctrl.artist, album=ctrl.album, track=ctrl.track,
+            state=ctrl.state, machine=gethostname(),
+            datetime=datetime.now() - timedelta(hours=2)))
 
-        def save_to_fs():
-            """ Save to firestore """
-            NowPlaying(artist=ctrl.artist, album=ctrl.album,
-                       track=ctrl.track, state=ctrl.state,
-                       machine=gethostname(),
-                       datetime=datetime.now() - timedelta(hours=2)).save()
+        if self._thread is None:
+            Logger.info("NowPlaying: Creating thread to process queue.")
+            NowPlaying._thread = Thread(target=self.proceess_queue)
+            NowPlaying._thread.start()
 
-        Thread(target=save_to_fs).start()
+    def proceess_queue(self):
+        """ Process the 'now_playing' queue and write the entries to firebase.
+        """
+        while self._now_playing:
+            Logger.info("NowPlaying: Precessing queue...")
+            for item in self._now_playing[:]:
+                Logger.info(
+                    f"NowPlaying: Precessing item {item.props['track']}")
+                item.save()
+                self._now_playing.remove(item)
+
+        Logger.info("NowPlaying: Queue precessing done. Closing thread...")
+        NowPlaying._thread = None
