@@ -106,7 +106,6 @@ class Controller(EventDispatcher):
             if self.advance:
                 self.play_next()
 
-
     def on_state(self, _widget, value):
         """ React to the change of state event """
         Logger.debug(f"controller.py: Entering on_state. value={value}")
