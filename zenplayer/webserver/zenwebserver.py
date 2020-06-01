@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from webserver.zenswagger import ZenSwagger
 from components.paths import rel_to_base
 from webserver.loader import Loader
+import logging
 
 
 class ZenWebServer:
@@ -22,6 +23,13 @@ class ZenWebServer:
         [self.add_routes(class_datum) for class_datum in self.class_data]
         app.add_url_rule("/", "/", self.index, methods=['GET'])
         ZenSwagger.init_swagger(app, self.class_data)
+        self.disable_logs()
+
+    def disable_logs(self):
+        """ By default, werkzeug logs every call. Stop that."""
+
+        log = logging.getLogger('werkzeug')
+        log.setLevel(logging.ERROR)
 
     def add_dashboard(self):
         """ Add the flash dashboard monitoring tool. Note that we move the
