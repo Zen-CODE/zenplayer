@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime, timedelta
-from threading import Thread
+from threading import Thread, Lock
 from socket import gethostname
 from components.paths import rel_to_base
 from kivy.logger import Logger
@@ -35,6 +35,9 @@ class NowPlaying:
 
     _thread = None
     """ Reference to the thread object currently processing the queue. """
+
+    _lock = Lock()
+    """ Reference to the threading Lock object """
 
     def __init__(self, **kwargs):
         if self._client is None:
@@ -86,10 +89,11 @@ class NowPlaying:
         transport errors.
         """
         Logger.info("NowPlaying: Adding entry to the write queue.")
-        self._now_playing.append(NowPlaying(
-            artist=ctrl.artist, album=ctrl.album, track=ctrl.track,
-            state=ctrl.state, machine=gethostname(),
-            datetime=datetime.now() - timedelta(hours=2)))
+        with self._lock:
+            self._now_playing.append(NowPlaying(
+                artist=ctrl.artist, album=ctrl.album, track=ctrl.track,
+                state=ctrl.state, machine=gethostname(),
+                datetime=datetime.now() - timedelta(hours=2)))
 
         if self._thread is None:
             Logger.info("NowPlaying: Creating thread to process queue.")
@@ -101,11 +105,11 @@ class NowPlaying:
         """
         while self._now_playing:
             Logger.info("NowPlaying: Precessing queue...")
-            for item in self._now_playing[:]:
-                Logger.info(
-                    f"NowPlaying: Precessing item {item.props['track']}")
-                item.save()
-                self._now_playing.remove(item)
+            with self._lock:
+                item = self._now_playing.pop(0)
+            Logger.info(
+                f"NowPlaying: Precessing item {item.props['track']}")
+            item.save()
 
         Logger.info("NowPlaying: Queue precessing done. Closing thread...")
         NowPlaying._thread = None
