@@ -103,13 +103,9 @@ class NowPlaying:
     def proceess_queue(self):
         """ Process the 'now_playing' queue and write the entries to firebase.
         """
-        while self._now_playing:
-            Logger.info("NowPlaying: Precessing queue...")
-            with self._lock:
-                item = self._now_playing.pop(0)
-            Logger.info(
-                f"NowPlaying: Precessing item {item.props['track']}")
-            item.save()
-
-        Logger.info("NowPlaying: Queue precessing done. Closing thread...")
-        NowPlaying._thread = None
+        Logger.info("NowPlaying: Precessing queue...")
+        with self._lock:
+            [item.save() for item in self._now_playing]
+            NowPlaying._now_playing = []
+            Logger.info("NowPlaying: Queue precessing done. Closing thread...")
+            NowPlaying._thread = None

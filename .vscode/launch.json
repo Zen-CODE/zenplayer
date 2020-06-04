@@ -20,10 +20,10 @@
             "justMyCode": false
         },
         {
-            "name": "Python: Launch AudioPlayer",
+            "name": "Python: Launch FireStore",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/zenplayer/components/audio_vlc.py",
+            "program": "${workspaceFolder}/zenplayer/components/cloud_firestore.py",
             "console": "integratedTerminal",
             "env"
         }
