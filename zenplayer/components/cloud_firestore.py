@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime, timedelta
-from threading import Thread, Lock
+from threading import Thread, Lock, active_count
 from socket import gethostname
 from components.paths import rel_to_base
 from kivy.logger import Logger
@@ -103,7 +103,8 @@ class NowPlaying:
     def _process_queue(self):
         """ Process the 'now_playing' queue and write the entries to firebase.
         """
-        Logger.info("NowPlaying: Precessing queue...")
+        Logger.info(
+            f"NowPlaying: Processing, {active_count()} active threads")
         with self._lock:
             for item in self._now_playing[:]:
                 try:
