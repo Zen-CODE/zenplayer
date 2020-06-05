@@ -33,9 +33,6 @@ class NowPlaying:
     non-detereministic order.
     """
 
-    _thread = None
-    """ Reference to the thread object currently processing the queue. """
-
     _lock = Lock()
     """ Reference to the threading Lock object """
 
@@ -88,6 +85,12 @@ class NowPlaying:
         in a background thread to try and avoid locking when we get stale
         transport errors.
         """
+        Thread(target=lambda: self._write_to_db(ctrl)).start()
+
+    def _write_to_db(self, ctrl):
+        """
+        Write to the firestore database
+        """
         Logger.info("NowPlaying: Adding entry to the write queue.")
         with self._lock:
             self._now_playing.append(NowPlaying(
@@ -95,17 +98,18 @@ class NowPlaying:
                 state=ctrl.state, machine=gethostname(),
                 datetime=datetime.now() - timedelta(hours=2)))
 
-        if self._thread is None:
-            Logger.info("NowPlaying: Creating thread to process queue.")
-            NowPlaying._thread = Thread(target=self.proceess_queue)
-            NowPlaying._thread.start()
+        self._process_queue()
 
-    def proceess_queue(self):
+    def _process_queue(self):
         """ Process the 'now_playing' queue and write the entries to firebase.
         """
         Logger.info("NowPlaying: Precessing queue...")
         with self._lock:
-            [item.save() for item in self._now_playing]
-            NowPlaying._now_playing = []
+            for item in self._now_playing[:]:
+                try:
+                    item.save()
+                    self._now_playing.remove(item)
+                except Exception as e:
+                    Logger.error(f"cloud_firestore.py: Unable to save - {e}")
+
             Logger.info("NowPlaying: Queue precessing done. Closing thread...")
-            NowPlaying._thread = None
