@@ -1,5 +1,5 @@
 """
-This module houses teh API interface for the Zenplaylist
+This module houses the API interface for the ZenPlaylist object.
 """
 from webserver.api.zenapibase import ZenAPIBase
 from flask import request
