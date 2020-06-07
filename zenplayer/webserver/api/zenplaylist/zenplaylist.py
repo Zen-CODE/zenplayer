@@ -47,13 +47,13 @@ class ZenPlaylist(ZenAPIBase):
 
     def get_playlist(self):
         """
-        Return the current playlist as a list of full paths to the audio file.
+        Return the current playlist as a sequenctial list of items
         ---
         tags:
             - ZenPlaylist
         responses:
             200:
-                description: Return information on the currently active  track.
+                description: Return the tracks in the current playlist.
                 schema:
                     $ref: '#/definitions/Playlist'
         definitions:
@@ -73,6 +73,32 @@ class ZenPlaylist(ZenAPIBase):
                         type: string
         """
         return self.resp_from_data(self.ctrl.playlist.queue)
+
+    def get_playlist_meta(self):
+        """
+        Return the current playlist in a presentable, human-friendly form.
+
+        This presenting is in terms of meta data, and is intended for use in
+        the UI presentation.
+        ---
+        tags:
+            - ZenPlaylist
+        responses:
+            200:
+                description: Return the playlist in terms of album and tracks.
+                schema:
+                    type: array
+                    items:
+                        type: string
+        """
+        album, artist, ret, pl = "", "", [], self.ctrl.playlist
+        for item in pl.queue:
+            info = pl.get_info(item["filename"])
+            if album != info["album"] or artist != info["artist"]:
+                album, artist = info["album"], info["artist"]
+                ret.append(f"<b>{artist}: {album}</b>")
+            ret.append(f'{info["track_number"]} - {info["track_name"]}')
+        return self.resp_from_data(ret)
 
     def add_files(self):
         """
