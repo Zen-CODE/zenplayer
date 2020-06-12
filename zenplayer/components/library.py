@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import join, isdir, basename, expanduser
+from os.path import join, isdir, basename, expanduser, exists
 from random import sample
 from glob import glob
 from random import choice
@@ -15,17 +15,18 @@ class Library:
         # self.path = expanduser("~/Music")
         # Create a symbolic link to this folder if it does not exist
         self.path = expanduser("~/Zen/Music")
-        dirs = [name for name in listdir(self.path) if
-                isdir(join(self.path, name))]
         artists = {}
         albums = []
-        for artist in dirs:
-            artists[artist] = []
-            artist_path = join(self.path, artist)
-            for album in listdir(artist_path):
-                if isdir(join(artist_path, album)):
-                    artists[artist].append(album)
-                    albums.append((artist, album))
+        if exists(self.path):
+            dirs = [name for name in listdir(self.path) if
+                    isdir(join(self.path, name))]
+            for artist in dirs:
+                artists[artist] = []
+                artist_path = join(self.path, artist)
+                for album in listdir(artist_path):
+                    if isdir(join(artist_path, album)):
+                        artists[artist].append(album)
+                        albums.append((artist, album))
 
         self._artists = artists
         """ A dictionary of lists, where the key is the artist and the value
