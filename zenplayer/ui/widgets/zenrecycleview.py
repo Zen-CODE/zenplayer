@@ -116,6 +116,9 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         * item_touched(item)
     """
 
+    prev_selected = None
+    """ Track the previously selected item (for deselection)"""
+
     def _item_draw(self):
         """ Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
@@ -127,7 +130,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def on_selected(self, _widget, _value):
         """ Respond to the change of selection """
+        if SelectableLabel.prev_selected is not None:
+            SelectableLabel.prev_selected.selected = False
         self._item_draw()
+        SelectableLabel.prev_selected = self
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -136,10 +142,12 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
+
         self.selected = is_selected
         handler = self.handler = rv.handler
         if hasattr(handler, "item_selected"):
             handler.item_selected(self, is_selected)
+
 
     def on_touch_down(self, touch):
         """ Add selection on touch down """
