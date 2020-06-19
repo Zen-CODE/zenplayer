@@ -94,36 +94,12 @@ class ZenRecycleView(FloatLayout):
         elif keycode[0] == 27:  # escape
             self.search_text = ""
         elif keycode[1] == "up":
-            self.ids.box_layout.move_previous()
+            self.ids.box_layout.move_selection(False)
         elif keycode[1] == "down":
-            self.ids.box_layout.move_next()
+            self.ids.box_layout.move_selection()
         elif keycode[1] == "enter":
             # Do click
             pass
-
-
-
-
-        # index = getattr(self.ids.rv, "selected_index", None)
-        # if index is None:
-        #     print("Nothing selected")
-        #     return
-
-        # rv = self.ids.rv
-        # view_widgets = list(rv.view_adapter.views)
-        # pos_in_view = view_widgets.index(index)
-        # if index > len(self.data) - len(view_widgets):  # if in last page of data go to bottom
-        #     rv.scroll_y = 0
-        # elif pos_in_view > len(view_widgets) - 3:  # if near the bottom of the list, scroll
-        #     rv.scroll_y -= len(view_widgets) / len(rv.data)
-        # index = min(index + 1, len(rv.data) - 1)  # increment, but not past the end
-        # view_widgets[index].selected = True
-        # # self.highlight()
-
-    # def move_previous(self):
-    #     # TODO
-    #     pass
-
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
@@ -208,15 +184,17 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                 return k
         return None
 
-    def move_next(self):
+    def move_selection(self, down=True):
         """ Move to the next itme in the selection."""
         index = self._get_selected()
         if index is not None:
-            #if index < len(self.children) - 1:
-                # self.children[index + 1].selected = True
-            if index > 0:
-                # Widgets are reversed
-                self.set_selected(self.children[index - 1])
+            if down:
+                if index > 0:
+                    # Widgets are reversed
+                    self.set_selected(self.children[index - 1])
+            else:
+                if index < len(self.children) - 1:
+                    self.set_selected(self.children[index + 1])
 
     def set_selected(self, widget):
         """Select the widget without firing the corresponding selected event."""
