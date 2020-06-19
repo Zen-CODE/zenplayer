@@ -125,10 +125,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def on_selected(self, _widget, _value):
         """ Respond to the change of selection """
-        if self.parent.selected_widget:
+        if self.parent and self.parent.selected_widget:
             self.parent.selected_widget.selected = False
         self._item_draw()
-        if _value:
+        if _value and self.parent:
             self.parent.selected_widget = self
 
     def refresh_view_attrs(self, rv, index, data):
@@ -162,12 +162,11 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
         self.selected_widget = None
 
     def handle_event(self, event, *args):
-        if not self._skip_handler:
-            handler = getattr(self.parent.parent, "handler", None)
-            if handler is not None:
-                meth = getattr(handler, event, None)
-                if meth is not None:
-                    meth(*args)
+        handler = getattr(self.parent.parent, "handler", None)
+        if handler is not None:
+            meth = getattr(handler, event, None)
+            if meth is not None:
+                meth(*args)
 
     def move_selection(self, down=True):
         """ Move to the next itme in the selection."""
