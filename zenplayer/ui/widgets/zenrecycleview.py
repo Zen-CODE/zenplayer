@@ -101,6 +101,7 @@ class ZenRecycleView(FloatLayout):
             # Do click
             pass
 
+
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
     Add selection support to the Label
@@ -141,8 +142,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Respond to the selection of items in the view. """
 
         self.selected = is_selected
-        if is_selected:
-            rv.selected_index = index
         if self.parent:
             self.parent.handle_event("item_selected", self, is_selected)
 
@@ -151,8 +150,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if super().on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos):
-            # if self.handler and hasattr(self.handler, "item_touched"):
-            #     Clock.schedule_once(lambda dt: self.handler.item_touched(self))
             Clock.schedule_once(lambda dt: self.parent.handle_event(
                 "item_touched", self))
             return self.parent.select_with_touch(self.index, touch)
@@ -191,10 +188,14 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
             if down:
                 if index > 0:
                     # Widgets are reversed
-                    self.set_selected(self.children[index - 1])
+                    self.parent.parent.find_item(self.children[index - 1].text)
+                    # self.set_selected(self.children[index - 1])
+                    # self.parent.parent.scroll_to(self.children[index - 1])
             else:
                 if index < len(self.children) - 1:
+                    self.parent.parent.find_item(self.children[index + 1].text)
                     self.set_selected(self.children[index + 1])
+                    # self.parent.parent.scroll_to(self.children[index + 1])
 
     def set_selected(self, widget):
         """Select the widget without firing the corresponding selected event."""
