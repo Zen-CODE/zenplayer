@@ -114,9 +114,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     selected = BooleanProperty(False)
     """ Indicates whether this item has been selected or not. """
 
-    prev_selected = None
-    """ Track the previously selected item (for deselection)"""
-
     def _item_draw(self):
         """ Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
@@ -128,10 +125,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def on_selected(self, _widget, _value):
         """ Respond to the change of selection """
-        if SelectableLabel.prev_selected is not None:
-            SelectableLabel.prev_selected.selected = False
+        if self.parent.selected_widget:
+            self.parent.selected_widget.selected = False
         self._item_draw()
-        SelectableLabel.prev_selected = self
+        if _value:
+            self.parent.selected_widget = self
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -161,7 +159,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._skip_handler = False
+        self.selected_widget = None
 
     def handle_event(self, event, *args):
         if not self._skip_handler:
@@ -171,34 +169,14 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                 if meth is not None:
                     meth(*args)
 
-    def _get_selected(self):
-        """
-        Return the selected labels index in the children. If nothing
-        is selected, return None.
-        """
-        for k, widget in enumerate(self.children):
-            if widget.selected:
-                return k
-        return None
-
     def move_selection(self, down=True):
         """ Move to the next itme in the selection."""
-        index = self._get_selected()
-        if index is not None:
-            if down:
-                if index > 0:
-                    # Widgets are reversed
-                    self.parent.parent.find_item(self.children[index - 1].text)
-                    # self.set_selected(self.children[index - 1])
-                    # self.parent.parent.scroll_to(self.children[index - 1])
+        if self.selected_widget:
+            rv = self.parent
+            if down and self.selected_widget.index < len(rv.data):
+                text = rv.data[self.selected_widget.index + 1]["text"]
+            elif not down and self.selected_widget.index > 0:
+                text = rv.data[self.selected_widget.index - 1]["text"]
             else:
-                if index < len(self.children) - 1:
-                    self.parent.parent.find_item(self.children[index + 1].text)
-                    self.set_selected(self.children[index + 1])
-                    # self.parent.parent.scroll_to(self.children[index + 1])
-
-    def set_selected(self, widget):
-        """Select the widget without firing the corresponding selected event."""
-        self._skip_handler = True
-        self.select_with_touch(widget.index, None)
-        self._skip_handler = True
+                return
+            self.parent.parent.find_item(text)
