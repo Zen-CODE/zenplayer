@@ -8,10 +8,10 @@
         id: rv
         viewclass: 'SelectableLabel'
         data: root.data
-        handler: root.handler
         pos_hint: {"x": 0, "y": 0}
         size_hint: 1, 1
         SelectableRecycleBoxLayout:
+            id: box_layout
             default_size: None, 0.06 * root.height
             default_size_hint: 1, None
             size_hint_y: None

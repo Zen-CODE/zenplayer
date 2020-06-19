@@ -1,3 +1,5 @@
+![Lint Code Base](https://github.com/Zen-CODE/zenplayer/workflows/Lint%20Code%20Base/badge.svg)
+
 # ZenPlayer
 
 
@@ -14,6 +16,6 @@ https://openclipart.org/detail/116929/glossy-media-player-normal-active-focus-bu
 2. Thanks to the Kivy developers.
 https://github.com/kivy/kivy/graphs/contributors
 
-Peace  
-ZenCODE  
+Peace
+ZenCODE
 www.github.com/Zen-CODE
