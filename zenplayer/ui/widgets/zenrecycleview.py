@@ -101,6 +101,9 @@ class ZenRecycleView(FloatLayout):
             box = self.ids.box_layout
             if box.selected_widget:
                 box.handle_event("item_selected", box.selected_widget, True)
+        elif keycode[1] == "backspace":
+            if self.handler.name == "Albums":
+                self.handler.ctrl.zenplayer.show_screen("Artists")
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
@@ -119,18 +122,16 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
         """
-        if self.selected:
-            self.back_color = [.5, .5, 1.0, .3]
-        else:
-            self.back_color = [0, 0, 0, 1]
+        self.back_color = [.5, .5, 1.0, .3] if self.selected else [0, 0, 0, 1]
 
     def on_selected(self, _widget, _value):
         """ Respond to the change of selection """
-        if self.parent and self.parent.selected_widget:
+        box = self.parent
+        if box and box.selected_widget:
             self.parent.selected_widget.selected = False
         self._item_draw()
-        if _value and self.parent:
-            self.parent.selected_widget = self
+        if _value and box:
+            box.selected_widget = self
 
     def refresh_view_attrs(self, rv, index, data):
         """ Catch and handle the view changes """
@@ -139,7 +140,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def apply_selection(self, rv, index, is_selected):
         """ Respond to the selection of items in the view. """
-
         self.selected = is_selected
         if self.parent:
             self.parent.handle_event("item_selected", self, is_selected)
@@ -163,6 +163,13 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
         self.selected_widget = None
 
     def handle_event(self, event, *args):
+        """ Delegate the *event* to the handler if required.
+
+        Args:
+            event (str): One of "item_touched" or "item_selected".
+        Return:
+            None
+        """
         handler = getattr(self.parent.parent, "handler", None)
         if handler is not None:
             meth = getattr(handler, event, None)
@@ -173,7 +180,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
         """ Move to the next itme in the selection."""
         if self.selected_widget:
             rv = self.parent
-            if down and self.selected_widget.index < len(rv.data):
+            if down and self.selected_widget.index < len(rv.data) - 1:
                 text = rv.data[self.selected_widget.index + 1]["text"]
             elif not down and self.selected_widget.index > 0:
                 text = rv.data[self.selected_widget.index - 1]["text"]
