@@ -1,3 +1,5 @@
+![Lint Code Base](https://github.com/Zen-CODE/zenplayer/workflows/Lint%20Code%20Base/badge.svg)
+
 # ZenPlayer
 
 
