@@ -98,8 +98,9 @@ class ZenRecycleView(FloatLayout):
         elif keycode[1] == "down":
             self.ids.box_layout.move_selection()
         elif keycode[1] == "enter":
-            # Do click
-            pass
+            box = self.ids.box_layout
+            if box.selected_widget:
+                box.handle_event("item_selected", box.selected_widget, True)
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
