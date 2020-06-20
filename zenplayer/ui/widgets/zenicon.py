@@ -12,14 +12,13 @@ class ZenIcon(ButtonBehavior, Image):
     """
     An image button that provides animation for touch and click events.
     """
-    back_color = ListProperty([1.0, 1.0, 0.0, 0.0])
+    back_color = ListProperty([1.0, 0.0, 0.0, 0.0])
 
     duration = 0.2
     """ The duration of the press animation """
 
     selected = BooleanProperty(False)
     """ Indicated when the button is selected on not """
-
 
     def __init__(self, **kwargs):
         KVLoader.load("ui/widgets/zenicon.kv")
@@ -29,9 +28,9 @@ class ZenIcon(ButtonBehavior, Image):
     def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
         if self.state == "down" or self.selected:
-            return [1, 1, 0, 0.5]
+            return [0, 1, 0, 0.7]
         else:
-            return [1, 1, 0, 0.0]
+            return [0, 1, 0, 0.0]
 
     def draw_widget(self):
         """ Set the back_color of the widget preventing clashing animations """
@@ -83,7 +82,7 @@ class ZenSelectableIcon(ZenIcon):
     def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
         if self.selected:
-            return [0, 1, 0, 0.35]
+            return [1, 1, 0, 0.35]
         else:
             return super()._get_back_color()
 

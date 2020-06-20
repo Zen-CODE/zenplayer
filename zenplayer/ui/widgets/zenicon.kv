@@ -5,8 +5,13 @@
     canvas.before:
         Color:
             rgba: root.back_color
-        RoundedRectangle:
+        Rectangle:
             pos: self.x - gap, self.y - gap
-            size: self.width + 2 * gap, self.height + 2 * gap
+            size: self.width + 2 * gap, self.height + 1.25 * gap
+        Color:
+            rgba: [*root.back_color[:3], root.back_color[3] * 2]
+        Line:
+            rectangle: self.x, self.y, self.width, self.height
+
     size_hint: None, 1
     width: self.height
