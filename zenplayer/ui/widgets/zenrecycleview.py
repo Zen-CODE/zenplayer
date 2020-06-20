@@ -105,7 +105,7 @@ class ZenRecycleView(FloatLayout):
             if self.handler.name == "Albums":
                 self.handler.ctrl.zenplayer.show_screen("Artists")
 
-                
+
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
     Add selection support to the Label
@@ -178,12 +178,15 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 
     def move_selection(self, down=True):
         """ Move to the next itme in the selection."""
+        rv = self.parent
         if self.selected_widget:
-            rv = self.parent
             if down and self.selected_widget.index < len(rv.data) - 1:
                 text = rv.data[self.selected_widget.index + 1]["text"]
             elif not down and self.selected_widget.index > 0:
                 text = rv.data[self.selected_widget.index - 1]["text"]
             else:
                 return
-            self.parent.parent.find_item(text)
+        else:
+            # If nothing is selected, just select the first/last
+            text = rv.data[0 if down else len(rv.data) -1]["text"]
+        rv.parent.find_item(text)
