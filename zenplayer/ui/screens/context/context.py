@@ -4,6 +4,7 @@ This module houses the Zen Music Library browser based on the recycleview
 from ui.screens.zenscreen import ZenScreen
 from kivy.properties import StringProperty, ListProperty
 from ui.widgets.zenkeydown import ZenKeyDown
+from kivy.clock import Clock
 
 
 class ContextScreen(ZenKeyDown, ZenScreen):
@@ -24,9 +25,10 @@ class ContextScreen(ZenKeyDown, ZenScreen):
     dismissed.
     """
 
-    def __init__(self, **kwargs):
-        super(ContextScreen, self).__init__(**kwargs)
-        self.ids.rv.data = self.actions
+    def on_actions(self, widget, value):
+        def set_value(dt):
+            self.ids.rv.data = value
+        Clock.schedule_once(set_value)
 
     def item_touched(self, item):
         """
