@@ -39,7 +39,7 @@ class TracksScreen(ZenScreen):
                                                       self.album)]
 
     def item_touched(self, item):
-        """ Show the popup for selecting the album """
+        """ Show the context for selecting the album """
         self.track = item.text
         self.ctrl.zenplayer.show_screen(
             "Context", title=f"Track: {self.track}",

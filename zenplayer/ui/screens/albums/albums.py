@@ -62,7 +62,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
             self.randomise = False
 
     def item_touched(self, item):
-        """ Show the popup for selecting the album """
+        """ Show the content screen for selecting the album """
         self.ctrl.zenplayer.show_screen(
             "Context", title=f"Album: {self.artist} - {self.album}",
             parent_screen="Albums",

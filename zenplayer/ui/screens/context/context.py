@@ -21,7 +21,7 @@ class ContextScreen(ZenKeyDown, ZenScreen):
     is selected."""
 
     parent_screen = StringProperty()
-    """ The name of the parent screen to show after the popup has been
+    """ The name of the parent screen to show after the context has been
     dismissed.
     """
 
