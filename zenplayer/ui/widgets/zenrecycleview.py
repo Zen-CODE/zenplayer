@@ -105,7 +105,10 @@ class ZenRecycleView(FloatLayout):
             if self.handler.name == "Albums":
                 self.handler.ctrl.zenplayer.show_screen("Artists")
 
-class SelectableLabel(RecycleDataViewBehavior, Label):
+
+
+class SelectableLabel(RecycleDataViewBehavior,
+                                                               Label):
     """
     Add selection support to the Label
     """
