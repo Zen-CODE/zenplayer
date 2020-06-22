@@ -19,6 +19,19 @@ class ContextScreen(ZenKeyDown, ZenScreen):
     is what is displayed and the *action* the function called if that text
     is selected."""
 
+    parent_screen = StringProperty()
+    """ The name of the parent screen to show after the popup has been
+    dismissed.
+    """
+
     def __init__(self, **kwargs):
         super(ContextScreen, self).__init__(**kwargs)
         self.ids.rv.data = self.actions
+
+    def item_touched(self, item):
+        """
+        The item has been selected, so perform the corresponding action and show
+        the previous screen.
+        """
+        self.actions[item.index]["action"]()
+        self.ctrl.zenplayer.show_screen(self.parent_screen)

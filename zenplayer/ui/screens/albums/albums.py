@@ -70,6 +70,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
 
         self.ctrl.zenplayer.show_screen(
             "Context", title=f"Album: {self.artist} - {self.album}",
+            parent_screen="Albums",
             actions=[
                 {"text": "Add to playlist",
                  "action": self.add_to_playlist},
@@ -82,8 +83,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
                 {"text": "View Tracks",
                  "action": lambda dt: self.view_tracks()},
                 {"text": "Cancel",
-                 "action": lambda: self.ctrl.zenplayer.show_screen(
-                     "Albums", artist=self.artist, album=self.album)}
+                 "action": lambda: None}
             ])
 
     def view_tracks(self):
