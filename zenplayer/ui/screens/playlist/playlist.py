@@ -2,7 +2,6 @@
 This class houses the Playlist class for ZenPlayer
 """
 from kivy.properties import NumericProperty
-from ui.widgets.zenpopup import ZenPopup
 from ui.screens.zenscreen import ZenScreen
 from ui.widgets.zenkeydown import ZenKeyDown
 
@@ -38,11 +37,22 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     def item_touched(self, item):
         """ Show the popup for selecting the index in the playlist """
         data = self.ctrl.playlist.get_info(index=item.index)
-        PlaylistPopup(
-            title="Track: {artist} - {album}: {track_number} - {track_name}"
-                  .format(**data),
-            handler=self,
-            index=item.index).open()
+        self.ctrl.zenplayer.show_screen(
+            "Context", title="Track: {artist} - {album}: {track_number} - "
+                             "{track_name}".format(**data),
+            parent_screen="Playlist",
+            actions=[
+                {"text": "Play",
+                 "action": lambda: self.button_play(item.index)},
+                {"text": "Info",
+                 "show_parent": False,
+                 "action": lambda: self.button_info(item.index)},
+                {"text": "Remove",
+                 "action": lambda: self.button_remove(item.index)},
+                {"text": "Remove all",
+                 "action": lambda: self.button_clear_files()},
+                {"text": "Cancel",
+                 "action": lambda: None}])
 
     def button_play(self, index):
         """ Play the track selected track. """
@@ -56,17 +66,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
     def button_remove(self, index):
         """ Play the track selected track. """
         self.ctrl.playlist.remove_index(index)
-        self.on_pre_enter()
 
     def button_clear_files(self):
         """ Remove all files from the playlist """
         self.ctrl.playlist.clear_files()
-        self.on_enter()
-
-
-class PlaylistPopup(ZenPopup):
-    """
-    The Popup show when the playlist item is tapped and held.
-    """
-    index = NumericProperty()
-    """ The index of the selected track in the Playlist.queue"""
