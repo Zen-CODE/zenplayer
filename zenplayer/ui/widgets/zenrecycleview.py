@@ -107,8 +107,7 @@ class ZenRecycleView(FloatLayout):
 
 
 
-class SelectableLabel(RecycleDataViewBehavior,
-                                                               Label):
+class SelectableLabel(RecycleDataViewBehavior,                                                              LabelZZxdds):
     """
     Add selection support to the Label
     """
