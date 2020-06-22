@@ -17,10 +17,6 @@ class TracksScreen(ZenScreen):
 
     track = ""
 
-    def on_leave(self):
-        super().on_leave()
-        self.artist = self.album = ""  # Force reload of data
-
     def on_album(self, _widget, value):
         if value and self.artist:
             Clock.schedule_once(lambda dt: self.load())
@@ -68,4 +64,3 @@ class TracksScreen(ZenScreen):
         self.ctrl.playlist.add_files(join(album_path, self.track), mode=mode)
         if mode in ["replace", "insert"]:
             self.ctrl.play_index(0)
-
