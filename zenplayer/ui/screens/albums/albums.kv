@@ -19,28 +19,3 @@
             id: rv
             size_hint_y: 0.9
             handler: root
-
-<AlbumPopup>:
-
-    BoxLayout:
-        orientation: "vertical"
-        padding: 10, 10, 10, 10
-        spacing: 10
-        ZenButton:
-            text: "Add to playlist"
-            on_release: root.dismiss(); root.handler.add_to_playlist()
-        ZenButton:
-            on_release: root.dismiss(); root.handler.add_to_playlist(mode="next")
-            text: "Play next"
-        ZenButton:
-            text: "Play now (insert)"
-            on_release: root.dismiss(); root.handler.add_to_playlist(mode="insert")
-        ZenButton:
-            text: "Play now (replace)"
-            on_release: root.dismiss(); root.handler.add_to_playlist(mode="replace")
-        ZenButton:
-            text: "View Tracks"
-            on_release: root.dismiss(); root.handler.view_tracks()
-        ZenButton:
-            text: "Cancel"
-            on_press: root.dismiss()

@@ -33,5 +33,7 @@ class ContextScreen(ZenKeyDown, ZenScreen):
         The item has been selected, so perform the corresponding action and show
         the previous screen.
         """
-        self.actions[item.index]["action"]()
-        self.ctrl.zenplayer.show_screen(self.parent_screen)
+        item = self.actions[item.index]
+        item["action"]()
+        if item.get("show_parent", True):
+            self.ctrl.zenplayer.show_screen(self.parent_screen)
