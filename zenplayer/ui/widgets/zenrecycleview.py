@@ -100,15 +100,10 @@ class ZenRecycleView(FloatLayout):
         elif keycode[1] == "enter":
             box = self.ids.box_layout
             if box.selected_widget:
-                box.handle_event("item_selected", box.selected_widget, True)
+                box.handle_event("item_touched", box.selected_widget)
         elif keycode[1] == "backspace":
             if self.handler.name == "Albums":
                 self.handler.ctrl.zenplayer.show_screen("Artists")
-        elif keycode[0] == 1073741942:  # The properties key
-            box = self.ids.box_layout
-            if box.selected_widget:
-                box.handle_event("item_touched", box.selected_widget)
-
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
