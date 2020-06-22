@@ -19,3 +19,6 @@ class ContextScreen(ZenKeyDown, ZenScreen):
     is what is displayed and the *action* the function called if that text
     is selected."""
 
+    def __init__(self, **kwargs):
+        super(ContextScreen, self).__init__(**kwargs)
+        self.ids.rv.data = self.actions

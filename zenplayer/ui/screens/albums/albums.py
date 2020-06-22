@@ -64,9 +64,27 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
 
     def item_touched(self, item):
         """ Show the popup for selecting the album """
-        AlbumPopup(
-            title=f"Album: {self.artist} - {self.album}",
-            handler=self).open()
+        # AlbumPopup(
+        #     title=f"Album: {self.artist} - {self.album}",
+        #     handler=self).open()
+
+        self.ctrl.zenplayer.show_screen(
+            "Context", title=f"Album: {self.artist} - {self.album}",
+            actions=[
+                {"text": "Add to playlist",
+                 "action": self.add_to_playlist},
+                {"text": "Play next",
+                 "action": lambda: self.add_to_playlist(mode="next")},
+                {"text": "Play now (insert)",
+                 "action": lambda: self.add_to_playlist(mode="insert")},
+                {"text": "Play now (replace)",
+                 "action": lambda: self.add_to_playlist(mode="replace")},
+                {"text": "View Tracks",
+                 "action": lambda dt: self.view_tracks()},
+                {"text": "Cancel",
+                 "action": lambda: self.ctrl.zenplayer.show_screen(
+                     "Albums", artist=self.artist, album=self.album)}
+            ])
 
     def view_tracks(self):
         """ Show a detailed track listing for this album """
