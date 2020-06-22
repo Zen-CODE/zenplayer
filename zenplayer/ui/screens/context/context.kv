@@ -1,8 +1,8 @@
 #:kivy 1.10
 #: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
 
-<AlbumsScreen>:
-    header: "Albums"
+<ContextScreen>:
+    header: "Context"
     BoxLayout:
         orientation: "vertical"
         Label:
@@ -12,7 +12,7 @@
                 Line:
                     width: 2
                     points: self.x, self.y + 5, self.right, self.y + 5
-            text: "Artist: " + root.artist
+            text: root.title
             size_hint_y: 0.1
 
         ZenRecycleView:

@@ -6,7 +6,6 @@ from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from ui.widgets.zenkeydown import ZenKeyDown
-from ui.widgets.zenpopup import ZenPopup
 from random import choice
 
 
@@ -63,18 +62,27 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
             self.randomise = False
 
     def item_touched(self, item):
-        """ Show the popup for selecting the album """
-        AlbumPopup(
-            title=f"Album: {self.artist} - {self.album}",
-            handler=self).open()
+        """ Show the content screen for selecting the album """
+        self.ctrl.zenplayer.show_screen(
+            "Context", title=f"Album: {self.artist} - {self.album}",
+            parent_screen="Albums",
+            actions=[
+                {"text": "Add to playlist",
+                 "action": self.add_to_playlist},
+                {"text": "Play next",
+                 "action": lambda: self.add_to_playlist(mode="next")},
+                {"text": "Play now (insert)",
+                 "action": lambda: self.add_to_playlist(mode="insert")},
+                {"text": "Play now (replace)",
+                 "action": lambda: self.add_to_playlist(mode="replace")},
+                {"text": "View Tracks",
+                 "show_parent": False,
+                 "action": lambda: self.view_tracks()},
+                {"text": "Cancel",
+                 "action": lambda: None}
+            ])
 
     def view_tracks(self):
         """ Show a detailed track listing for this album """
         self.ctrl.zenplayer.show_screen("Tracks", artist=self.artist,
                                         album=self.album)
-
-
-class AlbumPopup(ZenPopup):
-    """
-    The Popup show when the playlist item is tapped and held.
-    """

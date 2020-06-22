@@ -4,7 +4,6 @@ This module houses the screen displaying a tracks listing for an album
 from kivy.properties import StringProperty
 from ui.screens.zenscreen import ZenScreen
 from kivy.clock import Clock
-from ui.screens.albums.albums import AlbumPopup
 from os.path import join
 
 
@@ -17,10 +16,6 @@ class TracksScreen(ZenScreen):
     album = StringProperty()
 
     track = ""
-
-    def on_leave(self):
-        super().on_leave()
-        self.artist = self.album = ""  # Force reload of data
 
     def on_album(self, _widget, value):
         if value and self.artist:
@@ -40,11 +35,23 @@ class TracksScreen(ZenScreen):
                                                       self.album)]
 
     def item_touched(self, item):
-        """ Show the popup for selecting the album """
+        """ Show the context for selecting the album """
         self.track = item.text
-        AlbumPopup(
-            title=f"Track: {item.text}",
-            handler=self).open()
+        self.ctrl.zenplayer.show_screen(
+            "Context", title=f"Track: {self.track}",
+            parent_screen="Tracks",
+            actions=[
+                {"text": "Add to playlist",
+                 "action": self.add_to_playlist},
+                {"text": "Play next",
+                 "action": lambda: self.add_to_playlist(mode="next")},
+                {"text": "Play now (insert)",
+                 "action": lambda: self.add_to_playlist(mode="insert")},
+                {"text": "Play now (replace)",
+                 "action": lambda: self.add_to_playlist(mode="replace")},
+                {"text": "Cancel",
+                 "action": lambda: None}
+            ])
 
     def add_to_playlist(self, mode="add"):
         """
@@ -57,4 +64,3 @@ class TracksScreen(ZenScreen):
         self.ctrl.playlist.add_files(join(album_path, self.track), mode=mode)
         if mode in ["replace", "insert"]:
             self.ctrl.play_index(0)
-

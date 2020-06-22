@@ -7,24 +7,3 @@
     ZenRecycleView:
         id: rv
         handler: root
-
-<PlaylistPopup>:
-    BoxLayout:
-        orientation: "vertical"
-        padding: 10, 10, 10, 10
-        spacing: 10
-        ZenButton:
-            text: "Play"
-            on_press: root.dismiss(); root.handler.button_play(root.index)
-        ZenButton:
-            text: "Info"
-            on_press: root.dismiss(); root.handler.button_info(root.index)
-        ZenButton:
-            text: "Remove"
-            on_press: root.dismiss(); root.handler.button_remove(root.index)
-        ZenButton:
-            text: "Remove all"
-            on_press: root.dismiss(); root.handler.button_clear_files()
-        ZenButton:
-            text: "Cancel"
-            on_press: root.dismiss()

@@ -17,10 +17,9 @@ class ArtistsScreen(ZenKeyDown, ZenScreen):
             self.ids.rv.data = [
                 {"text": artist} for artist in self.ctrl.library.get_artists()]
 
-    def item_selected(self, label, selected):
+    def item_touched(self, label):
         """
-        An label with the given text has been selected from the recycleview.
+        The label has been clicked of enter pressed with it selected.
         """
-        if selected:
-            self.ctrl.zenplayer.show_screen(
-                "Albums", artist=label.text, album="")
+        self.ctrl.zenplayer.show_screen(
+            "Albums", artist=label.text, album="")
