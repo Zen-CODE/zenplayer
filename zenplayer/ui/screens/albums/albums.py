@@ -63,6 +63,7 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
 
     def item_touched(self, item):
         """ Show the content screen for selecting the album """
+        self.album = item.text
         self.ctrl.zenplayer.show_screen(
             "Context", title=f"Album: {self.artist} - {self.album}",
             parent_screen="Albums",
