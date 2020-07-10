@@ -9,12 +9,14 @@ class Library:
     """
     Class for fetching information about our music library. This information
     is contained entirely in the folder names and structures.
+
+    Args:
+        config (dict): A dictionary with config from `zenplayer.json`.
     """
 
-    def __init__(self):
-        # self.path = expanduser("~/Music")
-        # Create a symbolic link to this folder if it does not exist
-        self.path = expanduser("~/Zen/Music")
+    def __init__(self, config):
+
+        self.path = expanduser(config.get("library_folder", "~/Zen/Music"))
         artists = {}
         albums = []
         if exists(self.path):

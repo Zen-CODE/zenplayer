@@ -53,7 +53,7 @@ class Controller(EventDispatcher):
         super().__init__(**kwargs)
         self.zenplayer = ZenPlayer(ctrl=self)
         self.playlist = Playlist(self.store)
-        self.library = Library()
+        self.library = Library(config)
         self.advance = True
 
         if environ.get("KIVY_AUDIO", "") == "vlcplayer":
