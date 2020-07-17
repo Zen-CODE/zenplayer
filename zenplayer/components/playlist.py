@@ -83,7 +83,8 @@ class Playlist(EventDispatcher):
 
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),
-                            reverse=bool(mode in ["insert", "next"])):
+                            reverse=bool(mode in ["insert", "next",
+                                                  "next_album"])):
                 self._add_files(path.join(file_folder, f), mode=mode)
         elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
             if mode in ["insert", "next", "next_album"]:
