@@ -66,13 +66,20 @@ class Playlist(EventDispatcher):
         """
         def get_index():
             """ Return the index of where to insert the files. """
-            # ["insert", "next", "next_album"]
+            if len(self.queue) < 1:
+                return 0
+
             if mode == "insert":
-                return 1 if len(self.queue) > 0 else 0
+                return 0
             elif mode == "next":
                 return 1
             else:  # Next album
-                pass
+                start = 1
+                folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
+                while start < len(self.queue) - 1 and \
+                        self.queue[start]["filename"].find(folder) > -1:
+                    start += 1
+                return start
 
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),

@@ -143,7 +143,7 @@ class ZenPlaylist(ZenAPIBase):
                            added.
               in: query
               type: string
-              enum: ["add", "replace", "insert", "next"]
+              enum: ["add", "replace", "insert", "next", "next_album"]
               required: false
 
         responses:
