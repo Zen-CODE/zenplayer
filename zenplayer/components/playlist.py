@@ -64,16 +64,25 @@ class Playlist(EventDispatcher):
         Internal implementation of the addition, support recursion but
         extracted for once of setup in add_file
         """
+        def get_index():
+            """ Return the index of where to insert the files. """
+            # ["insert", "next", "next_album"]
+            if mode == "insert":
+                return 1 if len(self.queue) > 0 else 0
+            elif mode == "next":
+                return 1
+            else:  # Next album
+                pass
+
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),
                             reverse=bool(mode in ["insert", "next"])):
                 self._add_files(path.join(file_folder, f), mode=mode)
         elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
-            if mode in ["insert", "next"]:
-                index = 0 if (mode == "insert" and len(self.queue) > 0) else 1
+            if mode in ["insert", "next", "next_album"]:
                 self.queue.insert(
-                    index, ({"filename": file_folder,
-                            "text": self.get_text(file_folder)}))
+                    get_index(), ({"filename": file_folder,
+                                  "text": self.get_text(file_folder)}))
             else:
                 self.queue.append({"filename": file_folder,
                                   "text": self.get_text(file_folder)})
@@ -84,7 +93,8 @@ class Playlist(EventDispatcher):
         * "add" - add to the end of the playlist
         * "replace" - clear the existing playlist and add the files
         * "insert" - insert the selected album at the beginning of the playlist
-        * *next* - insert directly after the currently playing track
+        * "next" - insert directly after the currently playing track
+        * "next_album" - insert directly after the currently playing track
         """
         if mode == "replace":
             self.clear_files()
