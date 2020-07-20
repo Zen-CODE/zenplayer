@@ -56,7 +56,9 @@ class ZenRecycleView(FloatLayout):
         text_lower = text.lower()
         for i, data in enumerate(self.data):
             if data["text"].lower().find(text_lower) > -1:
-                self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(length)
+                if length > 10:  # Only scroll if required
+                    self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(
+                        length)
                 Clock.schedule_once(lambda dt: self._select_item(text_lower))
                 return
 
@@ -105,6 +107,7 @@ class ZenRecycleView(FloatLayout):
             if self.handler.name == "Albums":
                 self.handler.ctrl.zenplayer.show_screen("Artists")
 
+
 class SelectableLabel(RecycleDataViewBehavior, Label):
     """
     Add selection support to the Label
@@ -127,7 +130,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Respond to the change of selection """
         box = self.parent
         if box and box.selected_widget:
-            self.parent.selected_widget.selected = False
+            if box.selected_widget != self:
+                self.parent.selected_widget.selected = False
         self._item_draw()
         if _value and box:
             box.selected_widget = self
