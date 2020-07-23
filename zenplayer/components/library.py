@@ -3,6 +3,7 @@ from os.path import join, isdir, basename, expanduser, exists
 from random import sample
 from glob import glob
 from random import choice
+from components.store import StoreFactory
 
 
 class Library:
@@ -17,18 +18,23 @@ class Library:
     def __init__(self, config):
 
         self.path = expanduser(config.get("library_folder", "~/Zen/Music"))
-        artists = {}
-        albums = []
-        if exists(self.path):
-            dirs = [name for name in listdir(self.path) if
-                    isdir(join(self.path, name))]
-            for artist in dirs:
-                artists[artist] = []
-                artist_path = join(self.path, artist)
-                for album in listdir(artist_path):
-                    if isdir(join(artist_path, album)):
-                        artists[artist].append(album)
-                        albums.append((artist, album))
+        stored = StoreFactory.load_pickle("library.pkl")
+        if stored is None:
+            artists, albums = {}, []
+            if exists(self.path):
+                dirs = [name for name in listdir(self.path) if
+                        isdir(join(self.path, name))]
+                for artist in dirs:
+                    artists[artist] = []
+                    artist_path = join(self.path, artist)
+                    for album in listdir(artist_path):
+                        if isdir(join(artist_path, album)):
+                            artists[artist].append(album)
+                            albums.append((artist, album))
+                StoreFactory.save_pickle(
+                    "library.pkl",{"artists": artists, "albums": albums})
+        else:
+            artists, albums = stored["artists"], stored["artists"]
 
         self._artists = artists
         """ A dictionary of lists, where the key is the artist and the value
