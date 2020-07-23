@@ -34,7 +34,7 @@ class Library:
                 StoreFactory.save_pickle(
                     "library.pkl",{"artists": artists, "albums": albums})
         else:
-            artists, albums = stored["artists"], stored["artists"]
+            artists, albums = stored["artists"], stored["albums"]
 
         self._artists = artists
         """ A dictionary of lists, where the key is the artist and the value
