@@ -6,6 +6,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from ui.kvloader import KVLoader
 from ui.screens.screens import ScreenFactory
+from random import choice
+from kivy.uix.screenmanager import (
+    WipeTransition, SlideTransition, SwapTransition, CardTransition,
+    FadeTransition, FallOutTransition, RiseInTransition)
 
 
 class ZenPlayer(FloatLayout):
@@ -25,6 +29,14 @@ class ZenPlayer(FloatLayout):
         super().__init__(**kwargs)
         self.show_screen()
 
+    @staticmethod
+    def _set_transition(sm):
+        """ Set a random transition - just because we can. """
+        trans = choice([WipeTransition, SlideTransition, SwapTransition,
+                        CardTransition, FadeTransition, FallOutTransition,
+                        RiseInTransition])
+        sm.transition = trans(duration=0.5)
+
     def show_screen(self, name="Playing", **kwargs):
         """
         Switch to the screen specified. The *kwargs* dictionary will be either
@@ -39,6 +51,7 @@ class ZenPlayer(FloatLayout):
             if kwargs:
                 for key in kwargs.keys():
                     setattr(screen, key, kwargs[key])
+        self._set_transition(sm)
         sm.current = name
         self.set_header(screen.header)
 

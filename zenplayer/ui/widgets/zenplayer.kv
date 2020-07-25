@@ -2,7 +2,6 @@
 #: import ZenIcon ui.widgets.zenicon.ZenIcon
 #: import ZenSelectableIcon ui.widgets.zenicon.ZenSelectableIcon
 #: import VolumeSlider ui.screens.playing.playing.VolumeSlider
-#: import FadeTransition kivy.uix.screenmanager.FadeTransition
 #: set pad 3
 <Label>:
     font_size: "20dp"
@@ -77,7 +76,6 @@
             ScreenManager:
                 id: sm
                 size_hint: 1, 1
-                transition: FadeTransition(duration=0.2)
             VolumeSlider:
                 ctrl: root.ctrl
                 size_hint: 0.05, 1
