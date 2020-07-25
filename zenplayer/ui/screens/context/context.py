@@ -28,6 +28,8 @@ class ContextScreen(ZenKeyDown, ZenScreen):
     def on_actions(self, widget, value):
         def set_value(dt):
             self.ids.rv.data = value
+            self.ids.rv.find_item(value[0]["text"])
+
         Clock.schedule_once(set_value)
 
     def item_touched(self, item):
