@@ -1,6 +1,7 @@
 from os.path import join, expanduser, exists
 from components.filesystemextractor import FileSystemExtractor as fse
 import pandas as pd
+from components.config import Config
 
 
 class Library:
@@ -14,9 +15,9 @@ class Library:
                        * `library_folder` - the path Music files.
     """
 
-    def __init__(self, config={}):
-        self.path = path = expanduser(
-            config.get("library_folder", "~/Zen/Music"))
+    def __init__(self, config):
+        self.path = path = expanduser(config.get("library_folder",
+                                                 "~/Zen/Music"))
         """ The fully expanded path to the music libary folder."""
 
         self.data_frame = self._get_data_frame(path)
@@ -27,6 +28,19 @@ class Library:
     def _get_data_frame(path):
         """ Return a pandas DataFrame with 'Artist', 'Album', 'Track', and
         'Cover' columns.
+        """
+        state_file = join(Config.get_config_folder(), "library-pd.pkl")
+        if exists(state_file):
+            df = pd.read_pickle(state_file)
+        else:
+            df = Library._build_data_frame(path)
+            df.to_pickle(state_file)
+        return df
+
+    @staticmethod
+    def _build_data_frame(path):
+        """
+        Build the DataFrame from an insection of the *path*.
         """
         artists, albums, tracks, covers = [], [], [], []
         for artist in fse.get_dirs(path):
