@@ -137,7 +137,7 @@ class ZenLibrary(ZenAPIBase):
             "path": lib.get_path(artist, album)
         })
 
-    def get_album_cover(self):
+    def get_cover_path(self):
         """
         Return the image for the currently playing track.
         ---
@@ -170,7 +170,7 @@ class ZenLibrary(ZenAPIBase):
             return self.resp_from_data(
                 {"message":  "Please specify a valid artist and album"}, 403)
         else:
-            cover = self.ctrl.library.get_album_cover(artist, album)
+            cover = self.ctrl.library.get_cover_path(artist, album)
             return self.resp_from_image(cover)
 
     def search(self):

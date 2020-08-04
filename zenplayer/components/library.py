@@ -1,119 +1,86 @@
-from os import listdir
-from os.path import join, isdir, basename, expanduser, exists
-from random import sample
-from glob import glob
-from random import choice
-from components.store import StoreFactory
+from os.path import join, expanduser, exists
+from components.filesystemextractor import FileSystemExtractor as fse
+import pandas as pd
 
 
 class Library:
     """
     Class for fetching information about our music library. This information
-    is contained entirely in the folder names and structures.
+    is built from the folder structure and filenames and used to populate a
+    Pandas DataFrame for access and analysis.
 
     Args:
-        config (dict): A dictionary with config from `zenplayer.json`.
+        config (dict): A dictionary with config. The following keys are used:
+                       * `library_folder` - the path Music files.
     """
 
-    def __init__(self, config):
+    def __init__(self, config={}):
+        self.path = path = expanduser(
+            config.get("library_folder", "~/Zen/Music"))
+        """ The fully expanded path to the music libary folder."""
 
-        self.path = expanduser(config.get("library_folder", "~/Zen/Music"))
-        stored = StoreFactory.load_pickle("library.pkl")
-        if stored is None:
-            artists, albums = {}, []
-            if exists(self.path):
-                dirs = [name for name in listdir(self.path) if
-                        isdir(join(self.path, name))]
-                for artist in dirs:
-                    artists[artist] = []
-                    artist_path = join(self.path, artist)
-                    for album in listdir(artist_path):
-                        if isdir(join(artist_path, album)):
-                            artists[artist].append(album)
-                            albums.append((artist, album))
-                StoreFactory.save_pickle(
-                    "library.pkl",{"artists": artists, "albums": albums})
-        else:
-            artists, albums = stored["artists"], stored["albums"]
+        self.data_frame = self._get_data_frame(path)
+        """ A Pandas :class:`DataFrame` containing our library data as 'Artist',
+        'Album', 'Track', and 'Cover' columns. """
 
-        self._artists = artists
-        """ A dictionary of lists, where the key is the artist and the value
-        the albums.
+    @staticmethod
+    def _get_data_frame(path):
+        """ Return a pandas DataFrame with 'Artist', 'Album', 'Track', and
+        'Cover' columns.
         """
-        self._albums = albums
-        """ A list of (artist, album) tuples. We store this only so we can find
-        random albums all with an equal chance. The previous algorithm found a
-        random artist, then a random album, favouring albums by artists with
-        fewer albums.
-        """
+        artists, albums, tracks, covers = [], [], [], []
+        for artist in fse.get_dirs(path):
+            artist_path = join(path, artist)
+            for album in fse.get_dirs(artist_path):
+                _tracks, _covers = fse.get_media(
+                    join(artist_path, album))
+                for track in _tracks:
+                    artists.append(artist)
+                    albums.append(album)
+                    tracks.append(track)
+                    covers.append(_covers[0] if _covers else "")
+        return pd.DataFrame({"Artist": artists, "Album": albums,
+                             "Track": tracks, "Cover":  covers})
 
     def get_artists(self):
         """ Return a list of artists. """
-        return sorted(list(self._artists.keys()))
-
-    def get_random_artists(self, number):
-        """ Return a random list of *number* artists. """
-        artists = self.get_artists()
-        return sample(artists, number)
-
-    def get_random_albums(self, artist, number):
-        """ Return a random list of *number* albums by *artist*. """
-        albums = self.get_albums(artist)
-        if albums:
-            return sample(albums, number)
-        else:
-            raise (Exception("No albums found for {0}".format(artist)))
+        return list(self.data_frame.Artist.unique())
 
     def get_albums(self, artist):
         """ Return a list of albums for the *artist*. """
-        return sorted(self._artists.get(artist, []))
+        return list(self.data_frame[
+            self.data_frame["Artist"] == artist].Album.unique())
 
-    def get_album_cover(self, artist, album):
-        """
-        Return the full path to the album cover for the specified album or the
-        default library image one does not exist.
-        """
-        path = join(self.path, artist, album)
-        pattern = "cover.*"
-        matches = glob(join(path, pattern))
-        return matches[0] if matches else join(self.path, "default.png")
-
-    def get_path(self, artist, album):
-        """ Return the full path to the specified album. """
-        return join(self.path, artist, album)
+    def get_cover_path(self, artist, album):
+        """ Return the album cover art for the given artist and album. """
+        albums = self.data_frame[self.data_frame["Artist"] == artist]
+        listing = albums[albums["Album"] == album]
+        if len(listing.Cover.values) > 0:
+            file_name = str(listing.Cover.values[0])
+            return join(self.path, artist, album, file_name)
+        else:
+            return ""
 
     def get_random_album(self):
-        """
-        Return the artist and album of a random album as an artist, album tuple
-        """
-        return choice(self._albums)
+        """ Return a randomly selected artist and album. """
+        row = self.data_frame.sample()
+        return row.Artist.values[0], row.Album.values[0]
 
-    @staticmethod
-    def _get_any_matches(path, *exts):
-        """ Return the first valid files matching the extensions
-        in the path specified."""
-        for ext in exts:
-            matches = glob(join(path, ext))
-            if matches:
-                return matches
-        return None
+    def get_path(self, artist, album):
+        """
+        Return the full path to the specified album. If the album does not
+        exist, return an empty string.
+        """
+        path = join(self.path, artist, album)
+        return path if exists(path) else ""
 
     def get_tracks(self, artist, album):
         """
         Return a list of the album tracks
         """
-
-        def get_name(fname):
-            """"Return the nice, cleaned name of the track"""
-            return basename(fname)  # [:-4]
-
-        path = join(self.path, artist, album)
-        matches = self._get_any_matches(
-            path, "*.mp3", "*.ogg", "*.m4a", "*.wma")
-        if matches:
-            return sorted([get_name(f) for f in matches])
-        else:
-            return []
+        albums = self.data_frame[self.data_frame["Artist"] == artist]
+        tracks = albums[albums["Album"] == album]
+        return list(tracks.Track)
 
     def search(self, term):
         """
@@ -124,14 +91,18 @@ class Library:
              A dictionary with the keys "artist", "album" and "path" as keys
              if found. Return an empty dictionary otherwise.
         """
-        terms = term.lower().split(" ")
-        matches = []
-        for artist in self._artists.keys():
-            for album in self._artists[artist]:
-                if all([(artist + album).lower().find(t) > -1
-                        for t in terms]):
-                    matches.append(
-                        {"artist": artist,
-                         "album": album,
-                         "path": self.get_path(artist, album)})
-        return choice(matches) if matches else []
+        df = self.data_frame
+        term = term.lower()
+        results = df[[term in x.lower() for x in df['Artist']]]
+        if results.empty:
+            results = df[[term in x.lower() for x in df['Album']]]
+
+        if results.empty:
+            return {}
+        else:
+            row = results.sample()
+            artist = row.Artist.values[0]
+            album = row.Album.values[0]
+            return {"artist": artist,
+                    "album": album,
+                    "path": self.get_path(artist, album)}

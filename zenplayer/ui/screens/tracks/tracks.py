@@ -28,7 +28,7 @@ class TracksScreen(ZenScreen):
     def load(self):
         """ Load the tracks for the given artist and album """
         lib = self.ctrl.library
-        self.ids.image.source = lib.get_album_cover(
+        self.ids.image.source = lib.get_cover_path(
             self.artist, self.album)
         self.ids.rv.data = [
             {"text": item} for item in lib.get_tracks(self.artist,
