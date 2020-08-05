@@ -71,9 +71,9 @@ class Library:
         listing = albums[albums["Album"] == album]
         if len(listing.Cover.values) > 0:
             file_name = str(listing.Cover.values[0])
-            return join(self.path, artist, album, file_name)
-        else:
-            return ""
+            if file_name:
+                return join(self.path, artist, album, file_name)
+        return join(self.path, "default.png")
 
     def get_random_album(self):
         """ Return a randomly selected artist and album. """
