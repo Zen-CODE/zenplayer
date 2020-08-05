@@ -107,9 +107,8 @@ class Library:
         """
         df = self.data_frame
         term = term.lower()
-        results = df[[term in x.lower() for x in df['Artist']]]
-        if results.empty:
-            results = df[[term in x.lower() for x in df['Album']]]
+        results = df[(df["Album"].str.lower().str.find(term) > -1) |
+                     (df["Artist"].str.lower().str.find(term) > -1)]
 
         if results.empty:
             return {}
