@@ -137,7 +137,7 @@ class ZenLibrary(ZenAPIBase):
             "path": lib.get_path(artist, album)
         })
 
-    def get_cover_path(self):
+    def get_album_cover(self):
         """
         Return the image for the currently playing track.
         ---
