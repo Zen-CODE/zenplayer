@@ -76,7 +76,7 @@ class Playlist(EventDispatcher):
             else:  # next_album
                 start = 1
                 folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
-                while start < len(self.queue) - 1 and \
+                while start < len(self.queue) and \
                         self.queue[start]["filename"].find(folder) > -1:
                     start += 1
                 return start
