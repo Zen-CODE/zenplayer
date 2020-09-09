@@ -42,6 +42,16 @@ class Library:
         """
         Build the DataFrame from an insection of the *path*.
         """
+        def choose_cover(covers):
+            """Select a cover from the given list."""
+            if covers:
+                cover = _covers[0]
+                for image in _covers[1:]:
+                    if image.find("cover") > -1:
+                        cover = image
+                return cover
+            return ""
+
         artists, albums, tracks, covers = [], [], [], []
         for artist in fse.get_dirs(path):
             artist_path = join(path, artist)
@@ -52,7 +62,7 @@ class Library:
                     artists.append(artist)
                     albums.append(album)
                     tracks.append(track)
-                    covers.append(_covers[0] if _covers else "")
+                    covers.append(choose_cover(_covers))
         return pd.DataFrame({"Artist": artists, "Album": albums,
                              "Track": tracks, "Cover":  covers})
 
