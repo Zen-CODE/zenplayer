@@ -80,7 +80,9 @@
                 ctrl: root.ctrl
                 size_hint: 0.05, 1
                 orientation: "vertical"
-                value: self.value if self.dragging else root.ctrl.volume
+                # value: self.value if self.dragging else root.ctrl.volume
+                value: root.ctrl.volume
+                on_value: root.ctrl.volume = self.value
                 max: 1
         BoxLayout:
             size_hint: 1, 0.075

@@ -29,15 +29,14 @@ class Library:
         """ Return a pandas DataFrame with 'Artist', 'Album', 'Track', and
         'Cover' columns.
         """
-        # # This code saves the state in a pickle file for speed. Not worth it
-        # state_file = join(Config.get_config_folder(), "library-pd.pkl")
-        # if exists(state_file):
-        #     df = pd.read_pickle(state_file)
-        # else:
-        #     df = Library._build_data_frame(path)
-        #     df.to_pickle(state_file)
-        # return df
-        return Library._build_data_frame(path)
+        # This code saves the state in a pickle file for speed. Not worth it
+        state_file = join(Config.get_config_folder(), "library-pd.pkl")
+        if exists(state_file):
+            df = pd.read_pickle(state_file)
+        else:
+            df = Library._build_data_frame(path)
+            df.to_pickle(state_file)
+        return df
 
     @staticmethod
     def _build_data_frame(path):
