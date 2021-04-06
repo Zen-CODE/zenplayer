@@ -17,7 +17,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/zenplayer/main.py",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false,
+            "env":{"KIVY_AUDIO": "vlcplayer",
+                   "LD_PRELOAD": "./zenplayer/libLeap.so"}
         },
         {
             "name": "Python: Launch FireStore",
