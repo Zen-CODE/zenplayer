@@ -26,7 +26,7 @@ class InfoScreen(ZenScreen):
     metadata.
     """
 
-    def _show_current_track(self, *args):
+    def _show_current_track(self, *_args):
         """ Display the currently playing track in the playlist """
         file_name = self.ctrl.playlist.get_current_file()
         if file_name:

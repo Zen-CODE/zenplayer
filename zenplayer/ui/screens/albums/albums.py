@@ -4,7 +4,6 @@ This module houses the Zen Music Library browser based on the recycleview
 from ui.screens.zenscreen import ZenScreen
 from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
-from kivy.properties import ObjectProperty
 from ui.widgets.zenkeydown import ZenKeyDown
 from random import choice
 
