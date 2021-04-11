@@ -14,6 +14,7 @@ from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 from os import environ
+from components.cloud_firestore import NowPlaying
 
 
 class Controller(EventDispatcher):
@@ -62,7 +63,6 @@ class Controller(EventDispatcher):
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
         if config.get("enable_firebase", True):
-            from components.cloud_firestore import NowPlaying
             self.now_playing = NowPlaying()
             self.bind(state=lambda *args: self.now_playing.write_to_db(self))
 
@@ -108,7 +108,7 @@ class Controller(EventDispatcher):
 
     def on_state(self, _widget, value):
         """ React to the change of state event """
-        Logger.debug(f"controller.py: Entering on_state. value={value}")
+        Logger.debug("controller.py: Entering on_state. value=%s", value)
         if value == "Playing":
             if self.sound is None:
                 sound = self._set_sound()
