@@ -16,10 +16,9 @@ class Library:
         self.lib_path = expanduser("~/Music")
 
     @staticmethod
-    def _safe_listdir(direc, filter):
+    def _safe_listdir(direc):
         """
-        Return a list of items in the given directory if then filer function
-        returns True given the filename.
+        Return a list of folders in the given directory.
 
         This function is mainly to simplify error handling and filtering of
         directory listings.
@@ -27,8 +26,7 @@ class Library:
         if exists(direc):
             return [name for name in listdir(direc)
                     if isdir(join(direc, name))]
-        else:
-            return []
+        return []
 
     def get_artists(self):
         """
@@ -43,7 +41,7 @@ class Library:
         Return a list of albums for the specified artist.
         """
         _path = join(self.lib_path, artist)
-        contents = self._safe_listdir(_path, isdir)
+        contents = Library._safe_listdir(_path)
         return sorted(contents)
 
     def get_path(self, artist=None, album=None):
@@ -53,10 +51,9 @@ class Library:
         """
         if artist and album:
             return join(self.lib_path, artist, album)
-        elif artist:
+        if artist:
             return join(self.lib_path, artist)
-        else:
-            return self.lib_path
+        return self.lib_path
 
     def get_random_album(self):
         """
@@ -66,3 +63,7 @@ class Library:
         artist = choice(self.get_artists())
         album = choice(self.get_albums(artist))
         return artist, album
+
+
+if __name__ == "__main__":
+    print(Library().get_artists())
