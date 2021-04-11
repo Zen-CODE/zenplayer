@@ -13,7 +13,7 @@ class FileDrop:
         self.playlist = playlist
         Window.bind(on_dropfile=self.on_dropfile)
 
-    def on_dropfile(self, widget, file_folder):
+    def on_dropfile(self, _widget, file_folder):
         """
         Respond to the dropping of files or folders on the window.
         """
