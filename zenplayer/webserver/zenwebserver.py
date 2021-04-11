@@ -20,7 +20,8 @@ class ZenWebServer:
         """ The instance of the Flask application. """
 
         self.class_data = Loader.get_class_data(ctrl)
-        [self.add_routes(class_datum) for class_datum in self.class_data]
+        for class_datum in self.class_data:
+            self.add_routes(class_datum)
         app.add_url_rule("/", "/", self.index, methods=['GET'])
         ZenSwagger.init_swagger(app, self.class_data)
         self.disable_logs()
@@ -35,7 +36,7 @@ class ZenWebServer:
         """ Add the flash dashboard monitoring tool. Note that we move the
         import here to avoid the need to install this as a dependency.
         """
-        import flask_monitoringdashboard as dashboard
+        import flask_monitoringdashboard as dashboard  # noqa
         dashboard.config.init_from(file=rel_to_base("config", "dashboard.ini"))
         dashboard.bind(self.app)
 
