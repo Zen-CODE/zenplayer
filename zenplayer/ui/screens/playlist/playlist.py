@@ -15,7 +15,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
 
     def on_enter(self):
         """
-        Relod the data from the playlist queue. This is required to refesh
+        Reload the data from the playlist queue. This is required to refr∂ßesh
         after items have been removed or added.
         """
         super().on_enter()
@@ -29,7 +29,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
         super().on_leave()
         self.ctrl.playlist.unbind(queue=self._reload_data)
 
-    def _reload_data(self, *args):
+    def _reload_data(self, *_args):
         """ Reload the data from the playlist queue """
         self.ids.rv.data = []
         self.ids.rv.data = self.ctrl.playlist.queue
@@ -50,7 +50,7 @@ class PlaylistScreen(ZenKeyDown, ZenScreen):
                 {"text": "Remove",
                  "action": lambda: self.button_remove(item.index)},
                 {"text": "Remove all",
-                 "action": lambda: self.button_clear_files()},
+                 "action": self.button_clear_files},
                 {"text": "Cancel",
                  "action": lambda: None}])
 
