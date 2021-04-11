@@ -44,8 +44,7 @@ class Playlist(EventDispatcher):
         """Returns the filename of the current audio file."""
         if len(self.queue) > self.current:
             return self.queue[self.current]["filename"]
-        else:
-            return ""
+        return ""
 
     def get_current_info(self):
         """ Return a dictionary of information on the current track"""
@@ -71,15 +70,14 @@ class Playlist(EventDispatcher):
 
             if mode == "insert":
                 return 0
-            elif mode == "next":
+            if mode == "next":
                 return 1
-            else:  # next_album
-                start = 1
-                folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
-                while start < len(self.queue) and \
-                        self.queue[start]["filename"].find(folder) > -1:
-                    start += 1
-                return start
+            start = 1
+            folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
+            while start < len(self.queue) and \
+                    self.queue[start]["filename"].find(folder) > -1:
+                start += 1
+            return start
 
         if path.isdir(file_folder):
             for f in sorted(listdir(file_folder),

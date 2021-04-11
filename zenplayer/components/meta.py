@@ -18,9 +18,8 @@ class Metadata:
         bitrate_mode = getattr(info_obj, "bitrate_mode", None)
         if bitrate_mode is None:
             return "unknown"
-        else:
-            val = int(bitrate_mode)
-            return ["Unknown", "CBR", "VBR", "ABR"][val]
+        val = int(bitrate_mode)
+        return ["Unknown", "CBR", "VBR", "ABR"][val]
 
     @staticmethod
     def get(file_name):
