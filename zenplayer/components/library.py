@@ -123,10 +123,9 @@ class Library:
 
         if results.empty:
             return {}
-        else:
-            row = results.sample()
-            artist = row.Artist.values[0]
-            album = row.Album.values[0]
-            return {"artist": artist,
-                    "album": album,
-                    "path": self.get_path(artist, album)}
+        row = results.sample()
+        artist = row.Artist.values[0]
+        album = row.Album.values[0]
+        return {"artist": artist,
+                "album": album,
+                "path": self.get_path(artist, album)}

@@ -62,7 +62,7 @@ class KeyHandler:
         Return the value in the keymap that matches the modifiers and key_name
         """
         Logger.debug("keyboard_handler.py: _get_match: Look for "
-                     f"modifiers={modifiers}, key_name={key_name}")
+                     "modifiers=%s, key_name=%s", modifiers, key_name)
         for key in keymap.keys():
             parts = key.split("+")
             hk_key_name = filter(KeyHandler._is_normal_key, parts)
@@ -72,6 +72,7 @@ class KeyHandler:
                     lambda x: not KeyHandler._is_normal_key(x), parts)
                 if not set(hk_modifiers).difference(set(modifiers)):
                     return keymap[key]
+        return None
 
     def on_key_down(self, _keyboard, keycode, text, modifiers):
         """ React to the keypress event """
@@ -84,3 +85,4 @@ class KeyHandler:
             return True
         for cb in self._callbacks:
             cb(keycode, text, modifiers)
+        return None
