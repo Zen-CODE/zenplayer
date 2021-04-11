@@ -1,4 +1,4 @@
-"""
+r"""
 ZenCODE's Music Library Checker
 ===============================
 
@@ -19,7 +19,7 @@ from kivy.uix.label import Label
 from kivy.properties import (NumericProperty, ListProperty, ObjectProperty,
                              BooleanProperty)
 from kivy.event import EventDispatcher
-from audioplayer import SoundLoader
+from kivy.core.audio import SoundLoader
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 
@@ -89,7 +89,7 @@ class MusicLib(EventDispatcher):
         parts = folder.split(sep)
         artist, album_name = parts[-2], parts[-1]
         images, tracks, warnings = [], [], []
-        files = [file_name for file_name in listdir(folder)]
+        files = listdir(folder)
 
         for my_file in sorted(files):
             ext = my_file[-4:]
@@ -134,9 +134,9 @@ class MusicLib(EventDispatcher):
                            w.collide_point(*t.pos) and controller.stop())
                 di.ids.images.add_widget(image)
 
-        [add_label(Label(
-            text=u"[color=#FF0000]{0}[/color]".format(warn)))
-            for warn in album['warnings']]
+        for warn in album['warnings']:
+            add_label(Label(
+                text=u"[color=#FF0000]{0}[/color]".format(warn)))
 
         # Add tracks
         for k, track in enumerate(album['tracks']):
@@ -170,7 +170,7 @@ class PlaylistLabel(Label):
 
     back_colour = ListProperty([0, 0, 0, 0])
 
-    def on_playing(self, widget, value):
+    def on_playing(self, _widget, value):
         """ Respond to the change in state. """
         self.back_colour = [0.5, 0.5, 1, 0.3] if value else [0, 0, 0, 0]
 
@@ -279,7 +279,7 @@ class Controller(EventDispatcher):
                 album_index = (album_index + 1) % len(albums)
                 track_index = 0
         else:
-            if 0 < album_index:
+            if album_index > 0:
                 album_index = (len(albums) + album_index - 1) % len(albums)
                 track_index = 0
         self.album_index, self.track_index = album_index, track_index
@@ -288,7 +288,7 @@ class Controller(EventDispatcher):
         """ Build and return a DisplayItem for the current album. """
         return self.music_lib.get_row_item(self.album_index, self)
 
-    def on_volume(self, widget, value):
+    def on_volume(self, _widget, value):
         """ Set the volume of the current tracks. """
         if self.sound is not None:
             self.sound.volume = value
@@ -352,6 +352,7 @@ class OptionScreen(Screen):
 class FolderChecker(App):
     def build(self):
         return Builder.load_file('lib_player.kv')
+
 
 if __name__ == '__main__':
     FolderChecker().run()
