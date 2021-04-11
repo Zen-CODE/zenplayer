@@ -74,7 +74,7 @@ class NowPlaying:
         if NowPlaying._client is None:
             NowPlaying._client = NowPlaying._get_client()
         users_ref = NowPlaying._client.collection('tunez')
-        docs = [doc for doc in users_ref.stream()]
+        docs = list(users_ref.stream())
         for doc in docs:
             print(u'{} => {}'.format(doc.id, doc.to_dict()))
         return docs
@@ -104,13 +104,13 @@ class NowPlaying:
         """ Process the 'now_playing' queue and write the entries to firebase.
         """
         Logger.info(
-            f"NowPlaying: Processing, {active_count()} active threads")
+            "NowPlaying: Processing, %s active threads", active_count())
         with self._lock:
             for item in self._now_playing[:]:
                 try:
                     item.save()
                     self._now_playing.remove(item)
                 except Exception as e:
-                    Logger.error(f"cloud_firestore.py: Unable to save - {e}")
+                    Logger.error("cloud_firestore.py: Unable to save - %s", e)
 
             Logger.info("NowPlaying: Queue precessing done. Closing thread...")
