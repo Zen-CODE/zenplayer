@@ -2,7 +2,6 @@
 This module houses the API interface for the ZenPlaylist object.
 """
 from webserver.api.zenapibase import ZenAPIBase
-from flask import request
 from os.path import exists
 
 

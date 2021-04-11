@@ -1,5 +1,4 @@
 from components.meta import Metadata
-from kivy.clock import Clock
 from webserver.api.zenapibase import ZenAPIBase
 from flask import request
 
