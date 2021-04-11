@@ -1,7 +1,6 @@
 """
 This module houses a factory class for generating and retuning screens
 """
-from ui.screens.playlist.playlist import PlaylistScreen
 from importlib import import_module
 
 

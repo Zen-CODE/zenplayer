@@ -17,7 +17,6 @@ class MediaButton(FloatLayout):
 
     def on_click(self):
         """ The button has been clicked. """
-        pass
 
 
 class VolumeSlider(Slider):

@@ -49,7 +49,7 @@ class InfoScreen(ZenScreen):
         """ Show all the details on the given filename """
         self._show_info(filename)
         self._show_meta(filename)
-        self._show_art(filename)
+        self._show_art()
 
     def _show_info(self, filename):
         """ Populate the track info """
@@ -60,8 +60,8 @@ class InfoScreen(ZenScreen):
     def _show_meta(self, filename):
         """ Populate the track info """
         meta = Metadata.get(filename)
-        for key in meta.keys():
-            val = self.format_meta_value(key, meta[key])
+        for key, value in meta.iteritems():
+            val = self.format_meta_value(key, value)
             self.ids[key].text = f"{key.title().replace('_', ' ')}: {val}"
 
     @staticmethod
@@ -72,7 +72,7 @@ class InfoScreen(ZenScreen):
         unit = InfoScreen.units.get(key, "")
         return f"{value}{unit}"
 
-    def _show_art(self, filename):
+    def _show_art(self):
         """ Populate the track info """
         ids = self.ids
         self.ids["image"].source = self.ctrl.library.get_cover_path(
