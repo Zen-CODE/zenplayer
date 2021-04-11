@@ -35,7 +35,6 @@ class ZenPlayer(App):
 
     def on_resume(self):
         """ Enable support for resume """
-        pass
 
     def build(self):
         """ Build the app and return the screen manager """
@@ -48,7 +47,6 @@ class ZenPlayer(App):
 
     def on_stop(self):
         """The app is closing. Save the state."""
-        pass
 
 
 ZenPlayer().run()

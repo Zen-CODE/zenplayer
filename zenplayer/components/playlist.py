@@ -127,7 +127,7 @@ class Playlist(EventDispatcher):
 
     def move_previous(self):
         """ Move the selected track to the previous entry"""
-        if 0 < self.current:
+        if self.current > 0:
             self.current += -1
 
     def save(self, store):
