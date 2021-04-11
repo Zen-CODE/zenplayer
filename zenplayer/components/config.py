@@ -8,7 +8,6 @@ from components.paths import rel_to_base
 from kivy.utils import platform
 from shutil import copy
 from json import load
-from kivy.logger import Logger
 
 
 class Config:
@@ -23,8 +22,7 @@ class Config:
         config = rel_to_base("config", file_name.replace(".", f".{platform}."))
         if exists(config):
             return config
-        else:
-            return rel_to_base("config", file_name)
+        return rel_to_base("config", file_name)
 
     @staticmethod
     def get_config_folder():
@@ -44,6 +42,6 @@ class Config:
         cfg_path = join(Config.get_config_folder(), file_name)
         if not exists(cfg_path):
             copy(Config._get_default(file_name), cfg_path)
-        Logger.info(f"Config: Loading config from {cfg_path}")
+        Logger.info("Config: Loading config from %s", cfg_path)
         with open(cfg_path) as f:
             return load(f)

@@ -10,4 +10,11 @@
     "files.watcherExclude": {
         "**/venv": true
       },
+      "cSpell.words": [
+        "kivy"
+      ],
+      "workbench.colorCustomizations" : {
+        "terminal.foreground" : "#00BB55",
+        "terminal.background" : "#222222"
+    }
 }
