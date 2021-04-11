@@ -3,7 +3,7 @@ This module houses a VLC audio component that supports the Kivy `Sound`
 interface.
 """
 from kivy.core.audio import Sound, SoundLoader
-from vlc import EventType, Instance, MediaPlayer
+from vlc import EventType, Instance
 from kivy.clock import mainthread
 from kivy.logger import Logger
 
@@ -28,7 +28,7 @@ class SoundVLCPlayer(Sound):
         super().__init__(**kwargs)
 
     @mainthread
-    def _track_finished(self, *args):
+    def _track_finished(self, *_args):
         """ Event fired when the track is finished. """
         if not self.loop:
             self.stop()
@@ -100,7 +100,7 @@ class SoundVLCPlayer(Sound):
             return self.player.get_position() * self._length
         return 0
 
-    def on_volume(self, instance, volume):
+    def on_volume(self, _instance, volume):
         """
         Respond to the setting of the volume. This value is fraction between
         0 and 1.
