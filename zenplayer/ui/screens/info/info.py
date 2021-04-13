@@ -60,7 +60,7 @@ class InfoScreen(ZenScreen):
     def _show_meta(self, filename):
         """ Populate the track info """
         meta = Metadata.get(filename)
-        for key, value in meta.iteritems():
+        for key, value in meta.items():
             val = self.format_meta_value(key, value)
             self.ids[key].text = f"{key.title().replace('_', ' ')}: {val}"
 
