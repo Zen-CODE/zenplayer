@@ -117,7 +117,8 @@ class Controller(EventDispatcher):
                     self.set_position(self.position)
             else:
                 self.sound.play()
-        elif value == "Stopped":
+        elif value == "Stopped" and self.sound:
+            self.sound.stop()
             self.stop()
         elif value == "Paused" and self.sound:
             self.sound.stop()
