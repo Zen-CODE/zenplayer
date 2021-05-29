@@ -12,6 +12,7 @@ from ui.kvloader import KVLoader
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.properties import BooleanProperty
+from ui.styles import BACK_COLOR
 
 
 class ZenRecycleView(FloatLayout):
@@ -115,7 +116,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     index = None
     """ The index of the active label in the RecycleViews' data property """
 
-    back_color = ListProperty([0, 0, 0, 1])
+    back_color = ListProperty(BACK_COLOR)
 
     selected = BooleanProperty(False)
     """ Indicates whether this item has been selected or not. """
@@ -124,7 +125,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         """ Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
         """
-        self.back_color = [.5, .5, 1.0, .3] if self.selected else [0, 0, 0, 1]
+        self.back_color = [.5, .5, 1.0, .3] if self.selected else BACK_COLOR
 
     def on_selected(self, _widget, _value):
         """ Respond to the change of selection """
