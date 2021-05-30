@@ -9,9 +9,7 @@ from kivy.logger import Logger
 
 
 class SoundVLCPlayer(Sound):
-    '''
-    A Kivy `Sound` object based on a VLC audio backend.
-    '''
+    '''A Kivy `Sound` object based on a VLC audio backend. '''
 
     instance = None
     player = None
@@ -149,12 +147,3 @@ if __name__ == "__main__":
         sleep(2)
     else:
         print("Failed to load sound")
-
-    # from kivy.app import App
-    # from kivy.uix.label import Label
-
-    # class TestApp(App):
-    #     def build(self):
-    #         return Label(text="Test")
-
-    # TestApp().run()
