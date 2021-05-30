@@ -6,14 +6,14 @@ from datetime import datetime, timedelta
 from socket import gethostname
 from threading import Lock, Thread, active_count
 
+from components.paths import rel_to_base
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+
 from kivy.logger import Logger
-
-
-from components.paths import rel_to_base
 
 
 class NowPlaying:

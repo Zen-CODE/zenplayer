@@ -1,14 +1,13 @@
 """This module houses a helper class for loading configuration files."""
 from json import load
-from os.path import exists, expanduser, join
 from os import makedirs
+from os.path import exists, expanduser, join
 from shutil import copy
 
+from components.paths import rel_to_base
 
 from kivy.logger import Logger
 from kivy.utils import platform
-
-from components.paths import rel_to_base
 
 
 class Config:
