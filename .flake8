@@ -1,0 +1,10 @@
+[flake8]
+max-complexity = 10
+ignore =
+    ANN201,  # Type hints
+    ANN101,
+    ANN003,
+    ANN204,
+    ANN001,
+    ANN202,
+    ANN205
