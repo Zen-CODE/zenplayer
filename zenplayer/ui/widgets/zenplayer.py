@@ -32,9 +32,10 @@ class ZenPlayer(FloatLayout):
     @staticmethod
     def _set_transition(sm):
         """ Set a random transition - just because we can. """
-        trans = choice([WipeTransition, SlideTransition, SwapTransition,
-                        CardTransition, FadeTransition, FallOutTransition,
-                        RiseInTransition])
+        # trans = choice([WipeTransition, SlideTransition, SwapTransition,
+        #                 CardTransition, FadeTransition, FallOutTransition,
+        #                 RiseInTransition])
+        trans = SwapTransition
         sm.transition = trans(duration=0.5)
 
     def show_screen(self, name="Playing", **kwargs):
