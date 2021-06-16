@@ -25,6 +25,7 @@ class ZenIcon(ButtonBehavior, Image):
         KVLoader.load("ui/widgets/zenicon.kv")
         super().__init__(**kwargs)
         self.animation = None
+        self.mipmap = True
 
     def _get_back_color(self):
         """ Return the backcolor for the icon given it's state """
