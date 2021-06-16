@@ -5,6 +5,7 @@ from flask import make_response, jsonify, send_file
 from flask import request
 from urllib.parse import unquote
 from kivy.clock import Clock
+from kivy.logger import Logger
 
 
 class ZenAPIBase:
@@ -52,6 +53,8 @@ class ZenAPIBase:
         Call the given function in a clock event. Return a success reponse if
         *get_response* is True, otherwise return None
         """
+        Logger.debug('zenapibase.py: Schedule call %s, args = %s',
+                     func.__name__, args)
         Clock.schedule_once(lambda dt: func(*args))
         if get_response:
             return self.resp_from_data({"status": "success"})

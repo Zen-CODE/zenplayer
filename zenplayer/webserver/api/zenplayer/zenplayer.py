@@ -1,6 +1,8 @@
 from components.meta import Metadata
 from webserver.api.zenapibase import ZenAPIBase
 from flask import request
+from kivy.logger import Logger
+from datetime import datetime
 
 
 class ZenPlayer(ZenAPIBase):
@@ -12,6 +14,7 @@ class ZenPlayer(ZenAPIBase):
         """
         Return a dictionary containing the complete player state.
         """
+        Logger.debug('zenaplayer.py: get_state called %s', datetime.now())
         ctrl = self.ctrl
         return {
             "volume": ctrl.volume,
@@ -54,6 +57,7 @@ class ZenPlayer(ZenAPIBase):
                         type: integer
 
         """
+        Logger.debug('zenaplayer.py: get_track_meta called')
         meta = Metadata.get(self.ctrl.file_name)
         return self.resp_from_data(meta)
 
