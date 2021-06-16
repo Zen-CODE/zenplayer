@@ -16,6 +16,9 @@ https://openclipart.org/detail/116929/glossy-media-player-normal-active-focus-bu
 2. Thanks to the Kivy developers.
 https://github.com/kivy/kivy/graphs/contributors
 
+3. Thanks to FontAwesome for the icon images.
+https://fontawesome.com/license
+
 Peace
 ZenCODE
 www.github.com/Zen-CODE
