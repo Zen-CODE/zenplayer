@@ -12,11 +12,10 @@
 
 <ZenPlayer>:
     canvas.before:
-        Color:
-            rgba: [0.1, 0.1, 0.1, 1]
         Rectangle:
             pos: self.pos
             size: self.size
+            source: "images/background.png"
     BoxLayout:
         orientation: 'vertical'
         pos_hint: {"x": 0, "y": 0}
