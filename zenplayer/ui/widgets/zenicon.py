@@ -13,6 +13,7 @@ class ZenIcon(ButtonBehavior, Image):
     An image button that provides animation for touch and click events.
     """
     back_color = ListProperty([1.0, 0.0, 0.0, 0.0])
+    color = ListProperty([0.5, 0.5, 1.0, 1.0])
 
     duration = 0.2
     """ The duration of the press animation """
