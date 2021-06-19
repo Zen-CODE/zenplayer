@@ -8,12 +8,16 @@ from kivy.properties import ListProperty, StringProperty, BooleanProperty
 from kivy.animation import Animation
 
 
+ICON_BACKCOLOR = [1.0, 0.0, 0.0, 0.0]
+ICON_COLOR = [0.5, 0.5, 1.0, 1.0]
+
+
 class ZenIcon(ButtonBehavior, Image):
     """
     An image button that provides animation for touch and click events.
     """
-    back_color = ListProperty([1.0, 0.0, 0.0, 0.0])
-    color = ListProperty([0.5, 0.5, 1.0, 1.0])
+    back_color = ListProperty(ICON_BACKCOLOR)
+    color = ListProperty(ICON_COLOR)
 
     duration = 0.2
     """ The duration of the press animation """
