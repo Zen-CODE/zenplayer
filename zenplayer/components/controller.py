@@ -2,6 +2,7 @@ from kivy.properties import (  # pylint: disable=no-name-in-module
     NumericProperty, ObjectProperty, StringProperty, OptionProperty)
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
+from kivy.logger import Logger
 from os import sep
 from components.keyboard_handler import KeyHandler
 from components.hotkey_handler import HotKeyHandler
@@ -101,6 +102,7 @@ class Controller(EventDispatcher):
         Set the state of the currently playing track. This is the callback
         fired when the media player encounters the end of track.
         """
+        Logger.info("State changed to %s", value)
         if value == "stop" and self.state not in ["Stopped", "Paused"]:
             self.stop()
             if self.advance:
@@ -145,6 +147,9 @@ class Controller(EventDispatcher):
             self.artist = parts[-3]
             self.cover = self.library.get_cover_path(self.artist, self.album)
             Window.set_icon(self.cover)
+            Logger.info(
+                "Track change: %s: %s - %s",
+                self.artist, self.album, self.track)
 
     def volume_up(self):
         """ Turn the volume up """
