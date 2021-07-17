@@ -22,6 +22,7 @@ from kivy.event import EventDispatcher
 from kivy.core.audio import SoundLoader
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
+from components.filesystemextractor import FileSystemExtractor
 
 
 class MusicLib(EventDispatcher):
@@ -95,7 +96,7 @@ class MusicLib(EventDispatcher):
             ext = my_file[-4:]
             if ext in [".jpg", ".png", ".gif", "jpeg"]:
                 images.append(path.join(folder, my_file))
-            elif ext in [".mp3", ".ogg"]:
+            elif ext in FileSystemExtractor.music_types:
                 tracks.append(my_file)
             else:
                 warnings.append("Unrecognized file: {0}".format(my_file))

@@ -16,7 +16,7 @@ class SoundVLCPlayer(Sound):
 
     @staticmethod
     def extensions():
-        return ("mp3", "mp4", "flac", "mkv", "wav", "ogg", "m4a")
+        return ("mp3", "mp4", "flac", "mkv", "wav", "ogg", "m4a", "wma")
 
     def __init__(self, **kwargs):
         self._length = 0

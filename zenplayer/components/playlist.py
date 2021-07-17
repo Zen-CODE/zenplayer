@@ -4,6 +4,7 @@ from os.path import exists
 from kivy.properties import (  # pylint: disable=no-name-in-module
     NumericProperty, ListProperty)
 from components.filedrop import FileDrop
+from components.filesystemextractor import FileSystemExtractor
 
 
 class Playlist(EventDispatcher):
@@ -84,7 +85,7 @@ class Playlist(EventDispatcher):
                             reverse=bool(mode in ["insert", "next",
                                                   "next_album"])):
                 self._add_files(path.join(file_folder, f), mode=mode)
-        elif file_folder[-3:] in ["mp3", "ogg", "wav", "m4a"]:
+        elif file_folder[-4:] in FileSystemExtractor.music_types:
             if mode in ["insert", "next", "next_album"]:
                 self.queue.insert(
                     get_index(), ({"filename": file_folder,
