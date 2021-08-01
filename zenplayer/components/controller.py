@@ -125,6 +125,12 @@ class Controller(EventDispatcher):
         elif value == "Paused" and self.sound:
             self.sound.stop()
 
+    def open_in_browser(self):
+        """Open a link to the React app in a browser."""
+
+        import webbrowser
+        webbrowser.open("http://127.0.0.1:9001/static/index.html")
+
     def _update_progress(self, _dt):
         """ Update the progressbar  """
         if self.sound and self.sound.state == "play":

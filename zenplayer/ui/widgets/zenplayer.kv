@@ -71,6 +71,7 @@
                 text: "[b]" + root.header + "[/b]"
                 markup: True
                 font_size: 0.6 * self.height
+                on_touch_up: self.collide_point(*args[1].pos) and root.ctrl.open_in_browser()
             Widget:
             ZenSelectableIcon:
                 group: "header"
