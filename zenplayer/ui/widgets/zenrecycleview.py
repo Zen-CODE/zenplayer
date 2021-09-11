@@ -90,7 +90,7 @@ class ZenRecycleView(FloatLayout):
     def on_key_down(self, keycode, text, modifiers):
         """ Respond the pressing of a key """
         # print(f"Got keydown text: {text}, keybode={keycode}")
-        if text is not None:
+        if text and not modifiers:
             self.search_text += text
         elif keycode[0] == 8 and self.search_text:  # delete
             self.search_text = self.search_text[:-1]
@@ -104,8 +104,7 @@ class ZenRecycleView(FloatLayout):
             box = self.ids.box_layout
             if box.selected_widget:
                 box.handle_event("item_touched", box.selected_widget)
-        elif keycode[1] == "backspace":
-            if self.handler.name == "Albums":
+        elif keycode[1] == "backspace"and self.handler.name == "Albums":
                 self.handler.ctrl.zenplayer.show_screen("Artists")
 
 
