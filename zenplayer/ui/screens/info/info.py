@@ -6,6 +6,9 @@ from kivy.clock import Clock
 from components.meta import Metadata
 from kivy.logger import Logger
 from ui.screens.zenscreen import ZenScreen
+import webbrowser
+from requests import get
+from urllib.parse import quote
 
 
 class InfoScreen(ZenScreen):
@@ -77,3 +80,33 @@ class InfoScreen(ZenScreen):
         ids = self.ids
         self.ids["image"].source = self.ctrl.library.get_cover_path(
             ids.artist.text, ids.album.text)
+
+    def show_artist_info(self):
+        """Open a link in wikipedia showing the artist info."""
+        artist = self.ctrl.playlist.get_current_info().get('artist')
+        if artist:
+            url = Wikipedia.get_artist_url(artist)
+            if url:
+                return webbrowser.open(url)
+
+        Logger.warning("No suitable artist link found for %s.", artist)
+
+
+class Wikipedia:
+    """
+    Class for handling Wikipedia queries.
+    """
+    @staticmethod
+    def get_artist_url(artist):
+        """ Return the most likely URL for the specified artist"""
+        url = f"http://en.wikipedia.org/w/api.php?format=json&action=query&" \
+              f"list=search&srsearch={quote(artist + ' music band')}"
+        resp = get(url)
+        if resp.status_code == 200:
+            try:
+                page_id = resp.json()["query"]["search"][0]["pageid"]
+                return f"http://en.wikipedia.org/?curid={page_id}"
+            except Exception as e:
+                Logger.error(f"Unable to extract page_id. {e}")
+        else:
+            Logger.error(f"Error returned from Wikipedia: {resp}")

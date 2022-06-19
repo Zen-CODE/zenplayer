@@ -152,7 +152,10 @@ class Controller(EventDispatcher):
             self.album = parts[-2]
             self.artist = parts[-3]
             self.cover = self.library.get_cover_path(self.artist, self.album)
-            Window.set_icon(self.cover)
+            try:
+                Window.set_icon(self.cover)
+            except Exception as e:
+                Logger.warning('Failed to set cover. Error %s', repr(e))
             Logger.info(
                 "Track change: %s: %s - %s",
                 self.artist, self.album, self.track)
