@@ -1,4 +1,6 @@
 #:kivy 1.10
+#: import HEADER_FONT_COLOR ui.styles.HEADER_FONT_COLOR
+
 <Spacer@Widget>:
     size_hint_y: 0.75
 
@@ -19,7 +21,7 @@
                 Spacer:
                 Label:
                     markup: True
-                    color: 0.25, 1.0, 0.25, 1.0
+                    color: HEADER_FONT_COLOR
                     text: "[b]Track Info[/b]"
                 Spacer:
                 Label:
@@ -33,7 +35,7 @@
                 Spacer:
                 Label:
                     markup: True
-                    color: 0.25, 1.0, 0.25, 1.0
+                    color: HEADER_FONT_COLOR
                     text: "[b]Track Metadata[/b]"
                 Spacer:
                 Label:

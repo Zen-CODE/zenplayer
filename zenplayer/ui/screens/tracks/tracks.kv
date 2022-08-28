@@ -1,5 +1,6 @@
 #:kivy 1.10
 #: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
+#: import HEADER_FONT_COLOR ui.styles.HEADER_FONT_COLOR
 
 <TracksScreen>:
     header: "Tracks"
@@ -16,12 +17,12 @@
                 size_hint_x: 0.5
                 Label:
                     markup: True
-                    color: 0.25, 1.0, 0.25, 1.0
+                    color: HEADER_FONT_COLOR
                     text: "[b]" + root.artist + "[/b]"
                     size_hint_y: 0.1
                 Label:
                     markup: True
-                    color: 0.25, 1.0, 0.25, 1.0
+                    color: HEADER_FONT_COLOR
                     text: "[b]" + root.album + "[/b]"
                     size_hint_y: 0.1
 
