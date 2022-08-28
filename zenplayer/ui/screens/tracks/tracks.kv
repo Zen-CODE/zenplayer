@@ -1,6 +1,7 @@
 #:kivy 1.10
 #: import ZenRecycleView ui.widgets.zenrecycleview.ZenRecycleView
 #: import HEADER_FONT_COLOR ui.styles.HEADER_FONT_COLOR
+#: import BUTTON_FONT_COLOR ui.styles.BUTTON_FONT_COLOR
 
 <TracksScreen>:
     header: "Tracks"
@@ -34,5 +35,6 @@
                     size_hint_y: 0.1
                     padding: 10, 10, 10, 10
                     ZenButton:
+                        color: BUTTON_FONT_COLOR
                         text: "Back"
                         on_press: root.ctrl.zenplayer.show_screen("Albums", artist=root.artist)
