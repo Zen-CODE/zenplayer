@@ -215,6 +215,14 @@ class Controller(EventDispatcher):
         artist, album = self.library.get_random_album()
         self.playlist.add_files(self.library.get_path(artist, album))
 
+    def play_random_album(self):
+        """ Play a random album, replacing the playlist """
+        self.stop()
+        artist, album = self.library.get_random_album()
+        self.playlist.add_files(
+            self.library.get_path(artist, album), "replace")
+        self.play_index(0)
+
     def play_next(self):
         """ Play the next track in the playlist. """
         self.advance = False
