@@ -1,7 +1,7 @@
 kivy==2.0.0
 pynput==1.6.8
 python-vlc==3.0.7110
-Flask==1.1.1
+Flask==2.3.2
 flasgger==0.9.4
 mutagen==1.44.0
 Flask-MonitoringDashboard==3.0.9
