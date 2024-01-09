@@ -4,3 +4,5 @@ venv/
 zenplayer/webserver/static
 zenplayer/webserver/flask_monitoring*
 zenplayer/keys
+.python-version
+.gitignore
