@@ -34,3 +34,10 @@ if recursive:
     print(f"\n🔄 Recursive functions:")
     for func in recursive:
         print(f"  - {func.name}")
+
+# NOTE - the below is not at all accurate and flags used code as dead
+# Find dead code
+for func in codebase.functions:
+    if len(func.usages) == 0:
+        print(f'🗑️ Dead code: {func.name}')
+        func.remove()
