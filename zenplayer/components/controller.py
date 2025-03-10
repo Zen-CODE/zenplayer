@@ -9,7 +9,6 @@ from components.hotkey_handler import HotKeyHandler
 from components.library import Library
 from components.playlist import Playlist
 from components.store import StoreFactory
-from kivy.logger import Logger
 from components.paths import rel_to_base
 from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer

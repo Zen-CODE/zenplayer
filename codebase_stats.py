@@ -31,7 +31,7 @@ if codebase.classes:
 recursive = [f for f in codebase.functions
             if any(call.name == f.name for call in f.function_calls)][:5]
 if recursive:
-    print(f"\n🔄 Recursive functions:")
+    print("\n🔄 Recursive functions:")
     for func in recursive:
         print(f"  - {func.name}")
 

@@ -6,10 +6,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from ui.kvloader import KVLoader
 from ui.screens.screens import ScreenFactory
-from random import choice
 from kivy.uix.screenmanager import (
-    WipeTransition, SlideTransition, SwapTransition, CardTransition,
-    FadeTransition, FallOutTransition, RiseInTransition)
+    SwapTransition)
 
 
 class ZenPlayer(FloatLayout):
