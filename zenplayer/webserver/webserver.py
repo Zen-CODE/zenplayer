@@ -41,5 +41,4 @@ class WebServer:
     @staticmethod
     def stop():
         if WebServer._thread is not None:
-            # TODO
-            pass
+            WebServer._thread.join()
