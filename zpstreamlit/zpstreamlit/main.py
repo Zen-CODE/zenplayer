@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-import threading
 from time import sleep
 
 ZENPLAYER_URL = "http://9.0.0.13:5000"
@@ -45,7 +44,25 @@ class ProgressBar:
         data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
         bar.progress(data["position"], text=None, width="stretch")
 
+class Playlist:
+
+    @staticmethod
+    def show():
+       container = st.container()
+       while True:
+           Playlist.update(container)
+           sleep(1)
+
+    @staticmethod
+    def update(container):
+        container.empty()
+        data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
+        for item in data:
+            container.markdown(f"• {item['title']} - {item['artist']}")
+
+
 st.title("ZenPlayer")
 CoverImage.show()
 ControlButtons.show()
 ProgressBar.show()
+Playlist.show()
