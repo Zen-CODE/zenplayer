@@ -5,15 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
-            "type": "python",
+            "name": "Current File",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
         },
         {
-            "name": "Python: Launch ZenPlayer",
-            "type": "python",
+            "name": "ZenPlayer",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/zenplayer/main.py",
             "console": "integratedTerminal",
@@ -22,12 +22,23 @@
                    "LD_PRELOAD": "./zenplayer/libLeap.so"}
         },
         {
-            "name": "Python: Launch FireStore",
-            "type": "python",
+            "name": "FireStore",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/zenplayer/components/cloud_firestore.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Streamlit",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "cwd": "${workspaceFolder}/zpstreamlit/zpstreamlit",
+            "args": [
+                "run", "main.py"
+            ],
             "console": "integratedTerminal",
-            "env"
+            "justMyCode": false,
         }
     ]
 }
