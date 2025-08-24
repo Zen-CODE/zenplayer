@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
-from streamlit_image_coordinates import streamlit_image_coordinates
-from pages.zencore import ZENPLAYER, ZENPLAYER_URL
+# from streamlit_image_coordinates import streamlit_image_coordinates
+from zencore import ZENPLAYER, ZENPLAYER_URL
 
 
 def get_zenplayer():
@@ -38,7 +38,7 @@ def get_zenplayer():
             next_.button("⏭", on_click=ControlButtons._button, args=("play_next",), width=button_width)
             vol_down_.button("🔉", on_click=ControlButtons._button, args=("volume_down",), width=button_width)
             vol_up_.button("🔊", on_click=ControlButtons._button, args=("volume_up",), width=button_width)
-            refresh_.button("🔄", on_click=ControlButtons._button, width=button_width)
+            refresh_.button("⟳", on_click=ControlButtons._button, width=button_width)
 
 
     class CoverImage:

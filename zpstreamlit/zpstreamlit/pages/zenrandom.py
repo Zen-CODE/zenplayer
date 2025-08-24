@@ -1,5 +1,5 @@
 import streamlit as st
-from .zencore import ZENPLAYER_URL
+from zencore import ZENPLAYER_URL
 import requests
 from html import escape
 
