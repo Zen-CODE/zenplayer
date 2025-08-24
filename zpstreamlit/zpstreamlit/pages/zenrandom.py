@@ -17,10 +17,8 @@ def get_zenrandom():
         @staticmethod
         def click(action=None, artist=None, album=None):
             if action:
-                requests.get(f"{ZENPLAYER_URL}/zenplaylist/add_files?" \
-                            f"{escape(random['artist'])}/{escape(random['album'])}")
-            else:
-                st.rerun()
+                requests.get(f"{ZENPLAYER_URL}/zenplaylist/add_files?folder=" \
+                            f"{escape(random['path'])}&mode={action}")
 
     button_width = 80
     add_, replace_, insert_, next_, next_album_ = st.columns(
