@@ -1,68 +1,13 @@
 import streamlit as st
-import requests
-from time import sleep
+from pages.zenplayer import get_zenplayer
+from pages.zenlibrary import get_zenlibrary
 
-ZENPLAYER_URL = "http://9.0.0.13:5000"
+pages = {
+    "ZenPlayer": [
+        st.Page(get_zenplayer, title="Now playing"),
+        st.Page(get_zenlibrary, title="Library")
+    ]
+}
 
-class ControlButtons:
-    """This class houses the control buttons for the media player."""
-
-    @staticmethod
-    def _button(name):
-        print("Button clicked: ", name)
-        requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
-
-    @staticmethod
-    def show():
-        """Adds a row of control buttons to the Streamlit app."""
-        prev_, stop_, play_pause_, next_ = st.columns(spec=[1, 1, 1, 1], border=True)
-        prev_.button("⏮", on_click=ControlButtons._button, args=("play_previous",), width=150)
-        stop_.button("⏹", on_click=ControlButtons._button, args=("stop",), width=150)
-        play_pause_.button("⏯", on_click=ControlButtons._button, args=("play_pause",), width=150)
-        next_.button("⏭", on_click=ControlButtons._button, args=("play_next",), width=150)
-
-
-class CoverImage:
-    """This class handles the display of the cover image for the media player."""
-
-    @staticmethod
-    def show():
-        data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover",
-                 use_container_width=True)
-        st.markdown(f"{data['artist']}: {data['album']} - " \
-                         f"{data['file_name'].split('/')[-1].split('.')[0]}")
-
-class ProgressBar:
-
-    @staticmethod
-    def show():
-       data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-       bar = st.progress(data["position"], text=None, width="stretch")
-       while True:
-        sleep(1)
-        data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-        bar.progress(data["position"], text=None, width="stretch")
-
-class Playlist:
-
-    @staticmethod
-    def show():
-       container = st.container()
-       while True:
-           Playlist.update(container)
-           sleep(1)
-
-    @staticmethod
-    def update(container):
-        container.empty()
-        data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
-        for item in data:
-            container.markdown(f"• {item['title']} - {item['artist']}")
-
-
-st.title("ZenPlayer")
-CoverImage.show()
-ControlButtons.show()
-ProgressBar.show()
-Playlist.show()
+pg = st.navigation(pages)
+pg.run()
