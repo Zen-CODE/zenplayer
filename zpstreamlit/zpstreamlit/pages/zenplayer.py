@@ -21,22 +21,24 @@ def get_zenplayer():
         """This class houses the control buttons for the media player."""
 
         @staticmethod
-        def _button(name):
+        def _button(name=None):
             print("Button clicked: ", name)
-            requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
+            if name:
+                requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
 
         @staticmethod
         def show():
             """Adds a row of control buttons to the Streamlit app."""
             button_width = 80
-            prev_, stop_, play_pause_, next_, vol_down_, vol_up_ = zp.columns(
-                spec=[1, 1, 1, 1, 1, 1], border=True)
+            prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = zp.columns(
+                spec=[1, 1, 1, 1, 1, 1, 1], border=True)
             prev_.button("⏮", on_click=ControlButtons._button, args=("play_previous",), width=button_width)
             stop_.button("⏹", on_click=ControlButtons._button, args=("stop",), width=button_width)
             play_pause_.button("⏯", on_click=ControlButtons._button, args=("play_pause",), width=button_width)
             next_.button("⏭", on_click=ControlButtons._button, args=("play_next",), width=button_width)
             vol_down_.button("🔉", on_click=ControlButtons._button, args=("volume_down",), width=button_width)
             vol_up_.button("🔊", on_click=ControlButtons._button, args=("volume_up",), width=button_width)
+            refresh_.button("🔄", on_click=ControlButtons._button, width=button_width)
 
 
     class CoverImage:
@@ -45,7 +47,7 @@ def get_zenplayer():
         @staticmethod
         def show():
             def get_time(time_s):
-                return str(int(time_s // 60)).zfill(2) + "m " + \
+                return str(int(time_s / 60)).zfill(2) + "m " + \
                     str(int(time_s % 60)).zfill(2) + "s"
 
             data = ZENPLAYER["data"]
