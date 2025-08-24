@@ -1,21 +1,16 @@
 import streamlit as st
 import requests
 from streamlit_image_coordinates import streamlit_image_coordinates
-
-
-ZENPLAYER_URL = "http://9.0.0.13:5000"
-ZENPLAYER = {}
+from .zencore import ZENPLAYER, ZENPLAYER_URL
 
 
 def get_zenplayer():
     zp = st.container()
-    # zp = st.Page("pages/zenplayer.py", title="Now playing")
 
     def buid_ui():
         """Refresh the UI components."""
         ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
 
-        # zp.title("ZenPlayer")
         CoverImage.show()
         ControlButtons.show()
         ProgressBar.show()
@@ -57,6 +52,7 @@ def get_zenplayer():
             #     use_column_width="always")
             zp.markdown(f"**{data['artist']}: {data['album']}** - " \
                             f"*{data['file_name'].split('/')[-1].split('.')[0]}*")
+            zp.write()
 
     class ProgressBar:
 
@@ -80,6 +76,4 @@ def get_zenplayer():
 
     buid_ui()
     return zp
-
-# get_zenplayer()
 
