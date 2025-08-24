@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from streamlit_image_coordinates import streamlit_image_coordinates
-from .zencore import ZENPLAYER, ZENPLAYER_URL
+from pages.zencore import ZENPLAYER, ZENPLAYER_URL
 
 
 def get_zenplayer():
@@ -12,8 +12,8 @@ def get_zenplayer():
         ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
 
         CoverImage.show()
-        ControlButtons.show()
         ProgressBar.show()
+        ControlButtons.show()
         Playlist.show()
 
 
@@ -44,7 +44,12 @@ def get_zenplayer():
 
         @staticmethod
         def show():
+            def get_time(time_s):
+                return str(int(time_s // 60)).zfill(2) + "m " + \
+                    str(int(time_s % 60)).zfill(2) + "s"
+
             data = ZENPLAYER["data"]
+            meta = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_track_meta").json()
             zp.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover",
                      use_container_width=True)
             # zp.write(streamlit_image_coordinates(
@@ -52,6 +57,9 @@ def get_zenplayer():
             #     use_column_width="always")
             zp.markdown(f"**{data['artist']}: {data['album']}** - " \
                             f"*{data['file_name'].split('/')[-1].split('.')[0]}*")
+            zp.write(
+                f"{meta['sample_rate']}hz, {meta['bitrate']}kbps, {get_time(meta['length'])}")
+
             zp.write()
 
     class ProgressBar:
