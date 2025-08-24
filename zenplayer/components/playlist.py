@@ -124,7 +124,7 @@ class Playlist(EventDispatcher):
             self.current += 1
 
         if self.current + 1 > len(self.queue):
-            self.current = max(0, len(self.queue) - 1)
+            self.current = 0
 
     def move_previous(self):
         """ Move the selected track to the previous entry"""
