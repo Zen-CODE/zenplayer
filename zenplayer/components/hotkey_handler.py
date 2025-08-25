@@ -1,6 +1,7 @@
 """
 This module adds global hotkey support from ZenPlayer
 """
+
 from kivy.clock import Clock
 from kivy.logger import Logger
 from components.config import Config
@@ -15,7 +16,7 @@ class HotKeyHandler:
 
     @staticmethod
     def add_bindings(ctrl):
-        """ Add the specified keybinding to action on the given controller. """
+        """Add the specified keybinding to action on the given controller."""
         Logger.info("HotKeyHandler: Adding bindings...")
         mapping = HotKeyHandler._load_hotkeymap()
         HotKeyHandler._create_bindings(mapping, ctrl)
@@ -31,7 +32,7 @@ class HotKeyHandler:
 
     @staticmethod
     def get_function(ctrl, method):
-        """ Return a function that calls the *method* of the *ctrl* but on the
+        """Return a function that calls the *method* of the *ctrl* but on the
         next clock event. This (hopefully) prevents segmentation faults.
         """
         func = getattr(ctrl, method)
@@ -46,7 +47,6 @@ class HotKeyHandler:
             mapping a dictionary with the key as the hotkey combination and the
             value as the controller action.
         """
-        mapdict = {
-            k: HotKeyHandler.get_function(ctrl, v) for k, v in mapping.items()}
+        mapdict = {k: HotKeyHandler.get_function(ctrl, v) for k, v in mapping.items()}
         ghk = GlobalHotKeys(mapdict)
         ghk.start()

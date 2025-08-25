@@ -1,6 +1,7 @@
 """
 This module houses the API interface for the ZenPlaylist object.
 """
+
 from webserver.api.zenapibase import ZenAPIBase
 from os.path import exists
 
@@ -9,6 +10,7 @@ class ZenPlaylist(ZenAPIBase):
     """
     Present an API interface for interaction with the Zenplaylist object.
     """
+
     def get_current_info(self):
         """
         Return information on the currently active track.
@@ -162,12 +164,12 @@ class ZenPlaylist(ZenAPIBase):
         folder = self.get_request_arg("folder")
         if folder or not exists(folder):
             mode = self.get_request_arg("mode", "add")
-            response = self.safe_call(
-                self.ctrl.playlist.add_files, folder, mode)
+            response = self.safe_call(self.ctrl.playlist.add_files, folder, mode)
             if mode in ["replace", "insert"]:
                 self.safe_call(self.ctrl.play_index, 0, get_response=False)
             return response
 
         else:
             return self.resp_from_data(
-                {"message": f"No such folder found: '{folder}'"}, 404)
+                {"message": f"No such folder found: '{folder}'"}, 404
+            )

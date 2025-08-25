@@ -14,7 +14,7 @@ class ZenPlayer(ZenAPIBase):
         """
         Return a dictionary containing the complete player state.
         """
-        Logger.debug('zenaplayer.py: get_state called %s', datetime.now())
+        Logger.debug("zenaplayer.py: get_state called %s", datetime.now())
         ctrl = self.ctrl
         return {
             "volume": ctrl.volume,
@@ -25,7 +25,7 @@ class ZenPlayer(ZenAPIBase):
             "time_display": ctrl.time_display,
             "state": ctrl.state,
             "position": ctrl.position,
-            "file_name": ctrl.file_name
+            "file_name": ctrl.file_name,
         }
 
     def get_track_meta(self):
@@ -57,7 +57,7 @@ class ZenPlayer(ZenAPIBase):
                         type: integer
 
         """
-        Logger.debug('zenaplayer.py: get_track_meta called')
+        Logger.debug("zenaplayer.py: get_track_meta called")
         meta = Metadata.get(self.ctrl.file_name)
         return self.resp_from_data(meta)
 
@@ -103,6 +103,7 @@ class ZenPlayer(ZenAPIBase):
                 schema:
                     $ref: '#/definitions/ActionResponse'
         """
+
         def get_float(value):
             try:
                 return float(value)
@@ -113,8 +114,7 @@ class ZenPlayer(ZenAPIBase):
         if val is not None:
             return self.safe_call(self.ctrl.on_volume, None, val)
         else:
-            return self.resp_from_data(
-                {"message": "Invalid value for volume"}, 400)
+            return self.resp_from_data({"message": "Invalid value for volume"}, 400)
 
     def volume_up(self):
         """

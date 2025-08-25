@@ -9,34 +9,37 @@ class ZenWebServer:
     """
     Main class dispatching commands to the active ZenPlayer controller object.
     """
+
     def __init__(self, ctrl):
         super().__init__()
         templates = rel_to_base("webserver", "templates")
         app = self.app = Flask(
             __name__,
             template_folder=templates,
-            static_url_path='/static',
-            static_folder=rel_to_base('webserver', 'static'))
+            static_url_path="/static",
+            static_folder=rel_to_base("webserver", "static"),
+        )
         """ The instance of the Flask application. """
 
         self.class_data = Loader.get_class_data(ctrl)
         for class_datum in self.class_data:
             self.add_routes(class_datum)
-        app.add_url_rule("/", "/", self.index, methods=['GET'])
+        app.add_url_rule("/", "/", self.index, methods=["GET"])
         ZenSwagger.init_swagger(app, self.class_data)
         self.disable_logs()
 
     def disable_logs(self):
-        """ By default, werkzeug logs every call. Stop that."""
+        """By default, werkzeug logs every call. Stop that."""
 
-        log = logging.getLogger('werkzeug')
+        log = logging.getLogger("werkzeug")
         log.setLevel(logging.ERROR)
 
     def add_dashboard(self):
-        """ Add the flash dashboard monitoring tool. Note that we move the
+        """Add the flash dashboard monitoring tool. Note that we move the
         import here to avoid the need to install this as a dependency.
         """
         import flask_monitoringdashboard as dashboard  # noqa
+
         dashboard.config.init_from(file=rel_to_base("config", "dashboard.ini"))
         dashboard.bind(self.app)
 
@@ -47,8 +50,9 @@ class ZenWebServer:
         route = f"/{class_datum['name'].lower()}/"
         instance = class_datum["instance"]
         for mth in class_datum["methods"]:
-            self.app.add_url_rule(route + mth, route + mth,
-                                  getattr(instance, mth), methods=['GET'])
+            self.app.add_url_rule(
+                route + mth, route + mth, getattr(instance, mth), methods=["GET"]
+            )
 
     def run(self, *args, **kwargs):
         """

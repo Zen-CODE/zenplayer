@@ -1,6 +1,7 @@
 """
 Houses the ZenRecycleView class
 """
+
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
@@ -19,6 +20,7 @@ class ZenRecycleView(FloatLayout):
     """
     Provides a shared component for Playlist and Library recycleviews.
     """
+
     handler = ObjectProperty()
     """ Object that should handle the "on_selected" method. """
 
@@ -47,40 +49,39 @@ class ZenRecycleView(FloatLayout):
         super().__init__(**kwargs)
 
     def on_data(self, _widget, _value):
-        """ Remove the loading warning once data is loaded. """
+        """Remove the loading warning once data is loaded."""
         self.note_text = ""
 
     def find_item(self, text):
-        """ Jump to the first item that has a text match with *text* """
+        """Jump to the first item that has a text match with *text*"""
         self.ids.rv.layout_manager.clear_selection()
         length = len(self.data)
         text_lower = text.lower()
         for i, data in enumerate(self.data):
             if data["text"].lower().find(text_lower) > -1:
                 if length > 10:  # Only scroll if required
-                    self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(
-                        length)
+                    self.ids.rv.scroll_y = 1.0 - 1.005 * float(i) / float(length)
                 Clock.schedule_once(lambda dt: self._select_item(text_lower))
                 return
 
     def _select_item(self, text_lower):
-        """ Select the first itme that contains matching text. """
+        """Select the first itme that contains matching text."""
         for _k, label in self.ids.rv.view_adapter.views.items():
             if label.text.lower().find(text_lower) > -1:
                 label.selected = True
                 return
 
     def on_show_note(self, widget, value):
-        """ Either hide of show the note label """
+        """Either hide of show the note label"""
         end_value = 1 if value else 0
         Animation(opacity=end_value, duration=2).start(self.ids.note_label)
 
     def on_note_text(self, widget, text):
-        """ Handle the change of note text """
+        """Handle the change of note text"""
         self.show_note = bool(text)
 
     def on_search_text(self, widget, text):
-        """ Handle the display and mechanics of searching for matches """
+        """Handle the display and mechanics of searching for matches"""
         if text:
             self.note_text = f"Searching for: {text}"
             self.find_item(text)
@@ -88,7 +89,7 @@ class ZenRecycleView(FloatLayout):
             self.note_text = ""
 
     def on_key_down(self, keycode, text, modifiers):
-        """ Respond the pressing of a key """
+        """Respond the pressing of a key"""
         # print(f"Got keydown text: {text}, keybode={keycode}")
         if text and not modifiers:
             self.search_text += text
@@ -104,7 +105,7 @@ class ZenRecycleView(FloatLayout):
             box = self.ids.box_layout
             if box.selected_widget:
                 box.handle_event("item_touched", box.selected_widget)
-        elif keycode[1] == "backspace"and self.handler.name == "Albums":
+        elif keycode[1] == "backspace" and self.handler.name == "Albums":
             self.handler.ctrl.zenplayer.show_screen("Artists")
 
 
@@ -112,6 +113,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     """
     Add selection support to the Label
     """
+
     index = None
     """ The index of the active label in the RecycleViews' data property """
 
@@ -121,13 +123,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     """ Indicates whether this item has been selected or not. """
 
     def _item_draw(self):
-        """ Handle the setting of the label back_color, so we call pull this
+        """Handle the setting of the label back_color, so we call pull this
         logic out of the recycleview rabbit hole.
         """
-        self.back_color = [.5, .5, 1.0, .3] if self.selected else BACK_COLOR
+        self.back_color = [0.5, 0.5, 1.0, 0.3] if self.selected else BACK_COLOR
 
     def on_selected(self, _widget, _value):
-        """ Respond to the change of selection """
+        """Respond to the change of selection"""
         box = self.parent
         if box and box.selected_widget:
             if box.selected_widget != self:
@@ -137,36 +139,38 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             box.selected_widget = self
 
     def refresh_view_attrs(self, rv, index, data):
-        """ Catch and handle the view changes """
+        """Catch and handle the view changes"""
         self.index = index
         return super().refresh_view_attrs(rv, index, data)
 
     def apply_selection(self, rv, index, is_selected):
-        """ Respond to the selection of items in the view. """
+        """Respond to the selection of items in the view."""
         self.selected = is_selected
         if self.parent:
             self.parent.handle_event("item_selected", self, is_selected)
 
     def on_touch_down(self, touch):
-        """ Add selection on touch down """
+        """Add selection on touch down"""
         if super().on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos):
-            Clock.schedule_once(lambda dt: self.parent.handle_event(
-                "item_touched", self))
+            Clock.schedule_once(
+                lambda dt: self.parent.handle_event("item_touched", self)
+            )
             return self.parent.select_with_touch(self.index, touch)
 
 
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
-    """ Adds selection and focus behaviour to the view. """
+class SelectableRecycleBoxLayout(
+    FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout
+):
+    """Adds selection and focus behaviour to the view."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.selected_widget = None
 
     def handle_event(self, event, *args):
-        """ Delegate the *event* to the handler if required.
+        """Delegate the *event* to the handler if required.
 
         Args:
             event (str): One of "item_touched" or "item_selected".
@@ -180,7 +184,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                 meth(*args)
 
     def move_selection(self, down=True):
-        """ Move to the next itme in the selection."""
+        """Move to the next itme in the selection."""
         rv = self.parent
         if self.selected_widget:
             if down and self.selected_widget.index < len(rv.data) - 1:
@@ -191,5 +195,5 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                 return
         else:
             # If nothing is selected, just select the first/last
-            text = rv.data[0 if down else len(rv.data) -1]["text"]
+            text = rv.data[0 if down else len(rv.data) - 1]["text"]
         rv.parent.find_item(text)

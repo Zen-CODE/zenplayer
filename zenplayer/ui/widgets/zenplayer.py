@@ -2,18 +2,19 @@
 This module houses the main Zen PLayer widget, which itself contains the
 screen manager and it's children,
 """
+
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from ui.kvloader import KVLoader
 from ui.screens.screens import ScreenFactory
-from kivy.uix.screenmanager import (
-    SwapTransition)
+from kivy.uix.screenmanager import SwapTransition
 
 
 class ZenPlayer(FloatLayout):
     """
     This class presents the persistanct elements of the ZenPlayer interface.
     """
+
     header = StringProperty("ZenPlayer")
     """ The header dispalyed on the top of the screen. This is changed when
     switching ZenScreen's.
@@ -29,7 +30,7 @@ class ZenPlayer(FloatLayout):
 
     @staticmethod
     def _set_transition(sm):
-        """ Set a random transition - just because we can. """
+        """Set a random transition - just because we can."""
         # trans = choice([WipeTransition, SlideTransition, SwapTransition,
         #                 CardTransition, FadeTransition, FallOutTransition,
         #                 RiseInTransition])
@@ -55,5 +56,5 @@ class ZenPlayer(FloatLayout):
         self.set_header(screen.header)
 
     def set_header(self, header):
-        """ Set the header for the screen """
+        """Set the header for the screen"""
         self.header = header

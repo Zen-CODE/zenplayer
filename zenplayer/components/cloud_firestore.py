@@ -2,6 +2,7 @@
 
 It provides methods to read,write and listen for data changes.
 """
+
 from datetime import datetime, timedelta
 from socket import gethostname
 from threading import Lock, Thread, active_count
@@ -48,24 +49,28 @@ class NowPlaying:
     def _get_client():
         """Generate and return a FireStore client using the service account."""
         cred = credentials.Certificate(
-            rel_to_base('keys', 'tunez-245820-047b7b31e116.json'))
+            rel_to_base("keys", "tunez-245820-047b7b31e116.json")
+        )
         firebase_admin.initialize_app(cred)
         return firestore.client()
 
     def __repr__(self):
         """Return a string representation of our 'Now Playing' object."""
-        return "<NowPlaying on {machine}: {artist},  {album}: {track}, state="\
-               "{state} @{datetime}".format(**self.props)
+        return (
+            "<NowPlaying on {machine}: {artist},  {album}: {track}, state="
+            "{state} @{datetime}".format(**self.props)
+        )
 
     def save(self):
         """Store the item to Firestore."""
         batch = self._client.batch()
-        doc_ref = self._client.collection('tunez').document('now_playing')
+        doc_ref = self._client.collection("tunez").document("now_playing")
         batch.set(doc_ref, self.props)
 
         # Now add to history
-        hist_ref = doc_ref.collection(
-            'history').document(self.props['datetime'].isoformat())
+        hist_ref = doc_ref.collection("history").document(
+            self.props["datetime"].isoformat()
+        )
         batch.set(hist_ref, self.props)
         batch.commit()
 
@@ -74,7 +79,7 @@ class NowPlaying:
         """Retrieve the last entry from FireStore."""
         if NowPlaying._client is None:
             NowPlaying._client = NowPlaying._get_client()
-        users_ref = NowPlaying._client.collection('tunez')
+        users_ref = NowPlaying._client.collection("tunez")
         docs = list(users_ref.stream())
         return docs
 
@@ -90,17 +95,22 @@ class NowPlaying:
         """Write to the firestore database."""
         Logger.info("NowPlaying: Adding entry to the write queue.")
         with self._lock:
-            self._now_playing.append(NowPlaying(
-                artist=ctrl.artist, album=ctrl.album, track=ctrl.track,
-                state=ctrl.state, machine=gethostname(),
-                datetime=datetime.now() - timedelta(hours=2)))
+            self._now_playing.append(
+                NowPlaying(
+                    artist=ctrl.artist,
+                    album=ctrl.album,
+                    track=ctrl.track,
+                    state=ctrl.state,
+                    machine=gethostname(),
+                    datetime=datetime.now() - timedelta(hours=2),
+                )
+            )
 
         self._process_queue()
 
     def _process_queue(self):
         """Process the 'now_playing' queue and write entries to firebase."""
-        Logger.info(
-            "NowPlaying: Processing, %s active threads", active_count())
+        Logger.info("NowPlaying: Processing, %s active threads", active_count())
         with self._lock:
             for item in self._now_playing[:]:
                 try:

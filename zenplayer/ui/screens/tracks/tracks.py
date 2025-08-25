@@ -1,6 +1,7 @@
 """
 This module houses the screen displaying a tracks listing for an album
 """
+
 from kivy.properties import StringProperty
 from ui.screens.zenscreen import ZenScreen
 from kivy.clock import Clock
@@ -11,6 +12,7 @@ class TracksScreen(ZenScreen):
     """
     The main screen that shows whats currently playing
     """
+
     artist = StringProperty()
 
     album = StringProperty()
@@ -26,34 +28,41 @@ class TracksScreen(ZenScreen):
             Clock.schedule_once(lambda dt: self.load())
 
     def load(self):
-        """ Load the tracks for the given artist and album """
+        """Load the tracks for the given artist and album"""
         lib = self.ctrl.library
-        self.ids.image.source = lib.get_cover_path(
-            self.artist, self.album)
+        self.ids.image.source = lib.get_cover_path(self.artist, self.album)
         self.ids.rv.data = [
-            {"text": item} for item in lib.get_tracks(self.artist,
-                                                      self.album)]
+            {"text": item} for item in lib.get_tracks(self.artist, self.album)
+        ]
 
     def item_touched(self, item):
-        """ Show the context for selecting the album """
+        """Show the context for selecting the album"""
         self.track = item.text
         self.ctrl.zenplayer.show_screen(
-            "Context", title=f"Track: {self.track}",
+            "Context",
+            title=f"Track: {self.track}",
             parent_screen="Tracks",
             actions=[
-                {"text": "Add to playlist",
-                 "action": self.add_to_playlist},
-                {"text": "Play next",
-                 "action": lambda: self.add_to_playlist(mode="next")},
-                {"text": "Play after this album",
-                 "action": lambda: self.add_to_playlist(mode="next_album")},
-                {"text": "Play now (insert)",
-                 "action": lambda: self.add_to_playlist(mode="insert")},
-                {"text": "Play now (replace)",
-                 "action": lambda: self.add_to_playlist(mode="replace")},
-                {"text": "Cancel",
-                 "action": lambda: None}
-            ])
+                {"text": "Add to playlist", "action": self.add_to_playlist},
+                {
+                    "text": "Play next",
+                    "action": lambda: self.add_to_playlist(mode="next"),
+                },
+                {
+                    "text": "Play after this album",
+                    "action": lambda: self.add_to_playlist(mode="next_album"),
+                },
+                {
+                    "text": "Play now (insert)",
+                    "action": lambda: self.add_to_playlist(mode="insert"),
+                },
+                {
+                    "text": "Play now (replace)",
+                    "action": lambda: self.add_to_playlist(mode="replace"),
+                },
+                {"text": "Cancel", "action": lambda: None},
+            ],
+        )
 
     def add_to_playlist(self, mode="add"):
         """

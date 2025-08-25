@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+
 # from streamlit_image_coordinates import streamlit_image_coordinates
 from zencore import ZENPLAYER, ZENPLAYER_URL
 
@@ -18,13 +19,41 @@ class ControlButtons:
         """Adds a row of control buttons to the Streamlit app."""
         button_width = 80
         prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = zp.columns(
-            spec=[1, 1, 1, 1, 1, 1, 1], border=True)
-        prev_.button("⏮", on_click=ControlButtons._button, args=("play_previous",), width=button_width)
-        stop_.button("⏹", on_click=ControlButtons._button, args=("stop",), width=button_width)
-        play_pause_.button("⏯", on_click=ControlButtons._button, args=("play_pause",), width=button_width)
-        next_.button("⏭", on_click=ControlButtons._button, args=("play_next",), width=button_width)
-        vol_down_.button("🔉", on_click=ControlButtons._button, args=("volume_down",), width=button_width)
-        vol_up_.button("🔊", on_click=ControlButtons._button, args=("volume_up",), width=button_width)
+            spec=[1, 1, 1, 1, 1, 1, 1], border=True
+        )
+        prev_.button(
+            "⏮",
+            on_click=ControlButtons._button,
+            args=("play_previous",),
+            width=button_width,
+        )
+        stop_.button(
+            "⏹", on_click=ControlButtons._button, args=("stop",), width=button_width
+        )
+        play_pause_.button(
+            "⏯",
+            on_click=ControlButtons._button,
+            args=("play_pause",),
+            width=button_width,
+        )
+        next_.button(
+            "⏭",
+            on_click=ControlButtons._button,
+            args=("play_next",),
+            width=button_width,
+        )
+        vol_down_.button(
+            "🔉",
+            on_click=ControlButtons._button,
+            args=("volume_down",),
+            width=button_width,
+        )
+        vol_up_.button(
+            "🔊",
+            on_click=ControlButtons._button,
+            args=("volume_up",),
+            width=button_width,
+        )
         refresh_.button("⟳", on_click=ControlButtons._button, width=button_width)
 
 
@@ -34,31 +63,37 @@ class CoverImage:
     @staticmethod
     def show(zp):
         def get_time(time_s):
-            return str(int(time_s / 60)).zfill(2) + "m " + \
-                str(int(time_s % 60)).zfill(2) + "s"
+            return (
+                str(int(time_s / 60)).zfill(2)
+                + "m "
+                + str(int(time_s % 60)).zfill(2)
+                + "s"
+            )
 
         data = ZENPLAYER["data"]
         meta = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_track_meta").json()
-        zp.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover",
-                    use_container_width=True)
+        zp.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", use_container_width=True)
         # zp.write(streamlit_image_coordinates(
         #     f"{ZENPLAYER_URL}/zenplayer/get_track_cover"),
         #     use_column_width="always")
-        zp.markdown(f"**{data['artist']}: {data['album']}** - " \
-                        f"*{data['file_name'].split('/')[-1].split('.')[0]}*")
+        zp.markdown(
+            f"**{data['artist']}: {data['album']}** - "
+            f"*{data['file_name'].split('/')[-1].split('.')[0]}*"
+        )
         zp.write(
-            f"{meta['sample_rate']}hz, {meta['bitrate']}kbps, {get_time(meta['length'])}")
+            f"{meta['sample_rate']}hz, {meta['bitrate']}kbps, {get_time(meta['length'])}"
+        )
 
         zp.write()
 
-class ProgressBar:
 
+class ProgressBar:
     @staticmethod
     def show(zp):
         zp.progress(ZENPLAYER["data"]["position"], text=None, width="stretch")
 
-class Playlist:
 
+class Playlist:
     @staticmethod
     def show(zp):
         container = zp.container()
@@ -68,7 +103,7 @@ class Playlist:
     def update(container):
         data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
         for item in data:
-            container.write(item['text'])
+            container.write(item["text"])
 
 
 def get_zenplayer():
@@ -85,4 +120,3 @@ def get_zenplayer():
 
     buid_ui()
     return zp
-

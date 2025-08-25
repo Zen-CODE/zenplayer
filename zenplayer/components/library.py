@@ -16,8 +16,7 @@ class Library:
     """
 
     def __init__(self, config):
-        self.path = path = expanduser(config.get("library_folder",
-                                                 "~/Zen/Music"))
+        self.path = path = expanduser(config.get("library_folder", "~/Zen/Music"))
         """ The fully expanded path to the music libary folder."""
 
         self.data_frame = self._get_data_frame(path)
@@ -26,7 +25,7 @@ class Library:
 
     @staticmethod
     def _get_data_frame(path):
-        """ Return a pandas DataFrame with 'Artist', 'Album', 'Track', and
+        """Return a pandas DataFrame with 'Artist', 'Album', 'Track', and
         'Cover' columns.
         """
         # This code saves the state in a pickle file for speed. Not worth it
@@ -43,6 +42,7 @@ class Library:
         """
         Build the DataFrame from an insection of the *path*.
         """
+
         def choose_cover(covers):
             """Select a cover from the given list."""
             if covers:
@@ -57,27 +57,26 @@ class Library:
         for artist in fse.get_dirs(path):
             artist_path = join(path, artist)
             for album in fse.get_dirs(artist_path):
-                _tracks, _covers = fse.get_media(
-                    join(artist_path, album))
+                _tracks, _covers = fse.get_media(join(artist_path, album))
                 for track in _tracks:
                     artists.append(artist)
                     albums.append(album)
                     tracks.append(track)
                     covers.append(choose_cover(_covers))
-        return pd.DataFrame({"Artist": artists, "Album": albums,
-                             "Track": tracks, "Cover":  covers})
+        return pd.DataFrame(
+            {"Artist": artists, "Album": albums, "Track": tracks, "Cover": covers}
+        )
 
     def get_artists(self):
-        """ Return a list of artists. """
+        """Return a list of artists."""
         return list(self.data_frame.Artist.unique())
 
     def get_albums(self, artist):
-        """ Return a list of albums for the *artist*. """
-        return list(self.data_frame[
-            self.data_frame["Artist"] == artist].Album.unique())
+        """Return a list of albums for the *artist*."""
+        return list(self.data_frame[self.data_frame["Artist"] == artist].Album.unique())
 
     def get_cover_path(self, artist, album):
-        """ Return the album cover art for the given artist and album. """
+        """Return the album cover art for the given artist and album."""
         albums = self.data_frame[self.data_frame["Artist"] == artist]
         listing = albums[albums["Album"] == album]
         if len(listing.Cover.values) > 0:
@@ -87,7 +86,7 @@ class Library:
         return join(self.path, "default.png")
 
     def get_random_album(self):
-        """ Return a randomly selected artist and album. """
+        """Return a randomly selected artist and album."""
         row = self.data_frame.sample()
         return row.Artist.values[0], row.Album.values[0]
 
@@ -118,14 +117,14 @@ class Library:
         """
         df = self.data_frame
         term = term.lower()
-        results = df[(df["Album"].str.lower().str.find(term) > -1) |
-                     (df["Artist"].str.lower().str.find(term) > -1)]
+        results = df[
+            (df["Album"].str.lower().str.find(term) > -1)
+            | (df["Artist"].str.lower().str.find(term) > -1)
+        ]
 
         if results.empty:
             return {}
         row = results.sample()
         artist = row.Artist.values[0]
         album = row.Album.values[0]
-        return {"artist": artist,
-                "album": album,
-                "path": self.get_path(artist, album)}
+        return {"artist": artist, "album": album, "path": self.get_path(artist, album)}

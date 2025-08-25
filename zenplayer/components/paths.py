@@ -2,6 +2,7 @@
 Houses a convenience function for obtaining absolute file paths relative to the
 ZenPlayer root folder.
 """
+
 from os.path import abspath, dirname, join, sep
 
 _base = abspath(dirname(abspath(__file__)) + sep + ".." + sep)

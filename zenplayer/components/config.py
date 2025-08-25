@@ -1,4 +1,5 @@
 """This module houses a helper class for loading configuration files."""
+
 from json import load
 from os import makedirs
 from os.path import exists, expanduser, join

@@ -2,6 +2,7 @@
 
 It inject theSound VLCPlayer as the default audio provider.
 """
+
 from kivy.core.audio import SoundLoader
 
 from .audio_vlc import SoundVLCPlayer

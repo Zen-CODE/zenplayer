@@ -1,6 +1,7 @@
 """
 This module houses a factory class for generating and retuning screens
 """
+
 from importlib import import_module
 
 
@@ -9,6 +10,7 @@ class ScreenFactory:
     A convenience class for generating and returning screens for use in
     ZenPlayer
     """
+
     @staticmethod
     def get(name, **kwargs):
         """

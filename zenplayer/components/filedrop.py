@@ -1,6 +1,7 @@
 """
 The module houses a helper class for handling file and folder dropping.
 """
+
 from kivy.core.window import Window
 
 
@@ -8,6 +9,7 @@ class FileDrop:
     """
     Convenience class for handling the dragging and dropping of files.
     """
+
     def __init__(self, playlist):
         super().__init__()
         self.playlist = playlist

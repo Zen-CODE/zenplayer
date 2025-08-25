@@ -2,7 +2,9 @@ from kivy.event import EventDispatcher
 from os import sep, path, listdir
 from os.path import exists
 from kivy.properties import (  # pylint: disable=no-name-in-module
-    NumericProperty, ListProperty)
+    NumericProperty,
+    ListProperty,
+)
 from components.filedrop import FileDrop
 from components.filesystemextractor import FileSystemExtractor
 
@@ -11,6 +13,7 @@ class Playlist(EventDispatcher):
     """
     Holds the current playlist class.
     """
+
     current = NumericProperty(0)
     """ The index of the currently playing track in the queue. """
 
@@ -27,7 +30,7 @@ class Playlist(EventDispatcher):
         self.file_drop = FileDrop(self)
 
     def _load(self, store):
-        """ Initialize and load previous state """
+        """Initialize and load previous state"""
         # See if there is an existing playlist to restore
         if store.exists("Playlist"):
             if "items" in store.get("Playlist"):
@@ -48,7 +51,7 @@ class Playlist(EventDispatcher):
         return ""
 
     def get_current_info(self):
-        """ Return a dictionary of information on the current track"""
+        """Return a dictionary of information on the current track"""
         return self.get_info(index=self.current)
 
     @staticmethod
@@ -64,8 +67,9 @@ class Playlist(EventDispatcher):
         Internal implementation of the addition, support recursion but
         extracted for once of setup in add_file
         """
+
         def get_index():
-            """ Return the index of where to insert the files. """
+            """Return the index of where to insert the files."""
             if len(self.queue) < 1:
                 return 0
 
@@ -75,24 +79,29 @@ class Playlist(EventDispatcher):
                 return 1
             start = 1
             folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
-            while start < len(self.queue) and \
-                    self.queue[start]["filename"].find(folder) > -1:
+            while (
+                start < len(self.queue)
+                and self.queue[start]["filename"].find(folder) > -1
+            ):
                 start += 1
             return start
 
         if path.isdir(file_folder):
-            for f in sorted(listdir(file_folder),
-                            reverse=bool(mode in ["insert", "next",
-                                                  "next_album"])):
+            for f in sorted(
+                listdir(file_folder),
+                reverse=bool(mode in ["insert", "next", "next_album"]),
+            ):
                 self._add_files(path.join(file_folder, f), mode=mode)
         elif file_folder[-4:] in FileSystemExtractor.music_types:
             if mode in ["insert", "next", "next_album"]:
                 self.queue.insert(
-                    get_index(), ({"filename": file_folder,
-                                  "text": self.get_text(file_folder)}))
+                    get_index(),
+                    ({"filename": file_folder, "text": self.get_text(file_folder)}),
+                )
             else:
-                self.queue.append({"filename": file_folder,
-                                  "text": self.get_text(file_folder)})
+                self.queue.append(
+                    {"filename": file_folder, "text": self.get_text(file_folder)}
+                )
 
     def add_files(self, file_folder, mode="add"):
         """
@@ -108,7 +117,7 @@ class Playlist(EventDispatcher):
         self._add_files(file_folder, mode)
 
     def clear_files(self):
-        """ Clear the existing playlist"""
+        """Clear the existing playlist"""
         self.queue = []
         self.current = 0
 
@@ -127,27 +136,24 @@ class Playlist(EventDispatcher):
             self.current = 0
 
     def move_previous(self):
-        """ Move the selected track to the previous entry"""
+        """Move the selected track to the previous entry"""
         if self.current > 0:
             self.current += -1
 
     def save(self, store):
-        """ The playlist screen is being closed """
+        """The playlist screen is being closed"""
         all_items = {}
         for k, item in enumerate(self.queue):
             all_items.update({"item" + str(k + 1): item["filename"]})
-        store.put("Playlist",
-                  current=self.current,
-                  items=all_items)
+        store.put("Playlist", current=self.current, items=all_items)
 
     def set_index(self, index):
-        """ Set the currently selected track to the one specified by the index
-        """
+        """Set the currently selected track to the one specified by the index"""
         if index < len(self.queue):
             self.current = index
 
     def remove_index(self, index):
-        """ Remove the specified track from the queue. """
+        """Remove the specified track from the queue."""
         if index < len(self.queue):
             self.queue.pop(index)
 
@@ -161,12 +167,13 @@ class Playlist(EventDispatcher):
             * track_number
 
         """
+
         def number_name(_basename):
             """
             Return a tuple of the number and name of the track where the
             *_basename* is the filename without the path.
             """
-            not_ext = _basename[0: _basename.rfind(".")]
+            not_ext = _basename[0 : _basename.rfind(".")]
             parts = not_ext.split("-")
             try:
                 return str(int(parts[0])), "-".join(parts[1:]).strip()
@@ -184,11 +191,13 @@ class Playlist(EventDispatcher):
                 "album": parts[-2],
                 "track": parts[-1],
                 "track_name": name,
-                "track_number": number}
+                "track_number": number,
+            }
         except IndexError:
             return {
                 "artist": "-",
                 "album": "-",
                 "track": "-",
                 "track_name": "-",
-                "track_number": "-"}
+                "track_number": "-",
+            }

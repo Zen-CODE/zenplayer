@@ -1,6 +1,7 @@
 """
 This module houses the Zen Music Library class
 """
+
 from os.path import expanduser, join, isdir, exists
 from os import listdir
 from random import choice
@@ -11,6 +12,7 @@ class Library:
     Present a thin layer over the file system as a music library based on file
     name conventions.
     """
+
     def __init__(self):
         super().__init__()
         self.lib_path = expanduser("~/Music")
@@ -24,16 +26,16 @@ class Library:
         directory listings.
         """
         if exists(direc):
-            return [name for name in listdir(direc)
-                    if isdir(join(direc, name))]
+            return [name for name in listdir(direc) if isdir(join(direc, name))]
         return []
 
     def get_artists(self):
         """
         Return a list of artist available in this collection.
         """
-        contents = [name for name in listdir(self.lib_path)
-                    if isdir(join(self.lib_path, name))]
+        contents = [
+            name for name in listdir(self.lib_path) if isdir(join(self.lib_path, name))
+        ]
         return sorted(contents)
 
     def get_albums(self, artist):

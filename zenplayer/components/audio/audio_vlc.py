@@ -2,6 +2,7 @@
 This module houses a VLC audio component that supports the Kivy `Sound`
 interface.
 """
+
 from kivy.core.audio import Sound, SoundLoader
 from vlc import EventType, Instance
 from kivy.clock import mainthread
@@ -9,7 +10,7 @@ from kivy.logger import Logger
 
 
 class SoundVLCPlayer(Sound):
-    '''A Kivy `Sound` object based on a VLC audio backend. '''
+    """A Kivy `Sound` object based on a VLC audio backend."""
 
     instance = None
     player = None
@@ -27,73 +28,73 @@ class SoundVLCPlayer(Sound):
 
     @mainthread
     def _track_finished(self, *_args):
-        """ Event fired when the track is finished. """
+        """Event fired when the track is finished."""
         if not self.loop:
             self.stop()
         else:
-            self.seek(0.)
+            self.seek(0.0)
             self.player.play()
 
     def _load_player(self, filename):
-        """ Unload the VLC Media player if it not already unloaded """
+        """Unload the VLC Media player if it not already unloaded"""
         self._unload_player()
 
         Logger.info("VLCPlayer: Loading player")
         SoundVLCPlayer.player = player = self.instance.media_player_new()
         media = player.set_mrl(filename)
         player.event_manager().event_attach(
-            EventType.MediaPlayerEndReached, self._track_finished)
+            EventType.MediaPlayerEndReached, self._track_finished
+        )
         media.parse()  # Determine duration
         self._length = media.get_duration() / 1000.0
         media.release()
 
     def _unload_player(self):
-        """ Unload the VLC Media player if it not already unloaded """
+        """Unload the VLC Media player if it not already unloaded"""
         if self.player is not None:
             Logger.info("VLCPlayer: Unloading player")
-            self.player.event_manager().event_detach(
-                EventType.MediaPlayerEndReached)
+            self.player.event_manager().event_detach(EventType.MediaPlayerEndReached)
             if self.player.is_playing():
                 self.player.stop()
             self.player.release()
             SoundVLCPlayer.player = None
 
     def load(self):
-        """ Loads the Media player for the suitable `source` filename. """
+        """Loads the Media player for the suitable `source` filename."""
         Logger.info("VLCPlayer: Entering load")
         self._load_player(self.source)
         self._set_volume(self.volume)
 
     def unload(self):
-        """ Unload any instances of the player """
+        """Unload any instances of the player"""
         self._unload_player()
 
     def play(self):
-        """ Play the audio file """
-        if self.state == 'play':
+        """Play the audio file"""
+        if self.state == "play":
             super().play()
             return
         if self.player is None:
             self.load()
 
         self.player.play()
-        self.state = 'play'
+        self.state = "play"
         super().play()
 
     def stop(self):
-        """ Stop any currently playing audio file """
+        """Stop any currently playing audio file"""
         if self.player and self.player.is_playing():
             self.player.pause()
         super().stop()
 
     def seek(self, position):
-        """ Set the player to the given position in seconds """
+        """Set the player to the given position in seconds"""
         if self.player:
             value = position / self._length
             self.player.set_position(value)
 
     def get_pos(self):
-        """ Return the position in seconds the currently playing track """
+        """Return the position in seconds the currently playing track"""
         if self.player is not None and self.state == "play":
             return self.player.get_position() * self._length
         return 0
@@ -102,7 +103,7 @@ class SoundVLCPlayer(Sound):
         """
         Respond to the setting of the volume. This value is fraction between
         0 and 1.
-         """
+        """
         self._set_volume(volume)
 
     def _set_volume(self, value):
@@ -115,15 +116,17 @@ class SoundVLCPlayer(Sound):
             self.player.audio_set_volume(int(vol))
 
     def _get_length(self):
-        """ Getter method to fetch the track length """
+        """Getter method to fetch the track length"""
         return self._length
 
 
 if __name__ == "__main__":
     from time import sleep
 
-    file = "/home/fruitbat/Music/Various/Music With Attitude/04 - " \
-           "dEUS - Everybody's Weird.mp3"
+    file = (
+        "/home/fruitbat/Music/Various/Music With Attitude/04 - "
+        "dEUS - Everybody's Weird.mp3"
+    )
     # Use the `KIVY_AUDIO=vlcplayer` setting in environment variables to use
     # our provider
     sound = SoundLoader.load(file)

@@ -8,15 +8,16 @@ class MediaButton(FloatLayout):
     """
     A pretty, shiny button showing the player controls
     """
-    source = StringProperty('')
+
+    source = StringProperty("")
 
     def __init__(self, **kwargs):
-        """ Override the constructor so we can register an event """
+        """Override the constructor so we can register an event"""
         super().__init__(**kwargs)
         self.register_event_type("on_click")
 
     def on_click(self):
-        """ The button has been clicked. """
+        """The button has been clicked."""
 
 
 class VolumeSlider(Slider):
@@ -24,6 +25,7 @@ class VolumeSlider(Slider):
     A volume slider that allows smooth volume changes, rather that waiting for
     the end of the slide.
     """
+
     ctrl = ObjectProperty()
 
     dragging = False

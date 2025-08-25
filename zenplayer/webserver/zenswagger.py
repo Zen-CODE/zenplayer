@@ -11,19 +11,23 @@ class ZenSwagger:
     """
     Manager the swagger API documentation backend.
     """
+
     @staticmethod
     def get_swagger_config():
         return {
             "headers": [],
-            "specs": [{
-                    "endpoint": 'apispec_v1',
-                    "route": '/apispec_v1.json',
+            "specs": [
+                {
+                    "endpoint": "apispec_v1",
+                    "route": "/apispec_v1.json",
                     "rule_filter": lambda rule: True,
-                    "model_filter": lambda tag: True}],
+                    "model_filter": lambda tag: True,
+                }
+            ],
             "static_url_path": "/flasgger_static",
             # "static_folder": "static",  # must be set by user
             "swagger_ui": True,
-            "specs_route": "/swagger/"
+            "specs_route": "/swagger/",
         }
 
     @staticmethod
@@ -41,10 +45,11 @@ class ZenSwagger:
             template = loads(f.read())
 
         # Extract the description for the objects doc string
-        template["tags"] = [{"name": klass["name"],
-                            "description": klass["instance"].__doc__}
-                            for klass in class_data]
-        swagger_app = Swagger(app,
-                              template=template,
-                              config=ZenSwagger.get_swagger_config())
+        template["tags"] = [
+            {"name": klass["name"], "description": klass["instance"].__doc__}
+            for klass in class_data
+        ]
+        swagger_app = Swagger(
+            app, template=template, config=ZenSwagger.get_swagger_config()
+        )
         return swagger_app

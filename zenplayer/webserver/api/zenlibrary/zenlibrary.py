@@ -1,6 +1,7 @@
 """
 This module houses teh API interface for the Zenlibrary
 """
+
 from webserver.api.zenapibase import ZenAPIBase  # pylint: disable=import-error
 
 
@@ -8,6 +9,7 @@ class ZenLibrary(ZenAPIBase):
     """
     Present an API interface for interaction with the Zenplaylist object.
     """
+
     def get_artists(self):
         """
         Return a list of artists available in this collection.
@@ -60,13 +62,15 @@ class ZenLibrary(ZenAPIBase):
         if artist:
             lib = self.ctrl.library
             lst = sorted(self.ctrl.library.get_albums(artist))
-            albums = [{"artist": artist,
-                       "album": album,
-                       "path": lib.get_path(artist, album)} for album in lst]
+            albums = [
+                {"artist": artist, "album": album, "path": lib.get_path(artist, album)}
+                for album in lst
+            ]
             if lst:
                 return self.resp_from_data(albums)
         return self.resp_from_data(
-            {"message": f"No album found for artist={artist}"}, 400)
+            {"message": f"No album found for artist={artist}"}, 400
+        )
 
     def get_tracks(self):
         """
@@ -98,7 +102,8 @@ class ZenLibrary(ZenAPIBase):
         album = self.get_request_arg("album")
         if not (album and artist):
             return self.resp_from_data(
-                {"message":  "Please specify a valid artist and album"}, 403)
+                {"message": "Please specify a valid artist and album"}, 403
+            )
         else:
             tracks = self.ctrl.library.get_tracks(artist, album)
             return self.resp_from_data(tracks)
@@ -131,11 +136,9 @@ class ZenLibrary(ZenAPIBase):
         """
         lib = self.ctrl.library
         artist, album = lib.get_random_album()
-        return self.resp_from_data({
-            "artist": artist,
-            "album": album,
-            "path": lib.get_path(artist, album)
-        })
+        return self.resp_from_data(
+            {"artist": artist, "album": album, "path": lib.get_path(artist, album)}
+        )
 
     def get_album_cover(self):
         """
@@ -168,7 +171,8 @@ class ZenLibrary(ZenAPIBase):
         album = self.get_request_arg("album")
         if not (album and artist):
             return self.resp_from_data(
-                {"message":  "Please specify a valid artist and album"}, 403)
+                {"message": "Please specify a valid artist and album"}, 403
+            )
         else:
             cover = self.ctrl.library.get_cover_path(artist, album)
             return self.resp_from_image(cover)
@@ -204,5 +208,4 @@ class ZenLibrary(ZenAPIBase):
         if query:
             album = self.ctrl.library.search(query)
             return self.resp_from_data(album)
-        return self.resp_from_data(
-            {"message": "No query parameters specified"}, 400)
+        return self.resp_from_data({"message": "No query parameters specified"}, 400)

@@ -9,6 +9,7 @@ codegen init
 Then run this file:
 ```python codebase_stats.py```
 """
+
 from codegen import Codebase
 
 codebase = Codebase("./")
@@ -28,8 +29,11 @@ if codebase.classes:
     print(f"   ⛓️ Chain: {' -> '.join(s.name for s in deepest_class.superclasses)}")
 
 # Find first 5 recursive functions
-recursive = [f for f in codebase.functions
-            if any(call.name == f.name for call in f.function_calls)][:5]
+recursive = [
+    f
+    for f in codebase.functions
+    if any(call.name == f.name for call in f.function_calls)
+][:5]
 if recursive:
     print("\n🔄 Recursive functions:")
     for func in recursive:
@@ -39,5 +43,5 @@ if recursive:
 # Find dead code
 for func in codebase.functions:
     if len(func.usages) == 0:
-        print(f'🗑️ Dead code: {func.name}')
+        print(f"🗑️ Dead code: {func.name}")
         func.remove()

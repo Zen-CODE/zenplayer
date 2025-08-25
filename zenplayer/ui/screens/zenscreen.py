@@ -2,6 +2,7 @@
 Thos module houses the ZenScreen base class which serves a base for all
 screens in this app.
 """
+
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty
 from ui.kvloader import KVLoader
@@ -12,6 +13,7 @@ class ZenScreen(Screen):
     Serves as a Base class for screen in the the ZenPlayer app. It server to
     provide a `ctrl` binding and kv loading by default.
     """
+
     ctrl = ObjectProperty()
     """ A reference to the `Controller` object. """
 

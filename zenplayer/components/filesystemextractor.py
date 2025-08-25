@@ -1,6 +1,7 @@
 """
 This module houses the FileSystemExtractor class
 """
+
 from os import listdir
 from os.path import isdir, join
 
@@ -10,6 +11,7 @@ class FileSystemExtractor:
     Helper class for extracting tracks and albums covers from
     folders
     """
+
     music_types = [".ogg", ".mp3", ".wma"]
     art_types = [".jpg", ".jpeg", ".png", ".gif"]
 
@@ -23,8 +25,7 @@ class FileSystemExtractor:
         Returns:
             (list): A sorted list of folder in the specified folder.
         """
-        return [f for f in sorted(listdir(folder))
-                if isdir(join(folder, f))]
+        return [f for f in sorted(listdir(folder)) if isdir(join(folder, f))]
 
     @staticmethod
     def get_media(folder):
