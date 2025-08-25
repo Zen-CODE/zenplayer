@@ -14,7 +14,7 @@ class ControlButtons:
             requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
 
     @staticmethod
-    def show():
+    def show(zp):
         """Adds a row of control buttons to the Streamlit app."""
         button_width = 80
         prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = zp.columns(
