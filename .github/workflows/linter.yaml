@@ -5,6 +5,8 @@
 ###########################
 ###########################
 name: Lint Code Base
+permissions:
+  contents: read
 
 #
 # Documentation:
