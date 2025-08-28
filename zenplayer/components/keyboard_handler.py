@@ -80,8 +80,6 @@ class KeyHandler:
     def on_key_down(self, _keyboard, keycode, text, modifiers):
         """React to the keypress event"""
         func = self._get_match(self._load_keymap(), modifiers, keycode[1])
-        if text and not (text.isalpha() or text.isdigit()):
-            return None
         if func is not None:
             # Lookup the function from the component if specified, else ctrl
             obj = (

@@ -18,15 +18,16 @@
             "program": "${workspaceFolder}/zenplayer/main.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "env":{"KIVY_AUDIO": "vlcplayer",
-                   "LD_PRELOAD": "./zenplayer/libLeap.so"}
+            "env":{"KIVY_AUDIO": "vlcplayer"}
         },
         {
             "name": "FireStore",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/zenplayer/components/cloud_firestore.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/zenplayer/components",
+            "env": {"PYTHONPATH": "${workspaceFolder}/zenplayer"}
         },
         {
             "name": "Streamlit",
