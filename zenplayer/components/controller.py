@@ -19,6 +19,8 @@ from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 from os import environ
 from components.cloud_firestore import NowPlaying
+import webbrowser
+from components.config import Config
 
 
 class Controller(EventDispatcher):
@@ -130,10 +132,8 @@ class Controller(EventDispatcher):
 
     def open_in_browser(self):
         """Open a link to the React app in a browser."""
-
-        import webbrowser
-
-        webbrowser.open("http://127.0.0.1:9001/static/index.html")
+        config = Config.load("webserver.json")
+        webbrowser.open(f"http://{config['host']}:{config['port']}/static/index.html")
 
     def _update_progress(self, _dt):
         """Update the progressbar"""
