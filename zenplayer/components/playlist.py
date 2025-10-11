@@ -62,29 +62,28 @@ class Playlist(EventDispatcher):
         parts = file_.split(sep)
         return " - ".join(parts[-3:])
 
+    def _get_index(self, mode):
+        """Return the index of where to insert the files."""
+        if len(self.queue) < 1:
+            return 0
+
+        if mode == "insert":
+            return 0
+        if mode == "next":
+            return 1
+        start = 1
+        folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
+        while (
+            start < len(self.queue) and self.queue[start]["filename"].find(folder) > -1
+        ):
+            start += 1
+        return start
+
     def _add_files(self, file_folder, mode="add"):
         """
         Internal implementation of the addition, support recursion but
         extracted for once of setup in add_file
         """
-
-        def get_index():
-            """Return the index of where to insert the files."""
-            if len(self.queue) < 1:
-                return 0
-
-            if mode == "insert":
-                return 0
-            if mode == "next":
-                return 1
-            start = 1
-            folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
-            while (
-                start < len(self.queue)
-                and self.queue[start]["filename"].find(folder) > -1
-            ):
-                start += 1
-            return start
 
         if path.isdir(file_folder):
             for f in sorted(
@@ -95,7 +94,7 @@ class Playlist(EventDispatcher):
         elif file_folder[-4:] in FileSystemExtractor.music_types:
             if mode in ["insert", "next", "next_album"]:
                 self.queue.insert(
-                    get_index(),
+                    self._get_index(mode),
                     ({"filename": file_folder, "text": self.get_text(file_folder)}),
                 )
             else:
