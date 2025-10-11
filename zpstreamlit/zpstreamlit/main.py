@@ -21,6 +21,6 @@ pages = {
 }
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", [key for key in pages.keys()])
+page = st.sidebar.radio("Go to", list(pages.keys()))
 
 pages[page]()
