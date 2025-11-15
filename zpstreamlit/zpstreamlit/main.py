@@ -2,12 +2,14 @@ import streamlit as st
 from app_pages.zenplayer import get_zenplayer
 from app_pages.zenrandom import get_zenrandom
 from app_pages.zeninfo import get_zeninfo
+from app_pages.sysinfo import get_sysinfo
 
 
 pages = {
     "ZenPlayer": get_zenplayer,
     "Random Album": get_zenrandom,
     "Artist Info": get_zeninfo,
+    "System Info": get_sysinfo,
 }
 
 st.sidebar.title("Navigation")
