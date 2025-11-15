@@ -33,7 +33,7 @@ def show_start_time():
 
 def get_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""
-
+    st.empty()
     st.image("images/cpu.jpg", width=128)
     st.markdown("# System Information")
 
@@ -42,9 +42,7 @@ def get_sysinfo():
     show_start_time()
 
     placeholder = st.empty()
-
     while True:
         with placeholder.container():
-            print("Rerunning")
             sleep(1)
             st.rerun()

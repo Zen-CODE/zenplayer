@@ -3,6 +3,7 @@ import requests
 
 # from streamlit_image_coordinates import streamlit_image_coordinates
 from zencore import ZENPLAYER, ZENPLAYER_URL
+from time import sleep
 
 
 class ControlButtons:
@@ -119,12 +120,9 @@ def get_zenplayer():
         Playlist.show(zp)
 
     buid_ui()
+
+    while True:
+        with zp.container():
+            sleep(1)
+            st.rerun()
     return zp
-
-
-# placeholder = st.container()
-# while True:
-#     with placeholder.container():
-#         print("Rerunning")
-#         sleep(1)
-#         st.rerun()
