@@ -22,7 +22,7 @@ def show_memory(container):
 
 def show_buttons(container):
     """Adds a row of control buttons for system control."""
-    button_width = 80
+    button_width = 180
     suspend_, restart_, shutdown_ = container.columns(spec=[1, 1, 1], border=True)
     suspend_.button(
         "Suspend",
