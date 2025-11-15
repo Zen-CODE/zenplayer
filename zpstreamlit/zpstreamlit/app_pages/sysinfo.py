@@ -2,6 +2,33 @@ import streamlit as st
 from psutil import cpu_percent, virtual_memory, boot_time
 from datetime import datetime
 from time import time, sleep
+import subprocess
+
+
+class System:
+    """Perform various system commands."""
+
+    @staticmethod
+    def shutdown():
+        subprocess.run(
+            ["/usr/bin/shutdown", "now"],
+            check=True,  # Raise an exception if the command fails
+            capture_output=True,
+            text=True,
+        )
+
+    @staticmethod
+    def sleep():
+        subprocess.run(
+            ["/usr/bin/systemctl", "suspend"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    @staticmethod
+    def restart():
+        subprocess.run(["/usr/bin/reboot"], check=True, capture_output=True, text=True)
 
 
 def show_cpu(container):
@@ -26,16 +53,13 @@ def show_buttons(container):
     suspend_, restart_, shutdown_ = container.columns(spec=[1, 1, 1], border=True)
     suspend_.button(
         "Suspend",
-        on_click=lambda *args: print("Suspend"),
-        args=("play_previous",),
+        on_click=System.sleep,
         width=button_width,
     )
-    restart_.button(
-        "Restart", on_click=lambda *args: print("Restart"), width=button_width
-    )
+    restart_.button("Restart", on_click=System.restart, width=button_width)
     shutdown_.button(
         "Shutdown",
-        on_click=lambda *args: print("Shutdown"),
+        on_click=System.shutdown,
         width=button_width,
     )
 
