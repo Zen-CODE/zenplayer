@@ -120,3 +120,11 @@ def get_zenplayer():
 
     buid_ui()
     return zp
+
+
+# placeholder = st.container()
+# while True:
+#     with placeholder.container():
+#         print("Rerunning")
+#         sleep(1)
+#         st.rerun()

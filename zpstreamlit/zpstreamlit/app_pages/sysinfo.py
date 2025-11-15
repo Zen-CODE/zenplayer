@@ -1,7 +1,7 @@
 import streamlit as st
 from psutil import cpu_percent, virtual_memory, boot_time
-from datetime import datetime, timedelta
-from time import time
+from datetime import datetime
+from time import time, sleep
 
 
 def show_cpu():
@@ -24,11 +24,10 @@ def show_start_time():
     """Show the system startup time."""
     start_time = boot_time()
     display_time = datetime.fromtimestamp(start_time).strftime("%Y-%m-%d, %H:%M")
+    time_diff = time() - start_time
 
-    time_diff = timedelta(seconds=start_time - time()).seconds
     days = int(time_diff / (60 * 60 * 24))
     hours = int((time_diff / (60 * 60)) % 24)
-
     st.markdown(f"*Started:* {display_time}. *Uptime:* {days}d, {hours}h")
 
 
@@ -41,3 +40,11 @@ def get_sysinfo():
     show_cpu()
     show_memory()
     show_start_time()
+
+    placeholder = st.empty()
+
+    while True:
+        with placeholder.container():
+            print("Rerunning")
+            sleep(1)
+            st.rerun()
