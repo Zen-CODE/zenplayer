@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # from streamlit_image_coordinates import streamlit_image_coordinates
-from zencore import ZENPLAYER, ZENPLAYER_URL
+from zencore import ZENPLAYER, ZENPLAYER_URL, ZENSLEEP
 from time import sleep
 
 
@@ -122,7 +122,8 @@ def get_zenplayer():
     buid_ui()
 
     while True:
-        with zp.container():
-            sleep(1)
+        with zp:
+            sleep(ZENSLEEP)
+            print("Re-running zenplayer...")
             st.rerun()
     return zp

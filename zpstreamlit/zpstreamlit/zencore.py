@@ -23,3 +23,4 @@ def get_local_ip_socket():
 local_address = get_local_ip_socket()
 ZENPLAYER_URL = f"http://{local_address}:5000"
 ZENPLAYER = {}
+ZENSLEEP = 5

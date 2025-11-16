@@ -5,14 +5,22 @@ from app_pages.zeninfo import get_zeninfo
 from app_pages.sysinfo import get_sysinfo
 
 
-pages = {
-    "ZenPlayer": get_zenplayer,
-    "Random Album": get_zenrandom,
-    "Artist Info": get_zeninfo,
-    "System Info": get_sysinfo,
-}
+def init_app():
+    """Initialize our streamlit app."""
+    st.set_page_config(page_title="ZenPlayer ST", page_icon="☯️")
 
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", list(pages.keys()))
 
-pages[page]()
+if __name__ == "__main__":
+    init_app()
+
+    pages = {
+        "ZenPlayer": get_zenplayer,
+        "Random Album": get_zenrandom,
+        "Artist Info": get_zeninfo,
+        "System Info": get_sysinfo,
+    }
+
+    st.sidebar.title("Navigation")
+    page = st.sidebar.radio("Go to", list(pages.keys()))
+
+    pages[page]()

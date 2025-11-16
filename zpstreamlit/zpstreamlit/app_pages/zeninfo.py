@@ -11,13 +11,14 @@ def get_zeninfo():
     wiki_wiki = wikipediaapi.Wikipedia("ZenPlayer (zenkey.zencode@gmail.com)", "en")
     page = wiki_wiki.page(data["artist"])
 
+    container = st.container()
     if page.exists():
-        st.markdown(f"# Artist: {data['artist']}")
-        st.markdown("## Summary")
-        st.write(page.summary)
-        st.markdown("## Full Text")
+        container.markdown(f"# Artist: {data['artist']}")
+        container.markdown("## Summary")
+        container.write(page.summary)
+        container.markdown("## Full Text")
         for part in page.text.split("\n"):
-            st.write(part)
+            container.write(part)
 
     else:
-        st.write(f"No information found for *{data['artist']}*")
+        container.write(f"No information found for *{data['artist']}*")
