@@ -7,6 +7,7 @@ import streamlit as st
 def get_zeninfo():
     """Show  info about the urrently playing artist"""
 
+    print("ZenInfo: Fetching wikipedia data...")
     data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
     wiki_wiki = wikipediaapi.Wikipedia("ZenPlayer (zenkey.zencode@gmail.com)", "en")
     page = wiki_wiki.page(data["artist"])

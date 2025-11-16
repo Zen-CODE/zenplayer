@@ -66,6 +66,9 @@ def show_start_time(container):
     container.markdown(f"**Uptime:** {days}d {hours}h")
     container.markdown(f"**Started:** {display_time}")
 
+    now = datetime.now().strftime("%d %B, %Y, %H:%M:%S")
+    container.markdown(f"**Now:** {now}")
+
 
 def get_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""

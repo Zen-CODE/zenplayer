@@ -5,13 +5,13 @@ from app_pages.zeninfo import get_zeninfo
 from app_pages.sysinfo import get_sysinfo
 
 
-def init_app():
+def init_app() -> None:
     """Initialize our streamlit app."""
     st.set_page_config(page_title="ZenPlayer ST", page_icon="☯️")
 
 
-if __name__ == "__main__":
-    init_app()
+def init_navigation() -> None:
+    """Initialize the naigation sidebar and return the first page."""
 
     pages = {
         "ZenPlayer": get_zenplayer,
@@ -24,3 +24,8 @@ if __name__ == "__main__":
     page = st.sidebar.radio("Go to", list(pages.keys()))
 
     pages[page]()
+
+
+if __name__ == "__main__":
+    init_app()
+    init_navigation()
