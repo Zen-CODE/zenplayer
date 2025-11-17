@@ -18,8 +18,7 @@ def get_zeninfo():
         container.markdown("## Summary")
         container.write(page.summary)
         container.markdown("## Full Text")
-        for part in page.text.split("\n"):
-            container.write(part)
+        [container.write(part) for part in page.text.split("\n")]
 
     else:
         container.write(f"No information found for *{data['artist']}*")
