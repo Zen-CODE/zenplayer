@@ -18,7 +18,9 @@ from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 from os import environ
-from components.cloud_firestore import NowPlaying
+
+# from components.cloud_firestore import NowPlaying
+from components.file_firestore import NowPlaying
 import webbrowser
 from components.config import Config
 
