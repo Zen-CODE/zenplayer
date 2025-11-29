@@ -11,6 +11,12 @@ from csv import DictWriter
 from dataclasses import dataclass
 from typing import List
 
+RED = "\033[31m"
+BLUE = "\033[34m"
+CYAN = "\033[36m"
+BOLD = "\033[1m"
+RESET = "\033[0m"  # Essential to stop coloring subsequent output
+
 
 @dataclass
 class StoreEntry:
@@ -29,9 +35,9 @@ class NowPlaying(StoreEntry):
 
     def __str__(self):
         """Output a pretty format for the console."""
-        text = "NowPlaying - ZenPlayer:"
+        text = f"{BLUE}NowPlaying - ZenPlayer:{RESET}"
         for field in self.get_fields():
-            text += f"\n    {field.capitalize()}: {getattr(self, field)}"
+            text += f"\n    {CYAN}{field.capitalize()}:{RESET} {getattr(self, field)}"
         return text
 
     def get_fields(self) -> List[str]:
