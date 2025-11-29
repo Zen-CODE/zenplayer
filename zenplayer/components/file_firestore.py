@@ -6,9 +6,8 @@ from datetime import datetime, timedelta
 from socket import gethostname
 
 from components.config import Config
-from kivy.logger import Logger
 from os.path import exists
-from csv import DictWriter, DictReader
+from csv import DictWriter
 from dataclasses import dataclass
 from typing import List
 
@@ -24,22 +23,23 @@ class StoreEntry:
 
 
 class NowPlaying(StoreEntry):
-    """This class defines the model mappings to the FileStore csv structure.
-
-    Note: When instantiating this class, the constructor keyword arguments
-          must contain at least the following keys:
-
-
-    """
+    """This class defines the model mappings to the FileStore csv structure."""
 
     _csv_file = Config.get_config_folder() + "/nowplaying.csv"
+
+    def __str__(self):
+        """Output a pretty format for the console."""
+        text = "NowPlaying - ZenPlayer:"
+        for field in self.get_fields():
+            text += f"\n    {field.capitalize()}: {getattr(self, field)}"
+        return text
 
     def get_fields(self) -> List[str]:
         """Return a list of field / columns names we store."""
         return list(self.__dataclass_fields__.keys())
 
     def save(self):
-        """Save the item to Firestore."""
+        """Save the item to the csv file."""
         mode = "a" if exists(self._csv_file) else "w"
         with open(self._csv_file, mode, newline="") as csvfile:
             writer = DictWriter(csvfile, fieldnames=self.get_fields())
@@ -48,20 +48,8 @@ class NowPlaying(StoreEntry):
             prop_dict = {f: getattr(self, f) for f in self.get_fields()}
             writer.writerow(prop_dict)
 
-    def get_last(self) -> dict:
-        """Return the last played item."""
-        if not exists(NowPlaying._csv_file):
-            return {}
-
-        with open(NowPlaying._csv_file, "w", newline="") as csvfile:
-            reader = DictReader(csvfile, fieldnames=self.get_fields())
-            for line in reader:
-                last_row = line
-        return last_row
-
     def write_to_db(self, ctrl):
-        """Write the given values to our csv file."""
-        Logger.info("NowPlaying: Adding entry to the csv file...")
+        """Write the given values from the controller to our csv file."""
         np = NowPlaying(
             artist=ctrl.artist,
             album=ctrl.album,
@@ -70,4 +58,5 @@ class NowPlaying(StoreEntry):
             machine=gethostname(),
             datetime=datetime.now() - timedelta(hours=2),
         )
+        print(str(np))
         np.save()
