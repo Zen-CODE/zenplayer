@@ -1,6 +1,20 @@
 from os.path import join, expanduser, exists
 from components.filesystemextractor import FileSystemExtractor as fse
-import pandas as pd
+from dataclasses import dataclass, field
+from typing import List
+from random import choice
+
+
+@dataclass
+class Track:
+    name: str
+    cover: str = ""
+
+
+@dataclass
+class Album:
+    name: str
+    tracks: List[Track] = field(default_factory=list)
 
 
 class Library:
@@ -18,62 +32,60 @@ class Library:
         self.path = path = expanduser(config.get("library_folder", "~/Zen/Music"))
         """ The fully expanded path to the music libary folder."""
 
-        self.data_frame = Library._build_data_frame(path)
-        """ A Pandas :class:`DataFrame` containing our library data as 'Artist',
-        'Album', 'Track', and 'Cover' columns. """
+        self.artists = self._build_artist_dict(path)
+        """ A dictionary of `artist` / `Track` pairs."""
 
     @staticmethod
-    def _build_data_frame(path):
-        """
-        Build the DataFrame from an insection of the *path*.
-        """
+    def _choose_cover(covers):
+        """Select a cover from the given list."""
+        if covers:
+            cover = covers[0]
+            for image in covers[1:]:
+                if image.find("cover") > -1:
+                    cover = image
+            return cover
+        return ""
 
-        def choose_cover(covers):
-            """Select a cover from the given list."""
-            if covers:
-                cover = _covers[0]
-                for image in _covers[1:]:
-                    if image.find("cover") > -1:
-                        cover = image
-                return cover
-            return ""
+    @staticmethod
+    def _build_artist_dict(path) -> dict:
+        """Build the artist dictionary from the *path* folder."""
 
-        artists, albums, tracks, covers = [], [], [], []
+        artists = {}
         for artist in fse.get_dirs(path):
             artist_path = join(path, artist)
             for album in fse.get_dirs(artist_path):
                 _tracks, _covers = fse.get_media(join(artist_path, album))
+                if artist not in artists.keys():
+                    artists[artist] = {}
+                if album not in artists[artist].keys():
+                    artists[artist][album] = []
                 for track in _tracks:
-                    artists.append(artist)
-                    albums.append(album)
-                    tracks.append(track)
-                    covers.append(choose_cover(_covers))
-        return pd.DataFrame(
-            {"Artist": artists, "Album": albums, "Track": tracks, "Cover": covers}
-        )
+                    artists[artist][album].append(
+                        Track(name=track, cover=Library._choose_cover(_covers))
+                    )
+        return artists
 
     def get_artists(self):
         """Return a list of artists."""
-        return list(self.data_frame.Artist.unique())
+        return list(self.artists.keys())
 
     def get_albums(self, artist):
         """Return a list of albums for the *artist*."""
-        return list(self.data_frame[self.data_frame["Artist"] == artist].Album.unique())
+        return [key for key in self.artists[artist].keys()]
 
     def get_cover_path(self, artist, album):
         """Return the album cover art for the given artist and album."""
-        albums = self.data_frame[self.data_frame["Artist"] == artist]
-        listing = albums[albums["Album"] == album]
-        if len(listing.Cover.values) > 0:
-            file_name = str(listing.Cover.values[0])
-            if file_name:
-                return join(self.path, artist, album, file_name)
+        track = self.artists[artist][album][0]
+        if track.cover:
+            file_name = str(track.cover)
+            return join(self.path, artist, album, file_name)
         return join(self.path, "default.png")
 
     def get_random_album(self):
         """Return a randomly selected artist and album."""
-        row = self.data_frame.sample()
-        return row.Artist.values[0], row.Album.values[0]
+        artist = choice(list(self.artists.keys()))
+        album = choice(self.artists[artist].keys())
+        return artist, album
 
     def get_path(self, artist, album):
         """
@@ -82,34 +94,3 @@ class Library:
         """
         path = join(self.path, artist, album)
         return path if exists(path) else ""
-
-    def get_tracks(self, artist, album):
-        """
-        Return a list of the album tracks
-        """
-        albums = self.data_frame[self.data_frame["Artist"] == artist]
-        tracks = albums[albums["Album"] == album]
-        return list(tracks.Track)
-
-    def search(self, term):
-        """
-        Search for all albums which match this term, either in the artist
-        name of the album name, then return one on them randomly.
-
-        Returns:
-             A dictionary with the keys "artist", "album" and "path" as keys
-             if found. Return an empty dictionary otherwise.
-        """
-        df = self.data_frame
-        term = term.lower()
-        results = df[
-            (df["Album"].str.lower().str.find(term) > -1)
-            | (df["Artist"].str.lower().str.find(term) > -1)
-        ]
-
-        if results.empty:
-            return {}
-        row = results.sample()
-        artist = row.Artist.values[0]
-        album = row.Album.values[0]
-        return {"artist": artist, "album": album, "path": self.get_path(artist, album)}
