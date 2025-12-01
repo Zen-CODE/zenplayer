@@ -8,6 +8,14 @@ Kivy framework.
 """
 
 __author__ = "ZenCODE"
+
+from kivy.utils import platform
+
+if platform == "android":
+    # Implement patches
+    import _main_android as _main_android  # noqa: F401
+
+
 from kivy.app import App
 from components.controller import Controller
 from webserver.webserver import WebServer

@@ -3,7 +3,6 @@ This module handles the keyboard integration for ZenPlayer
 """
 
 from kivy.core.window import Window
-from kivy.utils import platform
 from kivy.logger import Logger
 from components.config import Config
 from functools import lru_cache
@@ -16,8 +15,6 @@ class KeyHandler:
 
     def __init__(self, ctrl):
         super().__init__()
-        if platform in ["ios", "android"]:
-            return
 
         self.kb_listener = Window.request_keyboard(lambda: None, None, "text")
         self.kb_listener.bind(on_key_down=self.on_key_down)
