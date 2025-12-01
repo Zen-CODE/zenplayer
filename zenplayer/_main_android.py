@@ -4,16 +4,19 @@ from unittest.mock import MagicMock
 import sys
 from types import ModuleType
 
-PACKAGE_NAME = "pynput"
-mock_package = ModuleType(PACKAGE_NAME)
-mock_package.__path__ = [PACKAGE_NAME]
-sys.modules[PACKAGE_NAME] = mock_package
 
-zen_mock = MagicMock(name="ZenMock")
+def mock_package(package_name: str) -> ModuleType:
+    mock_package = ModuleType(package_name)
+    mock_package.__path__ = [package_name]
+    sys.modules[package_name] = mock_package
+    return mock_package
 
-# 6. Create the full name for the submodule
-SUBMODULE_NAME = f"{PACKAGE_NAME}.keyboard"
 
-# 7. Insert the submodule content into sys.modules
-sys.modules[SUBMODULE_NAME] = zen_mock
-print(f"Successfully inserted submodule '{SUBMODULE_NAME}'.")
+def mock_submodule(sub_module_name: str) -> MagicMock:
+    mock_sm = MagicMock(name=sub_module_name)
+    sys.modules[sub_module_name] = mock_sm
+    return mock_sm
+
+
+mock_package("pynput")
+mock_submodule("pynput.keyboard")
