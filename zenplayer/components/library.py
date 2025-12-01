@@ -84,7 +84,7 @@ class Library:
     def get_random_album(self):
         """Return a randomly selected artist and album."""
         artist = choice(list(self.artists.keys()))
-        album = choice(self.artists[artist].keys())
+        album = choice(list(self.artists[artist].keys()))
         return artist, album
 
     def get_path(self, artist, album):
