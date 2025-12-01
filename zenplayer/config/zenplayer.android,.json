@@ -1,0 +1,7 @@
+{
+    "log_level": "info",
+    "enable_webserver": true,
+    "enable_hotkeys": false,
+    "prune": true,
+    "library_folder": "~/Music"
+}
