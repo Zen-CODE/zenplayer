@@ -33,6 +33,8 @@ class ZenPlayer(App):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if platform == "android":
+            Config.set_config_folder(self.user_data_dir)
         self._config = Config.load("zenplayer.json")
         self.init_logging()
 

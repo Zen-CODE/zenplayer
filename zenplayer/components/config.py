@@ -14,6 +14,15 @@ from kivy.utils import platform
 class Config:
     """Helper class for loading configuration files with sensible defaults."""
 
+    _config_folder = ""
+
+    @staticmethod
+    def set_config_folder(folder_path):
+        """Set the default confiuration folder path (for overriding on Android)"""
+        if not exists(folder_path):
+            makedirs(folder_path)
+        Config._config_folder = folder_path
+
     @staticmethod
     def _get_default(file_name):
         """Return the full path for the OS specified default config file."""
@@ -25,7 +34,10 @@ class Config:
     @staticmethod
     def get_config_folder():
         """Return the path to the config folder."""
-        path = expanduser("~/.zencode/zenplayer")
+        if Config._config_folder:
+            return Config._config_folder
+
+        Config._config_folder = path = expanduser("~/.zencode/zenplayer")
         if not exists(path):
             makedirs(path)
         return path
