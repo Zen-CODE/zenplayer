@@ -53,13 +53,14 @@ class Controller(EventDispatcher):
     prune = True
     """ If set to true, remove files from the playlist once played. """
 
-    store = ObjectProperty(StoreFactory.get())
+    store = ObjectProperty()
 
     def __init__(self, **kwargs):
         """Initialize the screens and the screen manager"""
         config = kwargs.pop("config")
         self.prune = config["prune"]
         super().__init__(**kwargs)
+        self.store = StoreFactory.get()
         self.zenplayer = ZenPlayer(ctrl=self)
         self.playlist = Playlist(self.store)
         self.library = Library(config)
