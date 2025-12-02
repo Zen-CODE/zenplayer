@@ -20,5 +20,8 @@ def mock_submodule(sub_module_name: str) -> MagicMock:
 
 mock_package("pynput")
 mock_submodule("pynput.keyboard")
-
 mock_submodule("components.keyboard_handler")
+
+mock_package("vlc")
+mock_submodule("vlc.EventType")
+mock_submodule("vlc.Instance")
