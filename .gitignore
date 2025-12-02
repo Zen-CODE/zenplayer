@@ -6,4 +6,4 @@ zenplayer/webserver/flask_monitoring*
 zenplayer/keys
 .python-version
 .gitignore
-buildozer/.buildozer/*
+zenplayer/.buildozer/*
