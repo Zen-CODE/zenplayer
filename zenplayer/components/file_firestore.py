@@ -31,8 +31,6 @@ class StoreEntry:
 class NowPlaying(StoreEntry):
     """This class defines the model mappings to the FileStore csv structure."""
 
-    _csv_file = Config.get_config_folder() + "/nowplaying.csv"
-
     def __str__(self):
         """Output a pretty format for the console."""
         text = f"{BLUE}NowPlaying - ZenPlayer:{RESET}"
@@ -46,8 +44,10 @@ class NowPlaying(StoreEntry):
 
     def save(self):
         """Save the item to the csv file."""
-        mode = "a" if exists(self._csv_file) else "w"
-        with open(self._csv_file, mode, newline="") as csvfile:
+        csv_file = Config.get_config_folder() + "/nowplaying.csv"
+
+        mode = "a" if exists(csv_file) else "w"
+        with open(csv_file, mode, newline="") as csvfile:
             writer = DictWriter(csvfile, fieldnames=self.get_fields())
             if mode == "w":
                 writer.writeheader()
