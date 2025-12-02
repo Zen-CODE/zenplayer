@@ -32,7 +32,7 @@ class Library:
         self.path = path = expanduser(config.get("library_folder", "~/Zen/Music"))
         """ The fully expanded path to the music libary folder."""
 
-        self.artists = self._build_artist_dict(path)
+        self.artists = self._build_artist_dict(path) if exists(path) else {}
         """ A dictionary of `artist` / `Track` pairs."""
 
     @staticmethod
