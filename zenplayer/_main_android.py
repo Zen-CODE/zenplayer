@@ -25,3 +25,10 @@ mock_submodule("components.keyboard_handler")
 mock_package("vlc")
 mock_submodule("vlc.EventType")
 mock_submodule("vlc.Instance")
+
+mock_package("flask")
+mock_submodule("flask.Flask")
+mock_submodule("flask.render_template")
+
+mock_package("flasgger")
+mock_submodule("flasgger.Swagger")
