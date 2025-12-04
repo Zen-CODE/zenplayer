@@ -34,9 +34,9 @@ class Show:
         with st.container():
             col1, col2 = st.columns([0.95, 0.05])
             with col1:
-                st.title("Zen File Browser")
+                st.title("ZenStream")
             with col2:
-                image_path = str(Path("./zenfile/yingyang.png").resolve())
+                image_path = str(Path("./images/main.png").resolve())
                 st.image(image_path)
 
     @staticmethod
