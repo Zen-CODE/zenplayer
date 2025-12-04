@@ -49,6 +49,7 @@ class Config:
         This is loaded from the user home folder. If it does not exists, one is
         copied there as a template.
         """
+        Logger.info(f"ZenPlayer: Loading config from {Config._config_folder}")
         cfg_path = join(Config.get_config_folder(), file_name)
         if not exists(cfg_path):
             copy(Config._get_default(file_name), cfg_path)

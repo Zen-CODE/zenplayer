@@ -22,6 +22,8 @@ from webserver.webserver import WebServer
 from kivy.logger import Logger, LOG_LEVELS
 from components.config import Config
 
+Logger.info(f"ZenPlayer: platform {platform}")
+
 
 class ZenPlayer(App):
     """
@@ -34,6 +36,7 @@ class ZenPlayer(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if platform == "android":
+            Logger.info(f"ZenPlayer: Settings datadir to {self.user_data_dir}")
             Config.set_config_folder(self.user_data_dir)
         self._config = Config.load("zenplayer.json")
         self.init_logging()

@@ -3,6 +3,8 @@ from components.filesystemextractor import FileSystemExtractor as fse
 from dataclasses import dataclass, field
 from typing import List
 from random import choice
+from kivy.app import platform
+from kivy.logger import Logger
 
 
 @dataclass
@@ -29,8 +31,12 @@ class Library:
     """
 
     def __init__(self, config):
-        self.path = path = expanduser(config.get("library_folder", "~/Zen/Music"))
+        if platform == "android":
+            path = "/storage/emulated/0/Music"
+        else:
+            path = expanduser(config.get("library_folder", "~/Zen/Music"))
         """ The fully expanded path to the music libary folder."""
+        self.path = path
 
         self.artists = self._build_artist_dict(path) if exists(path) else {}
         """ A dictionary of `artist` / `Track` pairs."""
@@ -52,9 +58,15 @@ class Library:
 
         artists = {}
         for artist in fse.get_dirs(path):
+            Logger.info("ZenPlayer: Adding artist %s", artist)
             artist_path = join(path, artist)
             for album in fse.get_dirs(artist_path):
                 _tracks, _covers = fse.get_media(join(artist_path, album))
+                Logger.info(
+                    "ZenPlayer: Adding album %s, covers %s",
+                    artist,
+                    Library._choose_cover(_covers),
+                )
                 if artist not in artists.keys():
                     artists[artist] = {}
                 if album not in artists[artist].keys():

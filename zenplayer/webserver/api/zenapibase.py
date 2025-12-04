@@ -2,8 +2,7 @@
 Houses the base class for ZenPlayer classes presenting a API Interface
 """
 
-from flask import make_response, jsonify, send_file
-from flask import request
+from flask import make_response, jsonify, send_file, request
 from urllib.parse import unquote
 from kivy.clock import Clock
 from kivy.logger import Logger
