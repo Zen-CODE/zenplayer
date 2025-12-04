@@ -20,6 +20,10 @@ class State:
         st.session_state.folder = path
         return path
 
+    @staticmethod
+    def set_current_track(file_name: str):
+        st.session_state.current_track = file_name
+
 
 class Action:
     @staticmethod
@@ -34,6 +38,8 @@ class Action:
     @staticmethod
     def set_file(file_name):
         print(f"set_file - {file_name}")
+        if file_name.endswith(".mp3") or file_name.endswith(".ogg"):
+            st.session_state.current_track = file_name
 
 
 class Show:
@@ -73,21 +79,21 @@ class Show:
             )
 
     @staticmethod
-    def _add_folder_button(container: DeltaGenerator, folder: str):
+    def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
         with container:
             st.button(
-                folder,
+                text,
                 icon=":material/adjust:",
                 on_click=lambda: Action.set_folder(folder),
             )
 
     @staticmethod
-    def _add_file_button(container: DeltaGenerator, file_name: str):
+    def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
         with container:
             st.button(
                 file_name,
                 icon=":material/adjust:",
-                on_click=lambda: Action.set_file(file_name),
+                on_click=lambda: Action.set_file(sep.join([folder, file_name])),
             )
 
     @staticmethod
@@ -98,12 +104,17 @@ class Show:
             Show._parent_folder_button(cols[0])
             Show._add_this_folder_button(cols[1])
 
-            for index, file_name in enumerate(sorted(listdir(st.session_state.folder))):
-                final_path = Path(join(st.session_state.folder, file_name))
+            folder = st.session_state.folder
+            for index, file_name in enumerate(sorted(listdir(folder))):
+                final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
-                    Show._add_folder_button(cols[(index + 2) % len(cols)], file_name)
+                    Show._add_folder_button(
+                        cols[(index + 2) % len(cols)], file_name, str(final_path)
+                    )
                 else:
-                    Show._add_file_button(cols[(index + 2) % len(cols)], file_name)
+                    Show._add_file_button(
+                        cols[(index + 2) % len(cols)], file_name, folder
+                    )
 
     @staticmethod
     def _get_bitrate(info_obj: File) -> str:
@@ -142,8 +153,12 @@ class Show:
 
     @staticmethod
     def player():
+        if not hasattr(st.session_state, "current_track"):
+            st.warning("No track currently selected.")
+            return
+
         st.header("Player")
-        file_name = "/home/richard/Zen/Music/Dead By April/Let the World Know/01 - Beautiful Nightmare.mp3"
+        file_name = st.session_state.current_track
         st.audio(file_name, autoplay=True)
 
         st.subheader("Track Metadata")
