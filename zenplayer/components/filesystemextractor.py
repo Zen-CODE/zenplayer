@@ -41,10 +41,11 @@ class FileSystemExtractor:
 
         """
         tracks, covers, fse = [], [], FileSystemExtractor
-        for item in sorted(listdir(folder)):
-            if [item.endswith(e) for e in fse.music_types]:
-                tracks.append(item)
-            elif [item.endswith(e) for e in fse.art_types]:
-                covers.append(item)
 
+        # TODO: listdir does not work on Android
+        for item in sorted(listdir(folder)):
+            if any([item.endswith(e) for e in fse.music_types]):
+                tracks.append(item)
+            elif any([item.endswith(e) for e in fse.art_types]):
+                covers.append(item)
         return tracks, covers

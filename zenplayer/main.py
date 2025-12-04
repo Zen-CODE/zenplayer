@@ -22,8 +22,6 @@ from webserver.webserver import WebServer
 from kivy.logger import Logger, LOG_LEVELS
 from components.config import Config
 
-Logger.info(f"ZenPlayer: platform {platform}")
-
 
 class ZenPlayer(App):
     """

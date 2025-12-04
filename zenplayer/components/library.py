@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from typing import List
 from random import choice
 from kivy.app import platform
-from kivy.logger import Logger
 
 
 @dataclass
@@ -58,17 +57,9 @@ class Library:
 
         artists = {}
         for artist in fse.get_dirs(path):
-            Logger.info("ZenPlayer: Adding artist %s", artist)
             artist_path = join(path, artist)
             for album in fse.get_dirs(artist_path):
                 _tracks, _covers = fse.get_media(join(artist_path, album))
-                Logger.info(
-                    "ZenPlayer: Adding %s, album %s, cover %s from(%s)",
-                    artist,
-                    album,
-                    Library._choose_cover(_covers),
-                    _covers,
-                )
                 if artist not in artists.keys():
                     artists[artist] = {}
                 if album not in artists[artist].keys():
