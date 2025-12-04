@@ -27,6 +27,10 @@ class Action:
         print(f"set_folder - {folder}")
         st.session_state.folder = folder
 
+    @staticmethod
+    def set_file(file_name):
+        print(f"set_file - {file_name}")
+
 
 class Show:
     @staticmethod
@@ -45,47 +49,58 @@ class Show:
         st.text(f"Current directory: {State.get_current_folder()}")
 
     @staticmethod
+    def _parent_folder_button(container):
+        parent = str(Path(State.get_current_folder() + "/../").resolve())
+        with container:
+            st.button(
+                "..",
+                icon=":material/arrow_circle_up:",
+                on_click=lambda: Action.set_folder(parent),
+            )
+
+    @staticmethod
+    def _add_this_folder_button(container):
+        this_folder = str(Path(State.get_current_folder() + "/../").resolve())
+        with container:
+            st.button(
+                ".",
+                icon=":material/adjust:",
+                on_click=lambda: Action.set_folder(this_folder),
+            )
+
+    @staticmethod
+    def _add_folder_button(container, folder):
+        with container:
+            st.button(
+                folder,
+                icon=":material/adjust:",
+                on_click=lambda: Action.set_folder(folder),
+            )
+
+    @staticmethod
+    def _add_file_button(container, file_name):
+        with container:
+            st.button(
+                file_name,
+                icon=":material/adjust:",
+                on_click=lambda: Action.set_file(file_name),
+            )
+
+    @staticmethod
     def listing():
         st.header("Listing")
         with st.container():
             cols = st.columns([0.25] * 4)
+            Show._parent_folder_button(cols[0])
+            Show._add_this_folder_button(cols[1])
 
-            # Add this folder and partent
-            up_one = str(Path(State.get_current_folder() + "/../").resolve())
-            with cols[0]:
-                st.button(
-                    "..",
-                    icon=":material/arrow_circle_up:",
-                    on_click=lambda: Action.set_folder(up_one),
-                )
-            # Add this folder and partent
-            this_folder = str(Path(State.get_current_folder() + "/../").resolve())
-            with cols[1]:
-                st.button(
-                    ".",
-                    icon=":material/arrow_circle_up:",
-                    on_click=lambda: Action.set_folder(this_folder),
-                )
-
-            for index, file_name in enumerate(listdir(st.session_state.folder)):
+            for index, file_name in enumerate(sorted(listdir(st.session_state.folder))):
                 final_path = Path(join(st.session_state.folder, file_name))
-                with cols[(index + 2) % len(cols)]:
-                    if final_path.is_dir():
-                        st.button(
-                            f">> {file_name}",
-                            icon=":material/folder:",
-                            on_click=lambda f_name=str(final_path): Action.set_folder(
-                                f_name
-                            ),
-                        )
-                    else:
-                        st.button(
-                            file_name,
-                            icon=":material/file_export:",
-                            on_click=lambda f_name=str(file_name): Action.open_file(
-                                f_name
-                            ),
-                        )
+                # with cols[(index + 2) % len(cols)]:
+                if final_path.is_dir():
+                    Show._add_folder_button(cols[(index + 2) % len(cols)], file_name)
+                else:
+                    Show._add_file_button(cols[(index + 2) % len(cols)], file_name)
 
 
 if __name__ == "__main__":
