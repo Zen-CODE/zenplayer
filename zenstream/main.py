@@ -5,6 +5,7 @@ from os.path import join
 from streamlit.delta_generator import DeltaGenerator
 import pandas as pd
 from mutagen import File
+from glob import glob
 
 
 class State:
@@ -126,6 +127,20 @@ class Show:
         st.data_editor(df, num_rows="dynamic")
 
     @staticmethod
+    def _show_cover(file_name: str):
+        def get_image() -> str:
+            parts = file_name.split(sep)
+            for ext in ["*.jpg", "*.jpg", "*.png", "*.bmp"]:
+                path = sep.join(parts[:-1]) + sep + ext
+                for image in glob(path):
+                    return image
+
+        image_path = get_image()
+        if image_path:
+            st.subheader("Cover Image")
+            st.image(image_path)
+
+    @staticmethod
     def player():
         st.header("Player")
         file_name = "/home/richard/Zen/Music/Dead By April/Let the World Know/01 - Beautiful Nightmare.mp3"
@@ -150,6 +165,8 @@ class Show:
                 st.markdown(f"**{prop}:**")
             with cols[1]:
                 st.markdown(f"*{value}*")
+
+        Show._show_cover(file_name)
 
 
 if __name__ == "__main__":
