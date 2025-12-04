@@ -63,9 +63,11 @@ class Library:
             for album in fse.get_dirs(artist_path):
                 _tracks, _covers = fse.get_media(join(artist_path, album))
                 Logger.info(
-                    "ZenPlayer: Adding album %s, covers %s",
+                    "ZenPlayer: Adding %s, album %s, cover %s from(%s)",
                     artist,
+                    album,
                     Library._choose_cover(_covers),
+                    _covers,
                 )
                 if artist not in artists.keys():
                     artists[artist] = {}
@@ -83,7 +85,7 @@ class Library:
 
     def get_albums(self, artist):
         """Return a list of albums for the *artist*."""
-        return [key for key in self.artists[artist].keys()]
+        return list(self.artists[artist].keys())
 
     def get_cover_path(self, artist, album):
         """Return the album cover art for the given artist and album."""
