@@ -6,7 +6,7 @@ from os.path import join
 
 class State:
     @staticmethod
-    def get_folder() -> str:
+    def get_current_folder() -> str:
         """Return the full path to the current folder"""
         path = str(
             Path.cwd()
@@ -42,36 +42,50 @@ class Show:
     @staticmethod
     def status():
         st.header("Status")
-        st.text(f"Current directory: {State.get_folder()}")
+        st.text(f"Current directory: {State.get_current_folder()}")
 
     @staticmethod
     def listing():
         st.header("Listing")
         with st.container():
-            up_one = str(Path(State.get_folder() + "/../").resolve())
-            st.button(
-                "..",
-                icon=":material/arrow_circle_up:",
-                on_click=lambda: Action.set_folder(up_one),
-            )
+            cols = st.columns([0.25] * 4)
 
-            # cols = st.columns()
-            for file_name in listdir(st.session_state.folder):
+            # Add this folder and partent
+            up_one = str(Path(State.get_current_folder() + "/../").resolve())
+            with cols[0]:
+                st.button(
+                    "..",
+                    icon=":material/arrow_circle_up:",
+                    on_click=lambda: Action.set_folder(up_one),
+                )
+            # Add this folder and partent
+            this_folder = str(Path(State.get_current_folder() + "/../").resolve())
+            with cols[1]:
+                st.button(
+                    ".",
+                    icon=":material/arrow_circle_up:",
+                    on_click=lambda: Action.set_folder(this_folder),
+                )
+
+            for index, file_name in enumerate(listdir(st.session_state.folder)):
                 final_path = Path(join(st.session_state.folder, file_name))
-                if final_path.is_dir():
-                    st.button(
-                        f">> {file_name}",
-                        icon=":material/folder:",
-                        on_click=lambda f_name=str(final_path): Action.set_folder(
-                            f_name
-                        ),
-                    )
-                else:
-                    st.button(
-                        file_name,
-                        icon=":material/file_export:",
-                        on_click=lambda f_name=str(file_name): Action.open_file(f_name),
-                    )
+                with cols[(index + 2) % len(cols)]:
+                    if final_path.is_dir():
+                        st.button(
+                            f">> {file_name}",
+                            icon=":material/folder:",
+                            on_click=lambda f_name=str(final_path): Action.set_folder(
+                                f_name
+                            ),
+                        )
+                    else:
+                        st.button(
+                            file_name,
+                            icon=":material/file_export:",
+                            on_click=lambda f_name=str(file_name): Action.open_file(
+                                f_name
+                            ),
+                        )
 
 
 if __name__ == "__main__":
