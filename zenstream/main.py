@@ -1,7 +1,10 @@
 import streamlit as st
 from pathlib import Path
-from os import listdir
+from os import listdir, sep
 from os.path import join
+from streamlit.delta_generator import DeltaGenerator
+import pandas as pd
+from mutagen import File
 
 
 class State:
@@ -49,7 +52,7 @@ class Show:
         st.text(f"Current directory: {State.get_current_folder()}")
 
     @staticmethod
-    def _parent_folder_button(container):
+    def _parent_folder_button(container: DeltaGenerator):
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         with container:
             st.button(
@@ -59,7 +62,7 @@ class Show:
             )
 
     @staticmethod
-    def _add_this_folder_button(container):
+    def _add_this_folder_button(container: DeltaGenerator):
         this_folder = str(Path(State.get_current_folder() + "/../").resolve())
         with container:
             st.button(
@@ -69,7 +72,7 @@ class Show:
             )
 
     @staticmethod
-    def _add_folder_button(container, folder):
+    def _add_folder_button(container: DeltaGenerator, folder: str):
         with container:
             st.button(
                 folder,
@@ -78,7 +81,7 @@ class Show:
             )
 
     @staticmethod
-    def _add_file_button(container, file_name):
+    def _add_file_button(container: DeltaGenerator, file_name: str):
         with container:
             st.button(
                 file_name,
@@ -96,11 +99,57 @@ class Show:
 
             for index, file_name in enumerate(sorted(listdir(st.session_state.folder))):
                 final_path = Path(join(st.session_state.folder, file_name))
-                # with cols[(index + 2) % len(cols)]:
                 if final_path.is_dir():
                     Show._add_folder_button(cols[(index + 2) % len(cols)], file_name)
                 else:
                     Show._add_file_button(cols[(index + 2) % len(cols)], file_name)
+
+    @staticmethod
+    def _get_bitrate(info_obj: File) -> str:
+        """
+        Return the bitrate description given the mutagen bitrate object.
+        """
+        bitrate_mode = getattr(info_obj, "bitrate_mode", None)
+        if bitrate_mode is None:
+            return "unknown"
+        val = int(bitrate_mode)
+        return ["Unknown", "CBR", "VBR", "ABR"][val]
+
+    @staticmethod
+    def now_playing():
+        st.header("Now Playing")
+
+        df = pd.read_csv(
+            "/home/richard/.zencode/zenplayer/nowplaying.csv",
+        )
+        df = df.drop(["machine"], axis=1)
+        st.data_editor(df, num_rows="dynamic")
+
+    @staticmethod
+    def player():
+        st.header("Player")
+        file_name = "/home/richard/Zen/Music/Dead By April/Let the World Know/01 - Beautiful Nightmare.mp3"
+        st.audio(file_name, autoplay=True)
+
+        st.subheader("Track Metadata")
+        cols = st.columns([0.1, 0.9])
+        info: File = File(file_name).info
+        parts = file_name.split(sep)
+
+        for prop, value in [
+            ("Artist", parts[-3]),
+            ("Album", parts[-2]),
+            ("Track", parts[-1]),
+            ("Length", f"{int(info.length // 60)}m {int(info.length % 60)}s"),
+            ("Bitrate", f"{info.bitrate // 1000}kbps"),
+            ("Bitrate mode", Show._get_bitrate(info)),
+            ("Channels", info.channels),
+            ("Sample_rate", f"{info.sample_rate}hz"),
+        ]:
+            with cols[0]:
+                st.markdown(f"**{prop}:**")
+            with cols[1]:
+                st.markdown(f"*{value}*")
 
 
 if __name__ == "__main__":
@@ -113,3 +162,5 @@ if __name__ == "__main__":
     Show.header()
     Show.status()
     Show.listing()
+    # Show.now_playing()
+    Show.player()
