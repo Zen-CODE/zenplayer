@@ -1,17 +1,10 @@
 import streamlit as st
 from PIL import Image, ImageFile
 from PIL.ExifTags import TAGS
+from styler import Styler
 
 
 class ImageViewer:
-
-    @staticmethod
-    def _show_dict(subheader: str, data: dict):
-        st.subheader(subheader)
-        col1, col2 = st.columns([0.2, 0.8])
-        for key, value in data.items():
-            col1.markdown(f"**{key}**")
-            col2.markdown(value)
 
     @staticmethod
     def show_file(file_name: str):
@@ -23,10 +16,10 @@ class ImageViewer:
 
         with Image.open(file_name) as img:
             image_data = ImageViewer._get_metadata(img)
-            ImageViewer._show_dict("Image metadata", image_data)
+            Styler.show_dict("Image metadata", image_data)
             exif_data = ImageViewer._get_exif_data(img)
             if exif_data:
-                ImageViewer._show_dict("Camera information", exif_data)
+                Styler.show_dict("Camera information", exif_data)
 
 
     @staticmethod
