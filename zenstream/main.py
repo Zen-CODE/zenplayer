@@ -24,7 +24,6 @@ class State:
     @staticmethod
     def set_current_file(file_name: str):
         st.session_state.current_file = file_name
-        [handler.show() for handler in Action.active_handlers]
 
     @staticmethod
     def get_current_file() -> str:
@@ -52,14 +51,10 @@ class Action:
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show()` method."""
 
-    active_handlers = []
-    """A list of handlers for the file to be called after the main listing"""
-
     @staticmethod
     def set_current_folder(current_folder: str):
         print(f"set_current_folder - {current_folder}")
         st.session_state.current_folder = current_folder
-        Action.active_handlers = []
 
     @staticmethod
     def set_file(file_name: str):
