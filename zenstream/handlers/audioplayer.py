@@ -26,7 +26,7 @@ class AudioPlayer:
     def show_file(file_name: str):
         """Display the audio player, metadata and cover image."""
 
-        st.header("Player")
+        st.header("Audio Player")
         st.audio(file_name, autoplay=True)
 
         if file_name.lower().endswith(".mp3"):
