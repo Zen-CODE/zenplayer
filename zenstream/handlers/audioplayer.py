@@ -3,7 +3,7 @@ from pathlib import Path
 from mutagen import File
 from glob import glob
 from os import sep
-
+from handlers.imageviewer import ImageViewer
 
 class AudioPlayer:
 
@@ -66,5 +66,4 @@ class AudioPlayer:
 
         image_path = get_image()
         if image_path:
-            st.subheader("Cover Image")
-            st.image(image_path)
+            ImageViewer.show_file(image_path)

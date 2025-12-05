@@ -6,6 +6,7 @@ from streamlit.delta_generator import DeltaGenerator
 from handlers.pandasviewer import PandasViewer
 from handlers.textviewer import TextViewer
 from handlers.audioplayer import AudioPlayer
+from handlers.imageviewer import ImageViewer
 
 
 class State:
@@ -41,6 +42,9 @@ class Action:
                 ".yaml": [TextViewer],
                 ".yml": [TextViewer],
                 ".md": [TextViewer],
+                ".jpeg": [ImageViewer],
+                ".jpg": [ImageViewer],
+                ".png": [ImageViewer],
                 }
 
     """A dictionary of file type / handler class list pairs. The handler class
