@@ -39,7 +39,7 @@ class AudioPlayer:
         st.audio(file_name, autoplay=True)
 
         if file_name.lower().endswith(".mp3"):
-            AudioPlayer._show_meta()
+            AudioPlayer._show_meta(file_name)
             AudioPlayer._show_cover(file_name)
 
 
