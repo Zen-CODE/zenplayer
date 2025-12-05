@@ -103,8 +103,7 @@ class Show:
             with col1:
                 st.title("ZenStream")
             with col2:
-                image_path = str(Path("./images/zencode.jpg").resolve())
-                st.image(image_path)
+                st.image("images/zencode.jpg")
         st.divider()
 
     @staticmethod
