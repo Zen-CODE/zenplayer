@@ -101,7 +101,7 @@ class Show:
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
-        Styler.add_button(container, file_name,":material/article:",
+        Styler.add_button(container, file_name, ":material/article:",
                 lambda: Action.set_file(sep.join([folder, file_name])))
 
     @staticmethod
