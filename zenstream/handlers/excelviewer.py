@@ -27,7 +27,7 @@ class ExcelViewer:
         # Convert to a list of lists for easy processing
         data_list = list(sheet_data)
         for index, row in enumerate(data_list):
-            row_dict[f"Row {index}"] = row[0]
+            row_dict[f"Row {index}"] = row[0] if row[0] else "-"
             if index > 9:
                 break
 

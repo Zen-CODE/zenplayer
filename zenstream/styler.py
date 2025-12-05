@@ -5,8 +5,9 @@ from streamlit.delta_generator import DeltaGenerator
 class Styler:
     @staticmethod
     def show_dict(subheader: str, data: dict):
-        cols = st.columns([0.1, 0.9])
         st.subheader(subheader)
+
+        cols = st.columns([0.1, 0.9])
         for prop, value in data.items():
             with cols[0]:
                 st.markdown(f"**{prop}:**")
