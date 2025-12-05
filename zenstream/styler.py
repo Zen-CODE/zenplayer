@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
 
 
 class Styler:
@@ -11,3 +12,12 @@ class Styler:
                 st.markdown(f"**{prop}:**")
             with cols[1]:
                 st.markdown(f"*{value}*")
+
+    @staticmethod
+    def add_button(container: DeltaGenerator, text: str, icon: str, on_click: callable):
+        with container:
+            st.button(
+                text,
+                icon=icon,
+                on_click=on_click,
+            )

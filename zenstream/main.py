@@ -1,15 +1,17 @@
 import streamlit as st
 from pathlib import Path
 from os import listdir, sep
-from os.path import join, exists
+from os.path import join
 from streamlit.delta_generator import DeltaGenerator
 from handlers.pandasviewer import PandasViewer
 from handlers.textviewer import TextViewer
 from handlers.audioplayer import AudioPlayer
 from handlers.imageviewer import ImageViewer
+from styler import Styler
 
 
 class State:
+
     @staticmethod
     def get_current_folder() -> str:
         """Return the full path to the current folder"""
@@ -29,6 +31,7 @@ class State:
     def get_current_file() -> str:
         return getattr(st.session_state, "current_file", "")
 
+
 class Action:
 
     handlers = {".mp3" : [AudioPlayer],
@@ -47,9 +50,8 @@ class Action:
                 ".jpg": [ImageViewer],
                 ".png": [ImageViewer],
                 }
-
     """A dictionary of file type / handler class list pairs. The handler class
-    exposing a `show()` method."""
+    exposing a `show_file(file_name)` method."""
 
     @staticmethod
     def set_current_folder(current_folder: str):
@@ -85,40 +87,24 @@ class Show:
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
         parent = str(Path(State.get_current_folder() + "/../").resolve())
-        with container:
-            st.button(
-                "<<",
-                icon=":material/arrow_circle_up:",
-                on_click=lambda: Action.set_current_folder(parent),
-            )
+        Styler.add_button(container, "<<",":material/arrow_circle_up:",
+                          lambda: Action.set_current_folder(parent))
 
     @staticmethod
     def _add_this_folder_button(container: DeltaGenerator):
         this_folder = str(Path(State.get_current_folder() + "/../").resolve())
-        with container:
-            st.button(
-                ".",
-                icon=":material/adjust:",
-                on_click=lambda: Action.set_current_folder(this_folder),
-            )
+        Styler.add_button(container, ".",":material/adjust:",
+                          lambda: Action.set_current_folder(this_folder))
 
     @staticmethod
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
-        with container:
-            st.button(
-                text,
-                icon=":material/adjust:",
-                on_click=lambda: Action.set_current_folder(folder),
-            )
+        Styler.add_button(container, text,":material/adjust:",
+                          lambda: Action.set_current_folder(folder))
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
-        with container:
-            st.button(
-                file_name,
-                icon=":material/adjust:",
-                on_click=lambda: Action.set_file(sep.join([folder, file_name])),
-            )
+        Styler.add_button(container, file_name,":material/adjust:",
+                lambda: Action.set_file(sep.join([folder, file_name])))
 
     @staticmethod
     def listing():
