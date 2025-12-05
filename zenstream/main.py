@@ -41,6 +41,8 @@ class Action:
                 ".ini": [TextViewer],
                 ".yaml": [TextViewer],
                 ".yml": [TextViewer],
+                ".bat": [TextViewer],
+                ".sh": [TextViewer],
                 ".md": [TextViewer],
                 ".jpeg": [ImageViewer],
                 ".jpg": [ImageViewer],
@@ -82,9 +84,8 @@ class Show:
 
     @staticmethod
     def status():
-        st.header("Status")
-        st.text(f"Current directory: {State.get_current_folder()}")
-        st.text(f"Current file: {State.get_current_file()}")
+        st.markdown(f"**Current directory:** {State.get_current_folder()}")
+        st.markdown(f"**Current file:** {State.get_current_file()}")
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
