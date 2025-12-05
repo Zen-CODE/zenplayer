@@ -15,11 +15,9 @@ class ImageViewer:
 
         with Image.open(file_name) as img:
             image_data = ImageViewer._get_metadata(img)
-            st.markdown("**Metadata**")
             Styler.show_dict("Image metadata", image_data)
             exif_data = ImageViewer._get_exif_data(img)
             if exif_data:
-                st.markdown("**EXIF Metadata (Camera)**")
                 Styler.show_dict("Camera information", exif_data)
 
     @staticmethod

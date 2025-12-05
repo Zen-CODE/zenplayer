@@ -9,6 +9,7 @@ from handlers.audioplayer import AudioPlayer
 from handlers.imageviewer import ImageViewer
 from handlers.pdfviewer import PDFViewer
 from handlers.videoplayer import VideoPlayer
+from handlers.excelviewer import ExcelViewer
 from styler import Styler
 
 
@@ -56,6 +57,8 @@ class Action:
         "webm": [VideoPlayer],
         "mp4": [VideoPlayer],
         "avi": [VideoPlayer],
+        "xls": [ExcelViewer],
+        "xlsx": [ExcelViewer],
     }
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show_file(file_name)` method."""
@@ -87,6 +90,8 @@ class Action:
                 return ":material/image:"
             case "webm" | "mp4" | "avi":
                 return ":material/movie:"
+            case "xls" | "xlsx":
+                return ":material/table:"
             case _:
                 return ":material/article:"
 

@@ -3,3 +3,4 @@ streamlit[pdf]
 pandas
 mutagen
 pillow
+openpyxl
