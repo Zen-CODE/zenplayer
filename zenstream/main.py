@@ -33,11 +33,7 @@ class State:
 class PandasViewer:
 
     @staticmethod
-    def show():
-        file_name = getattr(st.session_state, "current_file", None)
-        if not file_name:
-            print("PandasViewer called but no `current_file` set.")
-            return
+    def show_file(file_name: str):
 
         st.header("Pandas CSV Viewer")
         st.write(f"File: {file_name}")
@@ -49,17 +45,18 @@ class PandasViewer:
 class TextViewer:
 
     @staticmethod
-    def show():
-        file_name: str = getattr(st.session_state, "current_file", "")
-        if not file_name:
-            print("Text Viewer called but no `current_file` set.")
-            return
+    def show_file(file_name: str):
 
         st.header("Text Viewer")
         st.subheader("Contents: " + file_name.split(sep)[-1])
         with open(file_name, "r") as f:
             lines = "\n".join(f.readlines())
-        st.write(lines)
+        if Path(file_name).suffix.lower() == ".md":
+            st.markdown(lines)
+        else:
+            st.write(lines)
+
+
 
 class AudioPlayer:
 
@@ -88,11 +85,10 @@ class AudioPlayer:
 
 
     @staticmethod
-    def show():
+    def show_file(file_name: str):
         """Display the audio player, metadata and cover image."""
 
         st.header("Player")
-        file_name = st.session_state.current_file
         st.audio(file_name, autoplay=True)
 
         if file_name.lower().endswith(".mp3"):
@@ -137,6 +133,7 @@ class Action:
                 ".ini": [TextViewer],
                 ".yaml": [TextViewer],
                 ".yml": [TextViewer],
+                ".md": [TextViewer],
                 }
 
     """A dictionary of file type / handler class list pairs. The handler class
@@ -154,14 +151,11 @@ class Action:
     @staticmethod
     def set_file(file_name: str):
         print(f"Action.set_file({file_name})")
-        if not hasattr(st.session_state, "current_file"):
-            st.session_state.current_file = file_name
-        file_type = Path(file_name).suffix.lower()
-        for handler in Action.handlers.get(file_type, []):
-            # if not hasattr(st.session_state, "current_file"):
-            #     st.session_state.current_file = file_name
-            # Action.active_handlers.append(handler)
-            handler.show()
+        st.session_state.current_file = file_name
+        if file_name:
+            file_type = Path(file_name).suffix.lower()
+            for handler in Action.handlers.get(file_type, []):
+                handler.show_file(file_name)
 
 
 class Show:
