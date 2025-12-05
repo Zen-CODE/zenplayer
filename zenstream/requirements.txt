@@ -1,0 +1,4 @@
+# Requirements specifically of this ZenStream
+streamlit
+pandas
+mutagen
