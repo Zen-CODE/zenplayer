@@ -103,7 +103,7 @@ class Show:
             with col1:
                 st.title("ZenStream")
             with col2:
-                image_path = str(Path("./images/main.png").resolve())
+                image_path = str(Path("./images/zencode.jpg").resolve())
                 st.image(image_path)
 
     @staticmethod

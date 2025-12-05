@@ -40,6 +40,19 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": false,
+        },
+        {
+            "name": "ZenStream",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "cwd": "${workspaceFolder}/zenstream",
+            "args": [
+                "run", "main.py"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
         }
+
     ]
 }
