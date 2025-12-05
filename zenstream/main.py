@@ -95,19 +95,13 @@ class Show:
                           lambda: Action.set_current_folder(parent))
 
     @staticmethod
-    def _add_this_folder_button(container: DeltaGenerator):
-        this_folder = str(Path(State.get_current_folder() + "/../").resolve())
-        Styler.add_button(container, ".",":material/adjust:",
-                          lambda: Action.set_current_folder(this_folder))
-
-    @staticmethod
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
-        Styler.add_button(container, text,":material/adjust:",
+        Styler.add_button(container, text,":material/folder:",
                           lambda: Action.set_current_folder(folder))
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
-        Styler.add_button(container, file_name,":material/adjust:",
+        Styler.add_button(container, file_name,":material/article:",
                 lambda: Action.set_file(sep.join([folder, file_name])))
 
     @staticmethod
@@ -116,18 +110,17 @@ class Show:
         with st.container():
             cols = st.columns([0.25] * 4)
             Show._parent_folder_button(cols[0])
-            Show._add_this_folder_button(cols[1])
 
             folder = st.session_state.current_folder
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
                     Show._add_folder_button(
-                        cols[(index + 2) % len(cols)], file_name, str(final_path)
+                        cols[(index + 1) % len(cols)], file_name, str(final_path)
                     )
                 else:
                     Show._add_file_button(
-                        cols[(index + 2) % len(cols)], file_name, folder
+                        cols[(index + 1) % len(cols)], file_name, folder
                     )
 
 
