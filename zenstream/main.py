@@ -107,11 +107,6 @@ class Show:
                 st.image(image_path)
 
     @staticmethod
-    def status():
-        st.markdown(f"**Current directory:** {State.get_current_folder()}")
-        st.markdown(f"**Current file:** {State.get_current_file()}")
-
-    @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
@@ -141,12 +136,13 @@ class Show:
 
     @staticmethod
     def listing():
+        folder = State.get_current_folder()
         st.header("Listing")
+        st.markdown(f"**Current directory:** {folder}")
         with st.container():
             cols = st.columns([0.25] * 4)
             Show._parent_folder_button(cols[0])
 
-            folder = st.session_state.current_folder
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
@@ -162,6 +158,8 @@ class Show:
     def details():
         file_name = State.get_current_file()
         if file_name:
+            st.subheader("Details")
+            st.markdown(f"**Current file:** {State.get_current_file()}")
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
 
@@ -174,6 +172,5 @@ if __name__ == "__main__":
     )
 
     Show.header()
-    Show.status()
     Show.listing()
     Show.details()
