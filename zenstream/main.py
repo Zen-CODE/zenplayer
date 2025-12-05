@@ -24,6 +24,10 @@ class State:
         st.session_state.current_file = file_name
         [handler.show() for handler in Action.active_handlers]
 
+    @staticmethod
+    def get_current_file() -> str:
+        return getattr(st.session_state, "current_file", "")
+
 
 
 class PandasViewer:
@@ -41,6 +45,21 @@ class PandasViewer:
         df = pd.read_csv(file_name)
         st.data_editor(df, num_rows="dynamic")
 
+
+class TextViewer:
+
+    @staticmethod
+    def show():
+        file_name: str = getattr(st.session_state, "current_file", "")
+        if not file_name:
+            print("Text Viewer called but no `current_file` set.")
+            return
+
+        st.header("Text Viewer")
+        st.subheader("Contents: " + file_name.split(sep)[-1])
+        with open(file_name, "r") as f:
+            lines = "\n".join(f.readlines())
+        st.write(lines)
 
 class AudioPlayer:
 
@@ -112,7 +131,14 @@ class Action:
     handlers = {".mp3" : [AudioPlayer],
                 ".ogg": [AudioPlayer] ,
                 ".wav": [AudioPlayer],
-                ".csv": [PandasViewer]}
+                ".csv": [PandasViewer],
+                ".txt": [TextViewer],
+                ".py": [TextViewer],
+                ".ini": [TextViewer],
+                ".yaml": [TextViewer],
+                ".yml": [TextViewer],
+                }
+
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show()` method."""
 
@@ -153,6 +179,7 @@ class Show:
     def status():
         st.header("Status")
         st.text(f"Current directory: {State.get_current_folder()}")
+        st.text(f"Current file: {State.get_current_file()}")
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
@@ -171,7 +198,7 @@ class Show:
             st.button(
                 "<",
                 icon=":material/adjust:",
-                on_click=lambda: Action.set_folder(this_folder),
+                on_click=lambda: Action.set_current_folder(this_folder),
             )
 
     @staticmethod
