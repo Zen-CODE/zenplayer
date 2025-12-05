@@ -57,6 +57,11 @@ class Action:
     exposing a `show_file(file_name)` method."""
 
     @staticmethod
+    def get_handlers(file_name: str) -> list:
+        ext = file_name.split(".")[-1]
+        return Action.handlers.get(ext, [])
+
+    @staticmethod
     def get_icon(file_name: str) -> str:
         suffix = file_name.split(".")[-1]
         match suffix:
@@ -88,10 +93,6 @@ class Action:
     def set_file(file_name: str):
         print(f"Action.set_file({file_name})")
         st.session_state.current_file = file_name
-        if file_name:
-            file_type = file_name.split(".")[-1].lower()
-            for handler in Action.handlers.get(file_type, []):
-                handler.show_file(file_name)
 
 
 class Show:
@@ -157,6 +158,13 @@ class Show:
                         cols[(index + 1) % len(cols)], file_name, folder
                     )
 
+    @staticmethod
+    def details():
+        file_name = State.get_current_file()
+        if file_name:
+            for handler in Action.get_handlers(file_name):
+                handler.show_file(file_name)
+
 
 if __name__ == "__main__":
     st.set_page_config(
@@ -168,3 +176,4 @@ if __name__ == "__main__":
     Show.header()
     Show.status()
     Show.listing()
+    Show.details()
