@@ -101,7 +101,7 @@ class Show:
         this_folder = str(Path(State.get_current_folder() + "/../").resolve())
         with container:
             st.button(
-                "<",
+                ".",
                 icon=":material/adjust:",
                 on_click=lambda: Action.set_current_folder(this_folder),
             )

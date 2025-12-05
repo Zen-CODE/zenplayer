@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image, ImageFile
-
+from PIL.ExifTags import TAGS
 
 
 class ImageViewer:
@@ -39,21 +39,10 @@ class ImageViewer:
     def _get_exif_data(img: ImageFile) -> dict:
         exif_data = img.getexif()
         if exif_data:
-            # EXIF_TAGS = {
-            #     271: "Make (Camera Brand)",
-            #     272: "Model (Camera Model)",
-            #     306: "DateTime (Modification Date)",
-            #     36867: "DateTimeOriginal (Capture Date)",
-            #     33434: "ExposureTime (Shutter Speed)",
-            #     33437: "FNumber (Aperture)",
-            #     34855: "ISOSpeedRatings",
-            # }
-
-            return {"Camera": exif_data.get(271, "-"),
-                    "Model": exif_data.get(272, "-"),
-                     "Date modified": exif_data.get(306, "-"),
-                     "Date original": exif_data.get(36867, "-"),
-                     "Exposure time (shutter speed)": exif_data.get(33434, "-"),
-                     "Aperture": exif_data.get(33437, "-")}
+            tags = {}
+            for tag_id, value in exif_data.items():
+                tag_name = TAGS.get(tag_id, tag_id) # Get human-readable name or use ID
+                tags[tag_name.title()] = str(value)
+            return tags
 
         return {}
