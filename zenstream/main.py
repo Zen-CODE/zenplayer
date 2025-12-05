@@ -1,13 +1,11 @@
 import streamlit as st
 from pathlib import Path
 from os import listdir, sep
-from os.path import join
+from os.path import join, exists
 from streamlit.delta_generator import DeltaGenerator
 import pandas as pd
 from mutagen import File
 from glob import glob
-
-AUDIO_FILES = [".mp3", ".ogg", ".wav"]
 
 class State:
     @staticmethod
@@ -15,36 +13,34 @@ class State:
         """Return the full path to the current folder"""
         path = str(
             Path.cwd()
-            if not hasattr(st.session_state, "folder")
-            else Path(st.session_state.folder)
+            if not hasattr(st.session_state, "current_folder")
+            else Path(st.session_state.current_folder)
         )
-        st.session_state.folder = path
+        st.session_state.current_folder = path
         return path
 
     @staticmethod
-    def set_current_track(file_name: str):
-        st.session_state.current_track = file_name
+    def set_current_file(file_name: str):
+        st.session_state.current_file = file_name
+        [handler.show() for handler in Action.active_handlers]
 
 
-class Action:
-    @staticmethod
-    def open_file(file_name):
-        print(f"open_file - {file_name}")
 
-    @staticmethod
-    def set_folder(folder):
-        print(f"set_folder - {folder}")
-        st.session_state.folder = folder
+class PandasViewer:
 
     @staticmethod
-    def set_file(file_name):
-        print(f"Action.set_file({file_name})")
-        for file_type in AUDIO_FILES:
-            if file_name.lower().endswith(file_type):
-                st.session_state.current_track = file_name
-                return
+    def show():
+        file_name = getattr(st.session_state, "current_file", None)
+        if not file_name:
+            print("PandasViewer called but no `current_file` set.")
+            return
 
-        # st.session_state.current_track = None
+        st.header("Pandas CSV Viewer")
+        st.write(f"File: {file_name}")
+
+        df = pd.read_csv(file_name)
+        st.data_editor(df, num_rows="dynamic")
+
 
 class AudioPlayer:
 
@@ -77,7 +73,7 @@ class AudioPlayer:
         """Display the audio player, metadata and cover image."""
 
         st.header("Player")
-        file_name = st.session_state.current_track
+        file_name = st.session_state.current_file
         st.audio(file_name, autoplay=True)
 
         if file_name.lower().endswith(".mp3"):
@@ -98,16 +94,6 @@ class AudioPlayer:
         return ["Unknown", "CBR", "VBR", "ABR"][val]
 
     @staticmethod
-    def now_playing():
-        st.header("Now Playing")
-
-        df = pd.read_csv(
-            "/home/richard/.zencode/zenplayer/nowplaying.csv",
-        )
-        df = df.drop(["machine"], axis=1)
-        st.data_editor(df, num_rows="dynamic")
-
-    @staticmethod
     def _show_cover(file_name: str):
         def get_image() -> str:
             parts = file_name.split(sep)
@@ -120,6 +106,37 @@ class AudioPlayer:
         if image_path:
             st.subheader("Cover Image")
             st.image(image_path)
+
+class Action:
+
+    handlers = {".mp3" : [AudioPlayer],
+                ".ogg": [AudioPlayer] ,
+                ".wav": [AudioPlayer],
+                ".csv": [PandasViewer]}
+    """A dictionary of file type / handler class list pairs. The handler class
+    exposing a `show()` method."""
+
+    active_handlers = []
+    """A list of handlers for the file to be called after the main listing"""
+
+    @staticmethod
+    def set_current_folder(current_folder: str):
+        print(f"set_current_folder - {current_folder}")
+        st.session_state.current_folder = current_folder
+        Action.active_handlers = []
+
+    @staticmethod
+    def set_file(file_name: str):
+        print(f"Action.set_file({file_name})")
+        if not hasattr(st.session_state, "current_file"):
+            st.session_state.current_file = file_name
+        file_type = Path(file_name).suffix.lower()
+        for handler in Action.handlers.get(file_type, []):
+            # if not hasattr(st.session_state, "current_file"):
+            #     st.session_state.current_file = file_name
+            # Action.active_handlers.append(handler)
+            handler.show()
+
 
 class Show:
     @staticmethod
@@ -144,7 +161,7 @@ class Show:
             st.button(
                 "<<",
                 icon=":material/arrow_circle_up:",
-                on_click=lambda: Action.set_folder(parent),
+                on_click=lambda: Action.set_current_folder(parent),
             )
 
     @staticmethod
@@ -163,7 +180,7 @@ class Show:
             st.button(
                 text,
                 icon=":material/adjust:",
-                on_click=lambda: Action.set_folder(folder),
+                on_click=lambda: Action.set_current_folder(folder),
             )
 
     @staticmethod
@@ -183,7 +200,7 @@ class Show:
             Show._parent_folder_button(cols[0])
             Show._add_this_folder_button(cols[1])
 
-            folder = st.session_state.folder
+            folder = st.session_state.current_folder
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
@@ -194,14 +211,6 @@ class Show:
                     Show._add_file_button(
                         cols[(index + 2) % len(cols)], file_name, folder
                     )
-
-    @staticmethod
-    def player():
-        if not hasattr(st.session_state, "current_track"):
-            st.info("Selecy as file to get more info...")
-            return
-
-        AudioPlayer.show()
 
 
 if __name__ == "__main__":
@@ -214,5 +223,6 @@ if __name__ == "__main__":
     Show.header()
     Show.status()
     Show.listing()
+    print("handlers = ", Action.active_handlers)
+    # [handler.show() for handler in Action.active_handlers]
     # Show.now_playing()
-    Show.player()
