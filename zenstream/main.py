@@ -7,6 +7,7 @@ from handlers.pandasviewer import PandasViewer
 from handlers.textviewer import TextViewer
 from handlers.audioplayer import AudioPlayer
 from handlers.imageviewer import ImageViewer
+from handlers.pdfviewer import PDFViewer
 from styler import Styler
 
 
@@ -47,6 +48,7 @@ class Action:
                 ".sh": [TextViewer],
                 ".md": [TextViewer],
                 ".json": [TextViewer],
+                ".pdf": [PDFViewer],
                 ".toml": [TextViewer],
                 ".jpeg": [ImageViewer],
                 ".jpg": [ImageViewer],

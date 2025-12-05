@@ -1,5 +1,5 @@
 # Requirements specifically of this ZenStream
-streamlit
+streamlit[pdf]
 pandas
 mutagen
 pillow

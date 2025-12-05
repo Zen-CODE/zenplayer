@@ -9,7 +9,7 @@ class TextViewer:
     def show_file(file_name: str):
 
         st.header("Text Viewer")
-        st.subheader("Contents: " + file_name.split(sep)[-1])
+        st.subheader(file_name.split(sep)[-1])
         with open(file_name, "r") as f:
             lines = f.read()
 
