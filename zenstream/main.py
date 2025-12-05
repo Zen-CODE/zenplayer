@@ -51,10 +51,16 @@ class TextViewer:
         st.subheader("Contents: " + file_name.split(sep)[-1])
         with open(file_name, "r") as f:
             lines = "\n".join(f.readlines())
-        if Path(file_name).suffix.lower() == ".md":
-            st.markdown(lines)
-        else:
-            st.write(lines)
+
+        st.markdown("---")
+        match Path(file_name).suffix.lower():
+            case ".md":
+                st.markdown(lines)
+            case ".py":
+                st.code(lines)
+            case _:
+                st.write(lines)
+        st.markdown("---")
 
 
 
