@@ -7,6 +7,7 @@ import pandas as pd
 from mutagen import File
 from glob import glob
 
+AUDIO_FILES = [".mp3", ".ogg", ".wav"]
 
 class State:
     @staticmethod
@@ -37,10 +38,88 @@ class Action:
 
     @staticmethod
     def set_file(file_name):
-        print(f"set_file - {file_name}")
-        if file_name.endswith(".mp3") or file_name.endswith(".ogg"):
-            st.session_state.current_track = file_name
+        print(f"Action.set_file({file_name})")
+        for file_type in AUDIO_FILES:
+            if file_name.lower().endswith(file_type):
+                st.session_state.current_track = file_name
+                return
 
+        # st.session_state.current_track = None
+
+class AudioPlayer:
+
+    @staticmethod
+    def _show_meta(file_name: str):
+
+        st.subheader("Track Metadata")
+        cols = st.columns([0.1, 0.9])
+        info: File = File(file_name).info
+        parts = file_name.split(sep)
+
+        for prop, value in [
+            ("Artist", parts[-3]),
+            ("Album", parts[-2]),
+            ("Track", parts[-1]),
+            ("Length", f"{int(info.length // 60)}m {int(info.length % 60)}s"),
+            ("Bitrate", f"{info.bitrate // 1000}kbps"),
+            ("Bitrate mode", Show._get_bitrate(info)),
+            ("Channels", info.channels),
+            ("Sample_rate", f"{info.sample_rate}hz"),
+        ]:
+            with cols[0]:
+                st.markdown(f"**{prop}:**")
+            with cols[1]:
+                st.markdown(f"*{value}*")
+
+
+    @staticmethod
+    def show():
+        """Display the audio player, metadata and cover image."""
+
+        st.header("Player")
+        file_name = st.session_state.current_track
+        st.audio(file_name, autoplay=True)
+
+        if file_name.lower().endswith(".mp3"):
+            AudioPlayer._show_meta()
+            AudioPlayer._show_cover(file_name)
+
+
+
+    @staticmethod
+    def _get_bitrate(info_obj: File) -> str:
+        """
+        Return the bitrate description given the mutagen bitrate object.
+        """
+        bitrate_mode = getattr(info_obj, "bitrate_mode", None)
+        if bitrate_mode is None:
+            return "unknown"
+        val = int(bitrate_mode)
+        return ["Unknown", "CBR", "VBR", "ABR"][val]
+
+    @staticmethod
+    def now_playing():
+        st.header("Now Playing")
+
+        df = pd.read_csv(
+            "/home/richard/.zencode/zenplayer/nowplaying.csv",
+        )
+        df = df.drop(["machine"], axis=1)
+        st.data_editor(df, num_rows="dynamic")
+
+    @staticmethod
+    def _show_cover(file_name: str):
+        def get_image() -> str:
+            parts = file_name.split(sep)
+            for ext in ["*.jpg", "*.jpg", "*.png", "*.bmp"]:
+                path = sep.join(parts[:-1]) + sep + ext
+                for image in glob(path):
+                    return image
+
+        image_path = get_image()
+        if image_path:
+            st.subheader("Cover Image")
+            st.image(image_path)
 
 class Show:
     @staticmethod
@@ -63,7 +142,7 @@ class Show:
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         with container:
             st.button(
-                "..",
+                "<<",
                 icon=":material/arrow_circle_up:",
                 on_click=lambda: Action.set_folder(parent),
             )
@@ -73,7 +152,7 @@ class Show:
         this_folder = str(Path(State.get_current_folder() + "/../").resolve())
         with container:
             st.button(
-                ".",
+                "<",
                 icon=":material/adjust:",
                 on_click=lambda: Action.set_folder(this_folder),
             )
@@ -117,71 +196,12 @@ class Show:
                     )
 
     @staticmethod
-    def _get_bitrate(info_obj: File) -> str:
-        """
-        Return the bitrate description given the mutagen bitrate object.
-        """
-        bitrate_mode = getattr(info_obj, "bitrate_mode", None)
-        if bitrate_mode is None:
-            return "unknown"
-        val = int(bitrate_mode)
-        return ["Unknown", "CBR", "VBR", "ABR"][val]
-
-    @staticmethod
-    def now_playing():
-        st.header("Now Playing")
-
-        df = pd.read_csv(
-            "/home/richard/.zencode/zenplayer/nowplaying.csv",
-        )
-        df = df.drop(["machine"], axis=1)
-        st.data_editor(df, num_rows="dynamic")
-
-    @staticmethod
-    def _show_cover(file_name: str):
-        def get_image() -> str:
-            parts = file_name.split(sep)
-            for ext in ["*.jpg", "*.jpg", "*.png", "*.bmp"]:
-                path = sep.join(parts[:-1]) + sep + ext
-                for image in glob(path):
-                    return image
-
-        image_path = get_image()
-        if image_path:
-            st.subheader("Cover Image")
-            st.image(image_path)
-
-    @staticmethod
     def player():
         if not hasattr(st.session_state, "current_track"):
-            st.warning("No track currently selected.")
+            st.info("Selecy as file to get more info...")
             return
 
-        st.header("Player")
-        file_name = st.session_state.current_track
-        st.audio(file_name, autoplay=True)
-
-        st.subheader("Track Metadata")
-        cols = st.columns([0.1, 0.9])
-        info: File = File(file_name).info
-        parts = file_name.split(sep)
-
-        for prop, value in [
-            ("Artist", parts[-3]),
-            ("Album", parts[-2]),
-            ("Track", parts[-1]),
-            ("Length", f"{int(info.length // 60)}m {int(info.length % 60)}s"),
-            ("Bitrate", f"{info.bitrate // 1000}kbps"),
-            ("Bitrate mode", Show._get_bitrate(info)),
-            ("Channels", info.channels),
-            ("Sample_rate", f"{info.sample_rate}hz"),
-        ]:
-            with cols[0]:
-                st.markdown(f"**{prop}:**")
-            with cols[1]:
-                st.markdown(f"*{value}*")
-
-        Show._show_cover(file_name)
+        AudioPlayer.show()
 
 
 if __name__ == "__main__":
