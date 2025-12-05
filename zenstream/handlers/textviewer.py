@@ -10,7 +10,6 @@ class TextViewer:
         with open(file_name, "r") as f:
             lines = f.read()
 
-        st.divider()
         match file_name.split(".")[-1].lower():
             case "md":
                 st.markdown(lines)
@@ -21,4 +20,3 @@ class TextViewer:
                     lines,
                     line_numbers=True,
                 )
-        st.divider()

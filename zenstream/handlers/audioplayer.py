@@ -2,7 +2,6 @@ import streamlit as st
 from mutagen import File
 from glob import glob
 from os import sep
-from handlers.imageviewer import ImageViewer
 from styler import Styler
 
 
@@ -31,6 +30,7 @@ class AudioPlayer:
         st.audio(file_name, autoplay=True)
 
         if file_name.lower().endswith(".mp3"):
+            st.markdown("**Metadata**")
             AudioPlayer._show_meta(file_name)
             AudioPlayer._show_cover(file_name)
 
@@ -47,13 +47,13 @@ class AudioPlayer:
 
     @staticmethod
     def _show_cover(file_name: str):
-        def get_image() -> str:
+        def get_cover() -> str:
             parts = file_name.split(sep)
-            for ext in ["*.jpg", "*.jpg", "*.png", "*.bmp"]:
-                path = sep.join(parts[:-1]) + sep + ext
-                for image in glob(path):
-                    return image
+            folder = sep.join(parts[:-1])
+            for image in glob(sep.join([folder, "cover.*"])):
+                return image
 
-        image_path = get_image()
+        image_path = get_cover()
         if image_path:
-            ImageViewer.show_file(image_path)
+            st.markdown("**Album Cover**")
+            st.image(image_path)

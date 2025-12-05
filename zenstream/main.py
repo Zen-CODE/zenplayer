@@ -105,6 +105,7 @@ class Show:
             with col2:
                 image_path = str(Path("./images/zencode.jpg").resolve())
                 st.image(image_path)
+        st.divider()
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
@@ -153,6 +154,7 @@ class Show:
                     Show._add_file_button(
                         cols[(index + 1) % len(cols)], file_name, folder
                     )
+        st.divider()
 
     @staticmethod
     def details():
@@ -162,6 +164,7 @@ class Show:
             st.markdown(f"**Current file:** {State.get_current_file()}")
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
+                st.divider()
 
 
 if __name__ == "__main__":

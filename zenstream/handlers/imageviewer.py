@@ -5,7 +5,6 @@ from styler import Styler
 
 
 class ImageViewer:
-
     @staticmethod
     def show_file(file_name: str):
         """Display the image."""
@@ -16,17 +15,20 @@ class ImageViewer:
 
         with Image.open(file_name) as img:
             image_data = ImageViewer._get_metadata(img)
+            st.markdown("**Metadata**")
             Styler.show_dict("Image metadata", image_data)
             exif_data = ImageViewer._get_exif_data(img)
             if exif_data:
+                st.markdown("**EXIF Metadata (Camera)**")
                 Styler.show_dict("Camera information", exif_data)
-
 
     @staticmethod
     def _get_metadata(img: ImageFile) -> dict:
-        return {"Format": img.format,
-                "Dimensions (W, H)": f"{img.size} pixels",
-                "Color Mode": img.mode}
+        return {
+            "Format": img.format,
+            "Dimensions (W, H)": f"{img.size} pixels",
+            "Color Mode": img.mode,
+        }
 
     @staticmethod
     def _get_exif_data(img: ImageFile) -> dict:
@@ -34,7 +36,7 @@ class ImageViewer:
         if exif_data:
             tags = {}
             for tag_id, value in exif_data.items():
-                tag_name = TAGS.get(tag_id, tag_id) # Get human-readable name or use ID
+                tag_name = TAGS.get(tag_id, tag_id)  # Get human-readable name or use ID
                 tags[tag_name.title()] = str(value)
             return tags
 
