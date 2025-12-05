@@ -46,6 +46,8 @@ class Action:
                 ".bat": [TextViewer],
                 ".sh": [TextViewer],
                 ".md": [TextViewer],
+                ".json": [TextViewer],
+                ".toml": [TextViewer],
                 ".jpeg": [ImageViewer],
                 ".jpg": [ImageViewer],
                 ".png": [ImageViewer],

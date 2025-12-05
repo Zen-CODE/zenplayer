@@ -13,9 +13,12 @@ class TextViewer:
         with open(file_name, "r") as f:
             lines = f.read()
 
-        st.markdown("---")
-        if Path(file_name).suffix.lower() == ".md":
-            st.markdown(lines)
-        else:
-            st.code(lines, line_numbers=True,)
-        st.markdown("---")
+        st.divider()
+        match Path(file_name).suffix.lower():
+            case ".md":
+                st.markdown(lines)
+            case ".json":
+                st.json(lines)
+            case _:
+                st.code(lines, line_numbers=True,)
+        st.divider()
