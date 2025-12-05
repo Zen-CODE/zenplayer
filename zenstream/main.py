@@ -12,7 +12,6 @@ from styler import Styler
 
 
 class State:
-
     @staticmethod
     def get_current_folder() -> str:
         """Return the full path to the current folder"""
@@ -34,28 +33,51 @@ class State:
 
 
 class Action:
-
-    handlers = {".mp3" : [AudioPlayer],
-                ".ogg": [AudioPlayer] ,
-                ".wav": [AudioPlayer],
-                ".csv": [PandasViewer],
-                ".txt": [TextViewer],
-                ".py": [TextViewer],
-                ".ini": [TextViewer],
-                ".yaml": [TextViewer],
-                ".yml": [TextViewer],
-                ".bat": [TextViewer],
-                ".sh": [TextViewer],
-                ".md": [TextViewer],
-                ".json": [TextViewer],
-                ".pdf": [PDFViewer],
-                ".toml": [TextViewer],
-                ".jpeg": [ImageViewer],
-                ".jpg": [ImageViewer],
-                ".png": [ImageViewer],
-                }
+    handlers = {
+        "mp3": [AudioPlayer],
+        "ogg": [AudioPlayer],
+        "wav": [AudioPlayer],
+        "csv": [PandasViewer],
+        "txt": [TextViewer],
+        "py": [TextViewer],
+        "ini": [TextViewer],
+        "yaml": [TextViewer],
+        "yml": [TextViewer],
+        "bat": [TextViewer],
+        "sh": [TextViewer],
+        "md": [TextViewer],
+        "json": [TextViewer],
+        "pdf": [PDFViewer],
+        "toml": [TextViewer],
+        "jpeg": [ImageViewer],
+        "jpg": [ImageViewer],
+        "png": [ImageViewer],
+    }
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show_file(file_name)` method."""
+
+    @staticmethod
+    def get_icon(file_name: str) -> str:
+        suffix = file_name.split(".")[-1]
+        match suffix:
+            case "mp3" | "ogg" | "wav":
+                return ":material/audio_file:"
+            case "csv":
+                return ":material/csv:"
+            case "txt" | "md":
+                return ":material/text_snippet:"
+            case "py":
+                return ":material/code:"
+            case "ini" | "yaml" | "yml" | "json" | "toml":
+                return ":material/settings:"
+            case "bat" | "sh":
+                return ":material/run_circle:"
+            case "pdf":
+                return ":material/picture_as_pdf:"
+            case "jpeg" | "jpg" | "png":
+                return ":material/image:"
+            case _:
+                return ":material/article:"
 
     @staticmethod
     def set_current_folder(current_folder: str):
@@ -67,7 +89,7 @@ class Action:
         print(f"Action.set_file({file_name})")
         st.session_state.current_file = file_name
         if file_name:
-            file_type = Path(file_name).suffix.lower()
+            file_type = file_name.split(".")[-1].lower()
             for handler in Action.handlers.get(file_type, []):
                 handler.show_file(file_name)
 
@@ -91,18 +113,30 @@ class Show:
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
         parent = str(Path(State.get_current_folder() + "/../").resolve())
-        Styler.add_button(container, "<<",":material/arrow_circle_up:",
-                          lambda: Action.set_current_folder(parent))
+        Styler.add_button(
+            container,
+            "<<",
+            ":material/arrow_circle_up:",
+            lambda: Action.set_current_folder(parent),
+        )
 
     @staticmethod
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
-        Styler.add_button(container, text,":material/folder:",
-                          lambda: Action.set_current_folder(folder))
+        Styler.add_button(
+            container,
+            text,
+            ":material/folder:",
+            lambda: Action.set_current_folder(folder),
+        )
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
-        Styler.add_button(container, file_name, ":material/article:",
-                lambda: Action.set_file(sep.join([folder, file_name])))
+        Styler.add_button(
+            container,
+            file_name,
+            Action.get_icon(file_name),
+            lambda: Action.set_file(sep.join([folder, file_name])),
+        )
 
     @staticmethod
     def listing():
