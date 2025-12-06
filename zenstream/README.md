@@ -28,7 +28,7 @@ ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and ext
 Assuming you have setup a Python virtual environment and have downloaded the code:
 ```bash
 pip install -r requirement.txt
-streamlit run main.pt
+streamlit run main.py
 ```
 
 ## Design
