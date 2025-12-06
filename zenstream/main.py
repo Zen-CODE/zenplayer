@@ -20,7 +20,6 @@ import pyperclip
 class State:
     @staticmethod
     def get_current_folder() -> str:
-        """Return the full path to the current folder"""
         path = str(
             Path.cwd()
             if not hasattr(st.session_state, "current_folder")
@@ -123,7 +122,6 @@ class Show:
                 st.title("ZenStream")
             with col2:
                 st.image("images/favicon.png")
-        # st.divider()
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
@@ -181,24 +179,24 @@ class Show:
             col1, col2, col3, col4 = st.columns([0.8, 0.1, 0.1, 0.1])
             with col1:
                 st.info(f"Current file: {file_name}")
-            with col2:
-                st.button(
-                    "Copy path",
-                    on_click=lambda *args: pyperclip.copy(file_name),
-                    icon=":material/content_copy:",
-                )
-            with col3:
-                st.button(
-                    "Open file",
-                    on_click=lambda *args: webbrowser.open(file_name),
-                    icon=":material/open_in_full:",
-                )
-            with col4:
-                st.button(
-                    "Clear",
-                    on_click=lambda *args: State.set_current_file(None),
-                    icon=":material/close:",
-                )
+            Styler.add_button(
+                col2,
+                "Copy path",
+                on_click=lambda *args: pyperclip.copy(file_name),
+                icon=":material/content_copy:",
+            )
+            Styler.add_button(
+                col3,
+                "Open file",
+                on_click=lambda *args: webbrowser.open(file_name),
+                icon=":material/open_in_full:",
+            )
+            Styler.add_button(
+                col4,
+                "Clear",
+                on_click=lambda *args: State.set_current_file(None),
+                icon=":material/close:",
+            )
 
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
