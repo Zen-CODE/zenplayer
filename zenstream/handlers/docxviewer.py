@@ -18,12 +18,13 @@ class DocXViewer:
                 (f"Paragraph {index}", DocXViewer._format_text(paragraph.text))
             )
         df = pd.DataFrame(paragraphs)
-        st.subheader("Paragraphs")
-        st.data_editor(df, num_rows="dynamic")
+        with st.expander("Paragraphs"):
+            st.data_editor(df, num_rows="dynamic")
 
-        # Show tables
-        for index, table in enumerate(document.tables):
-            DocXViewer._show_table(table, index + 1)
+        with st.expander("Tables"):
+            # Show tables
+            for index, table in enumerate(document.tables):
+                DocXViewer._show_table(table, index + 1)
 
         # Show metadata
         with st.expander("Metadata"):
@@ -54,17 +55,18 @@ class DocXViewer:
         st.data_editor(df, num_rows="dynamic")
 
         # Try adding some graphs
-        st.markdown(f"Table {index} analysis")
-        col1, col2 = st.columns(2)
-        st.divider()
-        with col1:
-            st.markdown("**Area Chart**")
-            st.area_chart(df)
-            st.markdown("**Bar Chart**")
-            st.bar_chart(df)
-        with col2:
-            st.markdown("**Line Chart**")
-            st.line_chart(df)
+        with st.expander(f"Table {index} graphs"):
+            st.markdown(f"Table {index} analysis")
+            col1, col2 = st.columns(2)
+            st.divider()
+            with col1:
+                st.markdown("**Area Chart**")
+                st.area_chart(df)
+                st.markdown("**Bar Chart**")
+                st.bar_chart(df)
+            with col2:
+                st.markdown("**Line Chart**")
+                st.line_chart(df)
 
     @staticmethod
     def _format_text(text: str) -> str:
