@@ -124,7 +124,7 @@ class Show:
             with col1:
                 st.title("ZenStream")
             with col2:
-                st.image("images/zencode.jpg")
+                st.image("images/favicon.png")
         # st.divider()
 
     @staticmethod
