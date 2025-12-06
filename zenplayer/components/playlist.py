@@ -1,5 +1,6 @@
 from kivy.event import EventDispatcher
 from os import sep, path, listdir
+from kivy.clock import Clock
 from os.path import exists
 from kivy.properties import (  # pylint: disable=no-name-in-module
     NumericProperty,
@@ -125,6 +126,18 @@ class Playlist(EventDispatcher):
         Move the selected track to the next. If *prune* is True, the
         current track is removed from the playlist.
         """
+
+        def load_file(file_name):
+            """Open the file for caching purposes."""
+            print("Caching ", file_name)
+            with open(file_name, "rb") as f:
+                f.read()
+
+        def cache_next():
+            if self.current + 1 < len(self.queue):
+                file_name = self.queue[self.current + 1]["filename"]
+                Clock.schedule_once(lambda *args: load_file(file_name), 2)
+
         if prune:
             if self.current < len(self.queue):
                 self.queue.pop(self.current)
@@ -133,6 +146,7 @@ class Playlist(EventDispatcher):
 
         if self.current + 1 > len(self.queue):
             self.current = 0
+        cache_next()
 
     def move_previous(self):
         """Move the selected track to the previous entry"""
