@@ -14,6 +14,7 @@ from handlers.docxviewer import DocXViewer
 from styler import Styler
 from handlers.filedetails import FileDetails
 import webbrowser
+import pyperclip
 
 
 class State:
@@ -178,14 +179,20 @@ class Show:
     @staticmethod
     def details():
         if file_name := State.get_current_file():
-            col1, col2 = st.columns([0.9, 0.1])
+            col1, col2, col3 = st.columns([0.8, 0.1, 0.1])
             with col1:
                 st.info(f"Current file: {file_name}")
-            with col2:
+            with col3:
                 st.button(
                     "Open file",
                     on_click=lambda *args: webbrowser.open(file_name),
                     icon=":material/open_in_full:",
+                )
+            with col2:
+                st.button(
+                    "Copy path",
+                    on_click=lambda *args: pyperclip.copy(file_name),
+                    icon=":material/content_copy:",
                 )
 
             for handler in Action.get_handlers(file_name):

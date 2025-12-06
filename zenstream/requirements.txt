@@ -5,3 +5,4 @@ mutagen
 pillow
 openpyxl
 python-docx
+pyperclip
