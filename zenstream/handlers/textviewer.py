@@ -1,5 +1,7 @@
 import streamlit as st
 from os.path import sep
+from styler import Styler
+import pandas as pd
 
 
 class TextViewer:
@@ -15,6 +17,8 @@ class TextViewer:
                 st.markdown(lines)
             case "json":
                 st.json(lines)
+                df = pd.read_json(file_name)
+                Styler.show_dataframe("JSON -> DataFrame", df)
             case _:
                 st.code(
                     lines,
