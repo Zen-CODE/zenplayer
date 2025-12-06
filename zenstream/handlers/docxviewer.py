@@ -53,6 +53,19 @@ class DocXViewer:
         st.subheader(f"Table {index}")
         st.data_editor(df, num_rows="dynamic")
 
+        # Try adding some graphs
+        col1, col2 = st.columns(2)
+        st.divider()
+        st.markdown(f"Table {index} analysis")
+        with col1:
+            st.markdown("**Area Chart**")
+            st.area_chart(df)
+            st.markdown("**Bar Chart**")
+            st.bar_chart(df)
+        with col2:
+            st.markdown("**Line Chart**")
+            st.line_chart(df)
+
     @staticmethod
     def _format_text(text: str) -> str:
         """Remove non-readable characters"""
