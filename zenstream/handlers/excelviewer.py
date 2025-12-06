@@ -18,11 +18,14 @@ class ExcelViewer:
         df: pd.DataFrame = pd.read_excel(file_name, engine="openpyxl", header=0)
         st.data_editor(df, num_rows="dynamic")
 
-        Styler.show_dict(
-            "Metadata",
-            {
-                "Sheets": str(len(workbook.sheetnames)),
-                "Sheet names": str(workbook.sheetnames),
-                "Active sheet": active,
-            },
-        )
+        Styler.show_dataframe("Excel -> DataFrame", df)
+
+        with st.expander("Metadata"):
+            Styler.show_dict(
+                "Metadata",
+                {
+                    "Sheets": str(len(workbook.sheetnames)),
+                    "Sheet names": str(workbook.sheetnames),
+                    "Active sheet": active,
+                },
+            )

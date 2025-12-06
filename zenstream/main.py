@@ -119,7 +119,7 @@ class Show:
         with st.container():
             col1, col2 = st.columns([0.96, 0.04])
             with col1:
-                st.title("ZenStream")
+                st.title("ZenStream - File explorer, viewer and extractor")
             with col2:
                 st.image("images/favicon.png")
 

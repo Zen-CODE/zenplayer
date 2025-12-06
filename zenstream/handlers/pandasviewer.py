@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+from styler import Styler
 
 
 class PandasViewer:
@@ -13,18 +14,4 @@ class PandasViewer:
 
         # Try adding some graphs
         st.divider()
-        with st.expander("CSV graphs"):
-            st.markdown("CSV analysis")
-            col1, col2 = st.columns(2)
-            try:
-                with col1:
-                    st.markdown("**Area Chart**")
-                    st.area_chart(df)
-                    st.markdown("**Bar Chart**")
-                    st.bar_chart(df)
-                with col2:
-                    st.markdown("**Line Chart**")
-                    st.line_chart(df)
-            except Exception as e:
-                with col1:
-                    st.error(f"The CSV could not be graphed. It gave the error: {e}")
+        Styler.show_dataframe("CSV -> Dataframe", df)

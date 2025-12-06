@@ -7,18 +7,29 @@
 
 ## Introduction
 
-ZenStream is a browser-based file explorer with in-place document previewing. One file at a time.
+ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and extractor. Think of it as a live dashboard over your file system.
+
+## Features
 
 | File type | Features | Formats |
 |-----------|----------|---------|
-| Audio | Player, cover display, format metadata (bitrate, length etc.) | mp3, wav |
-| Document | Interactive previews for tabular document formats | xls, xlsx, csv |
-| Images | Format and EXIF (camera) metadata (resolution, format etc.)   | jpg, png |
+| Audio | Player, cover display, format metadata extraction (bitrate, length etc.) | mp3, wav |
+| Data | Interactive previews of csv data with line, bar and area charts | csv |
+| Document | Extract paragraphs and tables into interactive tables, export to csv | docx |
+| Images | Format and EXIF (camera) metadata (resolution, format etc.)  | jpg, png |
 | Video | Player | mp4, webm, avi |
 | Code | Code formatting and syntax highlighting | py, json |
 | Markdown | Formatting for markdown files | md |
 | Text | Simple previews for text-based files | txt, ini, log |
 | PDF | Previews of PDF documents | pdf |
+
+## Installation
+
+Assuming you have setup a Python virtual environment and have downloaded the code:
+```bash
+pip install -r requirement.txt
+streamlit run main.pt
+```
 
 ## Design
 
