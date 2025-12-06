@@ -13,6 +13,11 @@ class ExcelViewer:
 
         workbook: Workbook = load_workbook(file_name)
         active = workbook.active.title
+
+        st.subheader(active)
+        df: pd.DataFrame = pd.read_excel(file_name, engine="openpyxl", header=0)
+        st.data_editor(df, num_rows="dynamic")
+
         Styler.show_dict(
             "Metadata",
             {
@@ -21,7 +26,3 @@ class ExcelViewer:
                 "Active sheet": active,
             },
         )
-
-        st.subheader(active)
-        df: pd.DataFrame = pd.read_excel(file_name, engine="openpyxl", header=0)
-        st.data_editor(df, num_rows="dynamic")
