@@ -22,8 +22,8 @@ class FileDetails:
             "Last Modified": mtime_datetime.strftime("%Y-%m-%d %H:%M:%S"),
             "Created": ctime_datetime.strftime("%Y-%m-%d %H:%M:%S"),
             "Last Accessed": atime_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-            "Owner User ID (UID)": stat_info.st_uid,
-            "Owner Group ID (GID)": stat_info.st_gid,
+            # "Owner User ID (UID)": stat_info.st_uid,
+            # "Owner Group ID (GID)": stat_info.st_gid,
             "Permissions": stat.filemode(stat_info.st_mode),
         }
         Styler.show_dict("File details", data)
