@@ -3,10 +3,8 @@ import streamlit as st
 
 
 class PandasViewer:
-
     @staticmethod
     def show_file(file_name: str):
-
         st.header("Pandas CSV Viewer")
         st.write(f"File: {file_name}")
 
