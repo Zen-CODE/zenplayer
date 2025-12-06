@@ -11,6 +11,7 @@ from handlers.pdfviewer import PDFViewer
 from handlers.videoplayer import VideoPlayer
 from handlers.excelviewer import ExcelViewer
 from styler import Styler
+from handlers.filedetails import FileDetails
 
 
 class State:
@@ -42,6 +43,7 @@ class Action:
         "csv": [PandasViewer],
         "txt": [TextViewer],
         "py": [TextViewer],
+        "log": [TextViewer],
         "ini": [TextViewer],
         "yaml": [TextViewer],
         "yml": [TextViewer],
@@ -92,6 +94,8 @@ class Action:
                 return ":material/movie:"
             case "xls" | "xlsx":
                 return ":material/table:"
+            case "log":
+                return ":material/history_toggle_off:"
             case _:
                 return ":material/article:"
 
@@ -170,11 +174,13 @@ class Show:
     def details():
         file_name = State.get_current_file()
         if file_name:
-            st.subheader("Details")
-            st.markdown(f"**Current file:** {State.get_current_file()}")
+            st.markdown(f"**Current file:** {file_name}")
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
                 st.divider()
+
+            with st.expander("File details"):
+                FileDetails.show_file(file_name)
 
 
 if __name__ == "__main__":
