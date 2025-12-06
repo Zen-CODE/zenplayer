@@ -114,12 +114,12 @@ class Show:
     @staticmethod
     def header():
         with st.container():
-            col1, col2 = st.columns([0.95, 0.05])
+            col1, col2 = st.columns([0.96, 0.04])
             with col1:
                 st.title("ZenStream")
             with col2:
                 st.image("images/zencode.jpg")
-        st.divider()
+        # st.divider()
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
@@ -152,7 +152,7 @@ class Show:
     @staticmethod
     def listing():
         folder = State.get_current_folder()
-        st.header("Listing")
+        # st.header("Listing")
         st.markdown(f"**Current directory:** {folder}")
         with st.container():
             cols = st.columns([0.25] * 4)
