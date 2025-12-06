@@ -122,7 +122,7 @@ class Show:
                 st.title("💧 ZenStream - File explorer, viewer and extractor")
             with col2:
                 st.image("images/favicon.png")
-            col1, col2 = st.columns([0.04, 0.96])
+            col1, col2 = st.columns([0.1, 0.9])
             with col2:
                 st.info(f"Current directory: {State.get_current_folder()}")
             with col1:
@@ -133,7 +133,7 @@ class Show:
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
             container,
-            " 💧",
+            "💧 Parent folder",
             ":material/arrow_circle_up:",
             lambda: Action.set_current_folder(parent),
         )
