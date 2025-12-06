@@ -144,9 +144,13 @@ class Show:
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
+        if sep.join([folder, file_name]) == State.get_current_file():
+            text = file_name + " 🟢"
+        else:
+            text = file_name
         Styler.add_button(
             container,
-            file_name,
+            text,
             Action.get_icon(file_name),
             lambda: Action.set_file(sep.join([folder, file_name])),
         )
@@ -200,7 +204,6 @@ class Show:
 
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
-                st.divider()
 
             with st.expander("File details"):
                 FileDetails.show_file(file_name)

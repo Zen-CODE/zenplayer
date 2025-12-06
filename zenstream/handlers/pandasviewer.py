@@ -12,6 +12,4 @@ class PandasViewer:
         df = pd.read_csv(file_name)
         st.data_editor(df, num_rows="dynamic")
 
-        # Try adding some graphs
-        st.divider()
         Styler.show_dataframe("CSV -> Dataframe", df)
