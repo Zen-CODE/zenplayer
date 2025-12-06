@@ -2,13 +2,16 @@ import streamlit as st
 from zencore import ZENPLAYER_URL
 import requests
 from html import escape
+from styler import Styler
 
 
 def show_zenrandom():
     print("ZenRandom: Being called...")
     random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/get_random_album").json()
-    st.markdown(f"**Artist:** {random['artist']}")
-    st.markdown(f"**Album:** {random['album']}")
+    Styler.add_header("Random album", "images/zencode.jpg")
+    Styler.add_row("Artist", random["artist"])
+    Styler.add_row("Album", random["album"])
+
     url = (
         f"{ZENPLAYER_URL}/zenlibrary/get_album_cover?"
         f"artist={escape(random['artist'])}&album={escape(random['album'])}"

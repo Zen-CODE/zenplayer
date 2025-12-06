@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from zencore import ZENPLAYER, ZENPLAYER_URL, ZENSLEEP
 from time import sleep
+from styler import Styler
 
 
 class ControlButtons:
@@ -110,6 +111,8 @@ def show_zenplayer():
     def buid_ui():
         """Refresh the UI components."""
         ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
+
+        Styler.add_header("ZenPlayer", "images/zencode.jpg")
 
         CoverImage.show()
         ProgressBar.show()
