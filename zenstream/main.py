@@ -128,7 +128,7 @@ class Show:
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
             container,
-            "<<",
+            "<< Parent folder",
             ":material/arrow_circle_up:",
             lambda: Action.set_current_folder(parent),
         )
