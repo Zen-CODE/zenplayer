@@ -177,9 +177,17 @@ class Show:
 
     @staticmethod
     def details():
-        file_name = State.get_current_file()
-        if file_name:
-            st.info(f"Current file: {file_name}")
+        if file_name := State.get_current_file():
+            col1, col2 = st.columns([0.9, 0.1])
+            with col1:
+                st.info(f"Current file: {file_name}")
+            with col2:
+                st.button(
+                    "Open file",
+                    on_click=lambda *args: webbrowser.open(file_name),
+                    icon=":material/open_in_full:",
+                )
+
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
                 st.divider()
@@ -198,9 +206,3 @@ if __name__ == "__main__":
     Show.header()
     Show.listing()
     Show.details()
-    if file_name := State.get_current_file():
-        st.button(
-            "Open file",
-            on_click=lambda *args: webbrowser.open(file_name),
-            icon=":material/open_in_full:",
-        )
