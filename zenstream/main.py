@@ -122,13 +122,18 @@ class Show:
                 st.title("💧 ZenStream - File explorer, viewer and extractor")
             with col2:
                 st.image("images/favicon.png")
+            col1, col2 = st.columns([0.04, 0.96])
+            with col2:
+                st.info(f"Current directory: {State.get_current_folder()}")
+            with col1:
+                Show._parent_folder_button(col1)
 
     @staticmethod
     def _parent_folder_button(container: DeltaGenerator):
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
             container,
-            "<- 💧",
+            " 💧",
             ":material/arrow_circle_up:",
             lambda: Action.set_current_folder(parent),
         )
@@ -158,11 +163,8 @@ class Show:
     @staticmethod
     def listing():
         folder = State.get_current_folder()
-        # st.header("Listing")
-        st.info(f"Current directory: {folder}")
         with st.container():
             cols = st.columns([0.25] * 4)
-            Show._parent_folder_button(cols[0])
 
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
