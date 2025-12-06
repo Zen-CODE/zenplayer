@@ -4,16 +4,16 @@ import requests
 from html import escape
 
 
-def get_zenrandom():
+def show_zenrandom():
+    print("ZenRandom: Being called...")
     random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/get_random_album").json()
-    container = st.container()
-    container.markdown(f"**Artist:** {random['artist']}")
-    container.markdown(f"**Album:** {random['album']}")
+    st.markdown(f"**Artist:** {random['artist']}")
+    st.markdown(f"**Album:** {random['album']}")
     url = (
         f"{ZENPLAYER_URL}/zenlibrary/get_album_cover?"
         f"artist={escape(random['artist'])}&album={escape(random['album'])}"
     )
-    container.image(url, use_container_width=True)
+    st.image(url)
 
     class Buttons:
         @staticmethod
@@ -25,7 +25,7 @@ def get_zenrandom():
                 )
 
     button_width = 80
-    add_, replace_, insert_, next_, next_album_ = container.columns(
+    add_, replace_, insert_, next_, next_album_ = st.columns(
         spec=[1, 1, 1, 1, 1], border=True
     )
 

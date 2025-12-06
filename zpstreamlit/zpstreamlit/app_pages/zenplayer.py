@@ -1,9 +1,6 @@
 import streamlit as st
 import requests
-
-# from streamlit_image_coordinates import streamlit_image_coordinates
-from zencore import ZENPLAYER, ZENPLAYER_URL, ZENSLEEP
-from time import sleep
+from zencore import ZENPLAYER, ZENPLAYER_URL
 
 
 class ControlButtons:
@@ -16,10 +13,10 @@ class ControlButtons:
             requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
 
     @staticmethod
-    def show(zp):
+    def show():
         """Adds a row of control buttons to the Streamlit app."""
         button_width = 80
-        prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = zp.columns(
+        prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = st.columns(
             spec=[1, 1, 1, 1, 1, 1, 1], border=True
         )
         prev_.button(
@@ -62,7 +59,7 @@ class CoverImage:
     """This class handles the display of the cover image for the media player."""
 
     @staticmethod
-    def show(zp):
+    def show():
         def get_time(time_s):
             return (
                 str(int(time_s / 60)).zfill(2)
@@ -73,57 +70,56 @@ class CoverImage:
 
         data = ZENPLAYER["data"]
         meta = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_track_meta").json()
-        zp.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", use_container_width=True)
+        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", use_container_width=True)
         # zp.write(streamlit_image_coordinates(
         #     f"{ZENPLAYER_URL}/zenplayer/get_track_cover"),
         #     use_column_width="always")
-        zp.markdown(
+        st.markdown(
             f"**{data['artist']}: {data['album']}** - "
             f"*{data['file_name'].split('/')[-1].split('.')[0]}*"
         )
-        zp.write(
+        st.write(
             f"{meta['sample_rate']}hz, {meta['bitrate']}kbps, {get_time(meta['length'])}"
         )
 
-        zp.write()
+        st.write()
 
 
 class ProgressBar:
     @staticmethod
-    def show(zp):
-        zp.progress(ZENPLAYER["data"]["position"], text=None, width="stretch")
+    def show():
+        st.progress(ZENPLAYER["data"]["position"], text=None, width="stretch")
 
 
 class Playlist:
     @staticmethod
-    def show(zp):
-        container = zp.container()
-        Playlist.update(container)
+    def show():
+        Playlist.update()
 
     @staticmethod
-    def update(container):
+    def update():
         data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
         for item in data:
-            container.write(item["text"])
+            st.write(item["text"])
 
 
-def get_zenplayer():
-    zp = st.container()
+def show_zenplayer():
+    print("ZenPlayer: Being called...")
 
     def buid_ui():
         """Refresh the UI components."""
         ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
 
-        CoverImage.show(zp)
-        ProgressBar.show(zp)
-        ControlButtons.show(zp)
-        Playlist.show(zp)
+        CoverImage.show()
+        ProgressBar.show()
+        ControlButtons.show()
+        Playlist.show()
 
     buid_ui()
 
-    while True:
-        with zp:
-            sleep(ZENSLEEP)
-            print("Re-running zenplayer...")
-            st.rerun()
-    return zp
+    # while True:
+    #     with zp:
+    #         sleep(ZENSLEEP)
+    #         print("Re-running zenplayer...")
+    #         st.rerun()
+    # return zp

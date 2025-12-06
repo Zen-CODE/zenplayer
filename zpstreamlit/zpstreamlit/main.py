@@ -1,8 +1,8 @@
 import streamlit as st
-from app_pages.zenplayer import get_zenplayer
-from app_pages.zenrandom import get_zenrandom
-from app_pages.zeninfo import get_zeninfo
-from app_pages.sysinfo import get_sysinfo
+from app_pages.zenplayer import show_zenplayer
+from app_pages.zenrandom import show_zenrandom
+from app_pages.zeninfo import show_zeninfo
+from app_pages.sysinfo import show_sysinfo
 
 
 def init_app() -> None:
@@ -14,10 +14,10 @@ def init_navigation() -> None:
     """Initialize the naigation sidebar and return the first page."""
 
     pages = {
-        "ZenPlayer": get_zenplayer,
-        "Random Album": get_zenrandom,
-        "Artist Info": get_zeninfo,
-        "System Info": get_sysinfo,
+        "ZenPlayer": show_zenplayer,
+        "Random Album": show_zenrandom,
+        "Artist Info": show_zeninfo,
+        "System Info": show_sysinfo,
     }
 
     st.sidebar.title("Navigation")
