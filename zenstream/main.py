@@ -51,6 +51,7 @@ class Action:
         "yml": [TextViewer],
         "bat": [TextViewer],
         "sh": [TextViewer],
+        "ipynb": [TextViewer],
         "md": [TextViewer],
         "json": [TextViewer],
         "pdf": [PDFViewer],
