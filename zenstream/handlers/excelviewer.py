@@ -23,5 +23,5 @@ class ExcelViewer:
         )
 
         st.subheader(active)
-        df = pd.read_excel(file_name, engine="openpyxl", header=0)
+        df: pd.DataFrame = pd.read_excel(file_name, engine="openpyxl", header=0)
         st.data_editor(df)
