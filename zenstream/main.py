@@ -119,7 +119,7 @@ class Show:
         with st.container():
             col1, col2 = st.columns([0.96, 0.04])
             with col1:
-                st.title("ZenStream - File explorer, viewer and extractor")
+                st.title("💧 ZenStream - File explorer, viewer and extractor")
             with col2:
                 st.image("images/favicon.png")
 
@@ -128,7 +128,7 @@ class Show:
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
             container,
-            "<< Parent folder",
+            "<- 💧",
             ":material/arrow_circle_up:",
             lambda: Action.set_current_folder(parent),
         )
@@ -214,3 +214,4 @@ if __name__ == "__main__":
     Show.header()
     Show.listing()
     Show.details()
+    st.markdown('“Be like water." - *Bruce Lee*')
