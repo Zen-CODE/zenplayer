@@ -28,7 +28,7 @@ class StoreFactory:
         """
         pickle_path = join(Config.get_config_folder(), file_name)
         if exists(pickle_path):
-            with open(pickle_path, "rb", encoding="utf-8") as f:
+            with open(pickle_path, "rb") as f:
                 return load(f)
         else:
             return default

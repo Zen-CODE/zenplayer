@@ -130,7 +130,7 @@ class Playlist(EventDispatcher):
         def load_file(file_name):
             """Open the file for caching purposes (put in OS cache)."""
             print("Caching ", file_name)
-            with open(file_name, "rb", encoding="utf-8") as f:
+            with open(file_name, "rb") as f:
                 f.read()
 
         def cache_next():

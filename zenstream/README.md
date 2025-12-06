@@ -1,4 +1,6 @@
-# ZenStream ☯️
+![Zen Sream](images/favicon.png)
+# ZenStream
+
 
 ```"Be like water making its way through cracks."``` - *Bruce Lee*
 
