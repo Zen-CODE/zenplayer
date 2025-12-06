@@ -214,4 +214,4 @@ if __name__ == "__main__":
     Show.header()
     Show.listing()
     Show.details()
-    st.markdown('“Be like water." - *Bruce Lee*')
+    st.markdown('“Be like water..." - *Bruce Lee*')
