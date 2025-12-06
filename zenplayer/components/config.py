@@ -54,5 +54,5 @@ class Config:
         if not exists(cfg_path):
             copy(Config._get_default(file_name), cfg_path)
         Logger.info("Config: Loading config from %s", cfg_path)
-        with open(cfg_path) as f:
+        with open(cfg_path, encoding="utf-8") as f:
             return load(f)

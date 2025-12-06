@@ -47,7 +47,7 @@ class NowPlaying(StoreEntry):
         csv_file = Config.get_config_folder() + "/nowplaying.csv"
 
         mode = "a" if exists(csv_file) else "w"
-        with open(csv_file, mode, newline="") as csvfile:
+        with open(csv_file, mode, newline="", encoding="utf-8") as csvfile:
             writer = DictWriter(csvfile, fieldnames=self.get_fields())
             if mode == "w":
                 writer.writeheader()

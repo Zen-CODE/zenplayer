@@ -7,7 +7,7 @@ class PDFViewer:
     def show_file(file_name: str):
         st.header("PDF Viewer")
         st.subheader(file_name.split(sep)[-1])
-        with open(file_name, "rb") as f:
+        with open(file_name, "rb", encoding="utf-8") as f:
             lines = f.read()
 
         st.pdf(lines)

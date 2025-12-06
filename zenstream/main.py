@@ -13,6 +13,7 @@ from handlers.excelviewer import ExcelViewer
 from handlers.docxviewer import DocXViewer
 from styler import Styler
 from handlers.filedetails import FileDetails
+import webbrowser
 
 
 class State:
@@ -197,3 +198,9 @@ if __name__ == "__main__":
     Show.header()
     Show.listing()
     Show.details()
+    if file_name := State.get_current_file():
+        st.button(
+            "Open file",
+            on_click=lambda *args: webbrowser.open(file_name),
+            icon=":material/open_in_full:",
+        )
