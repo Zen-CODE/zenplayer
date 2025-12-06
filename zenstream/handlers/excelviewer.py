@@ -1,7 +1,8 @@
 import streamlit as st
 from os.path import sep
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from styler import Styler
+import pandas as pd
 
 
 class ExcelViewer:
@@ -10,10 +11,10 @@ class ExcelViewer:
         st.header("Excel Viewer")
         st.text(file_name.split(sep)[-1])
 
-        workbook = load_workbook(file_name)
+        workbook: Workbook = load_workbook(file_name)
         active = workbook.active.title
         Styler.show_dict(
-            "Excel metadata",
+            "Metadata",
             {
                 "Sheets": str(len(workbook.sheetnames)),
                 "Sheet names": str(workbook.sheetnames),
@@ -21,14 +22,6 @@ class ExcelViewer:
             },
         )
 
-        row_dict = {}
-        sheet_data = workbook.active.values
-
-        # Convert to a list of lists for easy processing
-        data_list = list(sheet_data)
-        for index, row in enumerate(data_list):
-            row_dict[f"Row {index}"] = row[0] if row[0] else "-"
-            if index > 9:
-                break
-
-        Styler.show_dict(f"**Rows for {active}**", row_dict)
+        st.subheader(active)
+        df = pd.read_excel(file_name, engine="openpyxl", header=0)
+        st.data_editor(df)
