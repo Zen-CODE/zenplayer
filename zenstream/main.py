@@ -107,12 +107,10 @@ class Action:
 
     @staticmethod
     def set_current_folder(current_folder: str):
-        print(f"set_current_folder - {current_folder}")
         st.session_state.current_folder = current_folder
 
     @staticmethod
     def set_file(file_name: str):
-        print(f"Action.set_file({file_name})")
         st.session_state.current_file = file_name
 
 
