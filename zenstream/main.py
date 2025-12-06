@@ -157,7 +157,7 @@ class Show:
     def listing():
         folder = State.get_current_folder()
         # st.header("Listing")
-        st.markdown(f"**Current directory:** {folder}")
+        st.info(f"Current directory: {folder}")
         with st.container():
             cols = st.columns([0.25] * 4)
             Show._parent_folder_button(cols[0])
@@ -178,7 +178,7 @@ class Show:
     def details():
         file_name = State.get_current_file()
         if file_name:
-            st.markdown(f"**Current file:** {file_name}")
+            st.info(f"Current file: {file_name}")
             for handler in Action.get_handlers(file_name):
                 handler.show_file(file_name)
                 st.divider()
