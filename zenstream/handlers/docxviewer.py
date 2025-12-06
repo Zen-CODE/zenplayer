@@ -54,9 +54,9 @@ class DocXViewer:
         st.data_editor(df, num_rows="dynamic")
 
         # Try adding some graphs
+        st.markdown(f"Table {index} analysis")
         col1, col2 = st.columns(2)
         st.divider()
-        st.markdown(f"Table {index} analysis")
         with col1:
             st.markdown("**Area Chart**")
             st.area_chart(df)
