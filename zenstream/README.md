@@ -7,7 +7,7 @@
 
 ## Introduction
 
-ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and extractor. Think of it as a live dashboard over your file system.
+ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and extractor. Think of it as a live, code-able dashboard over your file system.
 
 ## Features
 
