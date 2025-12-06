@@ -1,5 +1,8 @@
 # ZenStream ☯️
 
+```"Be like water making its way through cracks."``` - *Bruce Lee*
+
+
 ## Introduction
 
 ZenStream is a browser-based file explorer with in-place document previewing. One file at a time.
