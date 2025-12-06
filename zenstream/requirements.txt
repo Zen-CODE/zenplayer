@@ -4,3 +4,4 @@ pandas
 mutagen
 pillow
 openpyxl
+python-docx

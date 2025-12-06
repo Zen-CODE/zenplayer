@@ -10,6 +10,7 @@ from handlers.imageviewer import ImageViewer
 from handlers.pdfviewer import PDFViewer
 from handlers.videoplayer import VideoPlayer
 from handlers.excelviewer import ExcelViewer
+from handlers.docxviewer import DocXViewer
 from styler import Styler
 from handlers.filedetails import FileDetails
 
@@ -61,6 +62,7 @@ class Action:
         "avi": [VideoPlayer],
         "xls": [ExcelViewer],
         "xlsx": [ExcelViewer],
+        "docx": [DocXViewer],
     }
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show_file(file_name)` method."""
@@ -96,6 +98,8 @@ class Action:
                 return ":material/table:"
             case "log":
                 return ":material/history_toggle_off:"
+            case "docx":
+                return ":material/dictionary:"
             case _:
                 return ":material/article:"
 
