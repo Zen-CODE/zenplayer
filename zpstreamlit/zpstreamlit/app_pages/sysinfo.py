@@ -46,12 +46,19 @@ class SysInfo:
         suspend_.button(
             "Suspend",
             on_click=System.sleep,
+            icon=":material/content_copy:",
             width=button_width,
         )
-        restart_.button("Restart", on_click=System.restart, width=button_width)
+        restart_.button(
+            "Restart",
+            on_click=System.restart,
+            width=button_width,
+            icon=":material/restart_alt:",
+        )
         shutdown_.button(
             "Shutdown",
             on_click=System.shutdown,
+            icon=":material/power_settings_new:",
             width=button_width,
         )
 
@@ -75,7 +82,7 @@ def show_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""
     print("SysInfo: Being called...")
 
-    col1, col2 = st.columns([0.9, 0.1])
+    col1, col2 = st.columns([0.8, 0.2])
     with col2:
         st.image("images/cpu.jpg", width=128)
     with col1:

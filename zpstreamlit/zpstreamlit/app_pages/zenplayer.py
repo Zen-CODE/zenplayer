@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
-from zencore import ZENPLAYER, ZENPLAYER_URL
+from zencore import ZENPLAYER, ZENPLAYER_URL, ZENSLEEP
+from time import sleep
 
 
 class ControlButtons:
@@ -117,9 +118,8 @@ def show_zenplayer():
 
     buid_ui()
 
-    # while True:
-    #     with zp:
-    #         sleep(ZENSLEEP)
-    #         print("Re-running zenplayer...")
-    #         st.rerun()
-    # return zp
+    while True:
+        with st.empty():
+            sleep(ZENSLEEP)
+            print("Re-running zenplayer...")
+            st.rerun()
