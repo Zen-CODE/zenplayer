@@ -9,11 +9,11 @@ class DocXViewer:
         st.header("DocX Viewer")
         document = Document(file_name)
         paragraph_data = {
-            f"Paragraph {index + 1}": paragraph.text
+            f"Paragraph {index + 1}": paragraph.text.strip()
             for index, paragraph in enumerate(document.paragraphs)
         }
 
-        Styler.show_dict("Paragrahs", paragraph_data)
+        Styler.show_dict("Paragraphs", paragraph_data)
 
         tables_data = {
             f"Table {index + 1}": str(DocXViewer._get_table_rows(table))
