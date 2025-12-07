@@ -36,6 +36,14 @@ class State:
     def get_current_file() -> str:
         return getattr(st.session_state, "current_file", "")
 
+    @staticmethod
+    def set(name: str, value: str):
+        st.session_state[name] = value
+
+    @staticmethod
+    def get(name: str):
+        return st.session_state.get(name, "")
+
 
 class Action:
     handlers = {
@@ -113,6 +121,11 @@ class Action:
     def set_file(file_name: str):
         st.session_state.current_file = file_name
 
+    @staticmethod
+    def delete_file(file_name: str):
+        print("Delete called")
+        State.set("delete_file", "")
+
 
 class Show:
     @staticmethod
@@ -123,6 +136,8 @@ class Show:
                 st.title("💧 ZenStream - File explorer, viewer and extractor")
             with col2:
                 st.image("images/favicon.png")
+            st.divider()
+
             col1, col2 = st.columns([0.1, 0.9])
             with col2:
                 st.info(f"Current directory: {State.get_current_folder()}")
@@ -180,12 +195,30 @@ class Show:
         st.divider()
 
     @staticmethod
+    def _confirm_delete(file_name: str):
+        st.warning("⚠️ Are you sure you want to delete this file?", icon="🗑️")
+        col_yes, col_no = st.columns(2)
+
+        with col_yes:
+            st.button("Delete", on_click=lambda *args: Action.delete_file(file_name))
+
+        with col_no:
+            st.button(
+                "Cancel",
+                on_click=lambda *args: State.set("delete_file", ""),
+                type="primary",
+            )
+
+    @staticmethod
     def details():
         if file_name := State.get_current_file():
+            if del_file := State.get("delete_file"):
+                Show._confirm_delete(del_file)
+
             # Add buttons for Open, Copy and Clear
-            col1, col2, col3, col4 = st.columns([0.8, 0.1, 0.1, 0.1])
+            col1, col2, col3, col4 = st.columns([0.7, 0.1, 0.1, 0.1])
             with col1:
-                st.info(f"Current file: {file_name}")
+                st.info(f"💧💧 Current file: {file_name}")
             Styler.add_button(
                 col2,
                 "Copy path",
@@ -194,15 +227,15 @@ class Show:
             )
             Styler.add_button(
                 col3,
-                "Open file",
+                "Open",
                 on_click=lambda *args: webbrowser.open(file_name),
                 icon=":material/open_in_full:",
             )
             Styler.add_button(
                 col4,
-                "Clear",
-                on_click=lambda *args: State.set_current_file(None),
-                icon=":material/close:",
+                "Delete",
+                on_click=lambda *args: State.set("delete_file", file_name),
+                icon=":material/delete:",
             )
 
             for handler in Action.get_handlers(file_name):

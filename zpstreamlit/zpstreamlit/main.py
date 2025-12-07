@@ -20,8 +20,8 @@ def init_navigation() -> None:
         "System Info": show_sysinfo,
     }
 
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", list(pages.keys()))
+    st.sidebar.title("⛩️ Navigation")
+    page = st.sidebar.radio("->", list(pages.keys()))
 
     pages[page]()
 
