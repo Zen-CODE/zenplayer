@@ -1,4 +1,4 @@
-![Zen Sream](images/favicon.png)
+![Zen Stream](images/favicon.png)
 # ZenStream
 
 
@@ -12,6 +12,13 @@ ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and ext
 We try to flow through our files, without the context switching of the monkey mind, looking at, analyzing and thinking about our data.
 
 💧
+
+## Flow
+
+| Folder | Raw file | Extracted Data | Analysis |
+|--------|----------|----------------|----------|
+|![](screenshots/folder.png)|![](screenshots/csv.png)|![](screenshots/docx_processing.png)|![](screenshots/json_graphs.png)|
+
 
 ## Features
 
