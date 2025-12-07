@@ -29,14 +29,6 @@ class State:
         return path
 
     @staticmethod
-    def set_current_file(file_name: str | None):
-        st.session_state.current_file = None
-
-    @staticmethod
-    def get_current_file() -> str:
-        return getattr(st.session_state, "current_file", "")
-
-    @staticmethod
     def set(name: str, value: str):
         st.session_state[name] = value
 
@@ -123,7 +115,12 @@ class Action:
 
     @staticmethod
     def delete_file(file_name: str):
-        print("Delete called")
+        try:
+            Path(file_name).unlink(missing_ok=True)
+        except Exception as e:
+            st.error(f"Error deleting file: {e}")
+
+        State.set("current_file", "")
         State.set("delete_file", "")
 
 
@@ -165,7 +162,7 @@ class Show:
 
     @staticmethod
     def _add_file_button(container: DeltaGenerator, file_name: str, folder: str):
-        if sep.join([folder, file_name]) == State.get_current_file():
+        if sep.join([folder, file_name]) == State.get("current_file"):
             text = file_name + " 🟢"
         else:
             text = file_name
@@ -211,7 +208,7 @@ class Show:
 
     @staticmethod
     def details():
-        if file_name := State.get_current_file():
+        if file_name := State.get("current_file"):
             if del_file := State.get("delete_file"):
                 Show._confirm_delete(del_file)
 
