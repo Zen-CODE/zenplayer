@@ -80,7 +80,6 @@ class SysInfo:
 
 def show_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""
-    print("SysInfo: Being called...")
 
     col1, col2 = st.columns([0.8, 0.2])
     with col2:
@@ -92,9 +91,3 @@ def show_sysinfo():
     SysInfo.show_memory()
     SysInfo.show_start_time()
     SysInfo.show_buttons()
-
-    # while True:
-    #     with col1:
-    #         sleep(ZENSLEEP)
-    #         print("Re-running sysinfo...")
-    #         st.rerun()

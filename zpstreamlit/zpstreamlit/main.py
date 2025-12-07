@@ -22,6 +22,7 @@ def init_navigation() -> None:
 
     st.sidebar.title("⛩️ Navigation")
     page = st.sidebar.radio("->", list(pages.keys()))
+    st.sidebar.image("images/favicon.png")
 
     pages[page]()
 

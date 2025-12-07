@@ -106,8 +106,6 @@ class Playlist:
 
 
 def show_zenplayer():
-    print("ZenPlayer: Being called...")
-
     def buid_ui():
         """Refresh the UI components."""
         ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
@@ -124,5 +122,4 @@ def show_zenplayer():
     while True:
         with st.empty():
             sleep(ZENSLEEP)
-            print("Re-running zenplayer...")
             st.rerun()

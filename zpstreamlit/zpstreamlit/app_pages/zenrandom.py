@@ -6,7 +6,6 @@ from styler import Styler
 
 
 def show_zenrandom():
-    print("ZenRandom: Being called...")
     random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/get_random_album").json()
     Styler.add_header("Random album", "images/zencode.jpg")
     Styler.add_row("Artist", random["artist"])
