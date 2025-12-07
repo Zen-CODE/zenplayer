@@ -129,7 +129,7 @@ class Show:
 
             col1, col2 = st.columns([0.1, 0.9])
             with col2:
-                st.info(f"Current directory: {State.get_current_folder()}")
+                st.info(f"💧 Current directory: {State.get_current_folder()}")
             with col1:
                 Show._parent_folder_button(col1)
 
@@ -138,7 +138,7 @@ class Show:
         parent = str(Path(State.get_current_folder() + "/../").resolve())
         Styler.add_button(
             container,
-            "💧 Parent folder",
+            "Parent folder",
             ":material/arrow_circle_up:",
             lambda: State.set("current_folder", parent),
         )
@@ -175,12 +175,10 @@ class Show:
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
                     Show._add_folder_button(
-                        cols[(index + 1) % len(cols)], file_name, str(final_path)
+                        cols[index % len(cols)], file_name, str(final_path)
                     )
                 else:
-                    Show._add_file_button(
-                        cols[(index + 1) % len(cols)], file_name, folder
-                    )
+                    Show._add_file_button(cols[index % len(cols)], file_name, folder)
         st.divider()
 
     @staticmethod
