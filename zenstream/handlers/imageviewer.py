@@ -11,7 +11,7 @@ class ImageViewer:
 
         st.header("Image Viewer")
         st.subheader("Image")
-        st.image(file_name)
+        st.image(file_name, width="stretch")
 
         with Image.open(file_name) as img:
             image_data = ImageViewer._get_metadata(img)
