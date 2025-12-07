@@ -205,7 +205,7 @@ class Show:
                 Show._confirm_delete(del_file)
 
             # Add buttons for Open, Copy and Clear
-            col1, col2, col3, col4 = st.columns([0.7, 0.1, 0.1, 0.1])
+            col1, col2, col3, col4, col5 = st.columns([0.7, 0.1, 0.1, 0.1, 0.1])
             with col1:
                 st.info(f"💧💧 Current file: {file_name}")
             Styler.add_button(
@@ -224,6 +224,12 @@ class Show:
                 col4,
                 "Delete",
                 on_click=lambda *args: State.set("delete_file", file_name),
+                icon=":material/delete:",
+            )
+            Styler.add_button(
+                col5,
+                "Clear",
+                on_click=lambda *args: State.set("current_file", ""),
                 icon=":material/delete:",
             )
 
