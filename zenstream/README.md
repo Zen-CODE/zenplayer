@@ -9,15 +9,15 @@
 
 ZenStream is a browser-based file explorer, viewer, analyzer, visualizer and extractor. Think of it as a live, code-able dashboard over your file system.
 
+## Flow
+
 We try to flow through our files, without the context switching of the monkey mind, looking at, analyzing and thinking about our data.
 
 💧
 
-## Flow
-
-| Folder | Raw file | Extracted Data | Analysis |
+| Folder | Raw file | Extracted Data | Visualized |
 |--------|----------|----------------|----------|
-|![](screenshots/folder.png)|![](screenshots/csv.png)|![](screenshots/docx_processing.png)|![](screenshots/json_graphs.png)|
+|![](screenshots/folder.png)|![](screenshots/raw.png)|![](screenshots/extracted.png)|![](screenshots/visualized.png)|
 
 
 ## Features
