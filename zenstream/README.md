@@ -46,6 +46,6 @@ streamlit run main.py
 
 TODO
 
-## Credits
+## Licensing
 
-ZenStream is written in python using streamlit.
+ZenStream is a free, Open Source application shared under the MIT license.
