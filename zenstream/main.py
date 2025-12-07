@@ -106,14 +106,6 @@ class Action:
                 return ":material/article:"
 
     @staticmethod
-    def set_current_folder(current_folder: str):
-        st.session_state.current_folder = current_folder
-
-    @staticmethod
-    def set_file(file_name: str):
-        st.session_state.current_file = file_name
-
-    @staticmethod
     def delete_file(file_name: str):
         try:
             Path(file_name).unlink(missing_ok=True)
@@ -148,7 +140,7 @@ class Show:
             container,
             "💧 Parent folder",
             ":material/arrow_circle_up:",
-            lambda: Action.set_current_folder(parent),
+            lambda: State.set("current_folder", parent),
         )
 
     @staticmethod
@@ -157,7 +149,7 @@ class Show:
             container,
             text,
             ":material/folder:",
-            lambda: Action.set_current_folder(folder),
+            lambda: State.set("current_folder", folder),
         )
 
     @staticmethod
@@ -170,7 +162,7 @@ class Show:
             container,
             text,
             Action.get_icon(file_name),
-            lambda: Action.set_file(sep.join([folder, file_name])),
+            lambda: State.set("current_file", sep.join([folder, file_name])),
         )
 
     @staticmethod
