@@ -22,8 +22,8 @@ We try to flow through our files, without the context switching of the monkey mi
 | Document | Extract paragraphs and tables into interactive tables, export to csv | docx |
 | Images | Format and EXIF (camera) metadata (resolution, format etc.)  | jpg, png |
 | Video | Player | mp4, webm, avi |
-| Code | Code formatting and syntax highlighting | py, json |
-| Markdown | Formatting for markdown files | md |
+| Code | Code formatting and syntax highlighting | py, json, sh, yml, yaml, bat, ipynb |
+| Markdown | Rendering of markdown files | md |
 | Text | Simple previews for text-based files | txt, ini, log |
 | PDF | Previews of PDF documents | pdf |
 
