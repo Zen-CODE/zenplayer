@@ -30,8 +30,9 @@ class Styler:
 
     @staticmethod
     def show_dataframe(text: str, df: pd.DataFrame):
-        with st.expander(text):
-            st.markdown("Dataframe analysis")
+        st.subheader(text)
+        st.data_editor(df, num_rows="dynamic")
+        with st.expander(text + " - analysis"):
             col1, col2 = st.columns(2)
             try:
                 with col1:

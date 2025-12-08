@@ -3,7 +3,7 @@ from os.path import sep
 import tabula
 import pandas as pd
 from typing import List
-
+from styler import Styler
 
 class PDFViewer:
     @staticmethod
@@ -18,7 +18,7 @@ class PDFViewer:
         dataframes: List[pd.DataFrame] = tabula.read_pdf(file_name)
         if len(dataframes) > 0:
             for index, df in enumerate(dataframes):
-                with st.expander(f"Dataframe {index + 1}"):
-                    st.data_editor(df, num_rows="dynamic")
+                with st.expander(f"Dataframe {index}"):
+                    Styler.show_dataframe(f"DataFrame {index}", df)
         else:
             st.info("No tables found in this PDF.")
