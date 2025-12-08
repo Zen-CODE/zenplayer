@@ -131,9 +131,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def on_selected(self, _widget, _value):
         """Respond to the change of selection"""
         box = self.parent
-        if box and box.selected_widget:
-            if box.selected_widget != self:
-                self.parent.selected_widget.selected = False
+        if box and box.selected_widget and box.selected_widget != self:
+            self.parent.selected_widget.selected = False
         self._item_draw()
         if _value and box:
             box.selected_widget = self

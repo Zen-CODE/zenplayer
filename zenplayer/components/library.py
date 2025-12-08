@@ -92,6 +92,12 @@ class Library:
         album = choice(list(self.artists[artist].keys()))
         return artist, album
 
+    def get_tracks(self, artist, album):
+        """
+        Return the list of tracks on the specified album
+        """
+        return [track.name for track in self.artists[artist][album]]
+
     def get_path(self, artist, album):
         """
         Return the full path to the specified album. If the album does not
