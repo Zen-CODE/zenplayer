@@ -15,6 +15,7 @@ from styler import Styler
 from handlers.filedetails import FileDetails
 import webbrowser
 import pyperclip
+from styler import NUM_COLUMNS
 
 
 class State:
@@ -160,16 +161,16 @@ class Show:
     def listing():
         folder = State.get_current_folder()
         with st.container():
-            cols = st.columns([0.25] * 4)
+            cols = st.columns(NUM_COLUMNS)
 
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
                     Show._add_folder_button(
-                        cols[index % len(cols)], file_name, str(final_path)
+                        cols[index % NUM_COLUMNS], file_name, str(final_path)
                     )
                 else:
-                    Show._add_file_button(cols[index % len(cols)], file_name, folder)
+                    Show._add_file_button(cols[index % NUM_COLUMNS], file_name, folder)
         st.divider()
 
     @staticmethod

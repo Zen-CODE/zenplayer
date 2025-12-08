@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 import pandas as pd
 
+NUM_COLUMNS = 5
 
 class Styler:
     @staticmethod
