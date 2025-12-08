@@ -1,0 +1,60 @@
+{
+    "keymap": {
+        "shift+up": {
+            "name": "volume_up"
+        },
+        "shift+down": {
+            "name": "volume_down"
+        },
+        "shift+left": {
+            "name": "move_backward"
+        },
+        "shift+right": {
+            "name": "move_forward"
+        },
+        "shift+x": {
+            "name": "play_pause"
+        },
+        "shift+z": {
+            "name": "play_previous"
+        },
+        "shift+v": {
+            "name": "stop"
+        },
+        "shift+b": {
+            "name": "play_next"
+        },
+        "shift+a": {
+            "component": "zenplayer",
+    	    "name": "show_screen",
+            "kwargs": {
+                "name": "Artists"
+            }
+        },
+        "shift+p": {
+	    "component": "zenplayer",
+            "name": "show_screen",
+            "kwargs": {
+                "name": "Playlist"
+            }
+        },
+        "shift+m": {
+            "component": "zenplayer",
+            "name": "show_screen",
+            "kwargs": {
+                "name": "Playing"
+            }
+        },
+        "shift+i": {
+            "component": "zenplayer",
+            "name": "show_screen",
+            "kwargs": {
+                "name": "Info",
+                "filename": ""
+            }
+        },
+        "shift+q": {
+            "name": "quit"
+        }
+    }
+}
