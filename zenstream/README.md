@@ -15,7 +15,7 @@ We try to flow through our files, without the context switching of the monkey mi
 
 💧
 
-| Folder | Raw file | Extracted Data | Visualized |
+| Folder -> | File - > | Extract -> | Visualize |
 |--------|----------|----------------|----------|
 |![](screenshots/folder.png)|![](screenshots/raw.png)|![](screenshots/extracted.png)|![](screenshots/visualized.png)|
 |||![](screenshots/extracted_pdf.png)||
