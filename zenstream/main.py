@@ -197,46 +197,52 @@ class Show:
             )
 
     @staticmethod
-    def details():
-        if file_name := State.get("current_file"):
-            if del_file := State.get("delete_file"):
-                Show._confirm_delete(del_file)
+    def _show_file_buttons(file_name: str):
+        # Add buttons for Open, Copy and Clear
+        col1, col2, col3, col4, col5 = st.columns([0.7, 0.1, 0.1, 0.1, 0.1])
+        with col1:
+            st.info(f"💧💧 Current file: {file_name}")
+        Styler.add_button(
+            col2,
+            "Copy path",
+            on_click=lambda *args: pyperclip.copy(file_name),
+            icon=":material/content_copy:",
+        )
+        Styler.add_button(
+            col3,
+            "Open",
+            on_click=lambda *args: webbrowser.open(file_name),
+            icon=":material/open_in_full:",
+        )
+        Styler.add_button(
+            col4,
+            "Delete",
+            on_click=lambda *args: State.set("delete_file", file_name),
+            icon=":material/delete:",
+        )
+        Styler.add_button(
+            col5,
+            "Clear",
+            on_click=lambda *args: State.set("current_file", ""),
+            icon=":material/delete:",
+        )
 
-            # Add buttons for Open, Copy and Clear
-            col1, col2, col3, col4, col5 = st.columns([0.7, 0.1, 0.1, 0.1, 0.1])
-            with col1:
-                st.info(f"💧💧 Current file: {file_name}")
-            Styler.add_button(
-                col2,
-                "Copy path",
-                on_click=lambda *args: pyperclip.copy(file_name),
-                icon=":material/content_copy:",
-            )
-            Styler.add_button(
-                col3,
-                "Open",
-                on_click=lambda *args: webbrowser.open(file_name),
-                icon=":material/open_in_full:",
-            )
-            Styler.add_button(
-                col4,
-                "Delete",
-                on_click=lambda *args: State.set("delete_file", file_name),
-                icon=":material/delete:",
-            )
-            Styler.add_button(
-                col5,
-                "Clear",
-                on_click=lambda *args: State.set("current_file", ""),
-                icon=":material/delete:",
-            )
 
-            for handler in Action.get_handlers(file_name):
-                handler.show_file(file_name)
+    @staticmethod
+    def details(file_name):
+        if del_file := State.get("delete_file"):
+            Show._confirm_delete(del_file)
+        Show._show_file_buttons(file_name)
 
-            with st.expander("File details"):
-                FileDetails.show_file(file_name)
+        for handler in Action.get_handlers(file_name):
+            handler.show_file(file_name)
 
+        with st.expander("File details"):
+            FileDetails.show_file(file_name)
+
+    @staticmethod
+    def show_footer():
+        st.markdown('“Be like water..." - *Bruce Lee*')
 
 if __name__ == "__main__":
     st.set_page_config(
@@ -245,5 +251,7 @@ if __name__ == "__main__":
 
     Show.header()
     Show.listing()
-    Show.details()
-    st.markdown('“Be like water..." - *Bruce Lee*')
+    if file_name := State.get("current_file"):
+        Show.details(file_name)
+    Show.show_footer()
+
