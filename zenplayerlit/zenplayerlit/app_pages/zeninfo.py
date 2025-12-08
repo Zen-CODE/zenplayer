@@ -14,7 +14,7 @@ def get_artist_data(artist):
 
 
 def show_zeninfo():
-    """Show  info about the urrently playing artist"""
+    """Show  info about the currently playing artist"""
 
     data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
     page = get_artist_data(data["artist"])

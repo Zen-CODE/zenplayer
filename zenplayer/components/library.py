@@ -105,9 +105,6 @@ class Library:
         for artist in self.artists.keys():
             for album in self.artists[artist].keys():
                 if term.lower() in (artist + album).lower():
-                    return (
-                        artist,
-                        album,
-                    )
+                    return {"artist": artist, "album": album}
 
-        return "", ""
+        return {}
