@@ -29,7 +29,7 @@ class TextViewer:
                 except Exception as e:
                     st.warning(
                         f"There was an issue converting this json to a dataframe ({e}).\n"
-                        "This is not unusual - json is freeform not built for tabular data."
+                        "This is not unusual - json is freeform and not built for tabular data."
                     )
             case _:
                 st.code(
