@@ -21,25 +21,25 @@ class ControlButtons:
             spec=[1, 1, 1, 1, 1, 1, 1], border=True
         )
         prev_.button(
-            "⏮",
+            "⏮️",
             on_click=ControlButtons._button,
             args=("play_previous",),
             width="stretch",
         )
         stop_.button(
-            "⏹",
+            "⏹️",
             on_click=ControlButtons._button,
             args=("stop",),
             width="stretch",
         )
         play_pause_.button(
-            "⏯",
+            "▶️⏸️",
             on_click=ControlButtons._button,
             args=("play_pause",),
             width="stretch",
         )
         next_.button(
-            "⏭",
+            "⏭️",
             on_click=ControlButtons._button,
             args=("play_next",),
             width="stretch",
