@@ -131,7 +131,12 @@ class Show:
             parent = str(Path(State.get_current_folder() + "/../").resolve())
             col1, col2, col3 = st.columns([0.9, 0.1, 0.1])
             col1.info(f"💧 Current folder: {State.get_current_folder()}")
-            Styler.add_button(col2, "Parent folder", ":material/arrow_circle_up:", lambda: State.set("current_folder", parent))
+            Styler.add_button(
+                col2,
+                "Parent folder",
+                ":material/arrow_circle_up:",
+                lambda: State.set("current_folder", parent),
+            )
             Styler.add_button(col3, "Refresh", ":material/refresh:", lambda *args: ...)
             st.divider()
 
@@ -141,7 +146,7 @@ class Show:
             container,
             text,
             ":material/folder:",
-            lambda: State.set("current_folder", folder)
+            lambda: State.set("current_folder", folder),
         )
 
     @staticmethod
@@ -154,7 +159,7 @@ class Show:
             container,
             text,
             Action.get_icon(file_name),
-            lambda: State.set("current_file", sep.join([folder, file_name]))
+            lambda: State.set("current_file", sep.join([folder, file_name])),
         )
 
     @staticmethod
@@ -177,8 +182,21 @@ class Show:
     def _confirm_delete(file_name: str):
         st.warning("⚠️ Are you sure you want to delete this file?")
         col_yes, col_no = st.columns(2)
-        Styler.add_button(col_yes, "Delete", ":material/delete:", lambda *args: Action.delete_file(file_name), width="content")
-        Styler.add_button(col_no, "Cancel", ":material/close:", on_click=lambda *args: State.set("delete_file", ""), type="primary", width="content")
+        Styler.add_button(
+            col_yes,
+            "Delete",
+            ":material/delete:",
+            lambda *args: Action.delete_file(file_name),
+            width="content",
+        )
+        Styler.add_button(
+            col_no,
+            "Cancel",
+            ":material/close:",
+            on_click=lambda *args: State.set("delete_file", ""),
+            type="primary",
+            width="content",
+        )
 
     @staticmethod
     def _show_file_buttons(file_name: str):
@@ -211,7 +229,6 @@ class Show:
             icon=":material/delete:",
         )
 
-
     @staticmethod
     def details(file_name):
         if del_file := State.get("delete_file"):
@@ -221,12 +238,13 @@ class Show:
         for handler in Action.get_handlers(file_name):
             handler.show_file(file_name)
 
-        with st.expander("File details"):
+        with st.expander("Details"):
             FileDetails.show_file(file_name)
 
     @staticmethod
     def show_footer():
         st.markdown('“Be like water..." - *Bruce Lee*')
+
 
 if __name__ == "__main__":
     st.set_page_config(
@@ -238,4 +256,3 @@ if __name__ == "__main__":
     if file_name := State.get("current_file"):
         Show.details(file_name)
     Show.show_footer()
-

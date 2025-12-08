@@ -26,4 +26,4 @@ class FileDetails:
             # "Owner Group ID (GID)": stat_info.st_gid,
             "Permissions": stat.filemode(stat_info.st_mode),
         }
-        Styler.show_dict("File details", data)
+        Styler.show_dict("Details", data)
