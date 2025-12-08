@@ -17,7 +17,6 @@ class ControlButtons:
     @staticmethod
     def show():
         """Adds a row of control buttons to the Streamlit app."""
-        button_width = 80
         prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = st.columns(
             spec=[1, 1, 1, 1, 1, 1, 1], border=True
         )
@@ -25,36 +24,43 @@ class ControlButtons:
             "⏮",
             on_click=ControlButtons._button,
             args=("play_previous",),
-            width=button_width,
+            width="stretch",
         )
         stop_.button(
-            "⏹", on_click=ControlButtons._button, args=("stop",), width=button_width
+            "⏹",
+            on_click=ControlButtons._button,
+            args=("stop",),
+            width="stretch",
         )
         play_pause_.button(
             "⏯",
             on_click=ControlButtons._button,
             args=("play_pause",),
-            width=button_width,
+            width="stretch",
         )
         next_.button(
             "⏭",
             on_click=ControlButtons._button,
             args=("play_next",),
-            width=button_width,
+            width="stretch",
         )
         vol_down_.button(
             "🔉",
             on_click=ControlButtons._button,
             args=("volume_down",),
-            width=button_width,
+            width="stretch",
         )
         vol_up_.button(
             "🔊",
             on_click=ControlButtons._button,
             args=("volume_up",),
-            width=button_width,
+            width="stretch",
         )
-        refresh_.button("⟳", on_click=ControlButtons._button, width=button_width)
+        refresh_.button(
+            "⟳",
+            on_click=ControlButtons._button,
+            width="stretch",
+        )
 
 
 class CoverImage:
@@ -72,10 +78,7 @@ class CoverImage:
 
         data = ZENPLAYER["data"]
         meta = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_track_meta").json()
-        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", use_container_width=True)
-        # zp.write(streamlit_image_coordinates(
-        #     f"{ZENPLAYER_URL}/zenplayer/get_track_cover"),
-        #     use_column_width="always")
+        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", width="stretch")
         st.markdown(
             f"**{data['artist']}: {data['album']}** - "
             f"*{data['file_name'].split('/')[-1].split('.')[0]}*"
@@ -101,23 +104,29 @@ class Playlist:
     @staticmethod
     def update():
         data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
+        st.subheader("Playlist")
+        st.divider()
         for item in data:
             st.write(item["text"])
 
 
-def show_zenplayer():
-    def buid_ui():
-        """Refresh the UI components."""
-        ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-
+class ZenPlayer:
+    @staticmethod
+    def show():
         Styler.add_header("ZenPlayer", "images/zencode.jpg")
-
-        CoverImage.show()
-        ProgressBar.show()
+        st.divider()
+        col1, col2 = st.columns(2)
+        with col1:
+            CoverImage.show()
+            ProgressBar.show()
+        with col2:
+            Playlist.show()
         ControlButtons.show()
-        Playlist.show()
 
-    buid_ui()
+
+def show_zenplayer():
+    ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
+    ZenPlayer.show()
 
     while True:
         with st.empty():

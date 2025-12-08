@@ -7,6 +7,7 @@ from app_pages.sysinfo import show_sysinfo
 
 def init_app() -> None:
     """Initialize our streamlit app."""
+    # st.set_page_config(page_title="ZenPlayerLit", page_icon="images/favicon.png")
     st.set_page_config(page_title="ZenPlayerLit", page_icon="images/favicon.png")
 
 
@@ -20,9 +21,13 @@ def init_navigation() -> None:
         "System Info": show_sysinfo,
     }
 
-    st.sidebar.title("⛩️ Navigation")
-    page = st.sidebar.radio("->", list(pages.keys()))
-    st.sidebar.image("images/favicon.png")
+    with st.sidebar:
+        st.title("⛩️ ZenPlayerLit")
+        st.divider()
+        page = st.radio("-", list(pages.keys()))
+        st.divider()
+        cols = st.columns(3)
+        cols[1].image("images/zencode.jpg")
 
     pages[page]()
 
