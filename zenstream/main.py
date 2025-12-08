@@ -129,7 +129,7 @@ class Show:
 
             # Status and navigation row
             parent = str(Path(State.get_current_folder() + "/../").resolve())
-            col1, col2, col3 = st.columns([0.8, 0.1, 0.1])
+            col1, col2, col3 = st.columns([0.9, 0.1, 0.1])
             col1.info(f"💧 Current folder: {State.get_current_folder()}")
             Styler.add_button(col2, "Parent folder", ":material/arrow_circle_up:", lambda: State.set("current_folder", parent))
             Styler.add_button(col3, "Refresh", ":material/refresh:", lambda *args: ...)
@@ -182,7 +182,7 @@ class Show:
 
     @staticmethod
     def _show_file_buttons(file_name: str):
-        # Add buttons for Open, Copy and Clear
+        # Add buttons for Open, Copy, Delete and Clear
         col1, col2, col3, col4, col5 = st.columns([0.7, 0.1, 0.1, 0.1, 0.1])
         with col1:
             st.info(f"💧💧 Current file: {file_name}")
