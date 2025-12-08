@@ -16,12 +16,13 @@ class Styler:
                 st.markdown(f"*{value}*")
 
     @staticmethod
-    def add_button(container: DeltaGenerator, text: str, icon: str, on_click: callable):
+    def add_button(container: DeltaGenerator, text: str, icon: str, on_click: callable, **kwargs):
         with container:
             st.button(
                 text,
                 icon=icon,
                 on_click=on_click,
+                **kwargs
             )
 
     @staticmethod

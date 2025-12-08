@@ -120,28 +120,18 @@ class Show:
     @staticmethod
     def header():
         with st.container():
+            # First row
             col1, col2 = st.columns([0.96, 0.04])
-            with col1:
-                st.title("💧 ZenStream - File explorer, viewer and extractor")
-            with col2:
-                st.image("images/favicon.png")
+            col1.title("💧 ZenStream - File explorer, viewer and extractor")
+            col2.image("images/favicon.png")
             st.divider()
 
-            col1, col2 = st.columns([0.1, 0.9])
-            with col2:
-                st.info(f"💧 Current directory: {State.get_current_folder()}")
-            with col1:
-                Show._parent_folder_button(col1)
-
-    @staticmethod
-    def _parent_folder_button(container: DeltaGenerator):
-        parent = str(Path(State.get_current_folder() + "/../").resolve())
-        Styler.add_button(
-            container,
-            "Parent folder",
-            ":material/arrow_circle_up:",
-            lambda: State.set("current_folder", parent),
-        )
+            # Status and navigation row
+            parent = str(Path(State.get_current_folder() + "/../").resolve())
+            col1, col2, col3 = st.columns([0.1, 0.85, 0.05])
+            Styler.add_button(col1, "Parent folder", ":material/arrow_circle_up:", lambda: State.set("current_folder", parent))
+            Styler.add_button(col3, "", ":material/refresh:", lambda *args: ...)
+            col2.info(f"💧 Current folder: {State.get_current_folder()}")
 
     @staticmethod
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
@@ -183,18 +173,10 @@ class Show:
 
     @staticmethod
     def _confirm_delete(file_name: str):
-        st.warning("⚠️ Are you sure you want to delete this file?", icon="🗑️")
+        st.warning("⚠️ Are you sure you want to delete this file?")
         col_yes, col_no = st.columns(2)
-
-        with col_yes:
-            st.button("Delete", on_click=lambda *args: Action.delete_file(file_name))
-
-        with col_no:
-            st.button(
-                "Cancel",
-                on_click=lambda *args: State.set("delete_file", ""),
-                type="primary",
-            )
+        Styler.add_button(col_yes, "Delete", ":material/delete:", lambda *args: Action.delete_file(file_name))
+        Styler.add_button(col_no, "Cancel", ":material/close:", on_click=lambda *args: State.set("delete_file", ""), type="primary")
 
     @staticmethod
     def _show_file_buttons(file_name: str):
