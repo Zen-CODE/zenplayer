@@ -7,7 +7,7 @@ from app_pages.sysinfo import show_sysinfo
 
 def init_app() -> None:
     """Initialize our streamlit app."""
-    st.set_page_config(page_title="Zen Player Lit", page_icon="images/favicon.png")
+    st.set_page_config(page_title="ZenPlayerLit", page_icon="images/favicon.png")
 
 
 def init_navigation() -> None:

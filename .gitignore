@@ -7,3 +7,4 @@ zenplayer/keys
 .python-version
 .gitignore
 zenplayer/.buildozer/*
+zenstream/demo/*

@@ -1,6 +1,6 @@
-# ZPStreamlit
+# ZenPlayerLit
 
-ZPStreamlit is a Streamlit UI for the ZenPlayer kivy audio player. It uses Streamlit
+ZenPlayerLit is a Streamlit UI for the ZenPlayer kivy audio player. It uses Streamlit
 for the UI and plugins into ZenPlayer via the Swagger / OpenAPI V3 spec interface.
 
 ## Layout

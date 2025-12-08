@@ -30,11 +30,11 @@
             "env": {"PYTHONPATH": "${workspaceFolder}/zenplayer"}
         },
         {
-            "name": "Streamlit",
+            "name": "ZenPlayerLit",
             "type": "debugpy",
             "request": "launch",
             "module": "streamlit",
-            "cwd": "${workspaceFolder}/zpstreamlit/zpstreamlit",
+            "cwd": "${workspaceFolder}/zenplayerlit/zenplayerlit",
             "args": [
                 "run", "main.py"
             ],
