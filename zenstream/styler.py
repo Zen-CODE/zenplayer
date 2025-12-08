@@ -17,11 +17,13 @@ class Styler:
 
     @staticmethod
     def add_button(container: DeltaGenerator, text: str, icon: str, on_click: callable, **kwargs):
+        width = kwargs.pop("width", "stretch")
         with container:
             st.button(
                 text,
                 icon=icon,
                 on_click=on_click,
+                width=width,
                 **kwargs
             )
 
