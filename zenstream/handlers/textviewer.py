@@ -24,7 +24,7 @@ class TextViewer:
             case "json":
                 st.json(lines)
                 df = pd.read_json(file_name)
-                Styler.show_dataframe("JSON -> DataFrame", df)
+                Styler.show_dataframe("DataFrame", df)
             case _:
                 st.code(
                     lines,

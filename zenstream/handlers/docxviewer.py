@@ -19,7 +19,7 @@ class DocXViewer:
             )
         df = pd.DataFrame(paragraphs)
         with st.expander("Paragraphs"):
-            st.data_editor(df, num_rows="dynamic")
+            Styler.show_dataframe("Paragraphs", df)
 
         with st.expander("Tables"):
             # Show tables
@@ -51,10 +51,7 @@ class DocXViewer:
     def _show_table(table, index: int):
         table_rows = DocXViewer._get_table_rows(table)
         df = pd.DataFrame(table_rows)
-        st.subheader(f"Table {index}")
-        st.data_editor(df, num_rows="dynamic")
-
-        Styler.show_dataframe("Table -> DataFrame", df)
+        Styler.show_dataframe(f"Table {index}", df)
 
     @staticmethod
     def _format_text(text: str) -> str:

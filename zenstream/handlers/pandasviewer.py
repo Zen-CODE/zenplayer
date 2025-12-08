@@ -10,6 +10,4 @@ class PandasViewer:
         st.write(f"File: {file_name}")
 
         df = pd.read_csv(file_name)
-        st.data_editor(df, num_rows="dynamic")
-
-        Styler.show_dataframe("CSV -> Dataframe", df)
+        Styler.show_dataframe("DataFrame", df)
