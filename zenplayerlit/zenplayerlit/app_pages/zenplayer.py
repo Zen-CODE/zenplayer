@@ -78,7 +78,7 @@ class CoverImage:
 
         data = ZENPLAYER["data"]
         meta = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_track_meta").json()
-        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover", width="stretch")
+        st.image(f"{ZENPLAYER_URL}/zenplayer/get_track_cover")
         st.markdown(
             f"**{data['artist']}: {data['album']}** - "
             f"*{data['file_name'].split('/')[-1].split('.')[0]}*"
