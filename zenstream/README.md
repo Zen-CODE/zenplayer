@@ -15,19 +15,21 @@ We try to flow through our files, without the context switching of the monkey mi
 
 💧
 
-| Folder | Raw file | Extracted Data | Visualized |
+| Folder -> | File -> | Extract -> | Visualize |
 |--------|----------|----------------|----------|
 |![](screenshots/folder.png)|![](screenshots/raw.png)|![](screenshots/extracted.png)|![](screenshots/visualized.png)|
+|||![](screenshots/extracted_pdf.png)||
 
 
 ## Features
 
 | File type | Features | Formats |
 |-----------|----------|---------|
-| Audio | Player, cover display, format metadata extraction (bitrate, length etc.) | mp3, wav |
-| Data | Interactive previews of csv data with line, bar and area charts | csv, docx, xlsx |
-| Document | Extract paragraphs and tables into interactive tables, export to csv | docx |
+| Data | Interactive preview and editing of tabular data |
+|      | Export to csv option|
+|      | Data visualization with line, bar and area charts | csv, docx, xlsx |
 | Images | Format and EXIF (camera) metadata (resolution, format etc.)  | jpg, png |
+| Audio | Player, cover display, format metadata extraction (bitrate, length etc.) | mp3, wav |
 | Video | Player | mp4, webm, avi |
 | Code | Code formatting and syntax highlighting | py, json, sh, yml, yaml, bat, ipynb |
 | Markdown | Rendering of markdown files | md |
