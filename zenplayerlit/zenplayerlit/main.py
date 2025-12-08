@@ -27,7 +27,7 @@ def init_navigation() -> None:
         page = st.radio("-", list(pages.keys()))
         st.divider()
         cols = st.columns(3)
-        cols[1].image("images/zencode.jpg")
+        cols[1].image("images/favicon.png")
 
     pages[page]()
 
