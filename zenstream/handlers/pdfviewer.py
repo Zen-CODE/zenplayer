@@ -5,6 +5,7 @@ import pandas as pd
 from typing import List
 from styler import Styler
 
+
 class PDFViewer:
     @staticmethod
     def show_file(file_name: str):
@@ -15,7 +16,9 @@ class PDFViewer:
 
         st.pdf(lines)
 
-        dataframes: List[pd.DataFrame] = tabula.read_pdf(file_name)
+        dataframes: List[pd.DataFrame] = tabula.read_pdf(
+            file_name, pages="all", multiple_tables=True
+        )
         if len(dataframes) > 0:
             for index, df in enumerate(dataframes):
                 with st.expander(f"Dataframe {index}"):

@@ -1,8 +1,10 @@
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 import pandas as pd
+from uuid import uuid4
 
 NUM_COLUMNS = 5
+
 
 class Styler:
     @staticmethod
@@ -17,21 +19,17 @@ class Styler:
                 st.markdown(f"*{value}*")
 
     @staticmethod
-    def add_button(container: DeltaGenerator, text: str, icon: str, on_click: callable, **kwargs):
+    def add_button(
+        container: DeltaGenerator, text: str, icon: str, on_click: callable, **kwargs
+    ):
         width = kwargs.pop("width", "stretch")
         with container:
-            st.button(
-                text,
-                icon=icon,
-                on_click=on_click,
-                width=width,
-                **kwargs
-            )
+            st.button(text, icon=icon, on_click=on_click, width=width, **kwargs)
 
     @staticmethod
     def show_dataframe(text: str, df: pd.DataFrame):
         st.subheader(text)
-        st.data_editor(df, num_rows="dynamic")
+        st.data_editor(df, num_rows="dynamic", key=f"pdf_dataframe_{uuid4()}")
         with st.expander(text + " - analysis"):
             col1, col2 = st.columns(2)
             try:
