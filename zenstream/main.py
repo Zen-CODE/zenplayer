@@ -132,12 +132,12 @@ class Show:
             col1, col2, col3 = st.columns([0.9, 0.1, 0.1])
             col1.info(f"💧 Current folder: {State.get_current_folder()}")
             Styler.add_button(
-                col2,
+                col3,
                 "Parent folder",
                 ":material/arrow_circle_up:",
                 lambda: State.set("current_folder", parent),
             )
-            Styler.add_button(col3, "Refresh", ":material/refresh:", lambda *args: ...)
+            Styler.add_button(col2, "Refresh", ":material/refresh:", lambda *args: ...)
             st.divider()
 
     @staticmethod
