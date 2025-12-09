@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-from zencore import ZENPLAYER, ZENPLAYER_URL, ZENSLEEP
-from time import sleep
+from zencore import ZENPLAYER, ZENPLAYER_URL
 from styler import Styler
 
 
@@ -128,7 +127,7 @@ def show_zenplayer():
     ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
     ZenPlayer.show()
 
-    while True:
-        with st.empty():
-            sleep(ZENSLEEP)
-            st.rerun()
+    # while True:
+    #     with st.empty():
+    #         sleep(ZENSLEEP)
+    #         st.rerun()

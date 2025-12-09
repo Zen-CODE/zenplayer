@@ -14,13 +14,6 @@ def show_zenrandom():
     Styler.add_header("Random album", "images/zencode.jpg")
 
     if random:
-        Styler.add_row("Artist", random["artist"])
-        Styler.add_row("Album", random["album"])
-        url = (
-            f"{ZENPLAYER_URL}/zenlibrary/get_album_cover?"
-            f"artist={escape(random['artist'])}&album={escape(random['album'])}"
-        )
-        st.image(url)
 
         class Buttons:
             @staticmethod
@@ -64,6 +57,16 @@ def show_zenrandom():
             on_click=Buttons.click,
             width="stretch",
         )
+
+        Styler.add_row("Artist", random["artist"])
+        Styler.add_row("Album", random["album"])
+
+        url = (
+            f"{ZENPLAYER_URL}/zenlibrary/get_album_cover?"
+            f"artist={escape(random['artist'])}&album={escape(random['album'])}"
+        )
+        st.image(url)
+
     else:
         st.warning("No artist or album match could be found. Try again...")
 
