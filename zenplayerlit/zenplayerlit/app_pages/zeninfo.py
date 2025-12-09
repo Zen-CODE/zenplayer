@@ -16,18 +16,18 @@ def get_artist_data(artist):
 def show_zeninfo():
     """Show  info about the currently playing artist"""
 
-    data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-    page = get_artist_data(data["artist"])
-
     Styler.add_header("Artist info", "images/zencode.jpg")
     st.divider()
-    if page.exists():
-        Styler.add_row("Artist", data["artist"])
-        Styler.add_row("Album", data["album"])
-        st.markdown("## Summary")
-        st.write(page.summary)
-        st.markdown("## Full Text")
-        [st.write(part) for part in page.text.split("\n")]
+    with st.spinner("Retrieving artist data..."):
+        data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
+        page = get_artist_data(data["artist"])
+        if page.exists():
+            Styler.add_row("Artist", data["artist"])
+            Styler.add_row("Album", data["album"])
+            st.markdown("## Summary")
+            st.write(page.summary)
+            st.markdown("## Full Text")
+            [st.write(part) for part in page.text.split("\n")]
 
-    else:
-        st.error(f"No information found for *{data['artist']}*")
+        else:
+            st.error(f"No information found for *{data['artist']}*")
