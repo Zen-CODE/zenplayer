@@ -70,4 +70,9 @@ def show_zenrandom():
     else:
         st.warning("No artist or album match could be found. Try again...")
 
-    st.text_input("Search for", help="Enter filter here", key="search")
+    st.text_input(
+        "Search for",
+        help="Enter filter here",
+        key="search",
+        placeholder="Enter the search term and press enter...",
+    )
