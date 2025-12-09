@@ -1,5 +1,5 @@
 import streamlit as st
-from psutil import cpu_percent, virtual_memory, boot_time
+from psutil import cpu_percent, virtual_memory, boot_time, disk_usage
 from datetime import datetime
 from time import time
 import subprocess
@@ -77,6 +77,14 @@ class SysInfo:
         now = datetime.now().strftime("%d %B, %Y, %H:%M:%S")
         st.markdown(f"**Now:** {now}")
 
+    @staticmethod
+    def show_disk():
+        usage = disk_usage("/")
+        st.progress(
+            usage.percent / 100.0,
+            f"Disc usage (/): {int(usage.percent)}% of {usage.total / (1024**3):.2f} GB",
+        )
+
 
 def show_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""
@@ -89,5 +97,7 @@ def show_sysinfo():
 
     SysInfo.show_cpu()
     SysInfo.show_memory()
+    SysInfo.show_disk()
+    st.divider()
     SysInfo.show_start_time()
     SysInfo.show_buttons()

@@ -12,6 +12,7 @@ def show_zenrandom():
         random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/get_random_album").json()
 
     Styler.add_header("Random album", "images/zencode.jpg")
+    st.divider()
 
     if random:
 

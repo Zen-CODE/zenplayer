@@ -19,7 +19,8 @@ def show_zeninfo():
     data = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
     page = get_artist_data(data["artist"])
 
-    Styler.add_header("ZenInfo", "images/zencode.jpg")
+    Styler.add_header("Artist info", "images/zencode.jpg")
+    st.divider()
     if page.exists():
         Styler.add_row("Artist", data["artist"])
         Styler.add_row("Album", data["album"])
