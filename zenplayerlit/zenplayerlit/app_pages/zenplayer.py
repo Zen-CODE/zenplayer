@@ -17,7 +17,7 @@ class ControlButtons:
     def show():
         """Adds a row of control buttons to the Streamlit app."""
         prev_, stop_, play_pause_, next_, vol_down_, vol_up_, refresh_ = st.columns(
-            spec=[1, 1, 1, 1, 1, 1, 1], border=True
+            spec=[1, 1, 2, 1, 1, 1, 1], border=True
         )
         prev_.button(
             "⏮️",
