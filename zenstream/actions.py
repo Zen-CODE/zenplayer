@@ -34,6 +34,7 @@ class Action:
         "json": [TextViewer],
         "pdf": [PDFViewer],
         "toml": [TextViewer],
+        "jsonl": [TextViewer],
         "jpeg": [ImageViewer],
         "jpg": [ImageViewer],
         "png": [ImageViewer],

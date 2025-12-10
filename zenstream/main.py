@@ -18,7 +18,7 @@ class Show:
         with st.container():
             # First row
             col1, col2 = st.columns([0.96, 0.04])
-            col1.title("💧 ZenStream - File explorer, viewer and extractor")
+            col1.title("💧 ZenStream")
             col2.image("images/favicon.png")
             st.divider()
 
