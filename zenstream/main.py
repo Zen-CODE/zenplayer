@@ -3,145 +3,13 @@ from pathlib import Path
 from os import listdir, sep
 from os.path import join
 from streamlit.delta_generator import DeltaGenerator
-from handlers.pandasviewer import PandasViewer
-from handlers.textviewer import TextViewer
-from handlers.audioplayer import AudioPlayer
-from handlers.imageviewer import ImageViewer
-from handlers.pdfviewer import PDFViewer
-from handlers.videoplayer import VideoPlayer
-from handlers.excelviewer import ExcelViewer
-from handlers.docxviewer import DocXViewer
 from styler import Styler
 from handlers.filedetails import FileDetails
 import webbrowser
 import pyperclip
 from styler import NUM_COLUMNS
-import json
-from os.path import exists
-
-
-class State:
-    @staticmethod
-    def get_current_folder() -> str:
-        path = str(
-            Path.cwd()
-            if not hasattr(st.session_state, "current_folder")
-            else Path(st.session_state.current_folder)
-        )
-        st.session_state.current_folder = path
-        return path
-
-    @staticmethod
-    def set(name: str, value: str):
-        st.session_state[name] = value
-        State.save()
-
-    @staticmethod
-    def get(name: str):
-        return st.session_state.get(name, "")
-
-    @staticmethod
-    def load():
-        if exists("state.json"):
-            with open("state.json") as f:
-                values = json.load(f)
-            for key, value in values.items():
-                setattr(st.session_state, key, value)
-
-
-    @staticmethod
-    def save():
-        with open("state.json", "w") as f:
-            json.dump({
-                "current_folder": st.session_state.get("current_folder", ""),
-                "current_file": st.session_state.get("current_file", "")
-            }, f)
-
-
-
-class Action:
-    handlers = {
-        "mp3": [AudioPlayer],
-        "ogg": [AudioPlayer],
-        "wav": [AudioPlayer],
-        "csv": [PandasViewer],
-        "txt": [TextViewer],
-        "py": [TextViewer],
-        "log": [TextViewer],
-        "ini": [TextViewer],
-        "yaml": [TextViewer],
-        "yml": [TextViewer],
-        "bat": [TextViewer],
-        "sql": [TextViewer],
-        "crt": [TextViewer],
-        "sh": [TextViewer],
-        "ipynb": [TextViewer],
-        "md": [TextViewer],
-        "json": [TextViewer],
-        "pdf": [PDFViewer],
-        "toml": [TextViewer],
-        "jpeg": [ImageViewer],
-        "jpg": [ImageViewer],
-        "png": [ImageViewer],
-        "webm": [VideoPlayer],
-        "mp4": [VideoPlayer],
-        "avi": [VideoPlayer],
-        "xls": [ExcelViewer],
-        "xlsx": [ExcelViewer],
-        "docx": [DocXViewer],
-    }
-    """A dictionary of file type / handler class list pairs. The handler class
-    exposing a `show_file(file_name)` method."""
-
-    @staticmethod
-    def get_handlers(file_name: str) -> list:
-        ext = file_name.split(".")[-1]
-        return Action.handlers.get(ext, [])
-
-    @staticmethod
-    def get_icon(file_name: str) -> str:
-        suffix = file_name.split(".")[-1]
-        match suffix:
-            case "mp3" | "ogg" | "wav":
-                return ":material/audio_file:"
-            case "csv":
-                return ":material/csv:"
-            case "txt" | "md":
-                return ":material/text_snippet:"
-            case "py":
-                return ":material/code:"
-            case "ini" | "yaml" | "yml" | "json" | "toml":
-                return ":material/settings:"
-            case "bat" | "sh":
-                return ":material/run_circle:"
-            case "pdf":
-                return ":material/picture_as_pdf:"
-            case "jpeg" | "jpg" | "png":
-                return ":material/image:"
-            case "webm" | "mp4" | "avi":
-                return ":material/movie:"
-            case "xls" | "xlsx":
-                return ":material/table:"
-            case "log":
-                return ":material/history_toggle_off:"
-            case "docx":
-                return ":material/dictionary:"
-            case _:
-                return ":material/article:"
-
-    @staticmethod
-    def delete_file(file_name: str):
-        try:
-            Path(file_name).unlink(missing_ok=True)
-        except Exception as e:
-            st.error(f"Error deleting file: {e}")
-
-        State.set("current_file", "")
-        State.set("delete_file", "")
-
-    @staticmethod
-    def run_file(file_name: str):
-        print(f"Running {file_name}")
+from actions import Action
+from state import State
 
 
 class Show:
@@ -207,7 +75,7 @@ class Show:
         button_data = Show._get_extra_buttons(file_name)
         if button_data:
             cols = st.columns(len(button_data) + 1)
-            cols[0].info("Extra options for this file")
+            cols[0].info("💧💧💧 Extra options for this file")
             for k, data in enumerate(button_data):
                 Styler.add_button(cols[k +  1], **data)
 
@@ -251,7 +119,7 @@ class Show:
     @staticmethod
     def _show_file_buttons(file_name: str):
         # Add buttons for Open, Copy, Delete and Clear
-        col1, col2, col3, col4, col5 = st.columns([0.7, 0.1, 0.1, 0.1, 0.1])
+        col1, col2, col3, col4, col5 = st.columns([0.5, 0.125, 0.125, 0.125, 0.125])
         with col1:
             st.info(f"💧💧 Current file: {file_name}")
         Styler.add_button(
