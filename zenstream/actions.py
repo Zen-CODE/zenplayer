@@ -110,7 +110,8 @@ class PythonFile:
     def run(file_name: str):
         subprocess.run(
             [sys.executable, file_name],
-            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             check=True,
             # env=os.environ.copy(),
             encoding='utf-8'
