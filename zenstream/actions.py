@@ -9,6 +9,8 @@ from handlers.docxviewer import DocXViewer
 from pathlib import Path
 import streamlit as st
 from state import State
+import subprocess
+import sys
 
 
 class Action:
@@ -93,5 +95,24 @@ class Action:
 
     @staticmethod
     def run_file(file_name: str):
+        """Run the given file. Currently, only python files are supported."""
         print(f"Running {file_name}")
+        match file_name.split(".")[-1].lower():
+            case "py":
+                PythonFile.run(file_name)
+            case _:
+                return []
+
+
+class PythonFile:
+
+    @staticmethod
+    def run(file_name: str):
+        subprocess.run(
+            [sys.executable, file_name],
+            stderr=subprocess.PIPE,
+            check=True,
+            # env=os.environ.copy(),
+            encoding='utf-8'
+        )
 
