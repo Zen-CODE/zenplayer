@@ -16,6 +16,8 @@ from handlers.filedetails import FileDetails
 import webbrowser
 import pyperclip
 from styler import NUM_COLUMNS
+import json
+from os.path import exists
 
 
 class State:
@@ -32,10 +34,29 @@ class State:
     @staticmethod
     def set(name: str, value: str):
         st.session_state[name] = value
+        State.save()
 
     @staticmethod
     def get(name: str):
         return st.session_state.get(name, "")
+
+    @staticmethod
+    def load():
+        if exists("state.json"):
+            with open("state.json") as f:
+                values = json.load(f)
+            for key, value in values.items():
+                setattr(st.session_state, key, value)
+
+
+    @staticmethod
+    def save():
+        with open("state.json", "w") as f:
+            json.dump({
+                "current_folder": st.session_state.get("current_folder", ""),
+                "current_file": st.session_state.get("current_file", "")
+            }, f)
+
 
 
 class Action:
@@ -251,6 +272,7 @@ if __name__ == "__main__":
         page_title="Zen Stream", page_icon="images/favicon.png", layout="wide"
     )
 
+    State.load()
     Show.header()
     Show.listing()
     if file_name := State.get("current_file"):
