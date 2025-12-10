@@ -72,6 +72,8 @@ class Action:
         "yaml": [TextViewer],
         "yml": [TextViewer],
         "bat": [TextViewer],
+        "sql": [TextViewer],
+        "crt": [TextViewer],
         "sh": [TextViewer],
         "ipynb": [TextViewer],
         "md": [TextViewer],
