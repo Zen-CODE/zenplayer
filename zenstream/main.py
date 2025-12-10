@@ -139,6 +139,10 @@ class Action:
         State.set("current_file", "")
         State.set("delete_file", "")
 
+    @staticmethod
+    def run_file(file_name: str):
+        print(f"Running {file_name}")
+
 
 class Show:
     @staticmethod
@@ -184,6 +188,29 @@ class Show:
             Action.get_icon(file_name),
             lambda: State.set("current_file", sep.join([folder, file_name])),
         )
+
+    @staticmethod
+    def _get_extra_buttons(file_name: str) -> list:
+        ext = file_name.split(".")[-1].lower()
+        match ext:
+            case "py":
+                return [
+                    {"text": "Run script",
+                     "icon": ":material/run_circle:",
+                     "on_click": lambda *args: Action.run_file(file_name)
+                     }
+                ]
+        return []
+
+    @staticmethod
+    def _show_extra_file_buttons(file_name: str):
+        button_data = Show._get_extra_buttons(file_name)
+        if button_data:
+            cols = st.columns(len(button_data) + 1)
+            cols[0].info("Extra options for this file")
+            for k, data in enumerate(button_data):
+                Styler.add_button(cols[k +  1], **data)
+
 
     @staticmethod
     def listing():
@@ -257,6 +284,7 @@ class Show:
         if del_file := State.get("delete_file"):
             Show._confirm_delete(del_file)
         Show._show_file_buttons(file_name)
+        Show._show_extra_file_buttons(file_name)
 
         for handler in Action.get_handlers(file_name):
             handler.show_file(file_name)
