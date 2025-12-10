@@ -20,6 +20,10 @@ class System:
     def restart():
         subprocess.run(["/usr/bin/reboot"], text=True)
 
+    @staticmethod
+    def lock_screen():
+        subprocess.run(["loginctl", "lock-session"], text=True)
+
 
 class SysInfo:
     @staticmethod
@@ -42,7 +46,13 @@ class SysInfo:
     def show_buttons():
         """Adds a row of control buttons for system control."""
         button_width = 180
-        suspend_, restart_, shutdown_ = st.columns(spec=[1, 1, 1], border=True)
+        lock_, suspend_, restart_, shutdown_ = st.columns(spec=[1, 1, 1, 1], border=True)
+        lock_.button(
+            "Lock",
+            on_click=System.lock_screen,
+            icon=":material/lock:",
+            width=button_width,
+        )
         suspend_.button(
             "Suspend",
             on_click=System.sleep,
