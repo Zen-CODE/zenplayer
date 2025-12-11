@@ -6,4 +6,5 @@ flask~=3.1.2
 flasgger~=0.9.7.1
 mutagen~=1.47.0
 pre_commit~=4.3.0
+pydantic~=2.12.5
 ruff~=0.12.10

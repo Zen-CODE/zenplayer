@@ -1,6 +1,35 @@
 import streamlit as st
 from library.library import Library
 from os import sep
+from pydantic import BaseModel, model_validator
+from typing import List, Any
+from os import stat as os_stat
+from datetime import datetime
+
+
+class LibraryFile(BaseModel):
+    # Required
+    file_path: str
+    file_ext: str
+
+    # Calculated
+    file_size: float
+    """File size in MB"""
+
+    created: datetime
+    accessed: datetime
+
+    @model_validator(mode="before")
+    @classmethod
+    def add_fields(cls, data: Any) -> Any:
+        # Check if the input is a dictionary or map-like
+        if isinstance(data, dict):
+            stat_info = os_stat(data["file_path"])
+            data["created"] = datetime.fromtimestamp(stat_info.st_ctime)
+            data["accessed"] = datetime.fromtimestamp(stat_info.st_atime)
+            data["file_size"] = stat_info.st_size / (1024 * 1024)
+
+        return data
 
 
 MAX = 100
@@ -18,7 +47,18 @@ class LibAnalysis:
             for k, album in enumerate(library.get_albums(artist)):
                 album_path = library.get_path(artist, album)
                 for j, track in enumerate(library.get_tracks(artist, album)):
-                    file_list.append(sep.join([album_path, track]))
+                    # file_list.append(sep.join([album_path, track]))
+
+                    file_list.append(
+                        LibraryFile(
+                            file_path=sep.join([album_path, track]),
+                            file_ext=track.split(".")[-1],
+                        )
+                    )
+                if cover := library.get_cover_path(artist, album):
+                    file_list.append(
+                        LibraryFile(file_path=cover, file_ext=cover.split(".")[-1])
+                    )
 
     def get_metadata(self) -> dict:
         """Return a dictionary of metadata on the library.
@@ -50,6 +90,9 @@ class LibAnalysis:
             "Covers": covers,
         }
 
+    def get_file_data(self) -> List[LibraryFile]:
+        return self.file_list
+
 
 def show_musiclib():
     col1, col2 = st.columns([0.8, 0.2])
@@ -59,16 +102,18 @@ def show_musiclib():
         st.markdown("# Zen Library Info")
     st.divider()
 
-    st.subheader("Library Metadata")
-
     with st.spinner("Loading Library..."):
         analysis = LibAnalysis()
 
-        assert analysis
-
+        st.subheader("Library Metadata")
         col1, col2 = st.columns([0.25, 0.75])
         for name, value in analysis.get_metadata().items():
             col1.markdown(f"**{name}**")
             col2.write(value)
+
+        st.subheader("File Statistics")
+        # col1, col2 = st.columns([0.25, 0.75])
+        for lib_file in analysis.get_file_data():
+            st.write(str(lib_file.model_dump_json()))
 
         st.write("Library loaded")
