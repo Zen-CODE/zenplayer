@@ -45,8 +45,10 @@ class SysInfo:
     @staticmethod
     def show_buttons():
         """Adds a row of control buttons for system control."""
-        button_width = 180
-        lock_, suspend_, restart_, shutdown_ = st.columns(spec=[1, 1, 1, 1], border=True)
+        button_width = "stretch"
+        lock_, suspend_, restart_, shutdown_ = st.columns(
+            spec=[1, 1, 1, 1], border=True
+        )
         lock_.button(
             "Lock",
             on_click=System.lock_screen,

@@ -30,5 +30,7 @@ def init_navigation() -> None:
 
 if __name__ == "__main__":
     # st.set_page_config(page_title="ZenPlayerLit", page_icon="images/favicon.png")
-    st.set_page_config(page_title="ZenPlayerLit", page_icon="images/favicon.png")
+    st.set_page_config(
+        page_title="ZenPlayerLit", page_icon="images/favicon.png", layout="wide"
+    )
     init_navigation()
