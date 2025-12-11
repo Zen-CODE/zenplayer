@@ -9,6 +9,8 @@ from datetime import datetime
 
 class LibraryFile(BaseModel):
     # Required
+    artist: str
+    album: str
     file_path: str
     file_ext: str
 
@@ -33,6 +35,8 @@ class LibraryFile(BaseModel):
 
     def get_display(self) -> Dict:
         return {
+            "Artist": self.artist,
+            "Album": self.album,
             "File name": self.file_path.split(sep)[-1],
             "File type": self.file_path.split(".")[-1].lower(),
             "Created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
@@ -50,8 +54,8 @@ class LibAnalysis:
 
         self.file_list = file_list = []
         for i, artist in enumerate(library.get_artists()):
-            if i > MAX:
-                break
+            # if i > MAX:
+            #     break
 
             for k, album in enumerate(library.get_albums(artist)):
                 album_path = library.get_path(artist, album)
@@ -60,13 +64,20 @@ class LibAnalysis:
 
                     file_list.append(
                         LibraryFile(
+                            artist=artist,
+                            album=album,
                             file_path=sep.join([album_path, track]),
                             file_ext=track.split(".")[-1],
                         )
                     )
                 if cover := library.get_cover_path(artist, album):
                     file_list.append(
-                        LibraryFile(file_path=cover, file_ext=cover.split(".")[-1])
+                        LibraryFile(
+                            artist=artist,
+                            album=album,
+                            file_path=cover,
+                            file_ext=cover.split(".")[-1],
+                        )
                     )
 
     def get_metadata(self) -> dict:
