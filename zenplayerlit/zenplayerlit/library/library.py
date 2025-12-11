@@ -76,10 +76,11 @@ class Library:
 
     def get_cover_path(self, artist, album):
         """Return the album cover art for the given artist and album."""
-        track = self.artists[artist][album][0]
-        if track.cover:
-            file_name = str(track.cover)
-            return join(self.path, artist, album, file_name)
+        if tracks := self.artists[artist][album]:
+            track = tracks[0]
+            if track.cover:
+                file_name = str(track.cover)
+                return join(self.path, artist, album, file_name)
         return join(self.path, "default.png")
 
     def get_random_album(self):

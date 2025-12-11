@@ -8,7 +8,7 @@ MAX = 100
 
 class LibAnalysis:
     def __init__(self):
-        library = Library({})
+        self.library = library = Library({})
 
         self.file_list = file_list = []
         for i, artist in enumerate(library.get_artists()):
@@ -33,7 +33,22 @@ class LibAnalysis:
         }
         ```
         """
-        return {"Artists": 100, "Albums": 100, "Tracks": 100, "Covers": 100}
+        artists, albums, tracks, covers = 0, 0, 0, 0
+        library = self.library
+        for artist in library.get_artists():
+            artists += 1
+            for album in library.get_albums(artist):
+                albums += 1
+                tracks += len(library.get_tracks(artist, album))
+                if "default.png" not in library.get_cover_path(artist, album):
+                    covers += 1
+
+        return {
+            "Artists": artists,
+            "Albums": albums,
+            "Tracks": tracks,
+            "Covers": covers,
+        }
 
 
 def show_musiclib():
