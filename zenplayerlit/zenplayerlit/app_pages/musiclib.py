@@ -2,7 +2,7 @@ import streamlit as st
 from library.library import Library
 from os import sep
 from pydantic import BaseModel, model_validator
-from typing import List, Any
+from typing import List, Any, Dict
 from os import stat as os_stat
 from datetime import datetime
 
@@ -30,6 +30,15 @@ class LibraryFile(BaseModel):
             data["file_size"] = stat_info.st_size / (1024 * 1024)
 
         return data
+
+    def get_display(self) -> Dict:
+        return {
+            "File name": self.file_path.split(sep)[-1],
+            "File type": self.file_path.split(".")[-1].lower(),
+            "Created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            "Accessed": self.accessed.strftime("%Y-%m-%d %H:%M:%S"),
+            "File size": f"{self.file_size:.2f} MB",
+        }
 
 
 MAX = 100
@@ -112,8 +121,5 @@ def show_musiclib():
             col2.write(value)
 
         st.subheader("File Statistics")
-        # col1, col2 = st.columns([0.25, 0.75])
-        for lib_file in analysis.get_file_data():
-            st.write(str(lib_file.model_dump_json()))
-
-        st.write("Library loaded")
+        data = [lib_file.get_display() for lib_file in analysis.get_file_data()]
+        st.dataframe(data)
