@@ -113,14 +113,15 @@ class ZenPlayer:
     @staticmethod
     def show():
         Styler.add_header("ZenPlayer", "images/zencode.jpg")
+        ControlButtons.show()
         st.divider()
+
         col1, col2 = st.columns(2)
         with col1:
             CoverImage.show()
             ProgressBar.show()
         with col2:
             Playlist.show()
-        ControlButtons.show()
 
 
 def show_zenplayer():

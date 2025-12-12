@@ -5,6 +5,7 @@ from pydantic import BaseModel, model_validator
 from typing import List, Any, Dict
 from os import stat as os_stat
 from datetime import datetime
+import pandas as pd
 
 
 class LibraryFile(BaseModel):
@@ -134,5 +135,24 @@ def show_musiclib():
             col2.write(value)
 
         st.subheader("File Statistics")
-        data = [lib_file.get_display() for lib_file in analysis.get_file_data()]
-        st.dataframe(data)
+        df = pd.DataFrame(
+            [lib_file.get_display() for lib_file in analysis.get_file_data()]
+        )
+        st.dataframe(df)
+
+    # with st.expander("Analysis"):
+    #     col1, col2 = st.columns(2)
+    #     try:
+    #         with col1:
+    #             st.markdown("**Area Chart**")
+    #             st.area_chart(df)
+    #             st.markdown("**Bar Chart**")
+    #             st.bar_chart(df)
+    #         with col2:
+    #             st.markdown("**Line Chart**")
+    #             st.line_chart(df)
+    #     except Exception as e:
+    #         with col1:
+    #             st.error(
+    #                 f"The DataFrame could not be graphed. It gave the error: {e}"
+    #             )
