@@ -15,11 +15,13 @@ class LibraryFile(BaseModel):
     file_ext: str
 
     # Calculated
-    file_size: float
+    file_size: float | None
     """File size in MB"""
 
-    created: datetime
-    accessed: datetime
+    modified: datetime | None
+    """Last modified date (the created date is unreliable)"""
+
+    accessed: datetime | None
 
     @model_validator(mode="before")
     @classmethod
@@ -27,7 +29,7 @@ class LibraryFile(BaseModel):
         # Check if the input is a dictionary or map-like
         if isinstance(data, dict):
             stat_info = os_stat(data["file_path"])
-            data["created"] = datetime.fromtimestamp(stat_info.st_ctime)
+            data["modified"] = datetime.fromtimestamp(stat_info.st_mtime)
             data["accessed"] = datetime.fromtimestamp(stat_info.st_atime)
             data["file_size"] = stat_info.st_size / (1024 * 1024)
 
@@ -39,7 +41,7 @@ class LibraryFile(BaseModel):
             "Album": self.album,
             "File name": self.file_path.split(sep)[-1],
             "File type": self.file_path.split(".")[-1].lower(),
-            "Created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            "Modified": self.modified.strftime("%Y-%m-%d %H:%M:%S"),
             "Accessed": self.accessed.strftime("%Y-%m-%d %H:%M:%S"),
             "File size": f"{self.file_size:.2f} MB",
         }
