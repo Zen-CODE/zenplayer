@@ -6,15 +6,20 @@ from app_pages.sysinfo import show_sysinfo
 from app_pages.musiclib import show_musiclib
 
 
+def set_page(name: str, func_name: callable):
+    st.session_state.page = name
+    func_name()
+
+
 def init_navigation() -> None:
     """Initialize the naigation sidebar and return the first page."""
 
     pages = {
-        "ZenPlayer": show_zenplayer,
-        "Random Album": show_zenrandom,
-        "Artist Info": show_zeninfo,
-        "System Info": show_sysinfo,
-        "Library info": show_musiclib,
+        "ZenPlayer": lambda: set_page("zenplayer", show_zenplayer),
+        "Random Album": lambda: set_page("random", show_zenrandom),
+        "Artist Info": lambda: set_page("zeninfo", show_zeninfo),
+        "System Info": lambda: set_page("sysinfo", show_sysinfo),
+        "Library info": lambda: set_page("musilib", show_musiclib),
     }
 
     with st.sidebar:

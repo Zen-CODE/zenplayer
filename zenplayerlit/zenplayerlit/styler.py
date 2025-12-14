@@ -4,7 +4,7 @@ import streamlit as st
 class Styler:
     @staticmethod
     def add_header(text: str, image_path: str):
-        col1, col2 = st.columns([0.9, 0.1])
+        col1, col2 = st.columns([0.95, 0.05])
         with col1:
             st.header(text)
         with col2:

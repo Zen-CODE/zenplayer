@@ -10,6 +10,7 @@ import pyperclip
 from styler import NUM_COLUMNS
 from actions import Action
 from state import State
+from functools import partial
 
 
 class Show:
@@ -22,18 +23,33 @@ class Show:
             col2.image("images/favicon.png")
             st.divider()
 
-            # Status and navigation row
-            parent = str(Path(State.get_current_folder() + "/../").resolve())
-            col1, col2, col3 = st.columns([0.9, 0.1, 0.1])
-            col1.info(f"💧 Current folder: {State.get_current_folder()}")
-            Styler.add_button(
-                col3,
-                "Parent folder",
-                ":material/arrow_circle_up:",
-                lambda: State.set("current_folder", parent),
-            )
-            Styler.add_button(col2, "Refresh", ":material/refresh:", lambda *args: ...)
+            # Add folder breadcrumbs
+            Show._add_path_buttons()
             st.divider()
+
+    @staticmethod
+    def _add_path_buttons():
+        folder = State.get_current_folder()
+        # Yes, we assume linux for now :-)
+
+        parts = folder.split(sep)[1:]
+        num_folders = len(parts)
+        cols = st.columns(num_folders + 2)  # Add root folder and info tag
+        cols[0].info("💧 Current folder")
+        cols[1].button(
+            "📁", width="stretch", on_click=partial(State.set, "current_folder", "/")
+        )
+        if num_folders == 1 and parts[0] == "":
+            return
+
+        dest_folder = ""
+        for i in range(num_folders):
+            dest_folder = dest_folder + sep + parts[i]
+            cols[i + 2].button(
+                "📁 " + parts[i],
+                width="stretch",
+                on_click=partial(State.set, "current_folder", dest_folder),
+            )
 
     @staticmethod
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
@@ -63,10 +79,11 @@ class Show:
         match ext:
             case "py":
                 return [
-                    {"text": "Run script",
-                     "icon": ":material/run_circle:",
-                     "on_click": lambda *args: Action.run_file(file_name)
-                     }
+                    {
+                        "text": "Run script",
+                        "icon": ":material/run_circle:",
+                        "on_click": lambda *args: Action.run_file(file_name),
+                    }
                 ]
         return []
 
@@ -77,8 +94,7 @@ class Show:
             cols = st.columns(len(button_data) + 1)
             cols[0].info("💧💧💧 Extra options for this file")
             for k, data in enumerate(button_data):
-                Styler.add_button(cols[k +  1], **data)
-
+                Styler.add_button(cols[k + 1], **data)
 
     @staticmethod
     def listing():
