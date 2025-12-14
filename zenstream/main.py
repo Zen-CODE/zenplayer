@@ -55,8 +55,8 @@ class Show:
     def _add_folder_button(container: DeltaGenerator, text: str, folder: str):
         Styler.add_button(
             container,
-            text,
-            ":material/folder:",
+            "📁 " + text,
+            None,
             lambda: State.set("current_folder", folder),
         )
 
