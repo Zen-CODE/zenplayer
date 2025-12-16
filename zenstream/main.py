@@ -11,6 +11,7 @@ from styler import NUM_COLUMNS
 from actions import Action
 from state import State
 from functools import partial
+from uuid import uuid4
 
 
 class Show:
@@ -37,7 +38,10 @@ class Show:
         cols = st.columns(num_folders + 2)  # Add root folder and info tag
         cols[0].info("💧 Current folder")
         cols[1].button(
-            "📁", width="stretch", on_click=partial(State.set, "current_folder", "/")
+            "📁",
+            key=str(uuid4()),
+            width="stretch",
+            on_click=partial(State.set, "current_folder", "/")
         )
         if num_folders == 1 and parts[0] == "":
             return
@@ -47,6 +51,7 @@ class Show:
             dest_folder = dest_folder + sep + parts[i]
             cols[i + 2].button(
                 "📁 " + parts[i],
+                key=str(uuid4()),
                 width="stretch",
                 on_click=partial(State.set, "current_folder", dest_folder),
             )
