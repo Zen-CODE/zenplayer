@@ -24,7 +24,7 @@ class Styler:
     ):
         width = kwargs.pop("width", "stretch")
         with container:
-            st.button(text, icon=icon, on_click=on_click, width=width, **kwargs)
+            st.button(text, icon=icon, on_click=on_click, width=width, key=f"{text}{uuid4()}", **kwargs)
 
     @staticmethod
     def show_dataframe(text: str, df: pd.DataFrame):
