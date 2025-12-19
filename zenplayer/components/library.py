@@ -108,9 +108,13 @@ class Library:
 
     def search(self, term):
         """Return the first instance of an artist or album with the text in."""
+        matches = []
         for artist in self.artists.keys():
             for album in self.artists[artist].keys():
                 if term.lower() in (artist + album).lower():
-                    return {"artist": artist, "album": album}
+                    matches.append({"artist": artist, "album": album})
 
-        return {}
+        if matches:
+            return choice(matches)
+        else:
+            return {}
