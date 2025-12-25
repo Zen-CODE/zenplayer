@@ -19,11 +19,15 @@ def show_zenrandom():
         class Buttons:
             @staticmethod
             def click(action=None, artist=None, album=None):
-                if action:
-                    requests.get(
+                if action and "path" in random.keys():
+                    response = requests.get(
                         f"{ZENPLAYER_URL}/zenplaylist/add_files?folder="
                         f"{escape(random['path'])}&mode={action}"
                     )
+                    if 200 <= response.status_code <= 204:
+                        st.info(f"{random['path']} added to playlist ({action})..")
+                    else:
+                        st.error("Error adding to playlist!")
 
         add_, replace_, insert_, next_, next_album_ = st.columns(
             spec=[1, 1, 1, 1, 1], border=True
