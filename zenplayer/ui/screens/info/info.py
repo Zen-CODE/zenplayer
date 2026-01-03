@@ -66,7 +66,7 @@ class InfoScreen(ZenScreen):
         """Populate the track info"""
         data = self.ctrl.playlist.get_info(filename=filename)
         data_list = [
-            f"{key.title()} : {data[key]}"
+            f"{key.title().replace('_', ' ')} : {data[key]}"
             for key in ["artist", "album", "track_name", "track_number"]
         ]
         self.ids["track"].text = "\n".join(data_list)
