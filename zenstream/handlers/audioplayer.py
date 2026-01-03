@@ -3,6 +3,7 @@ from mutagen import File
 from glob import glob
 from os import sep
 from styler import Styler
+from mutagen.easyid3 import EasyID3
 
 
 class AudioPlayer:
@@ -21,6 +22,11 @@ class AudioPlayer:
             "Sample_rate": f"{info.sample_rate}hz",
         }
         Styler.show_dict("Track Metadata", data)
+
+        if file_name.split(".")[-1].lower() == "mp3":
+            audio = EasyID3(file_name)
+            data = {key.title(): value[0] for key, value in audio.items()}
+            Styler.show_dict("ID3 Tag", data)
 
     @staticmethod
     def show_file(file_name: str):
