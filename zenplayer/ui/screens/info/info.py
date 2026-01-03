@@ -10,6 +10,7 @@ from ui.screens.zenscreen import ZenScreen
 import webbrowser
 from requests import get
 from urllib.parse import quote
+from mutagen.easyid3 import EasyID3
 
 
 class InfoScreen(ZenScreen):
@@ -52,20 +53,32 @@ class InfoScreen(ZenScreen):
         """Show all the details on the given filename"""
         self._show_info(filename)
         self._show_meta(filename)
-        self._show_art()
+        self._show_id3(filename)
+        self._show_art(filename)
+
+    def _show_id3(self, filename):
+        """Populate the ID3 tag track info"""
+        audio = EasyID3(filename)
+        display_list = [f"{key.title()}: {value[0]}" for key, value in audio.items()]
+        self.ids["id3"].text = "\n".join(display_list)
 
     def _show_info(self, filename):
         """Populate the track info"""
         data = self.ctrl.playlist.get_info(filename=filename)
-        for key in ["artist", "album", "track_name", "track_number"]:
-            self.ids[key].text = data[key]
+        data_list = [
+            f"{key.title()} : {data[key]}"
+            for key in ["artist", "album", "track_name", "track_number"]
+        ]
+        self.ids["track"].text = "\n".join(data_list)
 
     def _show_meta(self, filename):
         """Populate the track info"""
         meta = Metadata.get(filename)
-        for key, value in meta.items():
-            val = self.format_meta_value(key, value)
-            self.ids[key].text = f"{key.title().replace('_', ' ')}: {val}"
+        meta_list = [
+            f"{key.title().replace('_', ' ')}: {self.format_meta_value(key, value)}"
+            for key, value in meta.items()
+        ]
+        self.ids["metadata"].text = "\n".join(meta_list)
 
     @staticmethod
     def format_meta_value(key, value):
@@ -75,11 +88,11 @@ class InfoScreen(ZenScreen):
         unit = InfoScreen.units.get(key, "")
         return f"{value}{unit}"
 
-    def _show_art(self):
+    def _show_art(self, filename):
         """Populate the track info"""
-        ids = self.ids
+        parts = filename.split("/")
         self.ids["image"].source = self.ctrl.library.get_cover_path(
-            ids.artist.text, ids.album.text
+            parts[-3], parts[-2]
         )
 
     def show_artist_info(self):
