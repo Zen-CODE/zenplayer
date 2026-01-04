@@ -11,6 +11,20 @@ import webbrowser
 from requests import get
 from urllib.parse import quote
 from mutagen.easyid3 import EasyID3
+from kivy.uix.label import Label
+
+
+def get_header_label(text):
+    return Label(
+        text=f"[color=#00DD00][b]{text}[/b][/color]",
+        markup=True,
+        size_hint_y=None,
+        height=30,
+    )
+
+
+def get_label(text):
+    return Label(text=text, size_hint_y=None, height=25)
 
 
 class InfoScreen(ZenScreen):
@@ -51,34 +65,41 @@ class InfoScreen(ZenScreen):
 
     def _show(self, filename):
         """Show all the details on the given filename"""
-        self._show_info(filename)
-        self._show_meta(filename)
-        self._show_id3(filename)
         self._show_art(filename)
 
-    def _show_id3(self, filename):
+        sv = self.ids["info_scroll"]
+        sv.add_widget(Label(text="", size_hint_y=None, height=10))
+        self._show_info(filename, sv)
+        self._show_meta(filename, sv)
+        self._show_id3(filename, sv)
+        sv.add_widget(Label(text="", size_hint_y=None, height=10))
+
+    def _show_id3(self, filename, sv):
         """Populate the ID3 tag track info"""
         audio = EasyID3(filename)
         display_list = [f"{key.title()}: {value[0]}" for key, value in audio.items()]
-        self.ids["id3"].text = "\n".join(display_list)
+        sv.add_widget(get_header_label(text="ID3 Tag"))
+        [sv.add_widget(get_label(text=item)) for item in display_list]
 
-    def _show_info(self, filename):
+    def _show_info(self, filename, sv):
         """Populate the track info"""
         data = self.ctrl.playlist.get_info(filename=filename)
         data_list = [
             f"{key.title().replace('_', ' ')} : {data[key]}"
             for key in ["artist", "album", "track_name", "track_number"]
         ]
-        self.ids["track"].text = "\n".join(data_list)
+        sv.add_widget(get_header_label(text="Track Info"))
+        [sv.add_widget(get_label(text=item)) for item in data_list]
 
-    def _show_meta(self, filename):
+    def _show_meta(self, filename, sv):
         """Populate the track info"""
         meta = Metadata.get(filename)
         meta_list = [
             f"{key.title().replace('_', ' ')}: {self.format_meta_value(key, value)}"
             for key, value in meta.items()
         ]
-        self.ids["metadata"].text = "\n".join(meta_list)
+        sv.add_widget(get_header_label(text="File Metadata"))
+        [sv.add_widget(get_label(text=item)) for item in meta_list]
 
     @staticmethod
     def format_meta_value(key, value):

@@ -15,32 +15,11 @@
                 id: image
                 size_hint_x: 0.5
                 on_touch_down: self.collide_point(*args[1].pos) and root.show_artist_info()
-            BoxLayout:
-                orientation: "vertical"
+            ScrollView:
                 size_hint_x: 0.5
-                Spacer:
-                Label:
-                    markup: True
-                    color: HEADER_FONT_COLOR
-                    text: "[b]Track Info[/b]"
-                Spacer:
-                Label:
-                    id: track
-                Spacer:
-                Label:
-                    markup: True
-                    color: HEADER_FONT_COLOR
-                    text: "[b]Track Metadata[/b]"
-                Spacer:
-                Label:
-                    id: metadata
-                Spacer:
-                Label:
-                    markup: True
-                    color: HEADER_FONT_COLOR
-                    text: "[b]ID3 Tag[/b]"
-                Spacer:
-                Label:
-                    id: id3
-                Spacer:
-                Spacer:
+                GridLayout:
+                    id: info_scroll
+                    cols: 1
+                    spacing: 10
+                    size_hint_y: None
+                    height: self.minimum_height
