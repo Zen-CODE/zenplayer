@@ -23,7 +23,7 @@ class SoundVLCPlayer(Sound):
         self._length = 0
         if self.instance is None:
             Logger.debug("SoundVLCPlayer: Creating an instance")
-            SoundVLCPlayer.instance = Instance()
+            SoundVLCPlayer.instance = Instance("--file-caching=3000")
         super().__init__(**kwargs)
 
     @mainthread

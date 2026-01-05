@@ -24,7 +24,7 @@ def get_header_label(text):
 
 
 def get_label(text):
-    return Label(text=text, size_hint_y=None, height=25)
+    return Label(text=text, size_hint_y=None, height=25, markup=True)
 
 
 class InfoScreen(ZenScreen):
@@ -68,6 +68,7 @@ class InfoScreen(ZenScreen):
         self._show_art(filename)
 
         sv = self.ids["info_scroll"]
+        sv.clear_widgets()
         sv.add_widget(Label(text="", size_hint_y=None, height=10))
         self._show_info(filename, sv)
         self._show_meta(filename, sv)
@@ -76,16 +77,21 @@ class InfoScreen(ZenScreen):
 
     def _show_id3(self, filename, sv):
         """Populate the ID3 tag track info"""
-        audio = EasyID3(filename)
-        display_list = [f"{key.title()}: {value[0]}" for key, value in audio.items()]
-        sv.add_widget(get_header_label(text="ID3 Tag"))
-        [sv.add_widget(get_label(text=item)) for item in display_list]
+        try:
+            audio = EasyID3(filename)
+            display_list = [
+                f"{key.title()}: [i]{value[0]}[/i]" for key, value in audio.items()
+            ]
+            sv.add_widget(get_header_label(text="ID3 Tag"))
+            [sv.add_widget(get_label(text=item)) for item in display_list]
+        except Exception as e:
+            print(f"Unable to load ID3 tag: {e}")
 
     def _show_info(self, filename, sv):
         """Populate the track info"""
         data = self.ctrl.playlist.get_info(filename=filename)
         data_list = [
-            f"{key.title().replace('_', ' ')} : {data[key]}"
+            f"{key.title().replace('_', ' ')} : [i]{data[key]}[/i]"
             for key in ["artist", "album", "track_name", "track_number"]
         ]
         sv.add_widget(get_header_label(text="Track Info"))
@@ -95,7 +101,7 @@ class InfoScreen(ZenScreen):
         """Populate the track info"""
         meta = Metadata.get(filename)
         meta_list = [
-            f"{key.title().replace('_', ' ')}: {self.format_meta_value(key, value)}"
+            f"{key.title().replace('_', ' ')}: [i]{self.format_meta_value(key, value)}[/i]"
             for key, value in meta.items()
         ]
         sv.add_widget(get_header_label(text="File Metadata"))
