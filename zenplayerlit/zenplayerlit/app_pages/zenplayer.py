@@ -124,11 +124,7 @@ class ZenPlayer:
             Playlist.show()
 
 
+@st.fragment(run_every=5)
 def show_zenplayer():
     ZENPLAYER["data"] = requests.get(f"{ZENPLAYER_URL}/zenplayer/get_state").json()
-    ZenPlayer.show()
-
-    # while True:
-    #     with st.empty():
-    #         sleep(ZENSLEEP)
-    #         st.rerun()
+    ZenPlayer.sh

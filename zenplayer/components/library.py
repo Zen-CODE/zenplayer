@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import List
 from random import choice
 from kivy.app import platform
+from functools import lru_cache
 
 
 @dataclass
@@ -78,6 +79,7 @@ class Library:
         """Return a list of albums for the *artist*."""
         return list(self.artists[artist].keys())
 
+    @lru_cache
     def get_cover_path(self, artist, album):
         """Return the album cover art for the given artist and album."""
         print(f"Looking for cover for: '{artist}' - '{album}'")
