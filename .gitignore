@@ -8,3 +8,5 @@ zenplayer/keys
 .gitignore
 zenplayer/.buildozer/*
 zenstream/demo/*
+.vscode/
+zenstream/state.json
