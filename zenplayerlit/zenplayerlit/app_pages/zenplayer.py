@@ -85,7 +85,11 @@ class ZenPlayer:
         st.write()
 
     def show_progress_bar(self):
-        st.progress(self.data["position"], text=None, width="stretch")
+        col1, col2 = st.columns([0.1, 0.9])
+        col1.write("Position:")
+        col2.progress(self.data["position"], text=None, width="stretch")
+        col1.write("Volume:")
+        col2.progress(self.data["volume"], text=None, width="stretch")
 
     @staticmethod
     def show_playlist():
