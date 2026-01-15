@@ -138,7 +138,8 @@ def show_musiclib():
         df = pd.DataFrame(
             [lib_file.get_display() for lib_file in analysis.get_file_data()]
         )
-        st.dataframe(df)
+        # st.dataframe(df)
+        st.data_editor(df)
 
     # with st.expander("Analysis"):
     #     col1, col2 = st.columns(2)

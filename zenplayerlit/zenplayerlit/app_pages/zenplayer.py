@@ -33,7 +33,7 @@ class ZenPlayer:
             width="stretch",
         )
         play_pause_.button(
-            "▶️⏸️",
+            "▶️",
             on_click=self._button,
             args=("play_pause",),
             width="stretch",
@@ -107,12 +107,12 @@ class ZenPlayer:
         with col1:
             self.show_cover_image()
             self.show_progress_bar()
+            self.show_control_buttons()
         with col2:
             self.show_playlist()
 
     def show(self):
         Styler.add_header("ZenPlayer", "images/zencode.jpg")
-        self.show_control_buttons()
         st.divider()
         self.show_fragment()
 
