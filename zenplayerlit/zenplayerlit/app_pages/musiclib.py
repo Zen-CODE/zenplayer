@@ -129,10 +129,8 @@ def show_musiclib():
         analysis = LibAnalysis()
 
         st.subheader("Library Metadata")
-        col1, col2 = st.columns([0.25, 0.75])
-        for name, value in analysis.get_metadata().items():
-            col1.markdown(f"**{name}**")
-            col2.write(value)
+        data = {name: value for name, value in analysis.get_metadata().items()}
+        st.table(data)
 
         st.subheader("File Statistics")
         df = pd.DataFrame(

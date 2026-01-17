@@ -33,7 +33,7 @@ class ZenPlayer:
             width="stretch",
         )
         play_pause_.button(
-            "▶️",
+            "▶️" if self.data.get("state") != "Playing" else "⏹",
             on_click=self._button,
             args=("play_pause",),
             width="stretch",
