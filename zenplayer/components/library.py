@@ -116,7 +116,13 @@ class Library:
         for artist in self.artists.keys():
             for album in self.artists[artist].keys():
                 if term.lower() in (artist + album).lower():
-                    matches.append({"artist": artist, "album": album})
+                    matches.append(
+                        {
+                            "artist": artist,
+                            "album": album,
+                            "path": self.get_path(artist, album),
+                        }
+                    )
 
         if matches:
             return choice(matches)
