@@ -82,7 +82,6 @@ class Library:
     @lru_cache
     def get_cover_path(self, artist, album):
         """Return the album cover art for the given artist and album."""
-        print(f"Looking for cover for: '{artist}' - '{album}'")
         track = self.artists.get(artist, {}).get(album, [None])[0]
         if track and track.cover:
             file_name = str(track.cover)

@@ -3,6 +3,8 @@ import requests
 from zencore import ZENPLAYER_URL
 from styler import Styler
 from uuid import uuid4
+from mutagen.easyid3 import EasyID3
+from functools import lru_cache
 
 
 class ZenPlayer:
@@ -11,7 +13,6 @@ class ZenPlayer:
 
     @staticmethod
     def _button(name=None):
-        print("Button clicked: ", name)
         if name:
             requests.get(f"{ZENPLAYER_URL}/zenplayer/{name}")
 
@@ -33,7 +34,7 @@ class ZenPlayer:
             width="stretch",
         )
         play_pause_.button(
-            "▶️" if self.data.get("state") != "Playing" else "⏹",
+            "▶️" if self.data.get("state") != "Playing" else "⏸",
             on_click=self._button,
             args=("play_pause",),
             width="stretch",
@@ -92,6 +93,22 @@ class ZenPlayer:
         col2.progress(self.data["volume"], text=None, width="stretch")
 
     @staticmethod
+    @lru_cache
+    def _get_id3_data(file_name: str) -> dict:
+        audio = EasyID3(file_name)
+        data = {key.title(): value[0] for key, value in audio.items()}
+        return data
+
+    def show_id3_tag(self):
+        file_name = self.data["file_name"]
+        if file_name.split(".")[-1].lower() == "mp3":
+            data = self._get_id3_data(file_name)
+            st.markdown("**ID3 Tag Data**")
+            st.table(data)
+        else:
+            st.write("No ID3 tag available for non-mp3 files")
+
+    @staticmethod
     def show_playlist():
         data = requests.get(f"{ZENPLAYER_URL}/zenplaylist/get_playlist").json()
         st.subheader("Playlist")
@@ -108,6 +125,7 @@ class ZenPlayer:
             self.show_cover_image()
             self.show_progress_bar()
             self.show_control_buttons()
+            self.show_id3_tag()
         with col2:
             self.show_playlist()
 
