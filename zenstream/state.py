@@ -18,6 +18,9 @@ class State:
     @staticmethod
     def set(name: str, value: str):
         st.session_state[name] = value
+        if name == "current_folder":
+            if st.session_state.get("current_file"):
+                st.session_state.pop("current_file")
         State.save()
 
     @staticmethod
@@ -32,12 +35,13 @@ class State:
             for key, value in values.items():
                 setattr(st.session_state, key, value)
 
-
     @staticmethod
     def save():
         with open("state.json", "w") as f:
-            json.dump({
-                "current_folder": st.session_state.get("current_folder", ""),
-                "current_file": st.session_state.get("current_file", "")
-            }, f)
-
+            json.dump(
+                {
+                    "current_folder": st.session_state.get("current_folder", ""),
+                    "current_file": st.session_state.get("current_file", ""),
+                },
+                f,
+            )

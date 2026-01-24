@@ -35,7 +35,7 @@ class Show:
         num_folders = len(parts)
 
         cols = st.columns(num_folders + 2)  # Add root folder and info tag
-        cols[0].info(f"💧 Current folder: {folder}")
+        cols[0].info(f"💧💧 Current folder: {folder}")
         cols[1].button(
             "📁",
             key=str(uuid4()),
@@ -103,7 +103,7 @@ class Show:
     @staticmethod
     def listing():
         folder = State.get_current_folder()
-        with st.expander("💧 Folder contents"):
+        with st.expander("💧💧 Folder contents", expanded=True):
             cols = st.columns(NUM_COLUMNS)
 
             cols[0].info("💧💧 Folder contents")
@@ -145,7 +145,7 @@ class Show:
         # Add buttons for Open, Copy, Delete and Clear
         col1, col2, col3, col4, col5 = st.columns([0.5, 0.125, 0.125, 0.125, 0.125])
         with col1:
-            st.info(f"💧💧 Current file: {file_name}")
+            st.info(f"💧💧💧 Current file: {file_name}")
         Styler.add_button(
             col2,
             "Copy path",
@@ -181,7 +181,7 @@ class Show:
         for handler in Action.get_handlers(file_name):
             handler.show_file(file_name)
 
-        with st.expander("Details"):
+        with st.expander("Details", expanded=True):
             FileDetails.show_file(file_name)
 
     @staticmethod
@@ -196,8 +196,9 @@ if __name__ == "__main__":
 
     State.load()
     Show.header()
-    Show.listing()
-    if file_name := State.get("current_file"):
-        with st.expander(f"💧💧💧 File details: {file_name}"):
-            Show.details(file_name)
+    with st.spinner("Loading folder..."):
+        Show.listing()
+        if file_name := State.get("current_file"):
+            with st.expander(f"💧💧💧 Current file: {file_name}", expanded=True):
+                Show.details(file_name)
     Show.show_footer()
