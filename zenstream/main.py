@@ -41,7 +41,7 @@ class Show:
             "📁",
             key=str(uuid4()),
             width="stretch",
-            on_click=partial(State.set, "current_folder", "/")
+            on_click=partial(State.set, "current_folder", "/"),
         )
         if num_folders == 1 and parts[0] == "":
             return
@@ -107,14 +107,18 @@ class Show:
         with st.container():
             cols = st.columns(NUM_COLUMNS)
 
+            cols[0].info("💧💧 Folder contents")
+
             for index, file_name in enumerate(sorted(listdir(folder))):
                 final_path = Path(join(folder, file_name))
                 if final_path.is_dir():
                     Show._add_folder_button(
-                        cols[index % NUM_COLUMNS], file_name, str(final_path)
+                        cols[(index + 1) % NUM_COLUMNS], file_name, str(final_path)
                     )
                 else:
-                    Show._add_file_button(cols[index % NUM_COLUMNS], file_name, folder)
+                    Show._add_file_button(
+                        cols[(index + 1) % NUM_COLUMNS], file_name, folder
+                    )
         st.divider()
 
     @staticmethod
