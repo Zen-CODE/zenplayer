@@ -31,10 +31,9 @@ class Show:
     @staticmethod
     def _add_path_buttons():
         folder = State.get_current_folder()
-        # Yes, we assume linux for now :-)
-
         parts = folder.split(sep)[1:]
         num_folders = len(parts)
+
         cols = st.columns(num_folders + 2)  # Add root folder and info tag
         cols[0].info(f"💧 Current folder: {folder}")
         cols[1].button(
@@ -104,7 +103,7 @@ class Show:
     @staticmethod
     def listing():
         folder = State.get_current_folder()
-        with st.container():
+        with st.expander("💧 Folder contents"):
             cols = st.columns(NUM_COLUMNS)
 
             cols[0].info("💧💧 Folder contents")
@@ -199,5 +198,6 @@ if __name__ == "__main__":
     Show.header()
     Show.listing()
     if file_name := State.get("current_file"):
-        Show.details(file_name)
+        with st.expander(f"💧💧💧 File details: {file_name}"):
+            Show.details(file_name)
     Show.show_footer()
