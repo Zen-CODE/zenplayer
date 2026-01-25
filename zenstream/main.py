@@ -14,7 +14,7 @@ from functools import partial
 from uuid import uuid4
 
 
-class Show:
+class ZPLit:
     @staticmethod
     def header():
         with st.container():
@@ -25,7 +25,7 @@ class Show:
             st.divider()
 
             # Add folder breadcrumbs
-            Show._add_path_buttons()
+            ZPLit._add_path_buttons()
             st.divider()
 
     @staticmethod
@@ -93,7 +93,7 @@ class Show:
 
     @staticmethod
     def _show_extra_file_buttons(file_name: str):
-        button_data = Show._get_extra_buttons(file_name)
+        button_data = ZPLit._get_extra_buttons(file_name)
         if button_data:
             cols = st.columns(len(button_data) + 1)
             cols[0].info("💧💧💧 Extra options for this file")
@@ -102,22 +102,34 @@ class Show:
 
     @staticmethod
     def listing():
+        def split_list(lst: list, x_parts: int) -> list:
+            # Calculate the base size and the remainder
+            n = len(lst)
+            size = n // x_parts
+            remainder = n % x_parts
+
+            result = []
+            start = 0
+            for i in range(x_parts):
+                # Add 1 to the size of the first 'remainder' chunks
+                end = start + size + (1 if i < remainder else 0)
+                result.append(lst[start:end])
+                start = end
+
+            return result
+
         folder = State.get_current_folder()
         with st.expander("💧💧 Folder contents", expanded=True):
             cols = st.columns(NUM_COLUMNS)
-
-            cols[0].info("💧💧 Folder contents")
-
-            for index, file_name in enumerate(sorted(listdir(folder))):
-                final_path = Path(join(folder, file_name))
-                if final_path.is_dir():
-                    Show._add_folder_button(
-                        cols[(index + 1) % NUM_COLUMNS], file_name, str(final_path)
-                    )
-                else:
-                    Show._add_file_button(
-                        cols[(index + 1) % NUM_COLUMNS], file_name, folder
-                    )
+            file_list = sorted(listdir(folder))
+            list_of_columns = split_list(file_list, NUM_COLUMNS)
+            for i, column in enumerate(list_of_columns):
+                for file_name in column:
+                    final_path = Path(join(folder, file_name))
+                    if final_path.is_dir():
+                        ZPLit._add_folder_button(cols[i], file_name, str(final_path))
+                    else:
+                        ZPLit._add_file_button(cols[i], file_name, folder)
         st.divider()
 
     @staticmethod
@@ -145,7 +157,7 @@ class Show:
         # Add buttons for Open, Copy, Delete and Clear
         col1, col2, col3, col4, col5 = st.columns([0.5, 0.125, 0.125, 0.125, 0.125])
         with col1:
-            st.info(f"💧💧💧 Current file: {file_name}")
+            st.info(f"Actions for: {file_name}")
         Styler.add_button(
             col2,
             "Copy path",
@@ -174,14 +186,14 @@ class Show:
     @staticmethod
     def details(file_name):
         if del_file := State.get("delete_file"):
-            Show._confirm_delete(del_file)
-        Show._show_file_buttons(file_name)
-        Show._show_extra_file_buttons(file_name)
+            ZPLit._confirm_delete(del_file)
+        ZPLit._show_file_buttons(file_name)
+        ZPLit._show_extra_file_buttons(file_name)
 
         for handler in Action.get_handlers(file_name):
             handler.show_file(file_name)
 
-        with st.expander("Details", expanded=True):
+        with st.expander("❄️ Details", expanded=True):
             FileDetails.show_file(file_name)
 
     @staticmethod
@@ -195,10 +207,10 @@ if __name__ == "__main__":
     )
 
     State.load()
-    Show.header()
+    ZPLit.header()
     with st.spinner("Loading folder..."):
-        Show.listing()
+        ZPLit.listing()
         if file_name := State.get("current_file"):
             with st.expander(f"💧💧💧 Current file: {file_name}", expanded=True):
-                Show.details(file_name)
-    Show.show_footer()
+                ZPLit.details(file_name)
+    ZPLit.show_footer()
