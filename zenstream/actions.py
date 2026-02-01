@@ -19,22 +19,7 @@ class Action:
         "ogg": [AudioPlayer],
         "wav": [AudioPlayer],
         "csv": [PandasViewer],
-        "txt": [TextViewer],
-        "py": [TextViewer],
-        "log": [TextViewer],
-        "ini": [TextViewer],
-        "yaml": [TextViewer],
-        "yml": [TextViewer],
-        "bat": [TextViewer],
-        "sql": [TextViewer],
-        "crt": [TextViewer],
-        "sh": [TextViewer],
-        "ipynb": [TextViewer],
-        "md": [TextViewer],
-        "json": [TextViewer],
         "pdf": [PDFViewer],
-        "toml": [TextViewer],
-        "jsonl": [TextViewer],
         "jpeg": [ImageViewer],
         "jpg": [ImageViewer],
         "png": [ImageViewer],
@@ -50,8 +35,9 @@ class Action:
 
     @staticmethod
     def get_handlers(file_name: str) -> list:
+        """Return the handler for the file, defaulting to a text viewer."""
         ext = file_name.split(".")[-1]
-        return Action.handlers.get(ext, [])
+        return Action.handlers.get(ext, [TextViewer])
 
     @staticmethod
     def get_icon(file_name: str) -> str:
@@ -106,7 +92,6 @@ class Action:
 
 
 class PythonFile:
-
     @staticmethod
     def run(file_name: str):
         subprocess.run(
@@ -115,6 +100,5 @@ class PythonFile:
             stderr=subprocess.STDOUT,
             check=True,
             # env=os.environ.copy(),
-            encoding='utf-8'
+            encoding="utf-8",
         )
-

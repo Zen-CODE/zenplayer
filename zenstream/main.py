@@ -200,6 +200,16 @@ class ZPLit:
     def show_footer():
         st.markdown('“Be like water..." - *Bruce Lee*')
 
+    @staticmethod
+    def show():
+        ZPLit.header()
+        with st.spinner("Loading folder..."):
+            ZPLit.listing()
+            if file_name := State.get("current_file"):
+                with st.expander(f"💧💧💧 Current file: {file_name}", expanded=True):
+                    ZPLit.details(file_name)
+        ZPLit.show_footer()
+
 
 if __name__ == "__main__":
     st.set_page_config(
@@ -207,10 +217,4 @@ if __name__ == "__main__":
     )
 
     State.load()
-    ZPLit.header()
-    with st.spinner("Loading folder..."):
-        ZPLit.listing()
-        if file_name := State.get("current_file"):
-            with st.expander(f"💧💧💧 Current file: {file_name}", expanded=True):
-                ZPLit.details(file_name)
-    ZPLit.show_footer()
+    ZPLit.show()

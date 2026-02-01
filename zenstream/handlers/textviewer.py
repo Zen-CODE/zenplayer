@@ -2,6 +2,7 @@ import streamlit as st
 from os.path import sep
 from styler import Styler
 import pandas as pd
+from pathlib import Path
 
 
 class TextViewer:
@@ -9,6 +10,10 @@ class TextViewer:
     def show_file(file_name: str):
         st.header("Text Viewer")
         st.subheader(file_name.split(sep)[-1])
+
+        if Path(file_name).stat().st_size / (1024**2) > 1.0:  # 1mb
+            st.warning("This file is too big to open as text...")
+            return
 
         with open(file_name, "r", encoding="utf-8") as f:
             lines = f.read()
