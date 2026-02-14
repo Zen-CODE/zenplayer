@@ -1,31 +1,27 @@
 import streamlit as st
-from pathlib import Path
+
 from os.path import exists
 import json
 
 
 class State:
-    @staticmethod
-    def get_current_folder() -> str:
-        path = str(
-            Path.cwd()
-            if not hasattr(st.session_state, "current_folder")
-            else Path(st.session_state.current_folder)
-        )
-        st.session_state.current_folder = path
-        return path
+    keys_used = set()
 
     @staticmethod
-    def set(name: str, value: str):
-        st.session_state[name] = value
-        if name == "current_folder":
-            if st.session_state.get("current_file"):
-                st.session_state.pop("current_file")
+    def set(name: str, value: str | None):
+        """Set the value of key in the state dictionary. Remove if None."""
+        if value is None:
+            if name in st.session_state.keys():
+                st.session_state.pop(name)
+            State.keys_used.remove(name)
+        else:
+            st.session_state[name] = value
+            State.keys_used.add(name)
         State.save()
 
     @staticmethod
-    def get(name: str):
-        return st.session_state.get(name, "")
+    def get(name: str, default=""):
+        return st.session_state.get(name, default)
 
     @staticmethod
     def load():
@@ -37,11 +33,14 @@ class State:
 
     @staticmethod
     def save():
+        settings_dict = {k: st.session_state.get(k) for k in State.keys_used}
+
         with open("state.json", "w") as f:
             json.dump(
-                {
-                    "current_folder": st.session_state.get("current_folder", ""),
-                    "current_file": st.session_state.get("current_file", ""),
-                },
+                # {
+                #     "current_folder": st.session_state.get("current_folder", ""),
+                #     "current_file": st.session_state.get("current_file", ""),
+                # },
+                settings_dict,
                 f,
             )

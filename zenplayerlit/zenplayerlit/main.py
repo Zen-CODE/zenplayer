@@ -4,6 +4,7 @@ from app_pages.zenrandom import show_zenrandom
 from app_pages.zeninfo import show_zeninfo
 from app_pages.sysinfo import show_sysinfo
 from app_pages.musiclib import show_musiclib
+from app_pages.notes import show_notes
 
 
 def set_page(name: str, func_name: callable):
@@ -20,6 +21,7 @@ def init_navigation() -> None:
         "Artist Info": lambda: set_page("zeninfo", show_zeninfo),
         "System Info": lambda: set_page("sysinfo", show_sysinfo),
         "Library info": lambda: set_page("musilib", show_musiclib),
+        "Notes": lambda: set_page("notes", show_notes),
     }
 
     with st.sidebar:

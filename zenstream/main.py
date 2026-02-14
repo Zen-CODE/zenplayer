@@ -30,7 +30,7 @@ class ZPLit:
 
     @staticmethod
     def _add_path_buttons():
-        folder = State.get_current_folder()
+        folder = State.get("current_folder", Path.cwd())
         parts = folder.split(sep)[1:]
         num_folders = len(parts)
 
@@ -118,7 +118,7 @@ class ZPLit:
 
             return result
 
-        folder = State.get_current_folder()
+        folder = State.get("current_folder", Path.cwd())
         with st.expander("💧💧 Folder contents", expanded=True):
             cols = st.columns(NUM_COLUMNS)
             file_list = sorted(listdir(folder))

@@ -15,8 +15,12 @@ class TextViewer:
             st.warning("This file is too big to open as text...")
             return
 
-        with open(file_name, "r", encoding="utf-8") as f:
-            lines = f.read()
+        try:
+            with open(file_name, "r", encoding="utf-8") as f:
+                lines = f.read()
+        except Exception as e:
+            st.warning(f"Unable to read as a text file...({e})")
+            return
 
         match file_name.split(".")[-1].lower():
             case "md":
