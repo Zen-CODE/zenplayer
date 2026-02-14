@@ -5,10 +5,11 @@ from app_pages.zeninfo import show_zeninfo
 from app_pages.sysinfo import show_sysinfo
 from app_pages.musiclib import show_musiclib
 from app_pages.notes import show_notes
+from state import State
 
 
 def set_page(name: str, func_name: callable):
-    st.session_state.page = name
+    State.set("page", name)
     func_name()
 
 

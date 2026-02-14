@@ -1,4 +1,12 @@
 import streamlit as st
+from state import State
+from datetime import datetime
+
+
+def save_notes(container):
+    State.set("notes", st.session_state.get("notes-internal"))
+    State.save()
+    container.success(f"Notes saved...{datetime.now().isoformat()}")
 
 
 def show_notes():
@@ -10,5 +18,10 @@ def show_notes():
     with col1:
         st.markdown("# Notes")
     st.divider()
-    st.button("Save")
-    st.text_area("Notes", key="notes")
+
+    col1, col2 = st.columns([0.2, 0.8])
+
+    st.text_area(
+        "Notes", value=State.get("notes", ""), key="notes-internal", height=600
+    )
+    col1.button("Save", on_click=lambda: save_notes(col2))

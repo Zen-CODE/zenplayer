@@ -5,10 +5,11 @@ from html import escape
 from styler import Styler
 from functools import partial
 from urllib.parse import quote
+from state import State
 
 
 def show_zenrandom():
-    if term := st.session_state.get("search"):
+    if term := State.get("search"):
         random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/search?query={term}").json()
     else:
         random = requests.get(f"{ZENPLAYER_URL}/zenlibrary/get_random_album").json()
