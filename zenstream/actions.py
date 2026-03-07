@@ -6,6 +6,7 @@ from handlers.pdfviewer import PDFViewer
 from handlers.videoplayer import VideoPlayer
 from handlers.excelviewer import ExcelViewer
 from handlers.docxviewer import DocXViewer
+from handlers.mermaid import MermaidViewer
 from pathlib import Path
 import streamlit as st
 from state import State
@@ -29,6 +30,7 @@ class Action:
         "xls": [ExcelViewer],
         "xlsx": [ExcelViewer],
         "docx": [DocXViewer],
+        "mermaid": [MermaidViewer],
     }
     """A dictionary of file type / handler class list pairs. The handler class
     exposing a `show_file(file_name)` method."""

@@ -1,5 +1,6 @@
 # Requirements specifically of this ZenStream
 streamlit[pdf]
+streamlit-mermaid
 pandas
 mutagen
 pillow

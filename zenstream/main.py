@@ -14,7 +14,7 @@ from functools import partial
 from uuid import uuid4
 
 
-class ZPLit:
+class ZSLit:
     @staticmethod
     def header():
         with st.container():
@@ -25,7 +25,7 @@ class ZPLit:
             st.divider()
 
             # Add folder breadcrumbs
-            ZPLit._add_path_buttons()
+            ZSLit._add_path_buttons()
             st.divider()
 
     @staticmethod
@@ -93,7 +93,7 @@ class ZPLit:
 
     @staticmethod
     def _show_extra_file_buttons(file_name: str):
-        button_data = ZPLit._get_extra_buttons(file_name)
+        button_data = ZSLit._get_extra_buttons(file_name)
         if button_data:
             cols = st.columns(len(button_data) + 1)
             cols[0].info("💧💧💧 Extra options for this file")
@@ -127,9 +127,9 @@ class ZPLit:
                 for file_name in column:
                     final_path = Path(join(folder, file_name))
                     if final_path.is_dir():
-                        ZPLit._add_folder_button(cols[i], file_name, str(final_path))
+                        ZSLit._add_folder_button(cols[i], file_name, str(final_path))
                     else:
-                        ZPLit._add_file_button(cols[i], file_name, folder)
+                        ZSLit._add_file_button(cols[i], file_name, folder)
         st.divider()
 
     @staticmethod
@@ -186,9 +186,9 @@ class ZPLit:
     @staticmethod
     def details(file_name):
         if del_file := State.get("delete_file"):
-            ZPLit._confirm_delete(del_file)
-        ZPLit._show_file_buttons(file_name)
-        ZPLit._show_extra_file_buttons(file_name)
+            ZSLit._confirm_delete(del_file)
+        ZSLit._show_file_buttons(file_name)
+        ZSLit._show_extra_file_buttons(file_name)
 
         for handler in Action.get_handlers(file_name):
             handler.show_file(file_name)
@@ -202,13 +202,13 @@ class ZPLit:
 
     @staticmethod
     def show():
-        ZPLit.header()
+        ZSLit.header()
         with st.spinner("Loading folder..."):
-            ZPLit.listing()
+            ZSLit.listing()
             if file_name := State.get("current_file"):
                 with st.expander(f"💧💧💧 Current file: {file_name}", expanded=True):
-                    ZPLit.details(file_name)
-        ZPLit.show_footer()
+                    ZSLit.details(file_name)
+        ZSLit.show_footer()
 
 
 if __name__ == "__main__":
@@ -217,4 +217,4 @@ if __name__ == "__main__":
     )
 
     State.load()
-    ZPLit.show()
+    ZSLit.show()
