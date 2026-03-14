@@ -12,7 +12,7 @@ class FileSystemExtractor:
     folders
     """
 
-    music_types = [".ogg", ".mp3", ".wma"]
+    music_types = [".ogg", ".mp3", ".wma", ".flac"]
     art_types = [".jpg", ".jpeg", ".png", ".gif"]
 
     @staticmethod

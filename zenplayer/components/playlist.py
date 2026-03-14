@@ -91,7 +91,7 @@ class Playlist(EventDispatcher):
                 reverse=bool(mode in ["insert", "next", "next_album"]),
             ):
                 self._add_files(path.join(file_folder, f), mode=mode)
-        elif file_folder[-4:] in FileSystemExtractor.music_types:
+        elif str("." + file_folder.split(".")[-1]) in FileSystemExtractor.music_types:
             if mode in ["insert", "next", "next_album"]:
                 self.queue.insert(
                     self._get_index(mode),
