@@ -7,6 +7,17 @@ from mutagen.easyid3 import EasyID3
 
 
 class AudioPlayer:
+
+    @staticmethod
+    def get_id3_dict(file_name: str) -> dict:
+        """Return a dictionary on values from the ID3 tag or an empty dict."""
+        try:
+            audio = EasyID3(file_name)
+            return {key.title(): value[0] for key, value in audio.items()}
+
+        except Exception:
+            return {}
+
     @staticmethod
     def _show_meta(file_name: str):
         info: File = File(file_name).info
@@ -24,9 +35,11 @@ class AudioPlayer:
         Styler.show_dict("Track Metadata", data)
 
         if file_name.split(".")[-1].lower() == "mp3":
-            audio = EasyID3(file_name)
-            data = {key.title(): value[0] for key, value in audio.items()}
-            Styler.show_dict("ID3 Tag", data)
+            data = AudioPlayer.get_id3_dict(file_name)
+            if data:
+                Styler.show_dict("ID3 Tag", data)
+            else:
+                st.warning(f"No ID3 data for {file_name}")
 
     @staticmethod
     def show_file(file_name: str):
