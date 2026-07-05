@@ -16,8 +16,9 @@ from components.store import StoreFactory
 from components.paths import rel_to_base
 from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
-from components.audio import SoundLoader, register_vlc
+from components.audio import SoundLoader, register_vlc, register_android
 from os import environ
+from kivy.utils import platform as _platform
 
 # from components.cloud_firestore import NowPlaying
 from components.file_firestore import NowPlaying
@@ -66,7 +67,9 @@ class Controller(EventDispatcher):
         self.library = Library(config)
         self.advance = True
 
-        if environ.get("KIVY_AUDIO", "") == "vlcplayer":
+        if _platform == "android":
+            register_android()
+        elif environ.get("KIVY_AUDIO", "") == "vlcplayer":
             register_vlc()
 
         if config["enable_hotkeys"]:

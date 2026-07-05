@@ -87,17 +87,20 @@ class ZenPlayer:
 
     def show_progress_bar(self):
         col1, col2 = st.columns([0.1, 0.9])
-        col1.write("Position:")
+        col1.write("📍")
         col2.progress(self.data["position"], text=None, width="stretch")
-        col1.write("Volume:")
+        col1.write("🔈")
         col2.progress(self.data["volume"], text=None, width="stretch")
 
     @staticmethod
     @lru_cache
     def _get_id3_data(file_name: str) -> dict:
-        audio = EasyID3(file_name)
-        data = {key.title(): value[0] for key, value in audio.items()}
-        return data
+        try:
+            audio = EasyID3(file_name)
+            data = {key.title(): value[0] for key, value in audio.items()}
+            return data
+        except Exception:
+            return {"-": "-"}
 
     def show_id3_tag(self):
         file_name = self.data["file_name"]
