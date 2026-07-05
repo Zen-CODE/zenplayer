@@ -107,7 +107,12 @@ class ZenPlayer:
         if file_name.split(".")[-1].lower() == "mp3":
             data = self._get_id3_data(file_name)
             st.markdown("**ID3 Tag Data**")
-            st.table(data)
+            labelled = {"Property": [], "Value": []}
+            for k, v in data.items():
+                labelled["Property"].append(k)
+                labelled["Value"].append(v)
+
+            st.dataframe(labelled)
         else:
             st.write("No ID3 tag available for non-mp3 files")
 
