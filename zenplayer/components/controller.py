@@ -18,7 +18,6 @@ from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 
-# from components.cloud_firestore import NowPlaying
 from components.file_firestore import NowPlaying
 import webbrowser
 from components.config import Config
@@ -173,7 +172,9 @@ class Controller(EventDispatcher):
 
     def on_volume(self, _widget, value):
         """Set the volume of the currently playing sound"""
-        volume = self.volume = abs(value) % 1.0 if value < 1 else 1
+        volume = max(0.0, min(1.0, value))
+        if self.volume != volume:
+            self.volume = volume
         if self.sound is not None:
             self.sound.volume = volume
 

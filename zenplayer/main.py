@@ -9,18 +9,13 @@ Kivy framework.
 
 __author__ = "ZenCODE"
 
+from kivy.app import App
+from kivy.logger import LOG_LEVELS, Logger
 from kivy.utils import platform
 
-if platform == "android":
-    # Implement patches
-    import _main_android as _main_android  # noqa: F401
-
-
-from kivy.app import App
+from components.config import Config
 from components.controller import Controller
 from webserver.webserver import WebServer
-from kivy.logger import Logger, LOG_LEVELS
-from components.config import Config
 
 
 class ZenPlayer(App):

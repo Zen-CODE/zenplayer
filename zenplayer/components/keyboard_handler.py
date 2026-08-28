@@ -70,7 +70,7 @@ class KeyHandler:
             if next(hk_key_name, "") == key_name:
                 # The letter matches. Do the modifiers?
                 hk_modifiers = filter(lambda x: not KeyHandler._is_normal_key(x), parts)
-                if not set(hk_modifiers).difference(set(modifiers)):
+                if set(hk_modifiers) == set(modifiers):
                     return keymap[key]
         return None
 

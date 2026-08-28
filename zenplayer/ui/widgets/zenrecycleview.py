@@ -105,7 +105,10 @@ class ZenRecycleView(FloatLayout):
             box = self.ids.box_layout
             if box.selected_widget:
                 box.handle_event("item_touched", box.selected_widget)
-        elif keycode[1] == "backspace" and self.handler.name == "Albums":
+        elif (
+            keycode[1] == "backspace"
+            and getattr(self.handler, "name", None) == "Albums"
+        ):
             self.handler.ctrl.zenplayer.show_screen("Artists")
 
 

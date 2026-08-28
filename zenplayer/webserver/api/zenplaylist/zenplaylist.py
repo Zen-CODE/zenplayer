@@ -162,7 +162,7 @@ class ZenPlaylist(ZenAPIBase):
                 description: The folder could not be found.
         """
         folder = self.get_request_arg("folder")
-        if folder or not exists(folder):
+        if folder and exists(folder):
             mode = self.get_request_arg("mode", "add")
             response = self.safe_call(self.ctrl.playlist.add_files, folder, mode)
             if mode in ["replace", "insert"]:
