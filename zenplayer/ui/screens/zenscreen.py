@@ -22,6 +22,7 @@ class ZenScreen(Screen):
     """
 
     def __init__(self, **kwargs):
+        name = kwargs.get("name", self.__class__.__name__.replace("Screen", ""))
         KVLoader.load("ui/widgets/zenbutton.kv")
-        KVLoader.load("ui/screens/{0}/{0}.kv".format(kwargs["name"].lower()))
+        KVLoader.load(f"ui/screens/{name.lower()}/{name.lower()}.kv")
         super().__init__(**kwargs)

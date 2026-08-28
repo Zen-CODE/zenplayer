@@ -30,10 +30,11 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
         def update(_dt):
             albums = self.ctrl.library.get_albums(artist)
             self.ids.rv.data = [{"text": album} for album in albums]
-            if not self.album:
+            if not self.album and albums:
                 self.album = choice(albums)
 
-            self.ids.rv.find_item(self.album)
+            if self.album:
+                self.ids.rv.find_item(self.album)
 
         Clock.schedule_once(update)
 

@@ -2,7 +2,7 @@
 of the FireStore backend for ZenPlayer.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from socket import gethostname
 
 from components.config import Config
@@ -62,7 +62,7 @@ class NowPlaying(StoreEntry):
             track=ctrl.track,
             state=ctrl.state,
             machine=gethostname(),
-            datetime=datetime.now() - timedelta(hours=2),
+            datetime=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         )
         print(str(np))
         np.save()
