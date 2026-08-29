@@ -5,8 +5,6 @@ zenplayer/webserver/static
 zenplayer/webserver/flask_monitoring*
 zenplayer/keys
 .python-version
-.gitignore
 zenplayer/.buildozer/*
 zenstream/demo/*
-.vscode/
 zenstream/state.json

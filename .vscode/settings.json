@@ -1,20 +1,16 @@
 {
-    "python.pythonPath": "venv/bin/python3",
     "python.envFile": "${workspaceFolder}/zenplayer/.env",
-    "python.linting.flake8Enabled": true,
     "editor.rulers": [80],
     "files.trimTrailingWhitespace": true,
-    "python.linting.enabled": true,
+
     "terminal.integrated.cwd": "${workspaceFolder}/zenplayer",
     "workbench.editor.enablePreview": false,
     "files.watcherExclude": {
         "**/venv": true
       },
-      "cSpell.words": [
-        "kivy"
-      ],
       "workbench.colorCustomizations" : {
         "terminal.foreground" : "#00BB55",
         "terminal.background" : "#222222"
-    }
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:pyenv"
 }
