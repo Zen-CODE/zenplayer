@@ -37,7 +37,7 @@ class VolumeSlider(Slider):
 
     def on_touch_move(self, touch):
         if self.dragging:
-            self.ctrl.on_volume(None, self.value)
+            self.ctrl.volume = self.value
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):

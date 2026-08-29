@@ -186,9 +186,11 @@ class SelectableRecycleBoxLayout(
                 meth(*args)
 
     def move_selection(self, down=True):
-        """Move to the next itme in the selection."""
+        """Move to the next item in the selection."""
         rv = self.parent
-        if self.selected_widget:
+        if not rv.data:
+            return
+        if self.selected_widget and self.selected_widget.index is not None:
             if down and self.selected_widget.index < len(rv.data) - 1:
                 text = rv.data[self.selected_widget.index + 1]["text"]
             elif not down and self.selected_widget.index > 0:
