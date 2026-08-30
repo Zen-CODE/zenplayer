@@ -6,6 +6,7 @@ from typing import List, Any, Dict
 from os import stat as os_stat
 from datetime import datetime
 import pandas as pd
+from styler import Styler
 
 
 class LibraryFile(BaseModel):
@@ -118,12 +119,7 @@ class LibAnalysis:
 
 
 def show_musiclib():
-    col1, col2 = st.columns([0.8, 0.2])
-    with col2:
-        st.image("images/zencode.jpg", width=128)
-    with col1:
-        st.markdown("# Zen Library Info")
-    st.divider()
+    Styler.add_header("Music Library Info", "images/zencode.jpg")
 
     with st.spinner("Loading Library..."):
         analysis = LibAnalysis()

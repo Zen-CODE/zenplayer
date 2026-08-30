@@ -6,9 +6,11 @@ class Styler:
     def add_header(text: str, image_path: str):
         col1, col2 = st.columns([0.95, 0.05])
         with col1:
-            st.header(text)
+            st.markdown(f"## {text}")
         with col2:
             st.image(image_path)
+
+    st.divider()
 
     @staticmethod
     def add_row(name: str, value: str):
