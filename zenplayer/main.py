@@ -23,7 +23,7 @@ class ZenPlayer(App):
     The App initialisation class
     """
 
-    ctrl = None
+    ctrl: Controller | None = None
     """ Reference to the instantiated Controller class. """
 
     def __init__(self, **kwargs):
@@ -55,6 +55,7 @@ class ZenPlayer(App):
 
     def on_stop(self):
         """The app is closing. Save the state."""
+        self.ctrl.save()
 
 
 ZenPlayer().run()
