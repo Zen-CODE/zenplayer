@@ -114,9 +114,6 @@ class ZenPlaylist(ZenAPIBase):
                     track_number:
                         description: The number of the track.
                         type: string
-                    album:
-                        description: The name of the album this track is on.
-                        type: string
                     filename:
                         description: The full path to the audio file
                         type: string
