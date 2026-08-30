@@ -8,7 +8,7 @@ class Styler:
         with col1:
             st.markdown(f"## {text}")
         with col2:
-            st.image(image_path)
+            st.image(image_path, width=128)
 
     st.divider()
 

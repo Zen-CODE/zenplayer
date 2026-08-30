@@ -3,6 +3,7 @@ from psutil import cpu_percent, virtual_memory, boot_time, disk_usage
 from datetime import datetime
 from time import time
 import subprocess
+from styler import Styler
 
 
 class System:
@@ -100,12 +101,7 @@ class SysInfo:
 
 def show_sysinfo():
     """Show information and sleep, shutdown and restart buttons."""
-
-    col1, col2 = st.columns([0.8, 0.2])
-    with col2:
-        st.image("images/cpu.jpg", width=128)
-    with col1:
-        st.markdown("# System Information")
+    Styler.add_header("System Information", "images/cpu.jpg")
 
     SysInfo.show_cpu()
     SysInfo.show_memory()
