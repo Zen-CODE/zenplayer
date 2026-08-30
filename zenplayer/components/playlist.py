@@ -138,7 +138,7 @@ class Playlist(EventDispatcher):
         else:
             self.current += 1
 
-        if self.current + 1 > len(self.queue):
+        if self.current + 1 >= len(self.queue):
             self.current = 0
         # cache_next()
 

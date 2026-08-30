@@ -18,7 +18,6 @@ from kivy.core.window import Window
 from ui.widgets.zenplayer import ZenPlayer
 from components.audio import SoundLoader, register_vlc
 
-from components.file_firestore import NowPlaying
 import webbrowser
 from components.config import Config
 
@@ -68,9 +67,6 @@ class Controller(EventDispatcher):
 
         if config["enable_hotkeys"]:
             HotKeyHandler.add_bindings(self)
-        if config.get("enable_firebase", True):
-            self.now_playing = NowPlaying()
-            self.bind(state=lambda *args: self.now_playing.write_to_db(self))
 
         self.kb_handler = KeyHandler(self)
         self.sound = None
