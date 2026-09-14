@@ -8,3 +8,4 @@ zenplayer/keys
 zenplayer/.buildozer/*
 zenstream/demo/*
 zenstream/state.json
+.venv/

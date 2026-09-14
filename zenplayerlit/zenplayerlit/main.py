@@ -26,7 +26,7 @@ def init_navigation() -> None:
     with st.sidebar:
         st.title("⛩️ ZenPlayerLit")
         st.divider()
-        page = st.radio("-", list(pages.keys()))
+        page = st.radio("", list(pages.keys()))
         st.divider()
         cols = st.columns(3)
         cols[1].image("images/favicon.png")
