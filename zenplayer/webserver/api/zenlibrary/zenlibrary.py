@@ -72,9 +72,10 @@ class ZenLibrary(ZenAPIBase):
             {"message": f"No album found for artist={artist}"}, 400
         )
 
-    def get_tracks(self):
+    def get_tracks(self, cover=False):
         """
-        Return a list of the tracks in the specified album
+        Return a list of the tracks in the specified album. If cover=True, the
+        album cover is returned,.
         ---
         tags:
             - ZenLibrary
@@ -97,6 +98,14 @@ class ZenLibrary(ZenAPIBase):
                     items:
                         type: string
                         description: The list of tracks in the given album
+            200:
+                description: Return the cover image for the currently active
+                             track
+                content:
+                    image/*:     # Media type
+                        schema:
+                            type: string
+                            format: binary
         """
         artist = self.get_request_arg("artist")
         album = self.get_request_arg("album")
@@ -104,6 +113,10 @@ class ZenLibrary(ZenAPIBase):
             return self.resp_from_data(
                 {"message": "Please specify a valid artist and album"}, 403
             )
+        elif cover:
+            cover = self.ctrl.library.get_cover_path(artist, album)
+            return self.resp_from_image(cover)
+
         else:
             tracks = self.ctrl.library.get_tracks(artist, album)
             return self.resp_from_data(tracks)
@@ -167,15 +180,7 @@ class ZenLibrary(ZenAPIBase):
                             format: binary
 
         """
-        artist = self.get_request_arg("artist")
-        album = self.get_request_arg("album")
-        if not (album and artist):
-            return self.resp_from_data(
-                {"message": "Please specify a valid artist and album"}, 403
-            )
-        else:
-            cover = self.ctrl.library.get_cover_path(artist, album)
-            return self.resp_from_image(cover)
+        return self.get_tracks(cover=True)
 
     def search(self):
         """
