@@ -1,17 +1,16 @@
+from os import sep, path
 from kivy.event import EventDispatcher
-from os import sep, path, listdir
-from os.path import exists
 from kivy.properties import (  # pylint: disable=no-name-in-module
     NumericProperty,
     ListProperty,
 )
 from components.filedrop import FileDrop
-from components.filesystemextractor import FileSystemExtractor
+from zenmpd import ZenMPD, MUSIC_DIR
 
 
 class Playlist(EventDispatcher):
     """
-    Holds the current playlist class.
+    Holds the current playlist, backed natively by MPD via ZenMPD.
     """
 
     current = NumericProperty(0)
@@ -22,37 +21,74 @@ class Playlist(EventDispatcher):
     Contains a list of dictionaries with the following keys:
         * text: Used to display the track in the playlist
         * filename: Full path to the audio file
+        * id: MPD song id
+        * pos: MPD position
     """
 
-    def __init__(self, store, **kwargs):
+    def __init__(self, store=None, **kwargs):
         super().__init__(**kwargs)
-        self._load(store)
         self.file_drop = FileDrop(self)
+        self.sync()
 
-    def _load(self, store):
-        """Initialize and load previous state"""
-        # See if there is an existing playlist to restore
-        if store.exists("Playlist"):
-            if "items" in store.get("Playlist"):
-                items = store.get("Playlist")["items"]
-                k = 1
-                while "item" + str(k) in items.keys():
-                    if exists(items["item" + str(k)]):
-                        self.add_files(items["item" + str(k)])
-                    k += 1
-            self.current = store.get("Playlist")["current"]
-            if self.current >= len(self.queue) - 1:
-                self.current = 0
+    @staticmethod
+    def to_rel_path(file_path: str) -> str:
+        """Strip MUSIC_DIR from file_path for MPD insertion."""
+        base = MUSIC_DIR.rstrip("/") + "/"
+        if file_path.startswith(base):
+            return file_path[len(base) :]
+        if file_path.startswith(MUSIC_DIR):
+            return file_path[len(MUSIC_DIR) :]
+        return file_path.lstrip("/")
+
+    @staticmethod
+    def to_abs_path(rel_path: str) -> str:
+        """Prepend MUSIC_DIR to rel_path for local retrieval."""
+        if not rel_path:
+            return ""
+        if path.isabs(rel_path):
+            return rel_path
+        return path.join(MUSIC_DIR, rel_path)
+
+    def sync(self):
+        """Synchronize the playlist queue and current index with MPD."""
+        try:
+            pl_info, current_id = ZenMPD.playlist()
+        except Exception:
+            return
+
+        new_queue = []
+        current_idx = 0
+        for idx, item in enumerate(pl_info):
+            abs_path = self.to_abs_path(item.get("file", ""))
+            new_queue.append(
+                {
+                    "text": self.get_text(abs_path),
+                    "filename": abs_path,
+                    "id": item.get("id"),
+                    "pos": idx,
+                }
+            )
+            if current_id is not None and str(item.get("id")) == str(current_id):
+                current_idx = idx
+
+        self.queue = new_queue
+        self.current = current_idx
 
     def get_current_file(self):
         """Returns the filename of the current audio file."""
+        try:
+            song = ZenMPD.get_currentsong()
+            if song and "file" in song:
+                return self.to_abs_path(song["file"])
+        except Exception:
+            pass
         if len(self.queue) > self.current:
             return self.queue[self.current]["filename"]
         return ""
 
     def get_current_info(self):
-        """Return a dictionary of information on the current track"""
-        return self.get_info(index=self.current)
+        """Return a dictionary of information on the current track."""
+        return self.get_info(filename=self.get_current_file())
 
     @staticmethod
     def get_text(file_):
@@ -62,124 +98,118 @@ class Playlist(EventDispatcher):
         parts = file_.split(sep)
         return " - ".join(parts[-3:])
 
-    def _get_index(self, mode):
-        """Return the index of where to insert the files."""
-        if len(self.queue) < 1:
-            return 0
-
-        if mode == "insert":
-            return 0
-        if mode == "next":
-            return 1
-        start = 1
-        folder = "/".join(self.queue[0]["filename"].split("/")[:-1])
-        while (
-            start < len(self.queue) and self.queue[start]["filename"].find(folder) > -1
-        ):
-            start += 1
-        return start
-
-    def _add_files(self, file_folder, mode="add"):
-        """
-        Internal implementation of the addition, support recursion but
-        extracted for once of setup in add_file
-        """
-
-        if path.isdir(file_folder):
-            for f in sorted(
-                listdir(file_folder),
-                reverse=bool(mode in ["insert", "next", "next_album"]),
-            ):
-                self._add_files(path.join(file_folder, f), mode=mode)
-        elif str("." + file_folder.split(".")[-1]) in FileSystemExtractor.music_types:
-            if mode in ["insert", "next", "next_album"]:
-                self.queue.insert(
-                    self._get_index(mode),
-                    ({"filename": file_folder, "text": self.get_text(file_folder)}),
-                )
-            else:
-                self.queue.append(
-                    {"filename": file_folder, "text": self.get_text(file_folder)}
-                )
-
     def add_files(self, file_folder, mode="add"):
         """
-        Add the selected album to the queue. *mode* can be one of
+        Add the selected album or track to the MPD playlist. *mode* can be one of
         * "add" - add to the end of the playlist
         * "replace" - clear the existing playlist and add the files
-        * "insert" - insert the selected album at the beginning of the playlist
+        * "insert" - insert at the beginning of the playlist
         * "next" - insert directly after the currently playing track
-        * "next_album" - insert directly after the currently playing track
+        * "next_album" - insert directly after the current album
         """
+        try:
+            client = ZenMPD._ensure_client()
+        except Exception:
+            return
+
+        if path.isdir(file_folder):
+            rel_files = ZenMPD._get_library_files(file_folder)
+        elif path.isfile(file_folder):
+            rel_files = [self.to_rel_path(file_folder)]
+        else:
+            rel_files = []
+
+        if not rel_files:
+            return
+
         if mode == "replace":
-            self.clear_files()
-        self._add_files(file_folder, mode)
+            client.stop()
+            client.clear()
+            for f in rel_files:
+                client.add(f)
+            client.play(0)
+        elif mode == "add":
+            for f in rel_files:
+                client.add(f)
+        elif mode == "insert":
+            for i, f in enumerate(rel_files):
+                client.addid(f, i)
+        elif mode == "next":
+            status = client.status()
+            cur_pos = int(status.get("song", 0))
+            for i, f in enumerate(rel_files):
+                client.addid(f, cur_pos + 1 + i)
+        elif mode == "next_album":
+            status = client.status()
+            cur_pos = int(status.get("song", 0))
+            pl_info, _ = ZenMPD.playlist()
+            target_pos = cur_pos + 1
+            if pl_info and 0 <= cur_pos < len(pl_info):
+                cur_album_dir = path.dirname(pl_info[cur_pos].get("file", ""))
+                while (
+                    target_pos < len(pl_info)
+                    and path.dirname(pl_info[target_pos].get("file", ""))
+                    == cur_album_dir
+                ):
+                    target_pos += 1
+            for i, f in enumerate(rel_files):
+                client.addid(f, target_pos + i)
+
+        self.sync()
 
     def clear_files(self):
-        """Clear the existing playlist"""
-        self.queue = []
-        self.current = 0
+        """Clear the existing playlist."""
+        try:
+            client = ZenMPD._ensure_client()
+            client.stop()
+            client.clear()
+        except Exception:
+            pass
+        self.sync()
 
-    def move_next(self, prune=False):
-        """
-        Move the selected track to the next. If *prune* is True, the
-        current track is removed from the playlist.
-        """
-
-        # def cache_next():
-        # if self.current + 1 < len(self.queue):
-        #     file_name = self.queue[self.current + 1]["filename"]
-        #     Clock.schedule_once(lambda *args: load_file(file_name), 2)
-        # # This was found to be pretty ineffective
-
-        if prune:
-            if self.current < len(self.queue):
-                self.queue.pop(self.current)
-        else:
-            self.current += 1
-
-        if self.current + 1 >= len(self.queue):
-            self.current = 0
-        # cache_next()
+    def move_next(self):
+        """Move to the next track."""
+        ZenMPD.next()
+        self.sync()
 
     def move_previous(self):
-        """Move the selected track to the previous entry"""
-        if self.current > 0:
-            self.current += -1
-
-    def save(self, store):
-        """The playlist screen is being closed"""
-        all_items = {}
-        for k, item in enumerate(self.queue):
-            all_items.update({"item" + str(k + 1): item["filename"]})
-        store.put("Playlist", current=self.current, items=all_items)
-
-    def set_index(self, index):
-        """Set the currently selected track to the one specified by the index"""
-        if index < len(self.queue):
-            self.current = index
+        """Move to the previous track."""
+        ZenMPD.previous()
+        self.sync()
 
     def remove_index(self, index):
         """Remove the specified track from the queue."""
-        if index < len(self.queue):
-            self.queue.pop(index)
+        try:
+            client = ZenMPD._ensure_client()
+            client.delete(index)
+        except Exception:
+            pass
+        self.sync()
+
+    def set_index(self, index):
+        """Set the currently selected track to the one specified by the index."""
+        try:
+            client = ZenMPD._ensure_client()
+            client.play(index)
+        except Exception:
+            pass
+        self.sync()
+
+    def save(self, store=None):
+        """Playlist persistence is handled natively by MPD."""
+        pass
 
     def get_info(self, filename=None, index=None):
         """
-        Return a dictionary containing the track information with the following
-        keys:
+        Return a dictionary containing the track information with keys:
             * artist
             * album
+            * track
             * track_name
             * track_number
-
         """
 
         def number_name(_basename):
-            """
-            Return a tuple of the number and name of the track where the
-            *_basename* is the filename without the path.
-            """
             not_ext = _basename[0 : _basename.rfind(".")]
             parts = not_ext.split("-")
             try:
@@ -188,10 +218,12 @@ class Playlist(EventDispatcher):
                 return "-", not_ext
 
         try:
-            if index is None:
+            if index is not None and index < len(self.queue):
+                parts = self.queue[index]["filename"].split(sep)
+            elif filename:
                 parts = filename.split(sep)
             else:
-                parts = self.queue[index]["filename"].split(sep)
+                parts = []
             number, name = number_name(parts[-1])
             return {
                 "artist": parts[-3],
