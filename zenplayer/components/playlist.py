@@ -33,9 +33,8 @@ class Playlist(EventDispatcher):
     @staticmethod
     def to_rel_path(file_path: str) -> str:
         """Strip MUSIC_DIR from file_path for MPD insertion."""
-        base = MUSIC_DIR.rstrip("/") + "/"
-        if file_path.startswith(base):
-            return file_path[len(base) :]
+        if file_path.startswith(MUSIC_DIR):
+            return file_path[len(MUSIC_DIR) :]
         if file_path.startswith(MUSIC_DIR):
             return file_path[len(MUSIC_DIR) :]
         return file_path.lstrip("/")
