@@ -14,6 +14,10 @@ from kivy.utils import platform
 from components.config import Config
 from components.controller import Controller
 from webserver.webserver import WebServer
+import logging
+
+
+logging.getLogger("mpd").setLevel(logging.WARNING)
 
 
 class ZenPlayer(App):
