@@ -18,7 +18,7 @@ from components.playlist import Playlist
 from components.store import StoreFactory
 from components.paths import rel_to_base
 from components.config import Config
-from ui.widgets.zenplayer import ZenPlayer
+from ui.widgets.zenplayer import ZenPlayerLayout
 from zenmpd import ZenMPD
 
 
@@ -54,7 +54,7 @@ class Controller(EventDispatcher):
         config = kwargs.pop("config")
         super().__init__(**kwargs)
         self.store = StoreFactory.get()
-        self.zenplayer = ZenPlayer(ctrl=self)
+        self.zenplayer = ZenPlayerLayout(ctrl=self)
         self.playlist = Playlist(self.store)
         self.library = Library(config)
 
@@ -62,9 +62,8 @@ class Controller(EventDispatcher):
             HotKeyHandler.add_bindings(self)
 
         self.kb_handler = KeyHandler(self)
-        Clock.schedule_interval(self._update_progress, 0.5)
-
         self._sync_initial_state()
+        Clock.schedule_interval(self._update_progress, 0.5)
 
     def _sync_initial_state(self):
         """Sync initial state from MPD if available."""

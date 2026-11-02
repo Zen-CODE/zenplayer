@@ -10,7 +10,7 @@ from ui.screens.screens import ScreenFactory
 from kivy.uix.screenmanager import SwapTransition
 
 
-class ZenPlayer(FloatLayout):
+class ZenPlayerLayout(FloatLayout):
     """
     This class presents the persistanct elements of the ZenPlayer interface.
     """
