@@ -57,13 +57,12 @@ class Controller(EventDispatcher):
         self.zenplayer = ZenPlayer(ctrl=self)
         self.playlist = Playlist(self.store)
         self.library = Library(config)
-        self._was_playing = False
 
         if config.get("enable_hotkeys", False):
             HotKeyHandler.add_bindings(self)
 
         self.kb_handler = KeyHandler(self)
-        Clock.schedule_interval(self._update_progress, 1 / 5)
+        Clock.schedule_interval(self._update_progress, 0.5)
 
         self._sync_initial_state()
 
@@ -76,7 +75,6 @@ class Controller(EventDispatcher):
             mpd_state = status.get("state")
             if mpd_state == "play":
                 self.state = "Playing"
-                self._was_playing = True
             elif mpd_state == "pause":
                 self.state = "Paused"
             else:
@@ -136,11 +134,8 @@ class Controller(EventDispatcher):
             self.file_name = ""
 
         # End of playlist detection: when it reaches the end, play random album
-        if mpd_state == "stop" and self._was_playing:
-            self._was_playing = False
+        if mpd_state == "stop":
             self.play_random_album()
-        elif mpd_state == "play":
-            self._was_playing = True
 
     def on_file_name(self, _widget, value):
         """Respond to the change of file name and set the info fields."""
@@ -256,7 +251,6 @@ class Controller(EventDispatcher):
 
     def stop(self):
         """Stop any playing audio"""
-        self._was_playing = False
         ZenMPD.stop()
         self.position = 0.0
         self.state = "Stopped"
