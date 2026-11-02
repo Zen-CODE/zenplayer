@@ -1,7 +1,7 @@
-import streamlit as st
-
-from os.path import exists
 import json
+from os.path import exists
+
+import streamlit as st
 
 
 class State:

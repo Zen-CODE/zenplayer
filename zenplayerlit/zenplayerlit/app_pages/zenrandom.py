@@ -1,11 +1,13 @@
-import streamlit as st
-from zencore import ZENPLAYER_URL
-import requests
-from html import escape
-from styler import Styler
 from functools import partial
+from html import escape
 from urllib.parse import quote
+
+import requests
+import streamlit as st
+
 from state import State
+from styler import Styler
+from zencore import ZENPLAYER_URL
 
 
 def show_zenrandom():

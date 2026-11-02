@@ -1,8 +1,9 @@
-import wikipediaapi
-from zencore import ZENPLAYER_URL
 import requests
 import streamlit as st
+import wikipediaapi
+
 from styler import Styler
+from zencore import ZENPLAYER_URL
 
 
 @st.cache_data

@@ -1,8 +1,9 @@
-from os.path import join, expanduser, exists
-from library.filesystemextractor import FileSystemExtractor as fse
 from dataclasses import dataclass, field
-from typing import List
+from os.path import exists, expanduser, join
 from random import choice
+from typing import List
+
+from library.filesystemextractor import FileSystemExtractor as fse
 
 
 @dataclass

@@ -1,8 +1,10 @@
-import streamlit as st
-from psutil import cpu_percent, virtual_memory, boot_time, disk_usage
+import subprocess
 from datetime import datetime
 from time import time
-import subprocess
+
+import streamlit as st
+from psutil import boot_time, cpu_percent, disk_usage, virtual_memory
+
 from styler import Styler
 
 

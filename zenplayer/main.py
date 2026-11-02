@@ -7,8 +7,6 @@ Kivy framework.
 
 """
 
-__author__ = "ZenCODE"
-
 from kivy.app import App
 from kivy.logger import LOG_LEVELS, Logger
 from kivy.utils import platform

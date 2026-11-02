@@ -1,10 +1,12 @@
-import streamlit as st
-import requests
-from zencore import ZENPLAYER_URL
-from styler import Styler
-from uuid import uuid4
-from mutagen.easyid3 import EasyID3
 from functools import lru_cache
+from uuid import uuid4
+
+import requests
+import streamlit as st
+from mutagen.easyid3 import EasyID3
+
+from styler import Styler
+from zencore import ZENPLAYER_URL
 
 
 class ZenPlayer:

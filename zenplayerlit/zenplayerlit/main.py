@@ -1,9 +1,10 @@
 import streamlit as st
+
+from app_pages.musiclib import show_musiclib
+from app_pages.sysinfo import show_sysinfo
+from app_pages.zeninfo import show_zeninfo
 from app_pages.zenplayer import show_zenplayer
 from app_pages.zenrandom import show_zenrandom
-from app_pages.zeninfo import show_zeninfo
-from app_pages.sysinfo import show_sysinfo
-from app_pages.musiclib import show_musiclib
 from state import State
 
 
