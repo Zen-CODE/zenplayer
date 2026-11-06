@@ -45,7 +45,7 @@ class ZenMPD:
                 ZenMPD._get_library_files(str(file_path), existing=files)
             else:
                 ext = f.split(".")[-1].lower()
-                if ext in ["mp3", "flac", "wav", "m4a"]:
+                if ext in ["mp3", "flac", "wav", "m4a", "ogg"]:
                     files.append(str(file_path))
         if top_level:
             return [fname.replace(MUSIC_DIR, "") for fname in files]
