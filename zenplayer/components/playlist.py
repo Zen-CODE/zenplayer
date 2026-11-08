@@ -76,7 +76,7 @@ class Playlist(EventDispatcher):
     def get_current_file(self):
         """Returns the filename of the current audio file."""
         try:
-            song = ZenMPD.get_currentsong()
+            song = ZenMPD.currentsong()
             if song and "file" in song:
                 return self.to_abs_path(song["file"])
         except Exception:
@@ -106,10 +106,7 @@ class Playlist(EventDispatcher):
         * "next" - insert directly after the currently playing track
         * "next_album" - insert directly after the current album
         """
-        try:
-            client = ZenMPD._ensure_client()
-        except Exception:
-            return
+        client = ZenMPD._ensure_client()
 
         if path.isdir(file_folder):
             rel_files = ZenMPD._get_library_files(file_folder)

@@ -1,14 +1,15 @@
 from os import listdir
+from os.path import expanduser
 from pathlib import Path
 from random import choice
-
+from functools import lru_cache
 from mpd import MPDClient
 
 MUSIC_DIR = "/home/richard/Zen/Music/"
 
 
 class ZenMPD:
-    version: str = "0.2"
+    version: str = "0.3"
     client: MPDClient | None = None
 
     @staticmethod
@@ -20,12 +21,11 @@ class ZenMPD:
         """
         if ZenMPD.client is None:
             ZenMPD.client = client = MPDClient()
-            client.connect("localhost", 6600)
+            client.connect("127.0.0.1", 6600)
+            # client.update()  # Run this occasionally to update MPD metadata
         else:
             try:
-                # Verify connection is alive
                 ZenMPD.client.ping()
-            # except (ConnectionError, BrokenPipeError, OSError):
             except Exception as e:  # noqa BL001
                 print(f"ZenMPD: Error pinging MPDClient: {e}")
                 try:
@@ -45,7 +45,7 @@ class ZenMPD:
                 ZenMPD._get_library_files(str(file_path), existing=files)
             else:
                 ext = f.split(".")[-1].lower()
-                if ext in ["mp3", "flac", "wav", "m4a", "ogg"]:
+                if ext in ["mp3", "flac", "wav", "m4a", "wma", "ogg"]:
                     files.append(str(file_path))
         if top_level:
             return [fname.replace(MUSIC_DIR, "") for fname in files]
@@ -125,6 +125,44 @@ class ZenMPD:
         client.setvol(max(volume - 5, 0))
 
     @staticmethod
+    def stats() -> dict:
+        client = ZenMPD._ensure_client()
+        return client.stats()
+
+    @staticmethod
+    def outputs() -> dict:
+        client = ZenMPD._ensure_client()
+        return client.outputs()
+
+    @staticmethod
+    def listmounts() -> list[str]:
+        client = ZenMPD._ensure_client()
+        mounts = client.listmounts()
+        return [mount for mount in mounts]
+
+    @lru_cache
+    @staticmethod
+    def music_directory() -> str | None:
+        """
+        Return the MPD config music_directory or None
+        Note:
+            This assumes the MPDClient is running locally as this is intended
+            as a local music player.
+        """
+        music_path: Path = Path(expanduser("~/.config/mpd/mpd.conf"))
+        if not music_path.exists():
+            music_path = Path("/etc/mpd.conf")
+            if not music_path.exists():
+                return None
+
+        for line in music_path.read_text().splitlines():
+            line = line.strip()
+            if line.startswith("music_directory"):
+                return line.split('"', 2)[1]
+
+        return None
+
+    @staticmethod
     def _choose_random_album(client: MPDClient) -> str | None:
         all_files = client.listall("/")
         chosen, count = None, 0
@@ -188,12 +226,12 @@ class ZenMPD:
         return playlist_info, current_id
 
     @staticmethod
-    def get_status() -> dict:
+    def status() -> dict:
         client = ZenMPD._ensure_client()
         return client.status()
 
     @staticmethod
-    def get_currentsong() -> dict:
+    def currentsong() -> dict:
         client = ZenMPD._ensure_client()
         return client.currentsong()
 

@@ -68,7 +68,7 @@ class Controller(EventDispatcher):
     def _sync_initial_state(self):
         """Sync initial state from MPD if available."""
         try:
-            status = ZenMPD.get_status()
+            status = ZenMPD.status()
             if "volume" in status and status["volume"] != "-1":
                 self.volume = float(status["volume"]) / 100.0
             mpd_state = status.get("state")
@@ -79,7 +79,7 @@ class Controller(EventDispatcher):
             else:
                 self.state = "Stopped"
 
-            song = ZenMPD.get_currentsong()
+            song = ZenMPD.currentsong()
             if song and "file" in song:
                 self.file_name = self.playlist.to_abs_path(song["file"])
         except Exception as e:
@@ -88,7 +88,7 @@ class Controller(EventDispatcher):
     def _update_progress(self, _dt):
         """Update player state and progress from MPD"""
         try:
-            status = ZenMPD.get_status()
+            status = ZenMPD.status()
         except Exception:
             return
 
@@ -121,7 +121,7 @@ class Controller(EventDispatcher):
                 pass
 
         try:
-            song = ZenMPD.get_currentsong()
+            song = ZenMPD.currentsong()
         except Exception:
             song = {}
 
@@ -196,7 +196,7 @@ class Controller(EventDispatcher):
         fraction between 0 and 1.
         """
         try:
-            status = ZenMPD.get_status()
+            status = ZenMPD.status()
             duration = float(status.get("duration", 0.0))
             if duration > 0:
                 target = int(value * duration)
@@ -224,7 +224,7 @@ class Controller(EventDispatcher):
     def play_next(self):
         """Play the next track in the playlist, or random album if at end."""
         try:
-            status = ZenMPD.get_status()
+            status = ZenMPD.status()
             pos = int(status.get("song", -1))
             pl_len = int(status.get("playlistlength", 0))
             if pos + 1 >= pl_len or pl_len == 0:
