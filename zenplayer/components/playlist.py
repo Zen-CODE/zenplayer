@@ -113,28 +113,20 @@ class Playlist(EventDispatcher):
         elif path.isfile(file_folder):
             rel_files = [self.to_rel_path(file_folder)]
         else:
-            rel_files = []
-
-        if not rel_files:
             return
 
         if mode == "replace":
-            client.stop()
-            client.clear()
-            for f in rel_files:
-                client.add(f)
-            client.play(0)
+            ZenMPD.replace(file_folder)
         elif mode == "add":
-            for f in rel_files:
-                client.add(f)
+            ZenMPD.add(file_folder)
         elif mode == "insert":
             for i, f in enumerate(rel_files):
-                client.addid(f, i)
+                ZenMPD.client.addid(f, i)
         elif mode == "next":
-            status = client.status()
+            status = ZenMPD.status()
             cur_pos = int(status.get("song", 0))
             for i, f in enumerate(rel_files):
-                client.addid(f, cur_pos + 1 + i)
+                ZenMPD.client.addid(f, cur_pos + 1 + i)
         elif mode == "next_album":
             status = client.status()
             cur_pos = int(status.get("song", 0))
@@ -155,12 +147,7 @@ class Playlist(EventDispatcher):
 
     def clear_files(self):
         """Clear the existing playlist."""
-        try:
-            client = ZenMPD._ensure_client()
-            client.stop()
-            client.clear()
-        except Exception:
-            pass
+        ZenMPD.clear()
         self.sync()
 
     def move_next(self):
