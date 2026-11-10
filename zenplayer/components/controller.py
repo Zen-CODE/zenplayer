@@ -134,6 +134,7 @@ class Controller(EventDispatcher):
 
         # End of playlist detection: when it reaches the end, play random album
         if mpd_state == "stop":
+            Logger.info("Stop detected - playing random")
             self.play_random_album()
 
     def on_file_name(self, _widget, value):
@@ -222,17 +223,8 @@ class Controller(EventDispatcher):
         ZenMPD.playpause()
 
     def play_next(self):
-        """Play the next track in the playlist, or random album if at end."""
-        try:
-            status = ZenMPD.status()
-            pos = int(status.get("song", -1))
-            pl_len = int(status.get("playlistlength", 0))
-            if pos + 1 >= pl_len or pl_len == 0:
-                self.play_random_album()
-            else:
-                ZenMPD.next()
-        except Exception:
-            self.play_random_album()
+        """Play the next track in the playlist."""
+        ZenMPD.next()
 
     def play_previous(self):
         """Play the previous track in the playlist."""
