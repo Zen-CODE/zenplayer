@@ -50,7 +50,6 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
         Add the selected album to the playlist. *mode* can be one of
         * "add" - add to the end of the playlist
         * "next" - add after the current track
-        * "next_album" - add after the current album
         * "replace" - clear the existing playlist and add the files
         * "insert" - insert the selected album at the beginning of the playlist
         """
@@ -79,10 +78,6 @@ class AlbumsScreen(ZenKeyDown, ZenScreen):
                 {
                     "text": "Play next",
                     "action": lambda: self.add_to_playlist(mode="next"),
-                },
-                {
-                    "text": "Play after this album",
-                    "action": lambda: self.add_to_playlist(mode="next_album"),
                 },
                 {
                     "text": "Play now (insert)",

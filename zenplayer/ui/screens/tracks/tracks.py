@@ -49,10 +49,6 @@ class TracksScreen(ZenScreen):
                     "action": lambda: self.add_to_playlist(mode="next"),
                 },
                 {
-                    "text": "Play after this album",
-                    "action": lambda: self.add_to_playlist(mode="next_album"),
-                },
-                {
                     "text": "Play now (insert)",
                     "action": lambda: self.add_to_playlist(mode="insert"),
                 },

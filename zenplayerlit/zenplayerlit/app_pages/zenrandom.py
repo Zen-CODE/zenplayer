@@ -34,9 +34,12 @@ def show_zenrandom():
                     else:
                         st.error("Error adding to playlist!")
 
-        add_, replace_, insert_, next_, next_album_ = st.columns(
-            spec=[1, 1, 1, 1, 1], border=True
-        )
+        (
+            add_,
+            replace_,
+            insert_,
+            next_,
+        ) = st.columns(spec=[1, 1, 1, 1], border=True)
 
         add_.button(
             "Add",
@@ -60,11 +63,6 @@ def show_zenrandom():
         next_.button(
             "Next",
             on_click=partial(Buttons.click, "next", random["artist"], random["album"]),
-            width="stretch",
-        )
-        next_album_.button(
-            "Another",
-            on_click=lambda: None,
             width="stretch",
         )
 

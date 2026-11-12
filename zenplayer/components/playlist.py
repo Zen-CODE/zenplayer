@@ -103,11 +103,8 @@ class Playlist(EventDispatcher):
         * "add" - add to the end of the playlist
         * "replace" - clear the existing playlist and add the files
         * "insert" - insert at the beginning of the playlist
-        * "next" - insert directly after the currently playing track
-        * "next_album" - insert directly after the current album
+        * "next" - insert directly after the currently playing
         """
-        client = ZenMPD._ensure_client()
-
         if path.isdir(file_folder):
             rel_files = ZenMPD._get_library_files(file_folder)
         elif path.isfile(file_folder):
@@ -127,21 +124,6 @@ class Playlist(EventDispatcher):
             cur_pos = int(status.get("song", 0))
             for i, f in enumerate(rel_files):
                 ZenMPD.addid(f, cur_pos + 1 + i)
-        elif mode == "next_album":
-            status = client.status()
-            cur_pos = int(status.get("song", 0))
-            pl_info, _ = ZenMPD.playlist()
-            target_pos = cur_pos + 1
-            if pl_info and 0 <= cur_pos < len(pl_info):
-                cur_album_dir = path.dirname(pl_info[cur_pos].get("file", ""))
-                while (
-                    target_pos < len(pl_info)
-                    and path.dirname(pl_info[target_pos].get("file", ""))
-                    == cur_album_dir
-                ):
-                    target_pos += 1
-            for i, f in enumerate(rel_files):
-                client.addid(f, target_pos + i)
 
         self.sync()
 
