@@ -169,34 +169,25 @@ class Controller(EventDispatcher):
     def on_volume(self, _widget, value):
         """Set the volume of MPD"""
         volume = max(0.0, min(1.0, value))
-        try:
-            client = ZenMPD._ensure_client()
-            client.setvol(int(volume * 100))
-        except Exception:
-            pass
+        client = ZenMPD._ensure_client()
+        client.setvol(int(volume * 100))
 
     def set_position(self, value):
         """
         Set the playing position to the specified value, where value is a
         fraction between 0 and 1.
         """
-        try:
-            status = ZenMPD.status()
-            duration = float(status.get("duration", 0.0))
-            if duration > 0:
-                target = int(value * duration)
-                client = ZenMPD._ensure_client()
-                client.seekcur(target)
-        except Exception:
-            pass
+        status = ZenMPD.status()
+        duration = float(status.get("duration", 0.0))
+        if duration > 0:
+            target = int(value * duration)
+            client = ZenMPD._ensure_client()
+            client.seekcur(target)
 
     def play_index(self, index):
         """Play the track with the specified playlist index."""
-        try:
-            client = ZenMPD._ensure_client()
-            client.play(index)
-        except Exception:
-            pass
+        client = ZenMPD._ensure_client()
+        client.play(index)
 
     def remove_index(self, index):
         """Remove the track with the specified playlist index."""
