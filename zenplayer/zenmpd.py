@@ -3,37 +3,14 @@ from os.path import expanduser
 from pathlib import Path
 from random import choice
 from functools import lru_cache
-from mpd import MPDClient
+from zenmpdcore import MPDCore, MPDClient
+
 
 MUSIC_DIR = "/home/richard/Zen/Music/"
 
 
-class ZenMPD:
+class ZenMPD(MPDCore):
     version: str = "0.3"
-    client: MPDClient | None = None
-
-    @staticmethod
-    def _ensure_client() -> MPDClient:
-        """Ensure the MDPClient property is set and connected.
-        Note:
-            We take this approach to avoid the object management in streamlit
-            whilst tying to preserve compatibility with ZenPlayer (Kivy)
-        """
-        if ZenMPD.client is None:
-            ZenMPD.client = client = MPDClient()
-            client.connect("127.0.0.1", 6600)
-            # client.update()  # Run this occasionally to update MPD metadata
-        else:
-            try:
-                ZenMPD.client.ping()
-            except Exception as e:  # noqa BL001
-                print(f"ZenMPD: Error pinging MPDClient: {e}")
-                try:
-                    ZenMPD.client.disconnect()
-                except Exception as e:  # noqa BL001
-                    print(f"ZenMPD: Error disconnecting MPDClient: {e}")
-                ZenMPD.client.connect("localhost", 6600)
-        return ZenMPD.client
 
     @staticmethod
     def _get_library_files(folder: str, existing: list | None = None) -> list[str]:
@@ -87,16 +64,6 @@ class ZenMPD:
                 client.play(int(status.get("song", 0)))
 
     @staticmethod
-    def pause():
-        client = ZenMPD._ensure_client()
-        client.pause(1)
-
-    @staticmethod
-    def stop():
-        client = ZenMPD._ensure_client()
-        client.stop()
-
-    @staticmethod
     def previous():
         client = ZenMPD._ensure_client()
         pos = int(client.status().get("song", 0))
@@ -123,22 +90,6 @@ class ZenMPD:
         status = client.status()
         volume = int(status.get("volume", 0))
         client.setvol(max(volume - 5, 0))
-
-    @staticmethod
-    def stats() -> dict:
-        client = ZenMPD._ensure_client()
-        return client.stats()
-
-    @staticmethod
-    def outputs() -> dict:
-        client = ZenMPD._ensure_client()
-        return client.outputs()
-
-    @staticmethod
-    def listmounts() -> list[str]:
-        client = ZenMPD._ensure_client()
-        mounts = client.listmounts()
-        return [mount for mount in mounts]
 
     @lru_cache
     @staticmethod
@@ -224,16 +175,6 @@ class ZenMPD:
         playlist_info = client.playlistinfo()
         current_id = client.currentsong().get("id")
         return playlist_info, current_id
-
-    @staticmethod
-    def status() -> dict:
-        client = ZenMPD._ensure_client()
-        return client.status()
-
-    @staticmethod
-    def currentsong() -> dict:
-        client = ZenMPD._ensure_client()
-        return client.currentsong()
 
     @staticmethod
     def disconnect_client():
