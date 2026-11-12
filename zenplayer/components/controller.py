@@ -175,22 +175,6 @@ class Controller(EventDispatcher):
         except Exception:
             pass
 
-    def move_forward(self):
-        """Move the current playing time 5s forward"""
-        try:
-            client = ZenMPD._ensure_client()
-            client.seekcur("+5")
-        except Exception:
-            pass
-
-    def move_backward(self):
-        """Move the current playing time 5s backward"""
-        try:
-            client = ZenMPD._ensure_client()
-            client.seekcur("-5")
-        except Exception:
-            pass
-
     def set_position(self, value):
         """
         Set the playing position to the specified value, where value is a
