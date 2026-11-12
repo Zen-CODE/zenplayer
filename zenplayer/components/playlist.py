@@ -121,12 +121,12 @@ class Playlist(EventDispatcher):
             ZenMPD.add(file_folder)
         elif mode == "insert":
             for i, f in enumerate(rel_files):
-                ZenMPD.client.addid(f, i)
+                ZenMPD.addid(f, i)
         elif mode == "next":
             status = ZenMPD.status()
             cur_pos = int(status.get("song", 0))
             for i, f in enumerate(rel_files):
-                ZenMPD.client.addid(f, cur_pos + 1 + i)
+                ZenMPD.addid(f, cur_pos + 1 + i)
         elif mode == "next_album":
             status = client.status()
             cur_pos = int(status.get("song", 0))

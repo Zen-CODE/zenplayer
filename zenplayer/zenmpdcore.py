@@ -62,3 +62,8 @@ class MPDCore:
     def currentsong() -> dict:
         client = MPDCore._ensure_client()
         return client.currentsong()
+
+    @staticmethod
+    def addid(file_name: str, index: int) -> int:
+        client = MPDCore._ensure_client()
+        return client.addid(file_name, index)
