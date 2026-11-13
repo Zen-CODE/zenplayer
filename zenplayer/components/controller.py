@@ -62,28 +62,8 @@ class Controller(EventDispatcher):
             HotKeyHandler.add_bindings(self)
 
         self.kb_handler = KeyHandler(self)
-        self._sync_initial_state()
+        self._update_progress(None)
         Clock.schedule_interval(self._update_progress, 0.5)
-
-    def _sync_initial_state(self):
-        """Sync initial state from MPD if available."""
-        try:
-            status = ZenMPD.status()
-            if "volume" in status and status["volume"] != "-1":
-                self.volume = float(status["volume"]) / 100.0
-            mpd_state = status.get("state")
-            if mpd_state == "play":
-                self.state = "Playing"
-            elif mpd_state == "pause":
-                self.state = "Paused"
-            else:
-                self.state = "Stopped"
-
-            song = ZenMPD.currentsong()
-            if song and "file" in song:
-                self.file_name = self.playlist.to_abs_path(song["file"])
-        except Exception as e:
-            Logger.warning("Controller: Initial MPD sync failed: %s", e)
 
     def _update_progress(self, _dt):
         """Update player state and progress from MPD"""
@@ -98,7 +78,9 @@ class Controller(EventDispatcher):
         elif mpd_state == "pause":
             self.state = "Paused"
         else:
-            self.state = "Stopped"
+            # self.state = "Stopped"
+            Logger.info("Stopped...")
+            # self.play_random_album()
 
         if mpd_state in ["play", "pause"]:
             pos = float(status.get("elapsed", 0.0))
@@ -112,18 +94,12 @@ class Controller(EventDispatcher):
             self.position = 0.0
             self.time_display = "-"
 
-        if "volume" in status and status["volume"] != "-1":
-            try:
-                v = float(status["volume"]) / 100.0
-                if abs(self.volume - v) > 0.01:
-                    self.volume = v
-            except ValueError:
-                pass
+        if status["volume"] != "-1":
+            v = float(status["volume"]) / 100.0
+            if abs(self.volume - v) > 0.01:
+                self.volume = v
 
-        try:
-            song = ZenMPD.currentsong()
-        except Exception:
-            song = {}
+        song = ZenMPD.currentsong()
 
         current_file = self.playlist.to_abs_path(song.get("file", "")) if song else ""
         if current_file and current_file != self.file_name:
@@ -131,11 +107,6 @@ class Controller(EventDispatcher):
             self.playlist.sync()
         elif not current_file and self.file_name and mpd_state == "stop":
             self.file_name = ""
-
-        # End of playlist detection: when it reaches the end, play random album
-        if mpd_state == "stop":
-            Logger.info("Stop detected - playing random")
-            self.play_random_album()
 
     def on_file_name(self, _widget, value):
         """Respond to the change of file name and set the info fields."""
